@@ -17,6 +17,7 @@ namespace PttLib
         {
             var result = new List<Tuple<string, string>>();
             var html = Get(url, page);
+            if (html == null) return null;
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.LoadHtml(html);
 
@@ -49,6 +50,8 @@ namespace PttLib
             };
 
             var itemHtml = WebHelper.CurlSimple(url);
+            if (itemHtml == null) return null;
+
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.LoadHtml(itemHtml);
             var metaDescription = htmlDoc.DocumentNode.SelectSingleNode("//meta[@name='description']");
@@ -64,11 +67,13 @@ namespace PttLib
                     item.Tags.Add(tag.InnerText);
                 }
             }
-            var mainImage = htmlDoc.DocumentNode.SelectSingleNode("//div[@id='image-main']//li");
-            if (mainImage != null)
+            var images = htmlDoc.DocumentNode.SelectNodes("//div[@id='image-main']//li");
+            if (images != null)
             {
-                item.Images.Add(mainImage.Attributes["data-full-image-href"].Value);
-
+                foreach (var image in images)
+                {
+                    item.Images.Add(image.Attributes["data-full-image-href"].Value);
+                }
             }
             var metaPrice = htmlDoc.DocumentNode.SelectSingleNode("//meta[@itemprop='price']");
             if (metaPrice != null)

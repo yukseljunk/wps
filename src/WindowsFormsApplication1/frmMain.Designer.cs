@@ -45,7 +45,7 @@
             this.tags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.postId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnSelectAll = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grpBlogProp = new System.Windows.Forms.GroupBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
@@ -57,8 +57,9 @@
             this.btnStopScrape = new System.Windows.Forms.Button();
             this.btnGetPost = new System.Windows.Forms.Button();
             this.txtPostId = new System.Windows.Forms.TextBox();
+            this.chkFeatureImage = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.grpBlogProp.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -206,22 +207,22 @@
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
-            // groupBox1
+            // grpBlogProp
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.grpBlogProp.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.txtPassword);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.txtUserName);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.txtBlogUrl);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Location = new System.Drawing.Point(15, 528);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1157, 71);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Target Blog";
+            this.grpBlogProp.Controls.Add(this.txtPassword);
+            this.grpBlogProp.Controls.Add(this.label5);
+            this.grpBlogProp.Controls.Add(this.txtUserName);
+            this.grpBlogProp.Controls.Add(this.label4);
+            this.grpBlogProp.Controls.Add(this.txtBlogUrl);
+            this.grpBlogProp.Controls.Add(this.label3);
+            this.grpBlogProp.Location = new System.Drawing.Point(15, 528);
+            this.grpBlogProp.Name = "grpBlogProp";
+            this.grpBlogProp.Size = new System.Drawing.Size(1157, 71);
+            this.grpBlogProp.TabIndex = 7;
+            this.grpBlogProp.TabStop = false;
+            this.grpBlogProp.Text = "Target Blog";
             // 
             // txtPassword
             // 
@@ -311,7 +312,7 @@
             // btnGetPost
             // 
             this.btnGetPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetPost.Location = new System.Drawing.Point(514, 614);
+            this.btnGetPost.Location = new System.Drawing.Point(247, 612);
             this.btnGetPost.Name = "btnGetPost";
             this.btnGetPost.Size = new System.Drawing.Size(214, 23);
             this.btnGetPost.TabIndex = 11;
@@ -322,22 +323,34 @@
             // txtPostId
             // 
             this.txtPostId.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPostId.Location = new System.Drawing.Point(326, 617);
+            this.txtPostId.Location = new System.Drawing.Point(30, 613);
             this.txtPostId.Name = "txtPostId";
             this.txtPostId.Size = new System.Drawing.Size(182, 20);
             this.txtPostId.TabIndex = 12;
+            // 
+            // chkFeatureImage
+            // 
+            this.chkFeatureImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkFeatureImage.AutoSize = true;
+            this.chkFeatureImage.Location = new System.Drawing.Point(555, 616);
+            this.chkFeatureImage.Name = "chkFeatureImage";
+            this.chkFeatureImage.Size = new System.Drawing.Size(192, 17);
+            this.chkFeatureImage.TabIndex = 13;
+            this.chkFeatureImage.Text = "Make First Image as Feature Image";
+            this.chkFeatureImage.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1192, 663);
+            this.Controls.Add(this.chkFeatureImage);
             this.Controls.Add(this.txtPostId);
             this.Controls.Add(this.btnGetPost);
             this.Controls.Add(this.btnStopScrape);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnGo);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.grpBlogProp);
             this.Controls.Add(this.btnSelectAll);
             this.Controls.Add(this.lvItems);
             this.Controls.Add(this.btnStart);
@@ -349,8 +362,8 @@
             this.Text = "Wordpress Scraper";
             this.Load += new System.EventHandler(this.frmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.grpBlogProp.ResumeLayout(false);
+            this.grpBlogProp.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -374,7 +387,7 @@
         private System.Windows.Forms.ColumnHeader price;
         private System.Windows.Forms.ColumnHeader tags;
         private System.Windows.Forms.Button btnSelectAll;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox grpBlogProp;
         private System.Windows.Forms.TextBox txtBlogUrl;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtPassword;
@@ -387,6 +400,7 @@
         private System.Windows.Forms.Button btnStopScrape;
         private System.Windows.Forms.Button btnGetPost;
         private System.Windows.Forms.TextBox txtPostId;
+        private System.Windows.Forms.CheckBox chkFeatureImage;
     }
 }
 

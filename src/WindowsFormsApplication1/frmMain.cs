@@ -41,6 +41,12 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Enter Url!");
                 return;
             }
+            var etsyResults = GetEtsyItems(txtUrl.Text, (int)numPage.Value);
+            if (etsyResults == null)
+            {
+                MessageBox.Show("No results found for url: "+txtUrl.Text);
+                return;
+            }
             lvItems.Items.Clear();
             btnStart.Enabled = false;
             btnStopScrape.Enabled = true;
@@ -48,7 +54,7 @@ namespace WindowsFormsApplication1
             StopToken = false;
             var itemIndex = 1;
             Cursor.Current = Cursors.WaitCursor;
-            var etsyResults = GetEtsyItems(txtUrl.Text, (int)numPage.Value);
+            
             foreach (var etsyResult in etsyResults)
             {
                 var item = GetEtsyItem(etsyResult.Item1, etsyResult.Item2);
@@ -102,9 +108,7 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Select items to transfer!");
                 return;
             }
-            lvItems.Enabled = false;
-            btnGo.Enabled = false;
-            btnStop.Enabled = true;
+            EnDisItems(false);
             StopToken = false;
             bool errorFound = false;
             var dummy = IdsPresent;//lazy load post ids
@@ -130,22 +134,32 @@ namespace WindowsFormsApplication1
             }
 
             MessageBox.Show("Transfer finished" + (errorFound ? " with errors" : ""), "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            btnStop.Enabled = false;
-            btnGo.Enabled = true;
-            lvItems.Enabled = true;
-            
+            EnDisItems(true);
         }
 
-        private HashSet<string> _idsPresent = null;
+        private void EnDisItems(bool enabled)
+        {
+            btnStop.Enabled = !enabled;
+            btnGo.Enabled = enabled;
+            lvItems.Enabled = enabled;
+            grpBlogProp.Enabled = enabled;
+        }
+
+        private Dictionary<string, HashSet<string>> _idsPresent = new Dictionary<string, HashSet<string>>();
+
         protected HashSet<string> IdsPresent
         {
             get
             {
-                if (_idsPresent == null)
+                if (!_idsPresent.ContainsKey(txtBlogUrl.Text))
                 {
-                    _idsPresent = GetPostIds();
+                    _idsPresent.Add(txtBlogUrl.Text, null);
                 }
-                return _idsPresent;
+                if (_idsPresent[txtBlogUrl.Text] == null)
+                {
+                    _idsPresent[txtBlogUrl.Text] = GetPostIds();
+                }
+                return _idsPresent[txtBlogUrl.Text];
             }
         }
 
@@ -199,18 +213,38 @@ namespace WindowsFormsApplication1
                     {
                         return 0;
                     }
-                    var uploaded = client.UploadFile(Data.CreateFromUrl(item.SubItems[7].Text));
-                    var type = uploaded.Type;
+                    var content= new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
+                    IList<UploadResult> imageUploads= new List<UploadResult>();
+                    var imageUrls = item.SubItems[7].Text.Split(new string[]{","},StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var imageUrl in imageUrls)
+                    {
+                        var uploaded = client.UploadFile(Data.CreateFromUrl(imageUrl));
+                        imageUploads.Add(uploaded);
+                        var thumbnailUrl =Path.GetDirectoryName(uploaded.Url).Replace("http:\\","http:\\\\").Replace("\\","/")+ "/"+Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" + Path.GetExtension(uploaded.Url);
+
+                        content.Append(
+                            string.Format(
+                            "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
+                            uploaded.Url,thumbnailUrl, item.SubItems[3].Text));
+                    }
+                    content.Append(string.Format("</div><h4>Price:${0}</h4>",item.SubItems[6].Text));
+                    content.Append("<strong>Description: </strong>");
+                    content.Append(item.SubItems[5].Text);
+
                     var allTags = client.GetTerms("post_tag", null);
                     var post = new Post
                                    {
                                        PostType = "post",
                                        Title = item.SubItems[3].Text,
-                                       Content = item.SubItems[5].Text,
+                                       Content = content.ToString(),
                                        PublishDateTime = DateTime.Now,
-                                       CustomFields = new [] { new CustomField() { Key = "foreignkey", Value = id } },
-                                       FeaturedImageId = uploaded.Id
+                                       CustomFields = new[] { new CustomField() { Key = "foreignkey", Value = id } }
                                    };
+
+                    if (chkFeatureImage.Checked && imageUploads.Any())
+                    {
+                        post.FeaturedImageId = imageUploads[0].Id;
+                    }
 
                     var terms = new List<Term>();
                     var tags = item.SubItems[8].Text;
@@ -243,7 +277,7 @@ namespace WindowsFormsApplication1
                     post.Terms = terms.ToArray();
                     var newPost = client.NewPost(post);
 
-                    _idsPresent.Add(id);
+                    _idsPresent[txtBlogUrl.Text].Add(id);
                     return Convert.ToInt32(newPost);
 
                 }
@@ -285,7 +319,7 @@ namespace WindowsFormsApplication1
             }
             var item = lvItems.SelectedItems[0];
             var postId = item.SubItems[9].Text;
-            if (postId == "" || postId == "Error" || postId=="Exists")
+            if (postId == "" || postId == "Error" || postId == "Exists")
             {
                 MessageBox.Show("No post id or problematic one!");
                 return;
