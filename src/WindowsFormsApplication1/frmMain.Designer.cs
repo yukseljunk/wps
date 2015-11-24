@@ -325,7 +325,7 @@
             this.btnGetPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGetPost.Location = new System.Drawing.Point(227, 612);
             this.btnGetPost.Name = "btnGetPost";
-            this.btnGetPost.Size = new System.Drawing.Size(214, 23);
+            this.btnGetPost.Size = new System.Drawing.Size(141, 23);
             this.btnGetPost.TabIndex = 11;
             this.btnGetPost.Text = "Get Selected Post";
             this.btnGetPost.UseVisualStyleBackColor = true;
@@ -446,7 +446,6 @@
             this.chkCache.TabIndex = 19;
             this.chkCache.Text = "Use Caching";
             this.chkCache.UseVisualStyleBackColor = true;
-            this.chkCache.Visible = false;
             // 
             // frmMain
             // 

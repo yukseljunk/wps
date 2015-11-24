@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Web;
 using System.Windows.Forms;
 using PttLib;
 using WordPressSharp;
-using WordPressSharp.Models;
 
 namespace WindowsFormsApplication1
 {
     public partial class frmMain : Form
     {
         private const string DefaultUrl = "https://www.etsy.com/c/books-movies-and-music/music/instrument-straps";
-
+        private BlogCache _blogCache;
         public frmMain()
         {
             InitializeComponent();
@@ -24,6 +18,7 @@ namespace WindowsFormsApplication1
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            _blogCache=new BlogCache(SiteConfig);
             txtUrl.Text = DefaultUrl;
             btnGo.Enabled = false;
             btnStop.Enabled = false;
@@ -147,23 +142,27 @@ namespace WindowsFormsApplication1
             EnDisItems(false);
             StopToken = false;
             bool errorFound = false;
-            SetStatus("Loading present posts in the blog(this may take some time)...");
-            Application.DoEvents();
-            var dummy = IdsPresent;//lazy load post ids
-            Application.DoEvents();
-            SetStatus("Loading present tags in the blog(this may take some time)...");
-            Application.DoEvents();
-            var dummy2 = TagsPresent;//lazy load post ids
-            Application.DoEvents();
+           
+            if (chkCache.Checked)
+            {
+                SetStatus("Loading present posts in the blog(this may take some time)...");
+                Application.DoEvents();
+                _blogCache.Start(txtBlogUrl.Text);
+                Application.DoEvents();
+            }
+
             SetStatus("Ready");
             ResetBarStatus(true);
             barStatus.Maximum = lvItems.SelectedItems.Count;
+            var etsyFactory = new EtsyFactory(SiteConfig,_blogCache);
+
             foreach (ListViewItem item in lvItems.SelectedItems)
             {
                 if (StopToken) break;
                 SetStatus("Creating item on the blog:" + item.Text);
                 Application.DoEvents();
-                var itemNo = CreateItem(item);
+                Item itemObject = ItemFromListView(item);
+                var itemNo = etsyFactory.Create(itemObject, txtBlogUrl.Text, chkCache.Checked, chkFeatureImage.Checked);
                 Application.DoEvents();
                 barStatus.PerformStep();
                 if (itemNo == -1)
@@ -185,6 +184,22 @@ namespace WindowsFormsApplication1
             EnDisItems(true);
         }
 
+        private Item ItemFromListView(ListViewItem item)
+        {
+            return new Item()
+            {
+                Id = int.Parse(item.SubItems[1].Text),
+                Url = item.SubItems[2].Text,
+                Title = item.SubItems[3].Text,
+                MetaDescription = item.SubItems[4].Text,
+                Content = item.SubItems[5].Text,
+                Price = double.Parse(item.SubItems[6].Text),
+                Tags = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
+                Images = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+
+            };
+        }
+
         private void SetStatus(string status)
         {
             lblStatus.Text = status;
@@ -201,87 +216,7 @@ namespace WindowsFormsApplication1
             grpBlogProp.Enabled = enabled;
         }
 
-        private Dictionary<string, HashSet<string>> _idsPresent = new Dictionary<string, HashSet<string>>();
-        private Dictionary<string, HashSet<Term>> _tagsPresent = new Dictionary<string, HashSet<Term>>();
-
-        protected HashSet<string> IdsPresent
-        {
-            get
-            {
-                if (!_idsPresent.ContainsKey(txtBlogUrl.Text))
-                {
-                    _idsPresent.Add(txtBlogUrl.Text, null);
-                }
-                if (_idsPresent[txtBlogUrl.Text] == null)
-                {
-                    _idsPresent[txtBlogUrl.Text] = GetPostIds();
-                }
-                return _idsPresent[txtBlogUrl.Text];
-            }
-        }
-
-        protected HashSet<Term> TagsPresent
-        {
-            get
-            {
-                if (!_tagsPresent.ContainsKey(txtBlogUrl.Text))
-                {
-                    _tagsPresent.Add(txtBlogUrl.Text, null);
-                }
-                if (_tagsPresent[txtBlogUrl.Text] == null)
-                {
-                    _tagsPresent[txtBlogUrl.Text] = GetTags();
-                }
-                return _tagsPresent[txtBlogUrl.Text];
-            }
-        }
-
-        private HashSet<Term> GetTags()
-        {
-            var result = new HashSet<Term>();
-            using (var client = new WordPressClient(SiteConfig))
-            {
-                var tags = client.GetTerms("post_tag", null);
-                foreach (var tag in tags)
-                {
-                    result.Add(tag);
-                }
-
-            }
-            return result;
-        }
-
-        private HashSet<string> GetPostIds()
-        {
-            var blockSize = 10;
-            var result = new HashSet<string>();
-            using (var client = new WordPressClient(SiteConfig))
-            {
-                for (var i = 0; i < 1000; i++)
-                {
-                    var posts =
-                        client.GetPosts(new PostFilter() { Number = blockSize, Offset = blockSize * (i - 1) });
-                    foreach (var post in posts)
-                    {
-                        var foreignKeyCustomField =
-                            post.CustomFields.FirstOrDefault(cf => cf.Key == "foreignkey");
-                        if (foreignKeyCustomField != null)
-                        {
-                            result.Add(foreignKeyCustomField.Value);
-                        }
-
-                    }
-                    if (!posts.Any())
-                    {
-                        break;
-                    }
-                    Thread.Sleep(100);
-                }
-            }
-            return result;
-        }
-
-
+        
         public WordPressSiteConfig SiteConfig
         {
             get
@@ -289,112 +224,7 @@ namespace WindowsFormsApplication1
                 return new WordPressSiteConfig() { BaseUrl = txtBlogUrl.Text, BlogId = 1, Username = txtUserName.Text, Password = txtPassword.Text };
             }
         }
-
-        private int CreateItem(ListViewItem item)
-        {
-            using (var client = new WordPressClient(SiteConfig))
-            {
-                try
-                {
-                    var id = "etsy_" + item.SubItems[1].Text;
-                    if (IdsPresent.Contains(id))
-                    {
-                        return 0;
-                    }
-                    var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
-                    IList<UploadResult> imageUploads = new List<UploadResult>();
-                    var imageUrls = item.SubItems[7].Text.Split(new string[] { "," },
-                        StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var imageUrl in imageUrls)
-                    {
-                        var uploaded = client.UploadFile(Data.CreateFromUrl(imageUrl));
-                        imageUploads.Add(uploaded);
-                        var thumbnailUrl =
-                            Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
-                            Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" +
-                            Path.GetExtension(uploaded.Url);
-
-                        content.Append(
-                            string.Format(
-                                "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
-                                uploaded.Url, thumbnailUrl, item.SubItems[3].Text));
-                    }
-                    content.Append(string.Format("</div><h4>Price:${0}</h4>", item.SubItems[6].Text));
-                    content.Append("<strong>Description: </strong>");
-                    content.Append(item.SubItems[5].Text);
-
-                    var post = new Post
-                    {
-                        PostType = "post",
-                        Title = item.SubItems[3].Text,
-                        Content = content.ToString(),
-                        PublishDateTime = DateTime.Now,
-                        CustomFields = new[]
-                        {
-                            new CustomField() {Key = "foreignkey", Value = id},
-                            new CustomField() {Key = "_aioseop_title", Value = item.SubItems[3].Text},
-                            new CustomField() {Key = "_aioseop_description", Value = item.SubItems[4].Text},
-                            new CustomField() {Key = "_aioseop_keywords", Value = item.SubItems[8].Text},
-                            new CustomField() {Key = "_thumbnail_id", Value = ""},                           
-                        }
-                    };
-
-                    if (imageUploads.Any())
-                    {
-                        if (chkFeatureImage.Checked)
-                        {
-                            post.FeaturedImageId = imageUploads[0].Id;
-                        }
-                        post.CustomFields[4].Value = imageUploads[0].Id;
-                    }
-
-                    var terms = new List<Term>();
-                    var tags = item.SubItems[8].Text;
-                    var tagsSplitted = tags.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var tag in tagsSplitted)
-                    {
-
-                        var tagOnBlog =
-                            TagsPresent.FirstOrDefault(
-                                t => HttpUtility.HtmlDecode(t.Name).Trim().ToLowerInvariant() == HttpUtility.HtmlDecode(tag).Trim().ToLowerInvariant());
-                        if (tagOnBlog == null)
-                        {
-                            var t = new Term
-                                        {
-                                            Name = tag,
-                                            Description = tag,
-                                            Slug = tag.Replace(" ", "_"),
-                                            Taxonomy = "post_tag"
-                                        };
-
-                            var termId = client.NewTerm(t);
-                            t.Id = termId;
-                            _tagsPresent[txtBlogUrl.Text].Add(t);
-                            terms.Add(t);
-                        }
-                        else
-                        {
-                            terms.Add(tagOnBlog);
-                        }
-                    }
-                    post.Terms = terms.ToArray();
-                    var newPost = client.NewPost(post);
-
-                    _idsPresent[txtBlogUrl.Text].Add(id);
-                    return Convert.ToInt32(newPost);
-
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show(exception.ToString());
-                }
-
-
-            }
-            return -1;
-
-        }
-
+        
         private void btnStop_Click(object sender, EventArgs e)
         {
             StopToken = true;

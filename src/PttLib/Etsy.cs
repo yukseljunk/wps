@@ -7,6 +7,7 @@ namespace PttLib
 {
     public class Etsy
     {
+
         public string Get(string url, int page = 1)
         {
             return WebHelper.CurlSimple(url.Replace(" ", "+") + "&page=" + page);
