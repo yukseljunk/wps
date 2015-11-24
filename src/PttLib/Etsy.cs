@@ -13,16 +13,23 @@ namespace PttLib
 
         }
 
-        public IList<Tuple<string, string>> GetItems(string url, int page = 1)
+        public IList<Tuple<string, string>> GetItems(string url, out int pageCount, int page = 1)
         {
             var result = new List<Tuple<string, string>>();
             var html = Get(url, page);
+            pageCount = 0;
             if (html == null) return null;
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.LoadHtml(html);
 
             if (htmlDoc.DocumentNode != null)
             {
+                var pageNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='pagination btn-group clearfix mt-xs-3']/a");
+                if (pageNodes != null)
+                {
+                    pageCount =int.Parse(pageNodes[pageNodes.Count-2].InnerText);
+                }
+
                 var itemNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='buyer-card card']/a");
 
                 if (itemNodes != null)

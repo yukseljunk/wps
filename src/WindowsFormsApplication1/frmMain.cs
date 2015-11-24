@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -39,14 +40,19 @@ namespace WindowsFormsApplication1
             numPage_ValueChanged(null, null);
             var allResults = new List<Tuple<string, string>>();
             var pageStart = (int)numPage.Value;
-            var pageEnd = (int)numPageTo.Value;
+            var pageEnd = chkAllPages.Checked ? (int)numPageTo.Maximum : (int)numPageTo.Value;
             ResetBarStatus(true);
             barStatus.Maximum = pageEnd - pageStart;
             for (var page = pageStart; page <= pageEnd; page++)
             {
                 Application.DoEvents();
-                lblStatus.Text = string.Format("Getting Page {0}", page);
-                var results = GetEtsyItems(txtUrl.Text, (int)numPage.Value);
+                SetStatus(string.Format("Getting Page {0}", page));
+                int pageCount;
+                var results = GetEtsyItems(txtUrl.Text, (int)numPage.Value, out pageCount);
+                if (page > pageCount)
+                {
+                    break;
+                }
                 barStatus.PerformStep();
                 if (results == null)
                 {
@@ -54,11 +60,11 @@ namespace WindowsFormsApplication1
                 }
                 allResults.AddRange(results);
             }
-            lblStatus.Text = "Ready";
+            SetStatus("Ready");
             ResetBarStatus();
             if (!allResults.Any())
             {
-                MessageBox.Show("No results found for url: " + txtUrl.Text);
+                MessageBox.Show(string.Format("No results found for url {0} for pages {1}-{2} ", txtUrl.Text, numPage.Value, numPageTo.Value));
                 return;
             }
 
@@ -72,7 +78,7 @@ namespace WindowsFormsApplication1
             StopToken = false;
             ResetBarStatus(true);
             barStatus.Maximum = allResults.Count;
-            lblStatus.Text = "Filling items....";
+            SetStatus("Filling items....");
             var itemIndex = 1;
             Cursor.Current = Cursors.WaitCursor;
 
@@ -92,7 +98,7 @@ namespace WindowsFormsApplication1
                 }
                 //MessageBox.Show(item.ToString());
             }
-            lblStatus.Text = "Ready";
+            SetStatus("Ready");
             ResetBarStatus();
             btnGo.Enabled = allResults.Any();
 
@@ -109,11 +115,12 @@ namespace WindowsFormsApplication1
             barStatus.Visible = visible;
         }
 
-        private static IEnumerable<Tuple<string, string>> GetEtsyItems(string url, int page)
+        private static IEnumerable<Tuple<string, string>> GetEtsyItems(string url, int page, out int pageCount)
         {
             var etsy = new Etsy();
-            return page == 0 ? etsy.GetItems(url) : etsy.GetItems(url, page);
+            return page == 0 ? etsy.GetItems(url, out pageCount) : etsy.GetItems(url, out pageCount, page);
         }
+
         private static Item GetEtsyItem(string title, string url)
         {
             var etsy = new Etsy();
@@ -140,21 +147,21 @@ namespace WindowsFormsApplication1
             EnDisItems(false);
             StopToken = false;
             bool errorFound = false;
-            lblStatus.Text = "Loading present posts in the blog(this may take some time)...";
+            SetStatus("Loading present posts in the blog(this may take some time)...");
             Application.DoEvents();
             var dummy = IdsPresent;//lazy load post ids
             Application.DoEvents();
-            lblStatus.Text = "Loading present tags in the blog(this may take some time)...";            
+            SetStatus("Loading present tags in the blog(this may take some time)...");
             Application.DoEvents();
             var dummy2 = TagsPresent;//lazy load post ids
             Application.DoEvents();
-            lblStatus.Text = "Ready";
+            SetStatus("Ready");
             ResetBarStatus(true);
             barStatus.Maximum = lvItems.SelectedItems.Count;
             foreach (ListViewItem item in lvItems.SelectedItems)
             {
                 if (StopToken) break;
-                lblStatus.Text = "Creating item on the blog:"+ item.Text;
+                SetStatus("Creating item on the blog:" + item.Text);
                 Application.DoEvents();
                 var itemNo = CreateItem(item);
                 Application.DoEvents();
@@ -173,10 +180,18 @@ namespace WindowsFormsApplication1
                     item.SubItems[9].Text = itemNo.ToString();
                 }
             }
-            lblStatus.Text = "Transfer finished" + (errorFound ? " with errors" : "");
+            SetStatus("Transfer finished" + (errorFound ? " with errors" : ""));
             ResetBarStatus();
             EnDisItems(true);
         }
+
+        private void SetStatus(string status)
+        {
+            lblStatus.Text = status;
+            barStatus.Margin = new Padding(lblStatus.Width - 50, barStatus.Margin.Top, barStatus.Margin.Right,
+                barStatus.Margin.Bottom);
+        }
+
 
         private void EnDisItems(bool enabled)
         {
@@ -226,7 +241,7 @@ namespace WindowsFormsApplication1
             var result = new HashSet<Term>();
             using (var client = new WordPressClient(SiteConfig))
             {
-                var tags=  client.GetTerms("post_tag", null);
+                var tags = client.GetTerms("post_tag", null);
                 foreach (var tag in tags)
                 {
                     result.Add(tag);
@@ -288,34 +303,49 @@ namespace WindowsFormsApplication1
                     }
                     var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
                     IList<UploadResult> imageUploads = new List<UploadResult>();
-                    var imageUrls = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    var imageUrls = item.SubItems[7].Text.Split(new string[] { "," },
+                        StringSplitOptions.RemoveEmptyEntries);
                     foreach (var imageUrl in imageUrls)
                     {
                         var uploaded = client.UploadFile(Data.CreateFromUrl(imageUrl));
                         imageUploads.Add(uploaded);
-                        var thumbnailUrl = Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" + Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" + Path.GetExtension(uploaded.Url);
+                        var thumbnailUrl =
+                            Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
+                            Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" +
+                            Path.GetExtension(uploaded.Url);
 
                         content.Append(
                             string.Format(
-                            "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
-                            uploaded.Url, thumbnailUrl, item.SubItems[3].Text));
+                                "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
+                                uploaded.Url, thumbnailUrl, item.SubItems[3].Text));
                     }
                     content.Append(string.Format("</div><h4>Price:${0}</h4>", item.SubItems[6].Text));
                     content.Append("<strong>Description: </strong>");
                     content.Append(item.SubItems[5].Text);
 
                     var post = new Post
-                                   {
-                                       PostType = "post",
-                                       Title = item.SubItems[3].Text,
-                                       Content = content.ToString(),
-                                       PublishDateTime = DateTime.Now,
-                                       CustomFields = new[] { new CustomField() { Key = "foreignkey", Value = id } }
-                                   };
-
-                    if (chkFeatureImage.Checked && imageUploads.Any())
                     {
-                        post.FeaturedImageId = imageUploads[0].Id;
+                        PostType = "post",
+                        Title = item.SubItems[3].Text,
+                        Content = content.ToString(),
+                        PublishDateTime = DateTime.Now,
+                        CustomFields = new[]
+                        {
+                            new CustomField() {Key = "foreignkey", Value = id},
+                            new CustomField() {Key = "_aioseop_title", Value = item.SubItems[3].Text},
+                            new CustomField() {Key = "_aioseop_description", Value = item.SubItems[4].Text},
+                            new CustomField() {Key = "_aioseop_keywords", Value = item.SubItems[8].Text},
+                            new CustomField() {Key = "_thumbnail_id", Value = ""},                           
+                        }
+                    };
+
+                    if (imageUploads.Any())
+                    {
+                        if (chkFeatureImage.Checked)
+                        {
+                            post.FeaturedImageId = imageUploads[0].Id;
+                        }
+                        post.CustomFields[4].Value = imageUploads[0].Id;
                     }
 
                     var terms = new List<Term>();

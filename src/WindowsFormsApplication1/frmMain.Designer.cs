@@ -65,6 +65,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.barStatus = new System.Windows.Forms.ToolStripProgressBar();
+            this.chkCache = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).BeginInit();
             this.grpBlogProp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPageTo)).BeginInit();
@@ -322,7 +323,7 @@
             // btnGetPost
             // 
             this.btnGetPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetPost.Location = new System.Drawing.Point(247, 612);
+            this.btnGetPost.Location = new System.Drawing.Point(227, 612);
             this.btnGetPost.Name = "btnGetPost";
             this.btnGetPost.Size = new System.Drawing.Size(214, 23);
             this.btnGetPost.TabIndex = 11;
@@ -428,15 +429,31 @@
             // 
             // barStatus
             // 
+            this.barStatus.Margin = new System.Windows.Forms.Padding(0, 3, 1, 3);
             this.barStatus.Name = "barStatus";
             this.barStatus.Size = new System.Drawing.Size(300, 16);
             this.barStatus.Step = 1;
+            this.barStatus.Visible = false;
+            // 
+            // chkCache
+            // 
+            this.chkCache.AutoSize = true;
+            this.chkCache.Checked = true;
+            this.chkCache.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCache.Location = new System.Drawing.Point(448, 614);
+            this.chkCache.Name = "chkCache";
+            this.chkCache.Size = new System.Drawing.Size(87, 17);
+            this.chkCache.TabIndex = 19;
+            this.chkCache.Text = "Use Caching";
+            this.chkCache.UseVisualStyleBackColor = true;
+            this.chkCache.Visible = false;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1192, 663);
+            this.Controls.Add(this.chkCache);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.chkAllPages);
             this.Controls.Add(this.lblPageTo);
@@ -509,6 +526,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripProgressBar barStatus;
+        private System.Windows.Forms.CheckBox chkCache;
     }
 }
 
