@@ -1,0 +1,3640 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1F0B3A2D-E47B-44A6-81CF-46793E4E182C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PttLib</RootNamespace>
+    <AssemblyName>PttLib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DeathByCaptcha, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\DeathByCaptcha.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=3.0.0.2, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="ExpressionEvaluator, Version=2.0.0.1, Culture=neutral, PublicKeyToken=90d9f15d622e2348, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\ExpressionEvaluator.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CaptchaBreaker\CaptchaBreakerFactory.cs" />
+    <Compile Include="CaptchaBreaker\Coral\CoralBreaker.cs" />
+    <Compile Include="CaptchaBreaker\Coral\Guesser\CaptchaGuess.cs" />
+    <Compile Include="CaptchaBreaker\Coral\Guesser\CaptchaGuessByFillPercentage.cs" />
+    <Compile Include="CaptchaBreaker\Coral\Guesser\CaptchaGuessByFillPercentageNormalizedVectorProduct.cs" />
+    <Compile Include="CaptchaBreaker\Coral\Guesser\IntVector.cs" />
+    <Compile Include="CaptchaBreaker\Dbc\DeathByCaptchaBreaker.cs" />
+    <Compile Include="CaptchaBreaker\Fx\CanvasFx.cs" />
+    <Compile Include="CaptchaBreaker\Fx\ChannelFx.cs" />
+    <Compile Include="CaptchaBreaker\Fx\ColorFx.cs" />
+    <Compile Include="CaptchaBreaker\Fx\GeneralFx.cs" />
+    <Compile Include="CaptchaBreaker\Fx\NegateFx.cs" />
+    <Compile Include="CaptchaBreaker\Fx\NoiseFx.cs" />
+    <Compile Include="CaptchaBreaker\Fx\RotateFx.cs" />
+    <Compile Include="CaptchaBreaker\ICaptchaBreaker.cs" />
+    <Compile Include="CaptchaBreaker\Info\BitArray.cs" />
+    <Compile Include="CaptchaBreaker\Info\FillPercentageTune.cs" />
+    <Compile Include="CaptchaBreaker\Info\Histogram.cs" />
+    <Compile Include="CaptchaBreaker\Info\Points.cs" />
+    <Compile Include="CaptchaBreaker\Info\Segments.cs" />
+    <Compile Include="CaptchaBreaker\Null\NullBreaker.cs" />
+    <Compile Include="CaptchaBreaker\Tez\TezBreaker.cs" />
+    <Compile Include="DeathByCaptcha\AccessDeniedException.cs" />
+    <Compile Include="DeathByCaptcha\Captcha.cs" />
+    <Compile Include="DeathByCaptcha\Client.cs" />
+    <Compile Include="DeathByCaptcha\Exception.cs" />
+    <Compile Include="DeathByCaptcha\HttpClient.cs" />
+    <Compile Include="DeathByCaptcha\InvalidCaptchaException.cs" />
+    <Compile Include="DeathByCaptcha\PollPayload.cs" />
+    <Compile Include="DeathByCaptcha\ServiceOverloadException.cs" />
+    <Compile Include="DeathByCaptcha\SocketClient.cs" />
+    <Compile Include="DeathByCaptcha\User.cs" />
+    <Compile Include="Domain\Hotel.cs" />
+    <Compile Include="Domain\IHotel.cs" />
+    <Compile Include="Domain\IOperator.cs" />
+    <Compile Include="Etsy.cs" />
+    <Compile Include="Helpers\Base64Encoder.cs" />
+    <Compile Include="Helpers\CaptchaHelper.cs" />
+    <Compile Include="Helpers\ClassField.cs" />
+    <Compile Include="Helpers\Crypto.cs" />
+    <Compile Include="Helpers\DefaultXslTransformer.cs" />
+    <Compile Include="Helpers\Dictionnaries.cs" />
+    <Compile Include="Helpers\ExcelImportHelper.cs" />
+    <Compile Include="Helpers\ExcelReport.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\FileReaderWriter.cs" />
+    <Compile Include="Helpers\Helper.cs" />
+    <Compile Include="Helpers\HtmlEncoding.cs" />
+    <Compile Include="Helpers\Logger.cs" />
+    <Compile Include="Helpers\NatCap.cs" />
+    <Compile Include="Helpers\PhantomJs.cs" />
+    <Compile Include="Helpers\ProxyRotator.cs" />
+    <Compile Include="Helpers\ScreenShot.cs" />
+    <Compile Include="Helpers\TempFiles.cs" />
+    <Compile Include="Helpers\TemplateHelper.cs" />
+    <Compile Include="Helpers\TypeHelper.cs" />
+    <Compile Include="Helpers\WebHelper.cs" />
+    <Compile Include="Helpers\XmlConverters\BibloToXmlConverter.cs" />
+    <Compile Include="Helpers\XmlConverters\IXmlConverter.cs" />
+    <Compile Include="Helpers\XmlConverters\JavaScriptArrayToXmlConverter.cs" />
+    <Compile Include="Helpers\XmlConverters\JSONArrayToXmlConverter.cs" />
+    <Compile Include="Helpers\XmlConverters\JSONArrayToXmlConverterRecursively.cs" />
+    <Compile Include="Helpers\XmlConverters\JSONDictToXmlConverter.cs" />
+    <Compile Include="Helpers\XmlConverters\SelectBoxToXmlConverter.cs" />
+    <Compile Include="Helpers\XmlConverters\SpaceToXmlConverter.cs" />
+    <Compile Include="Helpers\XmlConverters\VersaToXmlConverter.cs" />
+    <Compile Include="Helpers\XmlParse.cs" />
+    <Compile Include="Helpers\XmlSerializer.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="Operators\IOperatorFactory.cs" />
+    <Compile Include="Operators\OperatorFactory.cs" />
+    <Compile Include="Operators\Operator\Anex.cs" />
+    <Compile Include="Operators\Operator\Biblo.cs" />
+    <Compile Include="Operators\Operator\Coral.cs" />
+    <Compile Include="Operators\Operator\Intourist.cs" />
+    <Compile Include="Operators\Operator\Labirinth.cs" />
+    <Compile Include="Operators\Operator\Natalie.cs" />
+    <Compile Include="Operators\Operator\OperatorBase.cs" />
+    <Compile Include="Operators\Operator\Polar.cs" />
+    <Compile Include="Operators\Operator\Space.cs" />
+    <Compile Include="Operators\Operator\Sunmar.cs" />
+    <Compile Include="Operators\Operator\Tez.cs" />
+    <Compile Include="Operators\Operator\Troyka.cs" />
+    <Compile Include="Operators\Operator\Tui.cs" />
+    <Compile Include="Operators\Operator\Versa.cs" />
+    <Compile Include="Operators\Query\IQueryFactory.cs" />
+    <Compile Include="Operators\Query\Query.cs" />
+    <Compile Include="Operators\Query\QueryBuilder.cs" />
+    <Compile Include="Operators\Query\QueryFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PttRequestResponse\CaptchaRequestResponse\AnexCaptcha.cs" />
+    <Compile Include="PttRequestResponse\CaptchaRequestResponse\CoralCaptcha.cs" />
+    <Compile Include="PttRequestResponse\CaptchaRequestResponse\ICaptchaRequestResponse.cs" />
+    <Compile Include="PttRequestResponse\CaptchaRequestResponse\NatalieCaptcha.cs" />
+    <Compile Include="PttRequestResponse\CaptchaRequestResponse\TezCaptcha.cs" />
+    <Compile Include="PttRequestResponse\IPttCaptcha.cs" />
+    <Compile Include="PttRequestResponse\IPttRequest.cs" />
+    <Compile Include="PttRequestResponse\IPttRequestFactory.cs" />
+    <Compile Include="PttRequestResponse\IPttResponse.cs" />
+    <Compile Include="PttRequestResponse\IRequestResponse.cs" />
+    <Compile Include="PttRequestResponse\PttCaptcha.cs" />
+    <Compile Include="PttRequestResponse\PttRequest.cs" />
+    <Compile Include="PttRequestResponse\PttRequestFactory.cs" />
+    <Compile Include="PttRequestResponse\PttResponse.cs" />
+    <Compile Include="PttRequestResponse\PttWebRequest.cs" />
+    <Compile Include="PttRequestResponse\RequestResponseBase.cs" />
+    <Compile Include="PttRequestResponse\RequestResponseWithCaptcha.cs" />
+    <Compile Include="PttRequestResponse\RequestResponseWithCaptchaPhantom.cs" />
+    <Compile Include="PttRequestResponse\RequestResponseWithNatCap.cs" />
+    <Compile Include="PttRequestResponse\RequestResponseWithoutCaptcha.cs" />
+    <Compile Include="PttRequestResponse\RequestResponseWithoutCaptchaOmitExceptionsForHotelList.cs" />
+    <Compile Include="PttRequestResponse\RequestResponseWithWebBrowser.cs" />
+    <Compile Include="TourInfo\ConverterFunctions.cs" />
+    <Compile Include="TourInfo\ITourInfo.cs" />
+    <Compile Include="TourInfo\ITourInfoConverter.cs" />
+    <Compile Include="TourInfo\ITourInfoFactory.cs" />
+    <Compile Include="TourInfo\ITourInfoField.cs" />
+    <Compile Include="TourInfo\TourInfo.cs" />
+    <Compile Include="TourInfo\TourInfoConverter.cs" />
+    <Compile Include="TourInfo\TourInfoFactory.cs" />
+    <Compile Include="TourInfo\TourInfoField.cs" />
+    <Compile Include="Tours\BibloTourFactory.cs" />
+    <Compile Include="Tours\ITourFactory.cs" />
+    <Compile Include="Tours\NatalieTourFactory.cs" />
+    <Compile Include="Tours\Tour.cs" />
+    <Compile Include="Tours\TourFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\0\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\1\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\2\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\3\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\4\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\5\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\6\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\7\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\8\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\1_m9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_m10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_m15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_m20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_m25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_m30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_m35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_m40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_m45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Coral\CompareSet\9\b_m5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\2_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\2_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\3_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\3_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\4_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\4_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\5_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\5_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\5_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\5_b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\6_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\6_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\7_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\7_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\8_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\8_n.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\b_1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\b_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\c_1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\d_1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\d_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\e_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\e_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\f_1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\f_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\g_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\g_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\h_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\h_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\k_i.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\k_n.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\m_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\m_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\n_b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\n_n.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\p_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\p_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\r_b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\r_n.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\w_b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\w_t.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\x_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\x_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\y_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CaptchaBreaker\Tez\CompareSet\y_n.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lib\Antlr3.Runtime.dll" />
+    <Content Include="Lib\DeathByCaptcha.dll" />
+    <Content Include="Lib\EPPlus.dll" />
+    <Content Include="Lib\ExpressionEvaluator.dll" />
+    <Content Include="Lib\HtmlAgilityPack.dll" />
+    <Content Include="Lib\Ionic.Zip.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
