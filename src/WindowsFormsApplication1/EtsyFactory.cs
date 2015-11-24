@@ -127,10 +127,12 @@ namespace WindowsFormsApplication1
                     post.Terms = terms.ToArray();
                     var newPost = client.NewPost(post);
 
+                    
                     if (useCache)
                     {
                         _blogCache.InsertId(blogUrl,id);
                     }
+
 
                     return Convert.ToInt32(newPost);
 

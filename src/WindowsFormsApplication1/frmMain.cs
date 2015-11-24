@@ -23,6 +23,7 @@ namespace WindowsFormsApplication1
             btnGo.Enabled = false;
             btnStop.Enabled = false;
             btnStopScrape.Enabled = false;
+            System.IO.Directory.CreateDirectory("Logs");
         }
 
         private void btnStart_Click(object sender, EventArgs e)

@@ -446,6 +446,7 @@
             this.chkCache.TabIndex = 19;
             this.chkCache.Text = "Use Caching";
             this.chkCache.UseVisualStyleBackColor = true;
+            this.chkCache.Visible = false;
             // 
             // frmMain
             // 
