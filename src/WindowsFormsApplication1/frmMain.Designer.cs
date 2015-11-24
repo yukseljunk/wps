@@ -58,8 +58,17 @@
             this.btnGetPost = new System.Windows.Forms.Button();
             this.txtPostId = new System.Windows.Forms.TextBox();
             this.chkFeatureImage = new System.Windows.Forms.CheckBox();
+            this.chkClearResults = new System.Windows.Forms.CheckBox();
+            this.numPageTo = new System.Windows.Forms.NumericUpDown();
+            this.lblPageTo = new System.Windows.Forms.Label();
+            this.chkAllPages = new System.Windows.Forms.CheckBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.barStatus = new System.Windows.Forms.ToolStripProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).BeginInit();
             this.grpBlogProp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numPageTo)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -77,14 +86,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUrl.Location = new System.Drawing.Point(100, 10);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(731, 20);
+            this.txtUrl.Size = new System.Drawing.Size(428, 20);
             this.txtUrl.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(852, 13);
+            this.label2.Location = new System.Drawing.Point(534, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 2;
@@ -94,7 +103,7 @@
             // 
             this.numPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPage.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numPage.Location = new System.Drawing.Point(901, 11);
+            this.numPage.Location = new System.Drawing.Point(572, 13);
             this.numPage.Maximum = new decimal(new int[] {
             500,
             0,
@@ -113,11 +122,12 @@
             0,
             0,
             0});
+            this.numPage.ValueChanged += new System.EventHandler(this.numPage_ValueChanged);
             // 
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(974, 11);
+            this.btnStart.Location = new System.Drawing.Point(992, 12);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(83, 23);
             this.btnStart.TabIndex = 4;
@@ -339,11 +349,99 @@
             this.chkFeatureImage.Text = "Make First Image as Feature Image";
             this.chkFeatureImage.UseVisualStyleBackColor = true;
             // 
+            // chkClearResults
+            // 
+            this.chkClearResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkClearResults.AutoSize = true;
+            this.chkClearResults.Checked = true;
+            this.chkClearResults.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkClearResults.Location = new System.Drawing.Point(858, 16);
+            this.chkClearResults.Name = "chkClearResults";
+            this.chkClearResults.Size = new System.Drawing.Size(128, 17);
+            this.chkClearResults.TabIndex = 14;
+            this.chkClearResults.Text = "Clear Existent Results";
+            this.chkClearResults.UseVisualStyleBackColor = true;
+            // 
+            // numPageTo
+            // 
+            this.numPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numPageTo.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.numPageTo.Location = new System.Drawing.Point(673, 14);
+            this.numPageTo.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numPageTo.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numPageTo.Name = "numPageTo";
+            this.numPageTo.Size = new System.Drawing.Size(67, 20);
+            this.numPageTo.TabIndex = 15;
+            this.numPageTo.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numPageTo.ValueChanged += new System.EventHandler(this.numPageTo_ValueChanged);
+            // 
+            // lblPageTo
+            // 
+            this.lblPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblPageTo.AutoSize = true;
+            this.lblPageTo.Location = new System.Drawing.Point(645, 18);
+            this.lblPageTo.Name = "lblPageTo";
+            this.lblPageTo.Size = new System.Drawing.Size(20, 13);
+            this.lblPageTo.TabIndex = 16;
+            this.lblPageTo.Text = "To";
+            // 
+            // chkAllPages
+            // 
+            this.chkAllPages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkAllPages.AutoSize = true;
+            this.chkAllPages.Location = new System.Drawing.Point(746, 17);
+            this.chkAllPages.Name = "chkAllPages";
+            this.chkAllPages.Size = new System.Drawing.Size(70, 17);
+            this.chkAllPages.TabIndex = 17;
+            this.chkAllPages.Text = "All Pages";
+            this.chkAllPages.UseVisualStyleBackColor = true;
+            this.chkAllPages.CheckedChanged += new System.EventHandler(this.chkAllPages_CheckedChanged);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus,
+            this.barStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 641);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1192, 22);
+            this.statusStrip1.TabIndex = 18;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(39, 17);
+            this.lblStatus.Text = "Ready";
+            // 
+            // barStatus
+            // 
+            this.barStatus.Name = "barStatus";
+            this.barStatus.Size = new System.Drawing.Size(300, 16);
+            this.barStatus.Step = 1;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1192, 663);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.chkAllPages);
+            this.Controls.Add(this.lblPageTo);
+            this.Controls.Add(this.numPageTo);
+            this.Controls.Add(this.chkClearResults);
             this.Controls.Add(this.chkFeatureImage);
             this.Controls.Add(this.txtPostId);
             this.Controls.Add(this.btnGetPost);
@@ -364,6 +462,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).EndInit();
             this.grpBlogProp.ResumeLayout(false);
             this.grpBlogProp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numPageTo)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -401,6 +502,13 @@
         private System.Windows.Forms.Button btnGetPost;
         private System.Windows.Forms.TextBox txtPostId;
         private System.Windows.Forms.CheckBox chkFeatureImage;
+        private System.Windows.Forms.CheckBox chkClearResults;
+        private System.Windows.Forms.NumericUpDown numPageTo;
+        private System.Windows.Forms.Label lblPageTo;
+        private System.Windows.Forms.CheckBox chkAllPages;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.ToolStripProgressBar barStatus;
     }
 }
 

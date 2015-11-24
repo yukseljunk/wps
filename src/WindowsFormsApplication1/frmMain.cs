@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
 using PttLib;
@@ -41,28 +36,55 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Enter Url!");
                 return;
             }
-            var etsyResults = GetEtsyItems(txtUrl.Text, (int)numPage.Value);
-            if (etsyResults == null)
+            numPage_ValueChanged(null, null);
+            var allResults = new List<Tuple<string, string>>();
+            var pageStart = (int)numPage.Value;
+            var pageEnd = (int)numPageTo.Value;
+            ResetBarStatus(true);
+            barStatus.Maximum = pageEnd - pageStart;
+            for (var page = pageStart; page <= pageEnd; page++)
             {
-                MessageBox.Show("No results found for url: "+txtUrl.Text);
+                Application.DoEvents();
+                lblStatus.Text = string.Format("Getting Page {0}", page);
+                var results = GetEtsyItems(txtUrl.Text, (int)numPage.Value);
+                barStatus.PerformStep();
+                if (results == null)
+                {
+                    continue;
+                }
+                allResults.AddRange(results);
+            }
+            lblStatus.Text = "Ready";
+            ResetBarStatus();
+            if (!allResults.Any())
+            {
+                MessageBox.Show("No results found for url: " + txtUrl.Text);
                 return;
             }
-            lvItems.Items.Clear();
+
+            if (chkClearResults.Checked)
+            {
+                lvItems.Items.Clear();
+            }
             btnStart.Enabled = false;
             btnStopScrape.Enabled = true;
             btnGo.Enabled = false;
             StopToken = false;
+            ResetBarStatus(true);
+            barStatus.Maximum = allResults.Count;
+            lblStatus.Text = "Filling items....";
             var itemIndex = 1;
             Cursor.Current = Cursors.WaitCursor;
-            
-            foreach (var etsyResult in etsyResults)
+
+            foreach (var etsyResult in allResults)
             {
+                Application.DoEvents();
                 var item = GetEtsyItem(etsyResult.Item1, etsyResult.Item2);
                 string[] row1 = { item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content, item.Price.ToString(), string.Join(",", item.Images), string.Join(",", item.Tags), "" };
                 lvItems.BeginUpdate();
                 lvItems.Items.Add(itemIndex.ToString()).SubItems.AddRange(row1);
                 lvItems.EndUpdate();
-                Application.DoEvents();
+                barStatus.PerformStep();
                 itemIndex++;
                 if (StopToken)
                 {
@@ -70,14 +92,21 @@ namespace WindowsFormsApplication1
                 }
                 //MessageBox.Show(item.ToString());
             }
-
-            btnGo.Enabled = etsyResults.Any();
+            lblStatus.Text = "Ready";
+            ResetBarStatus();
+            btnGo.Enabled = allResults.Any();
 
             btnStart.Enabled = true;
             Cursor.Current = Cursors.Default;
             btnStopScrape.Enabled = false;
 
 
+        }
+
+        private void ResetBarStatus(bool visible = false)
+        {
+            barStatus.Value = 0;
+            barStatus.Visible = visible;
         }
 
         private static IEnumerable<Tuple<string, string>> GetEtsyItems(string url, int page)
@@ -111,13 +140,25 @@ namespace WindowsFormsApplication1
             EnDisItems(false);
             StopToken = false;
             bool errorFound = false;
+            lblStatus.Text = "Loading present posts in the blog(this may take some time)...";
+            Application.DoEvents();
             var dummy = IdsPresent;//lazy load post ids
-
+            Application.DoEvents();
+            lblStatus.Text = "Loading present tags in the blog(this may take some time)...";            
+            Application.DoEvents();
+            var dummy2 = TagsPresent;//lazy load post ids
+            Application.DoEvents();
+            lblStatus.Text = "Ready";
+            ResetBarStatus(true);
+            barStatus.Maximum = lvItems.SelectedItems.Count;
             foreach (ListViewItem item in lvItems.SelectedItems)
             {
-                Application.DoEvents();
                 if (StopToken) break;
+                lblStatus.Text = "Creating item on the blog:"+ item.Text;
+                Application.DoEvents();
                 var itemNo = CreateItem(item);
+                Application.DoEvents();
+                barStatus.PerformStep();
                 if (itemNo == -1)
                 {
                     errorFound = true;
@@ -132,8 +173,8 @@ namespace WindowsFormsApplication1
                     item.SubItems[9].Text = itemNo.ToString();
                 }
             }
-
-            MessageBox.Show("Transfer finished" + (errorFound ? " with errors" : ""), "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            lblStatus.Text = "Transfer finished" + (errorFound ? " with errors" : "");
+            ResetBarStatus();
             EnDisItems(true);
         }
 
@@ -146,6 +187,7 @@ namespace WindowsFormsApplication1
         }
 
         private Dictionary<string, HashSet<string>> _idsPresent = new Dictionary<string, HashSet<string>>();
+        private Dictionary<string, HashSet<Term>> _tagsPresent = new Dictionary<string, HashSet<Term>>();
 
         protected HashSet<string> IdsPresent
         {
@@ -161,6 +203,37 @@ namespace WindowsFormsApplication1
                 }
                 return _idsPresent[txtBlogUrl.Text];
             }
+        }
+
+        protected HashSet<Term> TagsPresent
+        {
+            get
+            {
+                if (!_tagsPresent.ContainsKey(txtBlogUrl.Text))
+                {
+                    _tagsPresent.Add(txtBlogUrl.Text, null);
+                }
+                if (_tagsPresent[txtBlogUrl.Text] == null)
+                {
+                    _tagsPresent[txtBlogUrl.Text] = GetTags();
+                }
+                return _tagsPresent[txtBlogUrl.Text];
+            }
+        }
+
+        private HashSet<Term> GetTags()
+        {
+            var result = new HashSet<Term>();
+            using (var client = new WordPressClient(SiteConfig))
+            {
+                var tags=  client.GetTerms("post_tag", null);
+                foreach (var tag in tags)
+                {
+                    result.Add(tag);
+                }
+
+            }
+            return result;
         }
 
         private HashSet<string> GetPostIds()
@@ -187,7 +260,7 @@ namespace WindowsFormsApplication1
                     {
                         break;
                     }
-                    Thread.Sleep(1000);
+                    Thread.Sleep(100);
                 }
             }
             return result;
@@ -213,25 +286,24 @@ namespace WindowsFormsApplication1
                     {
                         return 0;
                     }
-                    var content= new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
-                    IList<UploadResult> imageUploads= new List<UploadResult>();
-                    var imageUrls = item.SubItems[7].Text.Split(new string[]{","},StringSplitOptions.RemoveEmptyEntries);
+                    var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
+                    IList<UploadResult> imageUploads = new List<UploadResult>();
+                    var imageUrls = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var imageUrl in imageUrls)
                     {
                         var uploaded = client.UploadFile(Data.CreateFromUrl(imageUrl));
                         imageUploads.Add(uploaded);
-                        var thumbnailUrl =Path.GetDirectoryName(uploaded.Url).Replace("http:\\","http:\\\\").Replace("\\","/")+ "/"+Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" + Path.GetExtension(uploaded.Url);
+                        var thumbnailUrl = Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" + Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" + Path.GetExtension(uploaded.Url);
 
                         content.Append(
                             string.Format(
                             "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
-                            uploaded.Url,thumbnailUrl, item.SubItems[3].Text));
+                            uploaded.Url, thumbnailUrl, item.SubItems[3].Text));
                     }
-                    content.Append(string.Format("</div><h4>Price:${0}</h4>",item.SubItems[6].Text));
+                    content.Append(string.Format("</div><h4>Price:${0}</h4>", item.SubItems[6].Text));
                     content.Append("<strong>Description: </strong>");
                     content.Append(item.SubItems[5].Text);
 
-                    var allTags = client.GetTerms("post_tag", null);
                     var post = new Post
                                    {
                                        PostType = "post",
@@ -253,7 +325,7 @@ namespace WindowsFormsApplication1
                     {
 
                         var tagOnBlog =
-                            allTags.FirstOrDefault(
+                            TagsPresent.FirstOrDefault(
                                 t => HttpUtility.HtmlDecode(t.Name).Trim().ToLowerInvariant() == HttpUtility.HtmlDecode(tag).Trim().ToLowerInvariant());
                         if (tagOnBlog == null)
                         {
@@ -267,6 +339,7 @@ namespace WindowsFormsApplication1
 
                             var termId = client.NewTerm(t);
                             t.Id = termId;
+                            _tagsPresent[txtBlogUrl.Text].Add(t);
                             terms.Add(t);
                         }
                         else
@@ -348,6 +421,28 @@ namespace WindowsFormsApplication1
                 {
                     MessageBox.Show(exception.ToString());
                 }
+            }
+        }
+
+        private void chkAllPages_CheckedChanged(object sender, EventArgs e)
+        {
+            lblPageTo.Enabled = numPageTo.Enabled = !chkAllPages.Checked;
+
+        }
+
+        private void numPage_ValueChanged(object sender, EventArgs e)
+        {
+            if ((int)numPageTo.Value < (int)numPage.Value)
+            {
+                numPageTo.Value = numPage.Value;
+            }
+        }
+
+        private void numPageTo_ValueChanged(object sender, EventArgs e)
+        {
+            if ((int)numPageTo.Value < (int)numPage.Value)
+            {
+                numPage.Value = numPageTo.Value;
             }
         }
     }

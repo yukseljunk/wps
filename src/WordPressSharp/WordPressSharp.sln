@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordPressSharp", "WordPressSharp.csproj", "{7A938355-0B6B-48B7-97FB-C0C09015307B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9DCC7403-CC2A-45B1-82E1-634E7EAEA63B}"
@@ -9,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordPressSharpTest", "..\WordPressSharpTest\WordPressSharpTest.csproj", "{976CEAE0-614C-4564-AB10-5000D139F981}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "..\ConsoleApplication1\ConsoleApplication1.csproj", "{6FC3551A-7697-47BF-8E80-7720771429BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PttLib", "..\PttLib\PttLib.csproj", "{1F0B3A2D-E47B-44A6-81CF-46793E4E182C}"
 EndProject
@@ -30,10 +30,6 @@ Global
 		{976CEAE0-614C-4564-AB10-5000D139F981}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{976CEAE0-614C-4564-AB10-5000D139F981}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{976CEAE0-614C-4564-AB10-5000D139F981}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FC3551A-7697-47BF-8E80-7720771429BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FC3551A-7697-47BF-8E80-7720771429BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FC3551A-7697-47BF-8E80-7720771429BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FC3551A-7697-47BF-8E80-7720771429BC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F0B3A2D-E47B-44A6-81CF-46793E4E182C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F0B3A2D-E47B-44A6-81CF-46793E4E182C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F0B3A2D-E47B-44A6-81CF-46793E4E182C}.Release|Any CPU.ActiveCfg = Release|Any CPU
