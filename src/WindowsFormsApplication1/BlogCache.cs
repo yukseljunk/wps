@@ -86,6 +86,7 @@ namespace WindowsFormsApplication1
                 {
                     var posts =
                         client.GetPosts(new PostFilter() { Number = blockSize, Offset = blockSize * (i - 1) });
+                  
                     foreach (var post in posts)
                     {
                         var foreignKeyCustomField =

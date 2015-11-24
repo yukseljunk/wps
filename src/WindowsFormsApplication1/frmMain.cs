@@ -194,8 +194,8 @@ namespace WindowsFormsApplication1
                 MetaDescription = item.SubItems[4].Text,
                 Content = item.SubItems[5].Text,
                 Price = double.Parse(item.SubItems[6].Text),
-                Tags = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                Images = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
+                Images = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)
 
             };
         }
