@@ -66,10 +66,21 @@
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.barStatus = new System.Windows.Forms.ToolStripProgressBar();
             this.chkCache = new System.Windows.Forms.CheckBox();
+            this.grpMysql = new System.Windows.Forms.GroupBox();
+            this.txtMySqlPass = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtMysqlUser = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtMySqlIp = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtMySqlDatabase = new System.Windows.Forms.TextBox();
+            this.lblDatabase = new System.Windows.Forms.Label();
+            this.btnTestMySqlConnection = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).BeginInit();
             this.grpBlogProp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPageTo)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            this.grpMysql.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -87,14 +98,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUrl.Location = new System.Drawing.Point(100, 10);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(428, 20);
+            this.txtUrl.Size = new System.Drawing.Size(368, 20);
             this.txtUrl.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(534, 16);
+            this.label2.Location = new System.Drawing.Point(474, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 2;
@@ -104,7 +115,7 @@
             // 
             this.numPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPage.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numPage.Location = new System.Drawing.Point(572, 13);
+            this.numPage.Location = new System.Drawing.Point(512, 13);
             this.numPage.Maximum = new decimal(new int[] {
             500,
             0,
@@ -128,7 +139,7 @@
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(992, 12);
+            this.btnStart.Location = new System.Drawing.Point(932, 12);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(83, 23);
             this.btnStart.TabIndex = 4;
@@ -157,7 +168,7 @@
             this.lvItems.HideSelection = false;
             this.lvItems.Location = new System.Drawing.Point(15, 52);
             this.lvItems.Name = "lvItems";
-            this.lvItems.Size = new System.Drawing.Size(1144, 430);
+            this.lvItems.Size = new System.Drawing.Size(1084, 340);
             this.lvItems.TabIndex = 5;
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
@@ -210,7 +221,7 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectAll.Location = new System.Drawing.Point(15, 488);
+            this.btnSelectAll.Location = new System.Drawing.Point(15, 398);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(85, 23);
             this.btnSelectAll.TabIndex = 6;
@@ -228,9 +239,9 @@
             this.grpBlogProp.Controls.Add(this.label4);
             this.grpBlogProp.Controls.Add(this.txtBlogUrl);
             this.grpBlogProp.Controls.Add(this.label3);
-            this.grpBlogProp.Location = new System.Drawing.Point(15, 528);
+            this.grpBlogProp.Location = new System.Drawing.Point(15, 438);
             this.grpBlogProp.Name = "grpBlogProp";
-            this.grpBlogProp.Size = new System.Drawing.Size(1157, 71);
+            this.grpBlogProp.Size = new System.Drawing.Size(1097, 71);
             this.grpBlogProp.TabIndex = 7;
             this.grpBlogProp.TabStop = false;
             this.grpBlogProp.Text = "Target Blog";
@@ -290,7 +301,7 @@
             // btnGo
             // 
             this.btnGo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGo.Location = new System.Drawing.Point(764, 614);
+            this.btnGo.Location = new System.Drawing.Point(703, 616);
             this.btnGo.Name = "btnGo";
             this.btnGo.Size = new System.Drawing.Size(214, 23);
             this.btnGo.TabIndex = 8;
@@ -301,7 +312,7 @@
             // btnStop
             // 
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStop.Location = new System.Drawing.Point(996, 614);
+            this.btnStop.Location = new System.Drawing.Point(936, 617);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(176, 23);
             this.btnStop.TabIndex = 9;
@@ -312,7 +323,7 @@
             // btnStopScrape
             // 
             this.btnStopScrape.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStopScrape.Location = new System.Drawing.Point(1083, 13);
+            this.btnStopScrape.Location = new System.Drawing.Point(1023, 13);
             this.btnStopScrape.Name = "btnStopScrape";
             this.btnStopScrape.Size = new System.Drawing.Size(75, 23);
             this.btnStopScrape.TabIndex = 10;
@@ -323,7 +334,7 @@
             // btnGetPost
             // 
             this.btnGetPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetPost.Location = new System.Drawing.Point(227, 612);
+            this.btnGetPost.Location = new System.Drawing.Point(168, 613);
             this.btnGetPost.Name = "btnGetPost";
             this.btnGetPost.Size = new System.Drawing.Size(141, 23);
             this.btnGetPost.TabIndex = 11;
@@ -334,16 +345,16 @@
             // txtPostId
             // 
             this.txtPostId.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPostId.Location = new System.Drawing.Point(30, 613);
+            this.txtPostId.Location = new System.Drawing.Point(52, 613);
             this.txtPostId.Name = "txtPostId";
-            this.txtPostId.Size = new System.Drawing.Size(182, 20);
+            this.txtPostId.Size = new System.Drawing.Size(101, 20);
             this.txtPostId.TabIndex = 12;
             // 
             // chkFeatureImage
             // 
             this.chkFeatureImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkFeatureImage.AutoSize = true;
-            this.chkFeatureImage.Location = new System.Drawing.Point(555, 616);
+            this.chkFeatureImage.Location = new System.Drawing.Point(491, 616);
             this.chkFeatureImage.Name = "chkFeatureImage";
             this.chkFeatureImage.Size = new System.Drawing.Size(192, 17);
             this.chkFeatureImage.TabIndex = 13;
@@ -356,7 +367,7 @@
             this.chkClearResults.AutoSize = true;
             this.chkClearResults.Checked = true;
             this.chkClearResults.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkClearResults.Location = new System.Drawing.Point(858, 16);
+            this.chkClearResults.Location = new System.Drawing.Point(798, 16);
             this.chkClearResults.Name = "chkClearResults";
             this.chkClearResults.Size = new System.Drawing.Size(128, 17);
             this.chkClearResults.TabIndex = 14;
@@ -367,7 +378,7 @@
             // 
             this.numPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPageTo.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numPageTo.Location = new System.Drawing.Point(673, 14);
+            this.numPageTo.Location = new System.Drawing.Point(613, 14);
             this.numPageTo.Maximum = new decimal(new int[] {
             500,
             0,
@@ -392,7 +403,7 @@
             // 
             this.lblPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPageTo.AutoSize = true;
-            this.lblPageTo.Location = new System.Drawing.Point(645, 18);
+            this.lblPageTo.Location = new System.Drawing.Point(585, 18);
             this.lblPageTo.Name = "lblPageTo";
             this.lblPageTo.Size = new System.Drawing.Size(20, 13);
             this.lblPageTo.TabIndex = 16;
@@ -402,7 +413,7 @@
             // 
             this.chkAllPages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAllPages.AutoSize = true;
-            this.chkAllPages.Location = new System.Drawing.Point(746, 17);
+            this.chkAllPages.Location = new System.Drawing.Point(686, 17);
             this.chkAllPages.Name = "chkAllPages";
             this.chkAllPages.Size = new System.Drawing.Size(70, 17);
             this.chkAllPages.TabIndex = 17;
@@ -415,9 +426,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.barStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 641);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 647);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1192, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1132, 22);
             this.statusStrip1.TabIndex = 18;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -437,10 +448,11 @@
             // 
             // chkCache
             // 
+            this.chkCache.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkCache.AutoSize = true;
             this.chkCache.Checked = true;
             this.chkCache.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCache.Location = new System.Drawing.Point(448, 614);
+            this.chkCache.Location = new System.Drawing.Point(398, 617);
             this.chkCache.Name = "chkCache";
             this.chkCache.Size = new System.Drawing.Size(87, 17);
             this.chkCache.TabIndex = 19;
@@ -448,11 +460,111 @@
             this.chkCache.UseVisualStyleBackColor = true;
             this.chkCache.Visible = false;
             // 
+            // grpMysql
+            // 
+            this.grpMysql.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpMysql.Controls.Add(this.btnTestMySqlConnection);
+            this.grpMysql.Controls.Add(this.txtMySqlDatabase);
+            this.grpMysql.Controls.Add(this.lblDatabase);
+            this.grpMysql.Controls.Add(this.txtMySqlPass);
+            this.grpMysql.Controls.Add(this.label6);
+            this.grpMysql.Controls.Add(this.txtMysqlUser);
+            this.grpMysql.Controls.Add(this.label7);
+            this.grpMysql.Controls.Add(this.txtMySqlIp);
+            this.grpMysql.Controls.Add(this.label8);
+            this.grpMysql.Location = new System.Drawing.Point(15, 528);
+            this.grpMysql.Name = "grpMysql";
+            this.grpMysql.Size = new System.Drawing.Size(1097, 71);
+            this.grpMysql.TabIndex = 20;
+            this.grpMysql.TabStop = false;
+            this.grpMysql.Text = "Target Blog MySql Settings";
+            // 
+            // txtMySqlPass
+            // 
+            this.txtMySqlPass.Location = new System.Drawing.Point(532, 23);
+            this.txtMySqlPass.Name = "txtMySqlPass";
+            this.txtMySqlPass.PasswordChar = '*';
+            this.txtMySqlPass.Size = new System.Drawing.Size(102, 20);
+            this.txtMySqlPass.TabIndex = 6;
+            this.txtMySqlPass.Text = "S]P-a588C3";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(473, 26);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Password";
+            // 
+            // txtMysqlUser
+            // 
+            this.txtMysqlUser.Location = new System.Drawing.Point(340, 23);
+            this.txtMysqlUser.Name = "txtMysqlUser";
+            this.txtMysqlUser.Size = new System.Drawing.Size(113, 20);
+            this.txtMysqlUser.TabIndex = 4;
+            this.txtMysqlUser.Text = "nalgor5_wpgonbl";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(277, 26);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(57, 13);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "UserName";
+            // 
+            // txtMySqlIp
+            // 
+            this.txtMySqlIp.Location = new System.Drawing.Point(75, 23);
+            this.txtMySqlIp.Name = "txtMySqlIp";
+            this.txtMySqlIp.Size = new System.Drawing.Size(182, 20);
+            this.txtMySqlIp.TabIndex = 2;
+            this.txtMySqlIp.Text = "198.46.81.196";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 26);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(38, 13);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Server";
+            // 
+            // txtMySqlDatabase
+            // 
+            this.txtMySqlDatabase.Location = new System.Drawing.Point(712, 23);
+            this.txtMySqlDatabase.Name = "txtMySqlDatabase";
+            this.txtMySqlDatabase.Size = new System.Drawing.Size(118, 20);
+            this.txtMySqlDatabase.TabIndex = 8;
+            this.txtMySqlDatabase.Text = "nalgor5_wpgonbl";
+            // 
+            // lblDatabase
+            // 
+            this.lblDatabase.AutoSize = true;
+            this.lblDatabase.Location = new System.Drawing.Point(653, 26);
+            this.lblDatabase.Name = "lblDatabase";
+            this.lblDatabase.Size = new System.Drawing.Size(53, 13);
+            this.lblDatabase.TabIndex = 7;
+            this.lblDatabase.Text = "Database";
+            // 
+            // btnTestMySqlConnection
+            // 
+            this.btnTestMySqlConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTestMySqlConnection.Location = new System.Drawing.Point(859, 21);
+            this.btnTestMySqlConnection.Name = "btnTestMySqlConnection";
+            this.btnTestMySqlConnection.Size = new System.Drawing.Size(141, 23);
+            this.btnTestMySqlConnection.TabIndex = 12;
+            this.btnTestMySqlConnection.Text = "Test mysql connection";
+            this.btnTestMySqlConnection.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1192, 663);
+            this.ClientSize = new System.Drawing.Size(1132, 669);
+            this.Controls.Add(this.grpMysql);
             this.Controls.Add(this.chkCache);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.chkAllPages);
@@ -482,6 +594,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPageTo)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.grpMysql.ResumeLayout(false);
+            this.grpMysql.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -527,6 +641,16 @@
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripProgressBar barStatus;
         private System.Windows.Forms.CheckBox chkCache;
+        private System.Windows.Forms.GroupBox grpMysql;
+        private System.Windows.Forms.TextBox txtMySqlPass;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtMysqlUser;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtMySqlIp;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtMySqlDatabase;
+        private System.Windows.Forms.Label lblDatabase;
+        private System.Windows.Forms.Button btnTestMySqlConnection;
     }
 }
 

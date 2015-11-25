@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using WordPressSharp;
 using WordPressSharp.Models;
+using System;
+using System.Data;
+using MySql.Data.MySqlClient;
 
 namespace WindowsFormsApplication1
 {
@@ -13,6 +17,48 @@ namespace WindowsFormsApplication1
         private Dictionary<string, HashSet<Term>> _tagsPresent = new Dictionary<string, HashSet<Term>>();
 
         private readonly WordPressSiteConfig _siteConfig;
+
+
+        static string mysqlConnStr = "Server=198.46.81.196;Database=nalgor5_wpgonbl;Uid=nalgor5_wpgonbl;Pwd=S]P-a588C3";
+        static void MySql()
+        {
+            Console.WriteLine("Trying to connect to mysql....");
+            Console.WriteLine("You should specify your IP on Remote Database Access Hosts on mysql server, cpanel>Remote database access hosts>add an access host>your ip");
+            using (var connection = new MySqlConnection(mysqlConnStr))
+            {
+                connection.Open();
+                try
+                {
+                    var cmd = connection.CreateCommand();
+                    cmd.CommandText = "Select * from wp_postmeta where meta_key='foreignkey'";
+                    var adapter = new MySqlDataAdapter(cmd);
+                    var dataset = new DataSet();
+                    adapter.Fill(dataset);
+
+                    var count = dataset.Tables[0].Rows.Count;
+                    foreach (DataRow row in dataset.Tables[0].Rows)
+                    {
+                        Console.WriteLine(row["meta_value"]);
+                    }
+                    Console.WriteLine(count);
+
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
+                finally
+                {
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                }
+
+            }
+
+            Console.ReadLine();
+        }
 
         public BlogCache(WordPressSiteConfig siteConfig)
         {
