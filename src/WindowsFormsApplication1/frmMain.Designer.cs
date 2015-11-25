@@ -67,15 +67,15 @@
             this.barStatus = new System.Windows.Forms.ToolStripProgressBar();
             this.chkCache = new System.Windows.Forms.CheckBox();
             this.grpMysql = new System.Windows.Forms.GroupBox();
+            this.btnTestMySqlConnection = new System.Windows.Forms.Button();
+            this.txtMySqlDatabase = new System.Windows.Forms.TextBox();
+            this.lblDatabase = new System.Windows.Forms.Label();
             this.txtMySqlPass = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txtMysqlUser = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txtMySqlIp = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.txtMySqlDatabase = new System.Windows.Forms.TextBox();
-            this.lblDatabase = new System.Windows.Forms.Label();
-            this.btnTestMySqlConnection = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).BeginInit();
             this.grpBlogProp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPageTo)).BeginInit();
@@ -480,6 +480,34 @@
             this.grpMysql.TabStop = false;
             this.grpMysql.Text = "Target Blog MySql Settings";
             // 
+            // btnTestMySqlConnection
+            // 
+            this.btnTestMySqlConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTestMySqlConnection.Location = new System.Drawing.Point(859, 21);
+            this.btnTestMySqlConnection.Name = "btnTestMySqlConnection";
+            this.btnTestMySqlConnection.Size = new System.Drawing.Size(141, 23);
+            this.btnTestMySqlConnection.TabIndex = 12;
+            this.btnTestMySqlConnection.Text = "Test mysql connection";
+            this.btnTestMySqlConnection.UseVisualStyleBackColor = true;
+            this.btnTestMySqlConnection.Click += new System.EventHandler(this.btnTestMySqlConnection_Click);
+            // 
+            // txtMySqlDatabase
+            // 
+            this.txtMySqlDatabase.Location = new System.Drawing.Point(712, 23);
+            this.txtMySqlDatabase.Name = "txtMySqlDatabase";
+            this.txtMySqlDatabase.Size = new System.Drawing.Size(118, 20);
+            this.txtMySqlDatabase.TabIndex = 8;
+            this.txtMySqlDatabase.Text = "nalgor5_wpgonbl";
+            // 
+            // lblDatabase
+            // 
+            this.lblDatabase.AutoSize = true;
+            this.lblDatabase.Location = new System.Drawing.Point(653, 26);
+            this.lblDatabase.Name = "lblDatabase";
+            this.lblDatabase.Size = new System.Drawing.Size(53, 13);
+            this.lblDatabase.TabIndex = 7;
+            this.lblDatabase.Text = "Database";
+            // 
             // txtMySqlPass
             // 
             this.txtMySqlPass.Location = new System.Drawing.Point(532, 23);
@@ -531,33 +559,6 @@
             this.label8.Size = new System.Drawing.Size(38, 13);
             this.label8.TabIndex = 1;
             this.label8.Text = "Server";
-            // 
-            // txtMySqlDatabase
-            // 
-            this.txtMySqlDatabase.Location = new System.Drawing.Point(712, 23);
-            this.txtMySqlDatabase.Name = "txtMySqlDatabase";
-            this.txtMySqlDatabase.Size = new System.Drawing.Size(118, 20);
-            this.txtMySqlDatabase.TabIndex = 8;
-            this.txtMySqlDatabase.Text = "nalgor5_wpgonbl";
-            // 
-            // lblDatabase
-            // 
-            this.lblDatabase.AutoSize = true;
-            this.lblDatabase.Location = new System.Drawing.Point(653, 26);
-            this.lblDatabase.Name = "lblDatabase";
-            this.lblDatabase.Size = new System.Drawing.Size(53, 13);
-            this.lblDatabase.TabIndex = 7;
-            this.lblDatabase.Text = "Database";
-            // 
-            // btnTestMySqlConnection
-            // 
-            this.btnTestMySqlConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestMySqlConnection.Location = new System.Drawing.Point(859, 21);
-            this.btnTestMySqlConnection.Name = "btnTestMySqlConnection";
-            this.btnTestMySqlConnection.Size = new System.Drawing.Size(141, 23);
-            this.btnTestMySqlConnection.TabIndex = 12;
-            this.btnTestMySqlConnection.Text = "Test mysql connection";
-            this.btnTestMySqlConnection.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 

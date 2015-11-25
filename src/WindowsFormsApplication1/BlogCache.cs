@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using WordPressSharp;
 using WordPressSharp.Models;
-using System;
-using System.Data;
-using MySql.Data.MySqlClient;
 
 namespace WindowsFormsApplication1
 {
@@ -17,52 +14,12 @@ namespace WindowsFormsApplication1
         private Dictionary<string, HashSet<Term>> _tagsPresent = new Dictionary<string, HashSet<Term>>();
 
         private readonly WordPressSiteConfig _siteConfig;
+        private readonly Dal _dal;
 
-
-        static string mysqlConnStr = "Server=198.46.81.196;Database=nalgor5_wpgonbl;Uid=nalgor5_wpgonbl;Pwd=S]P-a588C3";
-        static void MySql()
-        {
-            Console.WriteLine("Trying to connect to mysql....");
-            Console.WriteLine("You should specify your IP on Remote Database Access Hosts on mysql server, cpanel>Remote database access hosts>add an access host>your ip");
-            using (var connection = new MySqlConnection(mysqlConnStr))
-            {
-                connection.Open();
-                try
-                {
-                    var cmd = connection.CreateCommand();
-                    cmd.CommandText = "Select * from wp_postmeta where meta_key='foreignkey'";
-                    var adapter = new MySqlDataAdapter(cmd);
-                    var dataset = new DataSet();
-                    adapter.Fill(dataset);
-
-                    var count = dataset.Tables[0].Rows.Count;
-                    foreach (DataRow row in dataset.Tables[0].Rows)
-                    {
-                        Console.WriteLine(row["meta_value"]);
-                    }
-                    Console.WriteLine(count);
-
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                }
-                finally
-                {
-                    if (connection.State == ConnectionState.Open)
-                    {
-                        connection.Close();
-                    }
-                }
-
-            }
-
-            Console.ReadLine();
-        }
-
-        public BlogCache(WordPressSiteConfig siteConfig)
+        public BlogCache(WordPressSiteConfig siteConfig, Dal dal)
         {
             _siteConfig = siteConfig;
+            _dal = dal;
         }
 
         public void Start(string blogUrl)
@@ -110,46 +67,42 @@ namespace WindowsFormsApplication1
         private HashSet<Term> GetTags()
         {
             var result = new HashSet<Term>();
-            using (var client = new WordPressClient(_siteConfig))
+            var allTags = _dal.GetData("SELECT wpt.name, wpt.slug, wpt.term_group, wpt.term_id, wptt.count, wptt.description, wptt.parent, wptt.taxonomy, wptt.term_taxonomy_id " +
+                    "FROM  wp_terms wpt " +
+                    "INNER JOIN wp_term_taxonomy wptt ON wptt.term_id = wpt.term_id " +
+                    "WHERE taxonomy='post_tag'");
+            if (allTags.Tables.Count == 0) return result;
+            if (allTags.Tables[0].Rows.Count == 0) return result;
+            foreach (DataRow row in allTags.Tables[0].Rows)
             {
-                var tags = client.GetTerms("post_tag", null);
-                foreach (var tag in tags)
-                {
-                    result.Add(tag);
-                }
-
+                result.Add(new Term()
+                               {
+                                   Description = row["description"].ToString(),
+                                   Name = row["name"].ToString(),
+                                   Id = row["term_id"].ToString(),
+                                   Count = int.Parse(row["count"].ToString()),
+                                   Parent = row["parent"].ToString(),
+                                   Slug = row["slug"].ToString(),
+                                   Taxonomy = row["taxonomy"].ToString(),
+                                   TermGroup = row["term_group"].ToString(),
+                                   TermTaxonomyId = row["term_taxonomy_id"].ToString()
+                               });
             }
             return result;
         }
 
         private HashSet<string> GetPostIds()
         {
-            var blockSize = 10;
             var result = new HashSet<string>();
-            using (var client = new WordPressClient(_siteConfig))
-            {
-                for (var i = 0; i < 1000; i++)
-                {
-                    var posts =
-                        client.GetPosts(new PostFilter() { Number = blockSize, Offset = blockSize * (i - 1) });
-                  
-                    foreach (var post in posts)
-                    {
-                        var foreignKeyCustomField =
-                            post.CustomFields.FirstOrDefault(cf => cf.Key == "foreignkey");
-                        if (foreignKeyCustomField != null)
-                        {
-                            result.Add(foreignKeyCustomField.Value);
-                        }
 
-                    }
-                    if (!posts.Any())
-                    {
-                        break;
-                    }
-                    Thread.Sleep(100);
-                }
+            var allMeta = _dal.GetData("Select post_id,meta_value from wp_postmeta where meta_key='foreignkey'");
+            if (allMeta.Tables.Count == 0) return result;
+            if (allMeta.Tables[0].Rows.Count == 0) return result;
+            foreach (DataRow row in allMeta.Tables[0].Rows)
+            {
+                result.Add(row["meta_value"].ToString());
             }
+
             return result;
         }
 

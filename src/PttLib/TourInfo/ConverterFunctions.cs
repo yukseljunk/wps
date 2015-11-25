@@ -19,7 +19,7 @@ namespace PttLib.TourInfo
         {
             return FormatDateTime(input + "." + DateTime.Now.Year);
         }
-        
+
         public string RemoveNewLine(string input)
         {
             return input.Replace("\r", "").Replace("\n", "");
@@ -78,7 +78,7 @@ namespace PttLib.TourInfo
 
         public string RemoveBrAndAfter(string input)
         {
-            var brIndex = input.IndexOf("<br",StringComparison.InvariantCultureIgnoreCase);
+            var brIndex = input.IndexOf("<br", StringComparison.InvariantCultureIgnoreCase);
             if (brIndex < 0) return input;
             return input.Substring(0, brIndex);
 
@@ -86,16 +86,18 @@ namespace PttLib.TourInfo
 
         public string SeoUrl(string input)
         {
-            var result = input.Replace("ö", "o").Replace("ş", "s").Replace("ı", "i").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("İ", "I").Replace("Ş", "S").Replace("Ğ", "G")
-                .Replace("Ü", "U").Replace("Ö", "O").Replace("Ç", "C").Replace("&", "").Replace("<", "").Replace(">", "").Replace("+", "").Replace(" ", "");
-            result = Regex.Replace(result, @"[^a-z0-9]+", "", RegexOptions.IgnoreCase);
-            return result.ToLower();
+            var result = input.Replace("ö", "o").Replace("ş", "s").Replace("ı", "i").Replace("ü", "u").Replace("ğ", "g")
+                .Replace("ç", "c").Replace("İ", "I").Replace("Ş", "S").Replace("Ğ", "G")
+                .Replace("Ü", "U").Replace("Ö", "O").Replace("Ç", "C").Replace("&", "").Replace("<", "").Replace(">", "")
+                .Replace("+", "");
+            result = Regex.Replace(result, @"[^a-z 0-9]+", "", RegexOptions.IgnoreCase);
+            return result.ToLower().Replace(" ", "-"); 
         }
 
         public string SeoUrl(string input, int maxLength)
         {
             var seoUrl = SeoUrl(input);
-            if (seoUrl.Length > maxLength) return seoUrl.Substring(0, maxLength-1);
+            if (seoUrl.Length > maxLength) return seoUrl.Substring(0, maxLength - 1);
             return seoUrl;
         }
 
@@ -123,6 +125,25 @@ namespace PttLib.TourInfo
             return result.ToString();
         }
 
-       
+        public string FirstNWords(string input, int number, bool stripParantheses=false)
+        {
+            if (input.Length <= number)
+            {
+                return input;
+            }
+            var result = input.Trim();
+            if(stripParantheses)
+            {
+                result = result.Replace("(", " ").Replace(")", " ").Replace("[", " ").Replace("]", " ").Replace("{", " ").Replace("}", " ");
+            }
+ 
+            var nextSpaceIndex = result.IndexOf(' ', number);
+            if (nextSpaceIndex == -1) return input;
+            result = result.Substring(0, nextSpaceIndex);
+
+            
+            return result;
+        }
+
     }
 }

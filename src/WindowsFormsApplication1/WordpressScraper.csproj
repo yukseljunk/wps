@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlogCache.cs" />
+    <Compile Include="Dal.cs" />
     <Compile Include="EtsyFactory.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>

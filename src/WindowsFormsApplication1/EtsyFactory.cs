@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using PttLib;
+using PttLib.TourInfo;
 using WordPressSharp;
 using WordPressSharp.Models;
 
@@ -23,6 +24,7 @@ namespace WindowsFormsApplication1
 
         public int Create(Item item, string blogUrl, bool useCache = true, bool useFeatureImage = false)
         {
+            var converterFunctions = new ConverterFunctions();
             using (var client = new WordPressClient(_siteConfig))
             {
                 try
@@ -35,17 +37,16 @@ namespace WindowsFormsApplication1
                             return 0;
                         }
                     }
-                    else
-                    {
-                        //no cache solution....
-
-                    }
 
                     var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
+                    var imageIndex = 1;
                     IList<UploadResult> imageUploads = new List<UploadResult>();
                     foreach (var imageUrl in item.Images)
                     {
-                        var uploaded = client.UploadFile(Data.CreateFromUrl(imageUrl));
+                        var imageData = Data.CreateFromUrl(imageUrl);
+                        imageData.Name = converterFunctions.SeoUrl(item.Title, 50) + "-" + imageIndex + Path.GetExtension(imageUrl);
+                        imageIndex++;
+                        var uploaded = client.UploadFile(imageData);
                         imageUploads.Add(uploaded);
                         var thumbnailUrl =
                             Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
@@ -64,9 +65,10 @@ namespace WindowsFormsApplication1
                     var post = new Post
                     {
                         PostType = "post",
-                        Title = item.Title,
+                        Title = converterFunctions.FirstNWords(item.Title, 65, true),
                         Content = content.ToString(),
                         PublishDateTime = DateTime.Now,
+                        Author = "John Doe",
                         CustomFields = new[]
                         {
                             new CustomField() {Key = "foreignkey", Value = id},
@@ -110,7 +112,7 @@ namespace WindowsFormsApplication1
                                 t.Id = termId;
                                 if (useCache)
                                 {
-                                    _blogCache.InsertTag(blogUrl,t);
+                                    _blogCache.InsertTag(blogUrl, t);
                                 }
                                 terms.Add(t);
                             }
@@ -127,10 +129,10 @@ namespace WindowsFormsApplication1
                     post.Terms = terms.ToArray();
                     var newPost = client.NewPost(post);
 
-                    
+
                     if (useCache)
                     {
-                        _blogCache.InsertId(blogUrl,id);
+                        _blogCache.InsertId(blogUrl, id);
                     }
 
 

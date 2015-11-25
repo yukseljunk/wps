@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 using PttLib;
 using WordPressSharp;
 
@@ -11,6 +13,10 @@ namespace WindowsFormsApplication1
     {
         private const string DefaultUrl = "https://www.etsy.com/c/books-movies-and-music/music/instrument-straps";
         private BlogCache _blogCache;
+        private bool StopToken = false;
+        private Dal _dal;
+
+
         public frmMain()
         {
             InitializeComponent();
@@ -18,7 +24,6 @@ namespace WindowsFormsApplication1
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            _blogCache=new BlogCache(SiteConfig);
             txtUrl.Text = DefaultUrl;
             btnGo.Enabled = false;
             btnStop.Enabled = false;
@@ -75,7 +80,7 @@ namespace WindowsFormsApplication1
             ResetBarStatus(true);
             barStatus.Maximum = allResults.Count;
             SetStatus("Filling items....");
-            var itemIndex = 1;
+            var itemIndex = lvItems.Items.Count+1;
             Cursor.Current = Cursors.WaitCursor;
 
             foreach (var etsyResult in allResults)
@@ -132,7 +137,7 @@ namespace WindowsFormsApplication1
             lvItems.Focus();
         }
 
-        private bool StopToken = false;
+
         private void btnGo_Click(object sender, EventArgs e)
         {
             if (lvItems.SelectedItems.Count == 0)
@@ -140,13 +145,16 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Select items to transfer!");
                 return;
             }
+            _dal = new Dal(MySqlConnectionString);
+            _blogCache = new BlogCache(SiteConfig, _dal);
+
             EnDisItems(false);
             StopToken = false;
             bool errorFound = false;
-           
+
             if (chkCache.Checked)
             {
-                SetStatus("Loading present posts in the blog(this may take some time)...");
+                SetStatus("Loading present posts and tags in the blog(this may take some time)...");
                 Application.DoEvents();
                 _blogCache.Start(txtBlogUrl.Text);
                 Application.DoEvents();
@@ -155,7 +163,7 @@ namespace WindowsFormsApplication1
             SetStatus("Ready");
             ResetBarStatus(true);
             barStatus.Maximum = lvItems.SelectedItems.Count;
-            var etsyFactory = new EtsyFactory(SiteConfig,_blogCache);
+            var etsyFactory = new EtsyFactory(SiteConfig, _blogCache);
 
             foreach (ListViewItem item in lvItems.SelectedItems)
             {
@@ -215,9 +223,10 @@ namespace WindowsFormsApplication1
             btnGo.Enabled = enabled;
             lvItems.Enabled = enabled;
             grpBlogProp.Enabled = enabled;
+            grpMysql.Enabled = enabled;
         }
 
-        
+
         public WordPressSiteConfig SiteConfig
         {
             get
@@ -225,7 +234,7 @@ namespace WindowsFormsApplication1
                 return new WordPressSiteConfig() { BaseUrl = txtBlogUrl.Text, BlogId = 1, Username = txtUserName.Text, Password = txtPassword.Text };
             }
         }
-        
+
         private void btnStop_Click(object sender, EventArgs e)
         {
             StopToken = true;
@@ -305,6 +314,47 @@ namespace WindowsFormsApplication1
             {
                 numPage.Value = numPageTo.Value;
             }
+        }
+
+        private string MySqlConnectionString
+        {
+            get
+            {
+                return string.Format("Server={0};Database={1};Uid={2};Pwd={3}", txtMySqlIp.Text, txtMySqlDatabase.Text, txtMysqlUser.Text, txtMySqlPass.Text);
+
+            }
+        }
+        private void btnTestMySqlConnection_Click(object sender, EventArgs e)
+        {
+            MySqlConnection connection = null;
+            try
+            {
+                using (connection = new MySqlConnection(MySqlConnectionString))
+                {
+                    connection.Open();
+
+                }
+                MessageBox.Show("Success", "Connection Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString());
+
+                if (exception.Message.Contains("mysql_native_password") && exception.Message.Contains("YES"))
+                {
+                    MessageBox.Show(
+                        "You should specify your IP on Remote Database Access Hosts on mysql server, cpanel>Remote database access hosts>add an access host>your ip");
+                    return;
+                }
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+
         }
     }
 }
