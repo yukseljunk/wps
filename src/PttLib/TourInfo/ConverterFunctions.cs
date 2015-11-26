@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
@@ -91,7 +92,7 @@ namespace PttLib.TourInfo
                 .Replace("Ü", "U").Replace("Ö", "O").Replace("Ç", "C").Replace("&", "").Replace("<", "").Replace(">", "")
                 .Replace("+", "");
             result = Regex.Replace(result, @"[^a-z 0-9]+", "", RegexOptions.IgnoreCase);
-            return result.ToLower().Replace(" ", "-"); 
+            return result.ToLower().Replace(" ", "-");
         }
 
         public string SeoUrl(string input, int maxLength)
@@ -101,7 +102,42 @@ namespace PttLib.TourInfo
             return seoUrl;
         }
 
-        public string StripTags(HtmlNode documentNode, IList<string> keepTags)
+        public string StripTags(string input, IList<string> keepTags)
+        {
+            var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+            htmlDoc.LoadHtml(input);
+
+            return StripTags(htmlDoc.DocumentNode, keepTags);
+        }
+
+        public string RemoveTags(string input, IList<string> tagsToRemove)
+        {
+            var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+            htmlDoc.LoadHtml(input);
+
+            return RemoveTags(htmlDoc.DocumentNode, tagsToRemove);
+        }
+
+        private string RemoveTags(HtmlNode documentNode, IList<string> tagsToRemove)
+        {
+            foreach (var tag in tagsToRemove)
+            {
+                var tagNodes = documentNode.SelectNodes("//" + tag);
+                if(tagNodes==null)
+                {
+                    continue;
+                }
+                foreach (var item in documentNode.SelectNodes("//" + tag))
+                {
+                    item.Remove();
+                }
+
+            }
+
+            return documentNode.OuterHtml;
+        }
+
+        private string StripTags(HtmlNode documentNode, IList<string> keepTags)
         {
             var result = new StringBuilder();
             foreach (var childNode in documentNode.ChildNodes)
@@ -118,31 +154,63 @@ namespace PttLib.TourInfo
                     }
                     else
                     {
-                        result.Append(childNode.OuterHtml.Replace(childNode.InnerHtml, StripTags(childNode, keepTags)));
+                        if (childNode.InnerHtml == "")
+                        {
+                            result.Append(childNode.OuterHtml);
+                        }
+                        else
+                        {
+                            result.Append(childNode.OuterHtml.Replace(childNode.InnerHtml,
+                                                                      StripTags(childNode, keepTags)));
+                        }
                     }
                 }
             }
             return result.ToString();
         }
 
-        public string FirstNWords(string input, int number, bool stripParantheses=false)
+        public string FirstNWords(string input, int number, bool stripParantheses = false)
         {
             if (input.Length <= number)
             {
                 return input;
             }
             var result = input.Trim();
-            if(stripParantheses)
+            if (stripParantheses)
             {
                 result = result.Replace("(", " ").Replace(")", " ").Replace("[", " ").Replace("]", " ").Replace("{", " ").Replace("}", " ");
             }
- 
+
             var nextSpaceIndex = result.IndexOf(' ', number);
             if (nextSpaceIndex == -1) return input;
             result = result.Substring(0, nextSpaceIndex);
 
-            
+
             return result;
+        }
+
+        public string ArrangeContent(string input)
+        {
+            input = RemoveTags(input, new List<string>() { "a" });
+            input = StripTags(input, new List<string>() {"table", "th", "tr", "td", "ul", "li", "p", "br", "strong"});
+            return input;
+        }
+
+        public string RemoveDiacritics(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
 
     }

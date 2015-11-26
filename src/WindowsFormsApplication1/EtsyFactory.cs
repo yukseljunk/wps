@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,7 @@ namespace WindowsFormsApplication1
             {
                 try
                 {
+
                     var id = "etsy_" + item.Id;
                     if (useCache)
                     {
@@ -60,7 +62,7 @@ namespace WindowsFormsApplication1
                     }
                     content.Append(string.Format("</div><h4>Price:${0}</h4>", item.Price));
                     content.Append("<strong>Description: </strong>");
-                    content.Append(item.Content);
+                    content.Append(converterFunctions.ArrangeContent(item.Content));
 
                     var post = new Post
                     {
@@ -97,12 +99,12 @@ namespace WindowsFormsApplication1
                                 _blogCache.TagsPresent(blogUrl).FirstOrDefault(
                                     t =>
                                         HttpUtility.HtmlDecode(t.Name).Trim().ToLowerInvariant() ==
-                                        HttpUtility.HtmlDecode(tag).Trim().ToLowerInvariant());
+                                        HttpUtility.HtmlDecode(converterFunctions.RemoveDiacritics(tag)).Trim().ToLowerInvariant());
                             if (tagOnBlog == null)
                             {
                                 var t = new Term
                                 {
-                                    Name = tag,
+                                    Name = converterFunctions.RemoveDiacritics(tag),
                                     Description = tag,
                                     Slug = tag.Replace(" ", "_"),
                                     Taxonomy = "post_tag"
@@ -148,6 +150,7 @@ namespace WindowsFormsApplication1
             return -1;
 
         }
+
 
 
     }

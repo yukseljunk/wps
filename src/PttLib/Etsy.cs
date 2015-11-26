@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using PttLib.Helpers;
 
@@ -86,7 +87,7 @@ namespace PttLib
             var metaPrice = htmlDoc.DocumentNode.SelectSingleNode("//meta[@itemprop='price']");
             if (metaPrice != null)
             {
-                item.Price = Double.Parse(metaPrice.Attributes["content"].Value);
+                item.Price = Double.Parse(metaPrice.Attributes["content"].Value, CultureInfo.InvariantCulture);
             }
             var content = htmlDoc.DocumentNode.SelectSingleNode("//div[@id='description-text']");
             if (content != null)

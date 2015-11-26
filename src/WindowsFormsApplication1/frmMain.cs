@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -87,7 +88,7 @@ namespace WindowsFormsApplication1
             {
                 Application.DoEvents();
                 var item = GetEtsyItem(etsyResult.Item1, etsyResult.Item2);
-                string[] row1 = { item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content, item.Price.ToString(), string.Join(",", item.Images), string.Join(",", item.Tags), "" };
+                string[] row1 = { item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content, item.Price.ToString(CultureInfo.GetCultureInfo("en-US")), string.Join(",", item.Images), string.Join(",", item.Tags), "" };
                 lvItems.BeginUpdate();
                 lvItems.Items.Add(itemIndex.ToString()).SubItems.AddRange(row1);
                 lvItems.EndUpdate();
@@ -202,7 +203,7 @@ namespace WindowsFormsApplication1
                 Title = item.SubItems[3].Text,
                 MetaDescription = item.SubItems[4].Text,
                 Content = item.SubItems[5].Text,
-                Price = double.Parse(item.SubItems[6].Text),
+                Price = double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
                 Images = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)
 
