@@ -92,6 +92,7 @@ namespace PttLib.TourInfo
                 .Replace("Ü", "U").Replace("Ö", "O").Replace("Ç", "C").Replace("&", "").Replace("<", "").Replace(">", "")
                 .Replace("+", "");
             result = Regex.Replace(result, @"[^a-z 0-9]+", "", RegexOptions.IgnoreCase);
+            result = RemoveDiacritics(result);
             return result.ToLower().Replace(" ", "-");
         }
 

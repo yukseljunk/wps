@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
 using PttLib;
+using PttLib.Helpers;
 using PttLib.TourInfo;
 using WordPressSharp;
 using WordPressSharp.Models;
@@ -16,21 +16,25 @@ namespace WindowsFormsApplication1
     {
         private readonly WordPressSiteConfig _siteConfig;
         private readonly BlogCache _blogCache;
+        private readonly Dal _dal;
 
-        public EtsyFactory(WordPressSiteConfig siteConfig, BlogCache blogCache)
+        public EtsyFactory(WordPressSiteConfig siteConfig, BlogCache blogCache, Dal dal)
         {
             _siteConfig = siteConfig;
             _blogCache = blogCache;
+            _dal = dal;
         }
 
         public int Create(Item item, string blogUrl, bool useCache = true, bool useFeatureImage = false)
         {
+            var userIds = _dal.UserIds();
+            var authorId = userIds[Helper.GetRandomNumber(0, userIds.Count)];
+
             var converterFunctions = new ConverterFunctions();
             using (var client = new WordPressClient(_siteConfig))
             {
                 try
                 {
-
                     var id = "etsy_" + item.Id;
                     if (useCache)
                     {
@@ -70,7 +74,7 @@ namespace WindowsFormsApplication1
                         Title = converterFunctions.FirstNWords(item.Title, 65, true),
                         Content = content.ToString(),
                         PublishDateTime = DateTime.Now,
-                        Author = "John Doe",
+                        Author = authorId.ToString(),
                         CustomFields = new[]
                         {
                             new CustomField() {Key = "foreignkey", Value = id},
@@ -143,7 +147,14 @@ namespace WindowsFormsApplication1
                 }
                 catch (Exception exception)
                 {
-                    throw exception;
+                    if (item != null)
+                    {
+                        Logger.LogProcess(item.ToString());
+                    }
+                    Logger.LogProcess("Author:"+authorId);
+                    Logger.LogExceptions(exception);
+                    return -1;
+
                 }
 
             }

@@ -18,6 +18,16 @@ namespace PttLib.Helpers
         public static string PROCESS_MESSAGE_INFO_START_TOKEN = "msg:";
         private static readonly string _versionFilePath = AssemblyDirectory + @"\current_version.txt";
 
+        private static readonly Random getrandom = new Random();
+        private static readonly object syncLock = new object();
+        public static int GetRandomNumber(int min, int max)
+        {
+            lock (syncLock)
+            { // synchronize
+                return getrandom.Next(min, max);
+            }
+        }
+
         public static void OpenFileInShell(string fileName)
         {
             var psi = new ProcessStartInfo(fileName);

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using PttLib;
 using WordPressSharp;
 
@@ -81,7 +79,7 @@ namespace WindowsFormsApplication1
             ResetBarStatus(true);
             barStatus.Maximum = allResults.Count;
             SetStatus("Filling items....");
-            var itemIndex = lvItems.Items.Count+1;
+            var itemIndex = lvItems.Items.Count + 1;
             Cursor.Current = Cursors.WaitCursor;
 
             foreach (var etsyResult in allResults)
@@ -146,6 +144,8 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Select items to transfer!");
                 return;
             }
+
+            CreateAuthors();
             _dal = new Dal(MySqlConnectionString);
             _blogCache = new BlogCache(SiteConfig, _dal);
 
@@ -164,7 +164,7 @@ namespace WindowsFormsApplication1
             SetStatus("Ready");
             ResetBarStatus(true);
             barStatus.Maximum = lvItems.SelectedItems.Count;
-            var etsyFactory = new EtsyFactory(SiteConfig, _blogCache);
+            var etsyFactory = new EtsyFactory(SiteConfig, _blogCache,_dal);
 
             foreach (ListViewItem item in lvItems.SelectedItems)
             {
@@ -192,6 +192,24 @@ namespace WindowsFormsApplication1
             SetStatus("Transfer finished" + (errorFound ? " with errors" : ""));
             ResetBarStatus();
             EnDisItems(true);
+        }
+
+        private void CreateAuthors()
+        {
+            if(string.IsNullOrEmpty(txtAuthors.Text))
+            {
+                return;
+            }
+            var authors=txtAuthors.Text.Split(new [] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+            var dal = new Dal(MySqlConnectionString);
+            foreach (var author in authors)
+            {
+                if(string.IsNullOrEmpty(author.Trim()))
+                {
+                    continue;
+                }
+                dal.InsertUser(author);
+            }
         }
 
         private Item ItemFromListView(ListViewItem item)
@@ -225,6 +243,7 @@ namespace WindowsFormsApplication1
             lvItems.Enabled = enabled;
             grpBlogProp.Enabled = enabled;
             grpMysql.Enabled = enabled;
+            grpAuthors.Enabled = enabled;
         }
 
 
@@ -327,32 +346,13 @@ namespace WindowsFormsApplication1
         }
         private void btnTestMySqlConnection_Click(object sender, EventArgs e)
         {
-            MySqlConnection connection = null;
-            try
+            var dal = new Dal(MySqlConnectionString);
+            var testConnection = dal.TestConnection();
+            if (testConnection != null)
             {
-                using (connection = new MySqlConnection(MySqlConnectionString))
+                foreach (var result in testConnection)
                 {
-                    connection.Open();
-
-                }
-                MessageBox.Show("Success", "Connection Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.ToString());
-
-                if (exception.Message.Contains("mysql_native_password") && exception.Message.Contains("YES"))
-                {
-                    MessageBox.Show(
-                        "You should specify your IP on Remote Database Access Hosts on mysql server, cpanel>Remote database access hosts>add an access host>your ip");
-                    return;
-                }
-            }
-            finally
-            {
-                if (connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
+                    MessageBox.Show(result);
                 }
             }
 
