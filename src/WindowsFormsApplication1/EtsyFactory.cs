@@ -17,18 +17,28 @@ namespace WindowsFormsApplication1
         private readonly WordPressSiteConfig _siteConfig;
         private readonly BlogCache _blogCache;
         private readonly Dal _dal;
+        private IList<int> _userIds; 
 
         public EtsyFactory(WordPressSiteConfig siteConfig, BlogCache blogCache, Dal dal)
         {
             _siteConfig = siteConfig;
             _blogCache = blogCache;
             _dal = dal;
+            _userIds = _dal.UserIds();
+
         }
 
+        /// <summary>
+        /// create item
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="blogUrl"></param>
+        /// <param name="useCache"></param>
+        /// <param name="useFeatureImage"></param>
+        /// <returns>id crated, 0 if exists, -1 if error, -2 if not valid</returns>
         public int Create(Item item, string blogUrl, bool useCache = true, bool useFeatureImage = false)
         {
-            var userIds = _dal.UserIds();
-            var authorId = userIds[Helper.GetRandomNumber(0, userIds.Count)];
+            var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
 
             var converterFunctions = new ConverterFunctions();
             using (var client = new WordPressClient(_siteConfig))
@@ -42,6 +52,12 @@ namespace WindowsFormsApplication1
                         {
                             return 0;
                         }
+                    }
+                    
+                    //validation
+                    if (item.Images.Count==0||string.IsNullOrWhiteSpace(item.Title.Trim()) ||string.IsNullOrWhiteSpace(item.Content.Trim()))
+                    {
+                        return -2;
                     }
 
                     var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");

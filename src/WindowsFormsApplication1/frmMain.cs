@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using PttLib;
 using WordPressSharp;
@@ -28,6 +29,7 @@ namespace WindowsFormsApplication1
             btnStop.Enabled = false;
             btnStopScrape.Enabled = false;
             System.IO.Directory.CreateDirectory("Logs");
+            this.Text += " v"+Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -175,19 +177,25 @@ namespace WindowsFormsApplication1
                 var itemNo = etsyFactory.Create(itemObject, txtBlogUrl.Text, chkCache.Checked, chkFeatureImage.Checked);
                 Application.DoEvents();
                 barStatus.PerformStep();
-                if (itemNo == -1)
+
+                var status = "";
+                switch (itemNo)
                 {
-                    errorFound = true;
-                    item.SubItems[9].Text = "Error";
+                    case -1:
+                        errorFound = true;
+                        status = "Error";
+                        break;
+                    case 0:
+                        status = "Exists";
+                        break;
+                    case -2:
+                        status = "Invalid";
+                        break;
+                    default:
+                        status = itemNo.ToString();
+                        break;
                 }
-                else if (itemNo == 0)
-                {
-                    item.SubItems[9].Text = "Exists";
-                }
-                else
-                {
-                    item.SubItems[9].Text = itemNo.ToString();
-                }
+                item.SubItems[9].Text = status;
             }
             SetStatus("Transfer finished" + (errorFound ? " with errors" : ""));
             ResetBarStatus();
