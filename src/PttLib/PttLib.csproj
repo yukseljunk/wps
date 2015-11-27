@@ -96,6 +96,7 @@
     <Compile Include="CaptchaBreaker\Info\Segments.cs" />
     <Compile Include="CaptchaBreaker\Null\NullBreaker.cs" />
     <Compile Include="CaptchaBreaker\Tez\TezBreaker.cs" />
+    <Compile Include="Dawanda.cs" />
     <Compile Include="DeathByCaptcha\AccessDeniedException.cs" />
     <Compile Include="DeathByCaptcha\Captcha.cs" />
     <Compile Include="DeathByCaptcha\Client.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="PttRequestResponse\RequestResponseWithoutCaptcha.cs" />
     <Compile Include="PttRequestResponse\RequestResponseWithoutCaptchaOmitExceptionsForHotelList.cs" />
     <Compile Include="PttRequestResponse\RequestResponseWithWebBrowser.cs" />
+    <Compile Include="Site.cs" />
     <Compile Include="TourInfo\ConverterFunctions.cs" />
     <Compile Include="TourInfo\ITourInfo.cs" />
     <Compile Include="TourInfo\ITourInfoConverter.cs" />

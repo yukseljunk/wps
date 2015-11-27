@@ -11,7 +11,7 @@ namespace WindowsFormsApplication1
 {
     public partial class frmMain : Form
     {
-        private const string DefaultUrl = "https://www.etsy.com/c/books-movies-and-music/music/instrument-straps";
+        private const string DefaultUrl = "http://en.dawanda.com/stud-earrings/";
         private BlogCache _blogCache;
         private bool StopToken = false;
         private Dal _dal;
@@ -50,7 +50,7 @@ namespace WindowsFormsApplication1
                 Application.DoEvents();
                 SetStatus(string.Format("Getting Page {0}", page));
                 int pageCount;
-                var results = GetEtsyItems(txtUrl.Text, (int)numPage.Value, out pageCount);
+                var results = GetDawandaItems(txtUrl.Text, (int)numPage.Value, out pageCount);
                 if (page > pageCount)
                 {
                     break;
@@ -87,7 +87,7 @@ namespace WindowsFormsApplication1
             foreach (var etsyResult in allResults)
             {
                 Application.DoEvents();
-                var item = GetEtsyItem(etsyResult.Item1, etsyResult.Item2);
+                var item = GetDawandaItem(etsyResult.Item1, etsyResult.Item2);
                 string[] row1 = { item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content, item.Price.ToString(CultureInfo.GetCultureInfo("en-US")), string.Join(",", item.Images), string.Join(",", item.Tags), "" };
                 lvItems.BeginUpdate();
                 lvItems.Items.Add(itemIndex.ToString()).SubItems.AddRange(row1);
@@ -117,6 +117,13 @@ namespace WindowsFormsApplication1
             barStatus.Visible = visible;
         }
 
+        private static IEnumerable<Tuple<string, string>> GetDawandaItems(string url, int page, out int pageCount)
+        {
+            var dawanda = new Dawanda();
+            return page == 0 ? dawanda.GetItems(url, out pageCount) : dawanda.GetItems(url, out pageCount, page);
+        }
+
+        
         private static IEnumerable<Tuple<string, string>> GetEtsyItems(string url, int page, out int pageCount)
         {
             var etsy = new Etsy();
@@ -127,6 +134,11 @@ namespace WindowsFormsApplication1
         {
             var etsy = new Etsy();
             return etsy.GetItem(title, url);
+        }
+        private static Item GetDawandaItem(string title, string url)
+        {
+            var dawanda = new Dawanda();
+            return dawanda.GetItem(title, url);
         }
 
         private void btnSelectAll_Click(object sender, EventArgs e)
