@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using MySql.Data.MySqlClient;
 using PttLib.TourInfo;
 using System;
+using WordPressSharp.Models;
 
 namespace WindowsFormsApplication1
 {
@@ -72,6 +74,27 @@ namespace WindowsFormsApplication1
             }
         }
 
+        public void ExecuteNonQuery(string sql)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+                try
+                {
+                    var cmd = connection.CreateCommand();
+                    cmd.CommandText = sql;
+                    cmd.ExecuteNonQuery();
+                }
+                finally
+                {
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                }
+
+            }
+        }
         public IList<int> UserIds()
         {
             var result = new List<int>();
@@ -83,25 +106,34 @@ namespace WindowsFormsApplication1
                 result.Add(int.Parse(dataRow[0].ToString()));
             }
             return result;
-        } 
+        }
 
-        public int InsertPost(string title, string content)
+        public int InsertPost(Post post)
         {
+            var converterFunctions = new ConverterFunctions();
+            var postName = converterFunctions.SeoUrl(post.Title);
+            postName = "";
+            var sql = string.Format(
+                "INSERT INTO wp_posts(post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, " +
+                "ping_status, post_password, post_name, to_ping, pinged, post_modified, post_modified_gmt, post_content_filtered, post_parent, guid, " +
+                "menu_order, post_type, post_mime_type, comment_count) VALUES " +
+                "('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}');SELECT LAST_INSERT_ID();",
+                post.Author, post.PublishDateTime.AddDays(-1).ToString("yyyy-MM-dd HH':'mm':'ss"), post.PublishDateTime.AddDays(-1).ToString("yyyy-MM-dd HH':'mm':'ss"), post.Content, post.Title, "", post.Status,
+                post.CommentStatus, "open",
+                "", postName, "", "", DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), "", 0, "", 0,
+                post.PostType, post.MimeType, 0);
 
-            var postInsertDataSet =
-                GetData(
-                    string.Format(
-                        "INSERT INTO wp_posts(ID, post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, " +
-                        "ping_status, post_password, post_name, to_ping, pinged, post_modified, post_modified_gmt, post_content_filtered, post_parent, guid, " +
-                        "menu_order, post_type, post_mime_type, comment_count) VALUES " +
-                        "('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}','{22}');SELECT LAST_INSERT_ID();",
-                        "",""));
+            var postInsertDataSet =GetData(sql);
 
             if (postInsertDataSet.Tables.Count == 0) { return -1; }
             if (postInsertDataSet.Tables[0].Rows.Count == 0) { return -1; }
             if (postInsertDataSet.Tables[0].Rows[0].ItemArray.Length == 0) { return -1; }
 
-            return int.Parse(postInsertDataSet.Tables[0].Rows[0][0].ToString());
+            var id = postInsertDataSet.Tables[0].Rows[0][0].ToString();
+
+            var updateSql = "Update wp_posts set guid='" + post.BlogUrl + "?p=" + id+ "' where Id="+id;
+            ExecuteNonQuery(updateSql);
+            return int.Parse(id);
         }
         public int InsertUser(string displayname, string userName = "", string email = "", string userUrl = "", string passEncoded = "$P$BYvykzVw6vXRlA4jyW85HZxrCoJoE40")
         {
@@ -120,7 +152,7 @@ namespace WindowsFormsApplication1
             }
 
             //duplicate check
-            var userDataSet = GetData(string.Format("Select ID from wp_users Where user_login='{0}'",userName));
+            var userDataSet = GetData(string.Format("Select ID from wp_users Where user_login='{0}'", userName));
             if (userDataSet.Tables.Count > 0 && userDataSet.Tables[0].Rows.Count > 0 &&
                 userDataSet.Tables[0].Rows[0].ItemArray.Length > 0)
             {

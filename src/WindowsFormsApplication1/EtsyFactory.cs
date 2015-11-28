@@ -91,6 +91,9 @@ namespace WindowsFormsApplication1
                         Content = content.ToString(),
                         PublishDateTime = DateTime.Now,
                         Author = authorId.ToString(),
+                        CommentStatus = "open",
+                        Status = "draft",
+                        BlogUrl = blogUrl,
                         CustomFields = new[]
                         {
                             new CustomField() {Key = "foreignkey", Value = id},
@@ -149,6 +152,7 @@ namespace WindowsFormsApplication1
                         }
                     }
                     post.Terms = terms.ToArray();
+                    //var newPost = _dal.InsertPost(post);
                     var newPost = client.NewPost(post);
 
 

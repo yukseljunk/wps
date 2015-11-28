@@ -14,6 +14,9 @@ namespace WordPressSharp.Models
         [XmlRpcMember("post_type")]
         public string PostType { get; set; }
 
+        public string BlogUrl { get; set; }
+        public string MimeType { get; set; }
+
         [XmlRpcMember("post_title")]
         public string Title { get; set; }
 
