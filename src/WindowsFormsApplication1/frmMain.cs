@@ -50,7 +50,7 @@ namespace WindowsFormsApplication1
                 Application.DoEvents();
                 SetStatus(string.Format("Getting Page {0}", page));
                 int pageCount;
-                var results = GetDawandaItems(txtUrl.Text, (int)numPage.Value, out pageCount);
+                var results = GetEtsyItems(txtUrl.Text, (int)numPage.Value, out pageCount);
                 if (page > pageCount)
                 {
                     break;
@@ -87,7 +87,7 @@ namespace WindowsFormsApplication1
             foreach (var etsyResult in allResults)
             {
                 Application.DoEvents();
-                var item = GetDawandaItem(etsyResult.Item1, etsyResult.Item2);
+                var item = GetEtsyItem(etsyResult.Item1, etsyResult.Item2);
                 string[] row1 = { item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content, item.Price.ToString(CultureInfo.GetCultureInfo("en-US")), string.Join(",", item.Images), string.Join(",", item.Tags), "" };
                 lvItems.BeginUpdate();
                 lvItems.Items.Add(itemIndex.ToString()).SubItems.AddRange(row1);

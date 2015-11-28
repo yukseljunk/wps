@@ -85,6 +85,24 @@ namespace WindowsFormsApplication1
             return result;
         } 
 
+        public int InsertPost(string title, string content)
+        {
+
+            var postInsertDataSet =
+                GetData(
+                    string.Format(
+                        "INSERT INTO wp_posts(ID, post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, " +
+                        "ping_status, post_password, post_name, to_ping, pinged, post_modified, post_modified_gmt, post_content_filtered, post_parent, guid, " +
+                        "menu_order, post_type, post_mime_type, comment_count) VALUES " +
+                        "('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}','{22}');SELECT LAST_INSERT_ID();",
+                        "",""));
+
+            if (postInsertDataSet.Tables.Count == 0) { return -1; }
+            if (postInsertDataSet.Tables[0].Rows.Count == 0) { return -1; }
+            if (postInsertDataSet.Tables[0].Rows[0].ItemArray.Length == 0) { return -1; }
+
+            return int.Parse(postInsertDataSet.Tables[0].Rows[0][0].ToString());
+        }
         public int InsertUser(string displayname, string userName = "", string email = "", string userUrl = "", string passEncoded = "$P$BYvykzVw6vXRlA4jyW85HZxrCoJoE40")
         {
             if (string.IsNullOrEmpty(userName))
