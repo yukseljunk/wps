@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using PttLib;
+using PttLib.Helpers;
 using WordPressSharp;
 
 namespace WindowsFormsApplication1
 {
     public partial class frmMain : Form
     {
-        private const string DefaultUrl = "http://en.dawanda.com/stud-earrings/";
+        private const string DefaultUrl = "https://www.etsy.com/search/accessories?q=baby+chair";
         private BlogCache _blogCache;
         private bool StopToken = false;
         private Dal _dal;
@@ -29,7 +31,8 @@ namespace WindowsFormsApplication1
             btnStop.Enabled = false;
             btnStopScrape.Enabled = false;
             System.IO.Directory.CreateDirectory("Logs");
-            this.Text += " v"+Assembly.GetExecutingAssembly().GetName().Version;
+            this.Text += " v" + Assembly.GetExecutingAssembly().GetName().Version;
+            lblDateTime.Text = "";
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -50,7 +53,7 @@ namespace WindowsFormsApplication1
                 Application.DoEvents();
                 SetStatus(string.Format("Getting Page {0}", page));
                 int pageCount;
-                var results = GetEtsyItems(txtUrl.Text, (int)numPage.Value, out pageCount);
+                var results = GetEtsyItems(txtUrl.Text, page, out pageCount);
                 if (page > pageCount)
                 {
                     break;
@@ -83,23 +86,50 @@ namespace WindowsFormsApplication1
             SetStatus("Filling items....");
             var itemIndex = lvItems.Items.Count + 1;
             Cursor.Current = Cursors.WaitCursor;
+            var blockIndex = 0;
 
-            foreach (var etsyResult in allResults)
+            do
             {
-                Application.DoEvents();
-                var item = GetEtsyItem(etsyResult.Item1, etsyResult.Item2);
-                string[] row1 = { item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content, item.Price.ToString(CultureInfo.GetCultureInfo("en-US")), string.Join(",", item.Images), string.Join(",", item.Tags), "" };
+                var subResults = allResults.Skip(20 * blockIndex).Take(20);
+                if (!subResults.Any()) break;
+                blockIndex++;
+
+                var listViewItems = new List<ListViewItem>();
+
+                foreach (var etsyResult in subResults)
+                {
+                    Application.DoEvents();
+
+                    var item = GetEtsyItem(etsyResult.Item1, etsyResult.Item2);
+                    string[] row1 =
+                        {
+                            item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
+                            item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
+                            string.Join(",", item.Images), string.Join(",", item.Tags), ""
+                        };
+
+                    var listViewitem = new ListViewItem(itemIndex.ToString());
+                    listViewitem.SubItems.AddRange(row1);
+                    listViewItems.Add(listViewitem);
+                    barStatus.PerformStep();
+                    itemIndex++;
+                    if (StopToken)
+                    {
+                        break;
+                    }
+
+                }
+
+                lvItems.ListViewItemSorter = null;
                 lvItems.BeginUpdate();
-                lvItems.Items.Add(itemIndex.ToString()).SubItems.AddRange(row1);
+                lvItems.Items.AddRange(listViewItems.ToArray());
                 lvItems.EndUpdate();
-                barStatus.PerformStep();
-                itemIndex++;
                 if (StopToken)
                 {
                     break;
                 }
-                //MessageBox.Show(item.ToString());
-            }
+            } while (true);
+
             SetStatus("Ready");
             ResetBarStatus();
             btnGo.Enabled = allResults.Any();
@@ -123,7 +153,7 @@ namespace WindowsFormsApplication1
             return page == 0 ? dawanda.GetItems(url, out pageCount) : dawanda.GetItems(url, out pageCount, page);
         }
 
-        
+
         private static IEnumerable<Tuple<string, string>> GetEtsyItems(string url, int page, out int pageCount)
         {
             var etsy = new Etsy();
@@ -167,6 +197,7 @@ namespace WindowsFormsApplication1
             StopToken = false;
             bool errorFound = false;
 
+            lblDateTime.Text = DateTime.Now.ToShortTimeString();
             if (chkCache.Checked)
             {
                 SetStatus("Loading present posts and tags in the blog(this may take some time)...");
@@ -178,7 +209,7 @@ namespace WindowsFormsApplication1
             SetStatus("Ready");
             ResetBarStatus(true);
             barStatus.Maximum = lvItems.SelectedItems.Count;
-            var etsyFactory = new EtsyFactory(SiteConfig, _blogCache,_dal);
+            var etsyFactory = new EtsyFactory(SiteConfig, _blogCache, _dal);
 
             foreach (ListViewItem item in lvItems.SelectedItems)
             {
@@ -208,6 +239,7 @@ namespace WindowsFormsApplication1
                         break;
                 }
                 item.SubItems[9].Text = status;
+                item.EnsureVisible();
             }
             SetStatus("Transfer finished" + (errorFound ? " with errors" : ""));
             ResetBarStatus();
@@ -216,15 +248,15 @@ namespace WindowsFormsApplication1
 
         private void CreateAuthors()
         {
-            if(string.IsNullOrEmpty(txtAuthors.Text))
+            if (string.IsNullOrEmpty(txtAuthors.Text))
             {
                 return;
             }
-            var authors=txtAuthors.Text.Split(new [] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+            var authors = txtAuthors.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             var dal = new Dal(MySqlConnectionString);
             foreach (var author in authors)
             {
-                if(string.IsNullOrEmpty(author.Trim()))
+                if (string.IsNullOrEmpty(author.Trim()))
                 {
                     continue;
                 }
@@ -260,10 +292,12 @@ namespace WindowsFormsApplication1
         {
             btnStop.Enabled = !enabled;
             btnGo.Enabled = enabled;
+            btnStart.Enabled = enabled;
             lvItems.Enabled = enabled;
             grpBlogProp.Enabled = enabled;
             grpMysql.Enabled = enabled;
             grpAuthors.Enabled = enabled;
+            btnStopScrape.Enabled = enabled;
         }
 
 
@@ -376,6 +410,28 @@ namespace WindowsFormsApplication1
                 }
             }
 
+        }
+
+        private void lvItems_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lvItems.Items)
+            {
+                foreach (ListViewItem item2 in lvItems.Items)
+                {
+                    if (item2.SubItems[1].Text == item.SubItems[1].Text && item2.Text != item.Text)
+                    {
+                        var color = Color.FromArgb(255, Helper.GetRandomNumber(1, 255), Helper.GetRandomNumber(1, 255), Helper.GetRandomNumber(1, 255));
+                        item.BackColor = color;
+                        item2.BackColor = color;
+                        break;
+                    }
+                }
+            }
         }
     }
 }

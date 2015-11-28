@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ColumnHeader No;
+            System.Windows.Forms.ColumnHeader Id;
+            System.Windows.Forms.ColumnHeader Url;
+            System.Windows.Forms.ColumnHeader Title;
+            System.Windows.Forms.ColumnHeader MetaDescription;
+            System.Windows.Forms.ColumnHeader content;
+            System.Windows.Forms.ColumnHeader price;
+            System.Windows.Forms.ColumnHeader Image;
+            System.Windows.Forms.ColumnHeader tags;
+            System.Windows.Forms.ColumnHeader postId;
             this.label1 = new System.Windows.Forms.Label();
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.numPage = new System.Windows.Forms.NumericUpDown();
             this.btnStart = new System.Windows.Forms.Button();
             this.lvItems = new System.Windows.Forms.ListView();
-            this.No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.MetaDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.content = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Image = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.postId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.grpBlogProp = new System.Windows.Forms.GroupBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
@@ -78,6 +78,18 @@
             this.label8 = new System.Windows.Forms.Label();
             this.grpAuthors = new System.Windows.Forms.GroupBox();
             this.txtAuthors = new System.Windows.Forms.TextBox();
+            this.lblDateTime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.button1 = new System.Windows.Forms.Button();
+            No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            Title = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            MetaDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            content = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            Image = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            tags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            postId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).BeginInit();
             this.grpBlogProp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPageTo)).BeginInit();
@@ -156,70 +168,71 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.No,
-            this.Id,
-            this.Url,
-            this.Title,
-            this.MetaDescription,
-            this.content,
-            this.price,
-            this.Image,
-            this.tags,
-            this.postId});
+            No,
+            Id,
+            Url,
+            Title,
+            MetaDescription,
+            content,
+            price,
+            Image,
+            tags,
+            postId});
             this.lvItems.FullRowSelect = true;
             this.lvItems.GridLines = true;
             this.lvItems.HideSelection = false;
-            this.lvItems.Location = new System.Drawing.Point(15, 52);
+            this.lvItems.Location = new System.Drawing.Point(14, 52);
             this.lvItems.Name = "lvItems";
             this.lvItems.Size = new System.Drawing.Size(1113, 386);
             this.lvItems.TabIndex = 5;
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
+            this.lvItems.SelectedIndexChanged += new System.EventHandler(this.lvItems_SelectedIndexChanged);
             // 
             // No
             // 
-            this.No.Text = "#";
+            No.Text = "#";
             // 
             // Id
             // 
-            this.Id.Text = "Id";
-            this.Id.Width = 75;
+            Id.Text = "Id";
+            Id.Width = 75;
             // 
             // Url
             // 
-            this.Url.Text = "Url";
-            this.Url.Width = 104;
+            Url.Text = "Url";
+            Url.Width = 104;
             // 
             // Title
             // 
-            this.Title.Text = "Title";
-            this.Title.Width = 199;
+            Title.Text = "Title";
+            Title.Width = 199;
             // 
             // MetaDescription
             // 
-            this.MetaDescription.Text = "Meta Description";
-            this.MetaDescription.Width = 242;
+            MetaDescription.Text = "Meta Description";
+            MetaDescription.Width = 242;
             // 
             // content
             // 
-            this.content.Text = "Content";
+            content.Text = "Content";
             // 
             // price
             // 
-            this.price.Text = "price";
+            price.Text = "price";
             // 
             // Image
             // 
-            this.Image.Text = "Image";
-            this.Image.Width = 117;
+            Image.Text = "Image";
+            Image.Width = 117;
             // 
             // tags
             // 
-            this.tags.Text = "Tags";
+            tags.Text = "Tags";
             // 
             // postId
             // 
-            this.postId.Text = "Post Id";
+            postId.Text = "Post Id";
             // 
             // btnSelectAll
             // 
@@ -336,7 +349,7 @@
             // btnGetPost
             // 
             this.btnGetPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetPost.Location = new System.Drawing.Point(197, 632);
+            this.btnGetPost.Location = new System.Drawing.Point(122, 632);
             this.btnGetPost.Name = "btnGetPost";
             this.btnGetPost.Size = new System.Drawing.Size(141, 23);
             this.btnGetPost.TabIndex = 11;
@@ -347,7 +360,7 @@
             // txtPostId
             // 
             this.txtPostId.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPostId.Location = new System.Drawing.Point(81, 632);
+            this.txtPostId.Location = new System.Drawing.Point(15, 632);
             this.txtPostId.Name = "txtPostId";
             this.txtPostId.Size = new System.Drawing.Size(101, 20);
             this.txtPostId.TabIndex = 12;
@@ -427,7 +440,8 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
-            this.barStatus});
+            this.barStatus,
+            this.lblDateTime});
             this.statusStrip1.Location = new System.Drawing.Point(0, 666);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1161, 22);
@@ -586,11 +600,30 @@
             this.txtAuthors.TabIndex = 0;
             this.txtAuthors.Text = "John Doe\r\nJennifer X";
             // 
+            // lblDateTime
+            // 
+            this.lblDateTime.Name = "lblDateTime";
+            this.lblDateTime.Size = new System.Drawing.Size(118, 17);
+            this.lblDateTime.Text = "toolStripStatusLabel1";
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(281, 632);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(132, 23);
+            this.button1.TabIndex = 22;
+            this.button1.Text = "Find Duplicates";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1161, 688);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.grpAuthors);
             this.Controls.Add(this.grpMysql);
             this.Controls.Add(this.chkCache);
@@ -639,15 +672,6 @@
         private System.Windows.Forms.NumericUpDown numPage;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.ListView lvItems;
-        private System.Windows.Forms.ColumnHeader Id;
-        private System.Windows.Forms.ColumnHeader Url;
-        private System.Windows.Forms.ColumnHeader Title;
-        private System.Windows.Forms.ColumnHeader MetaDescription;
-        private System.Windows.Forms.ColumnHeader Image;
-        private System.Windows.Forms.ColumnHeader No;
-        private System.Windows.Forms.ColumnHeader content;
-        private System.Windows.Forms.ColumnHeader price;
-        private System.Windows.Forms.ColumnHeader tags;
         private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.GroupBox grpBlogProp;
         private System.Windows.Forms.TextBox txtBlogUrl;
@@ -658,7 +682,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnGo;
         private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.ColumnHeader postId;
         private System.Windows.Forms.Button btnStopScrape;
         private System.Windows.Forms.Button btnGetPost;
         private System.Windows.Forms.TextBox txtPostId;
@@ -683,6 +706,8 @@
         private System.Windows.Forms.Button btnTestMySqlConnection;
         private System.Windows.Forms.GroupBox grpAuthors;
         private System.Windows.Forms.TextBox txtAuthors;
+        private System.Windows.Forms.ToolStripStatusLabel lblDateTime;
+        private System.Windows.Forms.Button button1;
     }
 }
 
