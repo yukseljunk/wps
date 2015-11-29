@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ using PttLib.Helpers;
 using PttLib.TourInfo;
 using WordPressSharp;
 using WordPressSharp.Models;
+using WordpressScraper.Dal;
 
 namespace WindowsFormsApplication1
 {
@@ -24,7 +26,8 @@ namespace WindowsFormsApplication1
             _siteConfig = siteConfig;
             _blogCache = blogCache;
             _dal = dal;
-            _userIds = _dal.UserIds();
+            var userDal = new UserDal(_dal);
+            _userIds = userDal.UserIds();
 
         }
 
@@ -39,7 +42,7 @@ namespace WindowsFormsApplication1
         public int Create(Item item, string blogUrl, bool useCache = true, bool useFeatureImage = false)
         {
             var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
-
+            var postDal = new PostDal(_dal);
             var converterFunctions = new ConverterFunctions();
             using (var client = new WordPressClient(_siteConfig))
             {
@@ -63,7 +66,7 @@ namespace WindowsFormsApplication1
                     var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
                     var imageIndex = 1;
                     IList<UploadResult> imageUploads = new List<UploadResult>();
-                    foreach (var imageUrl in item.Images)
+                    /*foreach (var imageUrl in item.Images)
                     {
                         var imageData = Data.CreateFromUrl(imageUrl);
                         imageData.Name = converterFunctions.SeoUrl(item.Title, 50) + "-" + imageIndex + Path.GetExtension(imageUrl);
@@ -79,7 +82,7 @@ namespace WindowsFormsApplication1
                             string.Format(
                                 "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
                                 uploaded.Url, thumbnailUrl, item.Title));
-                    }
+                    }*/
                     content.Append(string.Format("</div><h4>Price:${0}</h4>", item.Price));
                     content.Append("<strong>Description: </strong>");
                     content.Append(converterFunctions.ArrangeContent(item.Content));
@@ -146,15 +149,23 @@ namespace WindowsFormsApplication1
                                 terms.Add(tagOnBlog);
                             }
                         }
-                        else
-                        {
-                            //not cached solution
-                        }
                     }
                     post.Terms = terms.ToArray();
-                    //var newPost = _dal.InsertPost(post);
-                    var newPost = client.NewPost(post);
-
+                    var stopWatch = new Stopwatch();
+                    stopWatch.Start();
+                    var newPost = postDal.InsertPost(post);
+                    stopWatch.Stop();
+                    var mysqlTime = stopWatch.ElapsedMilliseconds;
+                    //var newPost = client.NewPost(post);
+                    stopWatch.Reset();
+                    stopWatch.Start();
+                    var newPost2 = client.NewPost(post);
+                    stopWatch.Stop();
+                    var wordpressSharpTime = stopWatch.ElapsedMilliseconds;
+                    if (mysqlTime > wordpressSharpTime)
+                    {
+                        //no need to use mysql???
+                    }
 
                     if (useCache)
                     {

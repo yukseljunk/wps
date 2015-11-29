@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using PttLib;
 using PttLib.Helpers;
 using WordPressSharp;
+using WordpressScraper.Dal;
 
 namespace WindowsFormsApplication1
 {
@@ -254,13 +255,14 @@ namespace WindowsFormsApplication1
             }
             var authors = txtAuthors.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             var dal = new Dal(MySqlConnectionString);
+            var userDal = new UserDal(dal);
             foreach (var author in authors)
             {
                 if (string.IsNullOrEmpty(author.Trim()))
                 {
                     continue;
                 }
-                dal.InsertUser(author);
+                userDal.InsertUser(author);
             }
         }
 
@@ -394,7 +396,7 @@ namespace WindowsFormsApplication1
         {
             get
             {
-                return string.Format("Server={0};Database={1};Uid={2};Pwd={3}", txtMySqlIp.Text, txtMySqlDatabase.Text, txtMysqlUser.Text, txtMySqlPass.Text);
+                return string.Format("Server={0};Database={1};Uid={2};Pwd={3}; Allow User Variables=True", txtMySqlIp.Text, txtMySqlDatabase.Text, txtMysqlUser.Text, txtMySqlPass.Text);
 
             }
         }

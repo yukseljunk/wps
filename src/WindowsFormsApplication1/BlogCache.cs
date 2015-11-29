@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using WordPressSharp;
 using WordPressSharp.Models;
+using WordpressScraper.Dal;
 
 namespace WindowsFormsApplication1
 {
@@ -64,10 +65,8 @@ namespace WindowsFormsApplication1
         private HashSet<Term> GetTags()
         {
             var result = new HashSet<Term>();
-            var allTags = _dal.GetData("SELECT wpt.name, wpt.slug, wpt.term_group, wpt.term_id, wptt.count, wptt.description, wptt.parent, wptt.taxonomy, wptt.term_taxonomy_id " +
-                    "FROM  wp_terms wpt " +
-                    "INNER JOIN wp_term_taxonomy wptt ON wptt.term_id = wpt.term_id " +
-                    "WHERE taxonomy='post_tag'");
+            var tagDal = new TagDal(_dal);
+            var allTags = tagDal.GetAllTags();
             if (allTags.Tables.Count == 0) return result;
             if (allTags.Tables[0].Rows.Count == 0) return result;
             foreach (DataRow row in allTags.Tables[0].Rows)
@@ -91,8 +90,8 @@ namespace WindowsFormsApplication1
         private HashSet<string> GetPostIds()
         {
             var result = new HashSet<string>();
-
-            var allMeta = _dal.GetData("Select post_id,meta_value from wp_postmeta where meta_key='foreignkey'");
+            var postDal = new PostDal(_dal);
+            var allMeta = postDal.GetAllPostMeta();
             if (allMeta.Tables.Count == 0) return result;
             if (allMeta.Tables[0].Rows.Count == 0) return result;
             foreach (DataRow row in allMeta.Tables[0].Rows)
