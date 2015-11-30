@@ -43,6 +43,7 @@ namespace WindowsFormsApplication1
         {
             var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
             var postDal = new PostDal(_dal);
+            var tagDal = new TagDal(_dal);
             var converterFunctions = new ConverterFunctions();
             using (var client = new WordPressClient(_siteConfig))
             {
@@ -136,8 +137,12 @@ namespace WindowsFormsApplication1
                                     Taxonomy = "post_tag"
                                 };
 
-                                var termId = client.NewTerm(t);
-                                t.Id = termId;
+                                var tId = tagDal.InsertTag(t);
+                                t.Id = tId.ToString();
+
+                                //var termId = client.NewTerm(t);
+                                //t.Id = termId;
+                                
                                 if (useCache)
                                 {
                                     _blogCache.InsertTag(blogUrl, t);
@@ -159,6 +164,7 @@ namespace WindowsFormsApplication1
                     //var newPost = client.NewPost(post);
                     stopWatch.Reset();
                     stopWatch.Start();
+                    post.Terms = null;
                     var newPost2 = client.NewPost(post);
                     stopWatch.Stop();
                     var wordpressSharpTime = stopWatch.ElapsedMilliseconds;

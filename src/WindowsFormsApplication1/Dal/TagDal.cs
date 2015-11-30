@@ -1,4 +1,8 @@
+using System;
 using System.Data;
+using PttLib.Helpers;
+using PttLib.TourInfo;
+using WordPressSharp.Models;
 
 namespace WordpressScraper.Dal
 {
@@ -21,6 +25,30 @@ namespace WordpressScraper.Dal
                 "WHERE taxonomy='post_tag'";
 
             return _dal.GetData(sql);
+        }
+
+        public int InsertTag(Term term)
+        {
+            var converterFunctions = new ConverterFunctions();
+            
+            var sql = string.Format(
+                "INSERT INTO wp_terms(name, slug, term_group) VALUES" +
+                "('{0}','{1}',0);" +
+                "SET @l=LAST_INSERT_ID();" +
+                "INSERT INTO wp_term_taxonomy(term_id, taxonomy, description, parent, count) VALUES (@l,'post_tag','{2}',0,0);" +
+                "SELECT @l;",
+                term.Name.EscapeSql(),
+                converterFunctions.SeoUrl(term.Name).EscapeSql(),
+                term.Description.EscapeSql());
+
+            var tagInsertDataSet = _dal.GetData(sql);
+
+            if (tagInsertDataSet.Tables.Count == 0) { return -1; }
+            if (tagInsertDataSet.Tables[0].Rows.Count == 0) { return -1; }
+            if (tagInsertDataSet.Tables[0].Rows[0].ItemArray.Length == 0) { return -1; }
+
+            var id = tagInsertDataSet.Tables[0].Rows[0][0].ToString();
+            return int.Parse(id);
         }
     }
 }
