@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Web;
 using PttLib;
@@ -65,13 +66,21 @@ namespace WindowsFormsApplication1
                     }
 
                     var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
+                    //new NetworkCredential("bloggon@nalgorithm.com", "U4E9TrT;5!)F")
+
+                    
                     var imageIndex = 1;
                     IList<UploadResult> imageUploads = new List<UploadResult>();
-                    /*foreach (var imageUrl in item.Images)
+                    
+                    foreach (var imageUrl in item.Images)
                     {
-                        var imageData = Data.CreateFromUrl(imageUrl);
-                        imageData.Name = converterFunctions.SeoUrl(item.Title, 50) + "-" + imageIndex + Path.GetExtension(imageUrl);
-                        imageIndex++;
+                        //var imageData = Data.CreateFromUrl(imageUrl);
+                        //imageData.Name = converterFunctions.SeoUrl(item.Title, 50) + "-" + imageIndex + Path.GetExtension(imageUrl);
+                        //imageIndex++;
+
+                        //UploadFileFtp(imageData, "ftp://ftp.nalgorithm.com", "bloggon@nalgorithm.com", "U4E9TrT;5!)F");
+                   
+                        /*
                         var uploaded = client.UploadFile(imageData);
                         imageUploads.Add(uploaded);
                         var thumbnailUrl =
@@ -83,7 +92,8 @@ namespace WindowsFormsApplication1
                             string.Format(
                                 "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
                                 uploaded.Url, thumbnailUrl, item.Title));
-                    }*/
+                         */
+                    }
                     content.Append(string.Format("</div><h4>Price:${0}</h4>", item.Price));
                     content.Append("<strong>Description: </strong>");
                     content.Append(converterFunctions.ArrangeContent(item.Content));
@@ -199,7 +209,50 @@ namespace WindowsFormsApplication1
 
         }
 
+        public void UploadFileFtp(Data file, string ftpAddress, string username, string password)
+        {
+            var request = (FtpWebRequest)WebRequest.Create(ftpAddress + "/" + Path.GetFileName(file.Name));
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+            request.Credentials = new NetworkCredential(username, password);
+            request.UsePassive = true;
+            request.UseBinary = true;
+            request.KeepAlive = false;
+            using (Stream reqStream = request.GetRequestStream())
+            {
+                reqStream.Write(file.Bits, 0, file.Bits.Length);
+                reqStream.Close();
+            }
 
+            request.Abort();
+
+
+        }
+
+        public void UploadFileFtp(string filePath, string ftpAddress, string username, string password)
+        {
+            var request = (FtpWebRequest) WebRequest.Create(ftpAddress+ "/" + Path.GetFileName(filePath));
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+            request.Credentials = new NetworkCredential(username, password);
+            request.UsePassive = true;
+            request.UseBinary = true;
+            request.KeepAlive = false;
+            byte[] buffer;
+            using(FileStream stream = File.OpenRead(filePath))
+            {
+                buffer = new byte[stream.Length];
+                stream.Read(buffer, 0, buffer.Length);
+                stream.Close();   
+            }
+            using (Stream reqStream = request.GetRequestStream())
+            {
+                reqStream.Write(buffer, 0, buffer.Length);
+                reqStream.Close();
+            }
+
+            request.Abort();
+            
+
+        }
 
     }
 }
