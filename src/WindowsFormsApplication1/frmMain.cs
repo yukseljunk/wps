@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -17,8 +18,7 @@ namespace WindowsFormsApplication1
         private const string DefaultUrl = "https://www.etsy.com/search/accessories?q=baby+chair";
         private BlogCache _blogCache;
         private bool StopToken = false;
-        private Dal _dal;
-
+        private ListViewColumnSorter lvwColumnSorter;
 
         public frmMain()
         {
@@ -132,6 +132,9 @@ namespace WindowsFormsApplication1
             } while (true);
 
             SetStatus("Ready");
+            lvwColumnSorter = new ListViewColumnSorter();
+            lvItems.ListViewItemSorter = lvwColumnSorter;
+
             ResetBarStatus();
             btnGo.Enabled = allResults.Any();
 
@@ -191,58 +194,61 @@ namespace WindowsFormsApplication1
             }
 
             CreateAuthors();
-            _dal = new Dal(MySqlConnectionString);
-            _blogCache = new BlogCache(SiteConfig, _dal);
-
-            EnDisItems(false);
-            StopToken = false;
-            bool errorFound = false;
-
-            lblDateTime.Text = DateTime.Now.ToShortTimeString();
-            if (chkCache.Checked)
+            using (var dal = new Dal(MySqlConnectionString))
             {
-                SetStatus("Loading present posts and tags in the blog(this may take some time)...");
-                Application.DoEvents();
-                _blogCache.Start(txtBlogUrl.Text);
-                Application.DoEvents();
-            }
+                _blogCache = new BlogCache(SiteConfig, dal);
 
-            SetStatus("Ready");
-            ResetBarStatus(true);
-            barStatus.Maximum = lvItems.SelectedItems.Count;
-            var etsyFactory = new EtsyFactory(SiteConfig, _blogCache, _dal);
+                EnDisItems(false);
+                StopToken = false;
+                bool errorFound = false;
 
-            foreach (ListViewItem item in lvItems.SelectedItems)
-            {
-                if (StopToken) break;
-                SetStatus("Creating item on the blog:" + item.Text);
-                Application.DoEvents();
-                Item itemObject = ItemFromListView(item);
-                var itemNo = etsyFactory.Create(itemObject, txtBlogUrl.Text, chkCache.Checked, chkFeatureImage.Checked);
-                Application.DoEvents();
-                barStatus.PerformStep();
-
-                var status = "";
-                switch (itemNo)
+                lblDateTime.Text = DateTime.Now.ToShortTimeString();
+                if (chkCache.Checked)
                 {
-                    case -1:
-                        errorFound = true;
-                        status = "Error";
-                        break;
-                    case 0:
-                        status = "Exists";
-                        break;
-                    case -2:
-                        status = "Invalid";
-                        break;
-                    default:
-                        status = itemNo.ToString();
-                        break;
+                    SetStatus("Loading present posts and tags in the blog(this may take some time)...");
+                    Application.DoEvents();
+                    _blogCache.Start(txtBlogUrl.Text);
+                    Application.DoEvents();
                 }
-                item.SubItems[9].Text = status;
-                item.EnsureVisible();
+
+                SetStatus("Ready");
+                ResetBarStatus(true);
+                barStatus.Maximum = lvItems.SelectedItems.Count;
+                var etsyFactory = new EtsyFactory(SiteConfig, _blogCache, dal);
+
+                foreach (ListViewItem item in lvItems.SelectedItems)
+                {
+                    if (StopToken) break;
+                    SetStatus("Creating item on the blog:" + item.Text);
+                    Application.DoEvents();
+                    Item itemObject = ItemFromListView(item);
+                    var itemNo = etsyFactory.Create(itemObject, txtBlogUrl.Text, chkCache.Checked,
+                        chkFeatureImage.Checked);
+                    Application.DoEvents();
+                    barStatus.PerformStep();
+
+                    var status = "";
+                    switch (itemNo)
+                    {
+                        case -1:
+                            errorFound = true;
+                            status = "Error";
+                            break;
+                        case 0:
+                            status = "Exists";
+                            break;
+                        case -2:
+                            status = "Invalid";
+                            break;
+                        default:
+                            status = itemNo.ToString();
+                            break;
+                    }
+                    item.SubItems[9].Text = status;
+                    item.EnsureVisible();
+                }
+                SetStatus("Transfer finished" + (errorFound ? " with errors" : ""));
             }
-            SetStatus("Transfer finished" + (errorFound ? " with errors" : ""));
             ResetBarStatus();
             EnDisItems(true);
         }
@@ -254,15 +260,17 @@ namespace WindowsFormsApplication1
                 return;
             }
             var authors = txtAuthors.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            var dal = new Dal(MySqlConnectionString);
-            var userDal = new UserDal(dal);
-            foreach (var author in authors)
+            using (var dal = new Dal(MySqlConnectionString))
             {
-                if (string.IsNullOrEmpty(author.Trim()))
+                var userDal = new UserDal(dal);
+                foreach (var author in authors)
                 {
-                    continue;
+                    if (string.IsNullOrEmpty(author.Trim()))
+                    {
+                        continue;
+                    }
+                    userDal.InsertUser(author);
                 }
-                userDal.InsertUser(author);
             }
         }
 
@@ -402,13 +410,15 @@ namespace WindowsFormsApplication1
         }
         private void btnTestMySqlConnection_Click(object sender, EventArgs e)
         {
-            var dal = new Dal(MySqlConnectionString);
-            var testConnection = dal.TestConnection();
-            if (testConnection != null)
+            using (var dal = new Dal(MySqlConnectionString))
             {
-                foreach (var result in testConnection)
+                var testConnection = dal.TestConnection();
+                if (testConnection != null)
                 {
-                    MessageBox.Show(result);
+                    foreach (var result in testConnection)
+                    {
+                        MessageBox.Show(result);
+                    }
                 }
             }
 
@@ -435,5 +445,132 @@ namespace WindowsFormsApplication1
                 }
             }
         }
+
+        private void lvItems_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column == lvwColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                {
+                    lvwColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                lvwColumnSorter.SortColumn = e.Column;
+                lvwColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            lvItems.Sort();
+        }
     }
+
+    /// <summary>
+    /// This class is an implementation of the 'IComparer' interface.
+    /// </summary>
+    public class ListViewColumnSorter : IComparer
+    {
+        /// <summary>
+        /// Specifies the column to be sorted
+        /// </summary>
+        private int ColumnToSort;
+        /// <summary>
+        /// Specifies the order in which to sort (i.e. 'Ascending').
+        /// </summary>
+        private SortOrder OrderOfSort;
+        /// <summary>
+        /// Case insensitive comparer object
+        /// </summary>
+        private CaseInsensitiveComparer ObjectCompare;
+
+        /// <summary>
+        /// Class constructor.  Initializes various elements
+        /// </summary>
+        public ListViewColumnSorter()
+        {
+            // Initialize the column to '0'
+            ColumnToSort = 0;
+
+            // Initialize the sort order to 'none'
+            OrderOfSort = SortOrder.None;
+
+            // Initialize the CaseInsensitiveComparer object
+            ObjectCompare = new CaseInsensitiveComparer();
+        }
+
+        /// <summary>
+        /// This method is inherited from the IComparer interface.  It compares the two objects passed using a case insensitive comparison.
+        /// </summary>
+        /// <param name="x">First object to be compared</param>
+        /// <param name="y">Second object to be compared</param>
+        /// <returns>The result of the comparison. "0" if equal, negative if 'x' is less than 'y' and positive if 'x' is greater than 'y'</returns>
+        public int Compare(object x, object y)
+        {
+            int compareResult;
+            ListViewItem listviewX, listviewY;
+
+            // Cast the objects to be compared to ListViewItem objects
+            listviewX = (ListViewItem)x;
+            listviewY = (ListViewItem)y;
+
+            // Compare the two items
+            compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+
+            // Calculate correct return value based on object comparison
+            if (OrderOfSort == SortOrder.Ascending)
+            {
+                // Ascending sort is selected, return normal result of compare operation
+                return compareResult;
+            }
+            else if (OrderOfSort == SortOrder.Descending)
+            {
+                // Descending sort is selected, return negative result of compare operation
+                return (-compareResult);
+            }
+            else
+            {
+                // Return '0' to indicate they are equal
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the number of the column to which to apply the sorting operation (Defaults to '0').
+        /// </summary>
+        public int SortColumn
+        {
+            set
+            {
+                ColumnToSort = value;
+            }
+            get
+            {
+                return ColumnToSort;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the order of sorting to apply (for example, 'Ascending' or 'Descending').
+        /// </summary>
+        public SortOrder Order
+        {
+            set
+            {
+                OrderOfSort = value;
+            }
+            get
+            {
+                return OrderOfSort;
+            }
+        }
+
+    }
+
 }

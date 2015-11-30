@@ -7,6 +7,12 @@
             return surround+input+surround;
         }
 
+        public static string EscapeSql(this string input)
+        {
+            return input.Replace("'", "''").Replace("\\", "\\\\");
+        }
+
+
         public static string TrimMiddle(this string input, string leftToken, string rightToken, bool includeTokens = false)
         {
             var result = input;

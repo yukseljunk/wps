@@ -65,6 +65,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.barStatus = new System.Windows.Forms.ToolStripProgressBar();
+            this.lblDateTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.chkCache = new System.Windows.Forms.CheckBox();
             this.grpMysql = new System.Windows.Forms.GroupBox();
             this.btnTestMySqlConnection = new System.Windows.Forms.Button();
@@ -78,7 +79,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.grpAuthors = new System.Windows.Forms.GroupBox();
             this.txtAuthors = new System.Windows.Forms.TextBox();
-            this.lblDateTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.button1 = new System.Windows.Forms.Button();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -97,6 +97,51 @@
             this.grpMysql.SuspendLayout();
             this.grpAuthors.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // No
+            // 
+            No.Text = "#";
+            // 
+            // Id
+            // 
+            Id.Text = "Id";
+            Id.Width = 75;
+            // 
+            // Url
+            // 
+            Url.Text = "Url";
+            Url.Width = 104;
+            // 
+            // Title
+            // 
+            Title.Text = "Title";
+            Title.Width = 199;
+            // 
+            // MetaDescription
+            // 
+            MetaDescription.Text = "Meta Description";
+            MetaDescription.Width = 242;
+            // 
+            // content
+            // 
+            content.Text = "Content";
+            // 
+            // price
+            // 
+            price.Text = "price";
+            // 
+            // Image
+            // 
+            Image.Text = "Image";
+            Image.Width = 117;
+            // 
+            // tags
+            // 
+            tags.Text = "Tags";
+            // 
+            // postId
+            // 
+            postId.Text = "Post Id";
             // 
             // label1
             // 
@@ -187,52 +232,8 @@
             this.lvItems.TabIndex = 5;
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
+            this.lvItems.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvItems_ColumnClick);
             this.lvItems.SelectedIndexChanged += new System.EventHandler(this.lvItems_SelectedIndexChanged);
-            // 
-            // No
-            // 
-            No.Text = "#";
-            // 
-            // Id
-            // 
-            Id.Text = "Id";
-            Id.Width = 75;
-            // 
-            // Url
-            // 
-            Url.Text = "Url";
-            Url.Width = 104;
-            // 
-            // Title
-            // 
-            Title.Text = "Title";
-            Title.Width = 199;
-            // 
-            // MetaDescription
-            // 
-            MetaDescription.Text = "Meta Description";
-            MetaDescription.Width = 242;
-            // 
-            // content
-            // 
-            content.Text = "Content";
-            // 
-            // price
-            // 
-            price.Text = "price";
-            // 
-            // Image
-            // 
-            Image.Text = "Image";
-            Image.Width = 117;
-            // 
-            // tags
-            // 
-            tags.Text = "Tags";
-            // 
-            // postId
-            // 
-            postId.Text = "Post Id";
             // 
             // btnSelectAll
             // 
@@ -462,6 +463,12 @@
             this.barStatus.Step = 1;
             this.barStatus.Visible = false;
             // 
+            // lblDateTime
+            // 
+            this.lblDateTime.Name = "lblDateTime";
+            this.lblDateTime.Size = new System.Drawing.Size(118, 17);
+            this.lblDateTime.Text = "toolStripStatusLabel1";
+            // 
             // chkCache
             // 
             this.chkCache.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -599,12 +606,6 @@
             this.txtAuthors.Size = new System.Drawing.Size(262, 90);
             this.txtAuthors.TabIndex = 0;
             this.txtAuthors.Text = "John Doe\r\nJennifer X";
-            // 
-            // lblDateTime
-            // 
-            this.lblDateTime.Name = "lblDateTime";
-            this.lblDateTime.Size = new System.Drawing.Size(118, 17);
-            this.lblDateTime.Text = "toolStripStatusLabel1";
             // 
             // button1
             // 
