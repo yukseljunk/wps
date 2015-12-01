@@ -157,11 +157,19 @@ namespace WindowsFormsApplication1
                                 {
                                     _blogCache.InsertTag(blogUrl, t);
                                 }
-                                terms.Add(t);
+
+                                if (!terms.Select(term => term.Id).Contains(t.Id))
+                                {
+                                    terms.Add(t);
+                                }
+
                             }
                             else
                             {
-                                terms.Add(tagOnBlog);
+                                if (!terms.Select(term => term.Id).Contains(tagOnBlog.Id))
+                                {
+                                    terms.Add(tagOnBlog);
+                                }
                             }
                         }
                     }
