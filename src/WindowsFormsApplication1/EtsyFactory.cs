@@ -22,8 +22,7 @@ namespace WindowsFormsApplication1
         private readonly bool _useMySqlFtpWay;
         private IList<int> _userIds;
         private string _ftpDir;
-        private Ftp _ftp;
-
+ 
         public EtsyFactory(WordPressSiteConfig siteConfig, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true)
         {
             _siteConfig = siteConfig;
@@ -35,9 +34,9 @@ namespace WindowsFormsApplication1
 
             if (useMySqlFtpWay)
             {
-                _ftp = new Ftp();
+                var ftp = new Ftp();
                 _ftpDir = DateTime.Now.Year + "/" + DateTime.Now.Month;
-                _ftp.MakeFtpDir("ftp.nalgorithm.com", _ftpDir, "bloggon@nalgorithm.com", "U4E9TrT;5!)F");
+                ftp.MakeFtpDir("ftp.nalgorithm.com", _ftpDir, "bloggon@nalgorithm.com", "U4E9TrT;5!)F");
             }
 
         }
@@ -68,6 +67,7 @@ namespace WindowsFormsApplication1
                             return 0;
                         }
                     }
+                    var ftp = new Ftp();
 
                     //validation
                     if (item.Images.Count == 0 || string.IsNullOrWhiteSpace(item.Title.Trim()) || string.IsNullOrWhiteSpace(item.Content.Trim()))
@@ -89,7 +89,7 @@ namespace WindowsFormsApplication1
                         var thumbnailUrl = String.Empty;
                         if (_useMySqlFtpWay)
                         {
-                            _ftp.UploadFileFtp(imageData, "ftp://ftp.nalgorithm.com/" + _ftpDir,
+                            ftp.UploadFileFtp(imageData, "ftp://ftp.nalgorithm.com/" + _ftpDir,
                                 "bloggon@nalgorithm.com", "U4E9TrT;5!)F");
                             uploaded = new UploadResult() { Url = blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Name, Id = "1" }; //TODO:should go to mysql to insert this as post
                             thumbnailUrl =uploaded.Url; //TODO:Will be thinking about this
