@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Web;
 using PttLib;
@@ -20,15 +19,26 @@ namespace WindowsFormsApplication1
         private readonly WordPressSiteConfig _siteConfig;
         private readonly BlogCache _blogCache;
         private readonly Dal _dal;
-        private IList<int> _userIds; 
+        private readonly bool _useMySqlFtpWay;
+        private IList<int> _userIds;
+        private string _ftpDir;
+        private Ftp _ftp;
 
-        public EtsyFactory(WordPressSiteConfig siteConfig, BlogCache blogCache, Dal dal)
+        public EtsyFactory(WordPressSiteConfig siteConfig, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true)
         {
             _siteConfig = siteConfig;
             _blogCache = blogCache;
             _dal = dal;
+            _useMySqlFtpWay = useMySqlFtpWay;
             var userDal = new UserDal(_dal);
             _userIds = userDal.UserIds();
+
+            if (useMySqlFtpWay)
+            {
+                _ftp = new Ftp();
+                _ftpDir = DateTime.Now.Year + "/" + DateTime.Now.Month;
+                _ftp.MakeFtpDir("ftp.nalgorithm.com", _ftpDir, "bloggon@nalgorithm.com", "U4E9TrT;5!)F");
+            }
 
         }
 
@@ -58,41 +68,47 @@ namespace WindowsFormsApplication1
                             return 0;
                         }
                     }
-                    
+
                     //validation
-                    if (item.Images.Count==0||string.IsNullOrWhiteSpace(item.Title.Trim()) ||string.IsNullOrWhiteSpace(item.Content.Trim()))
+                    if (item.Images.Count == 0 || string.IsNullOrWhiteSpace(item.Title.Trim()) || string.IsNullOrWhiteSpace(item.Content.Trim()))
                     {
                         return -2;
                     }
 
                     var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
-                    //new NetworkCredential("bloggon@nalgorithm.com", "U4E9TrT;5!)F")
 
-                    
                     var imageIndex = 1;
                     IList<UploadResult> imageUploads = new List<UploadResult>();
-                    
+
                     foreach (var imageUrl in item.Images)
                     {
-                        //var imageData = Data.CreateFromUrl(imageUrl);
-                        //imageData.Name = converterFunctions.SeoUrl(item.Title, 50) + "-" + imageIndex + Path.GetExtension(imageUrl);
-                        //imageIndex++;
-
-                        //UploadFileFtp(imageData, "ftp://ftp.nalgorithm.com", "bloggon@nalgorithm.com", "U4E9TrT;5!)F");
-                   
-                        /*
-                        var uploaded = client.UploadFile(imageData);
-                        imageUploads.Add(uploaded);
-                        var thumbnailUrl =
-                            Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
-                            Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" +
-                            Path.GetExtension(uploaded.Url);
+                        var imageData = Data.CreateFromUrl(imageUrl);
+                        imageData.Name = converterFunctions.SeoUrl(item.Title, 50) + "-" + imageIndex + Path.GetExtension(imageUrl);
+                        imageIndex++;
+                        UploadResult uploaded = null;
+                        var thumbnailUrl = String.Empty;
+                        if (_useMySqlFtpWay)
+                        {
+                            _ftp.UploadFileFtp(imageData, "ftp://ftp.nalgorithm.com/" + _ftpDir,
+                                "bloggon@nalgorithm.com", "U4E9TrT;5!)F");
+                            uploaded = new UploadResult() { Url = blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Name, Id = "1" }; //TODO:should go to mysql to insert this as post
+                            thumbnailUrl =uploaded.Url; //TODO:Will be thinking about this
+                        }
+                        else
+                        {
+                            uploaded = client.UploadFile(imageData);
+                            imageUploads.Add(uploaded);
+                            thumbnailUrl =
+                                Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
+                                Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" +
+                                Path.GetExtension(uploaded.Url);
+                        }
 
                         content.Append(
                             string.Format(
                                 "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
                                 uploaded.Url, thumbnailUrl, item.Title));
-                         */
+
                     }
                     content.Append(string.Format("</div><h4>Price:${0}</h4>", item.Price));
                     content.Append("<strong>Description: </strong>");
@@ -147,12 +163,17 @@ namespace WindowsFormsApplication1
                                     Taxonomy = "post_tag"
                                 };
 
-                                var tId = tagDal.InsertTag(t);
-                                t.Id = tId.ToString();
+                                if (_useMySqlFtpWay)
+                                {
+                                    var tId = tagDal.InsertTag(t);
+                                    t.Id = tId.ToString();
+                                }
+                                else
+                                {
+                                    var termId = client.NewTerm(t);
+                                    t.Id = termId;
+                                }
 
-                                //var termId = client.NewTerm(t);
-                                //t.Id = termId;
-                                
                                 if (useCache)
                                 {
                                     _blogCache.InsertTag(blogUrl, t);
@@ -174,28 +195,29 @@ namespace WindowsFormsApplication1
                         }
                     }
                     post.Terms = terms.ToArray();
+                    string newPost = "-1";
                     var stopWatch = new Stopwatch();
-                    stopWatch.Start();
-                    var newPost = postDal.InsertPost(post);
-                    stopWatch.Stop();
-                    var mysqlTime = stopWatch.ElapsedMilliseconds;
-                    //var newPost = client.NewPost(post);
-                    stopWatch.Reset();
-                    stopWatch.Start();
-                    post.Terms = null;
-                    var newPost2 = client.NewPost(post);
-                    stopWatch.Stop();
-                    var wordpressSharpTime = stopWatch.ElapsedMilliseconds;
-                    if (mysqlTime > wordpressSharpTime)
+                    if (_useMySqlFtpWay)
                     {
-                        //no need to use mysql???
+                        stopWatch.Start();
+                        newPost = postDal.InsertPost(post).ToString();
+                        stopWatch.Stop();
+                        var mysqlTime = stopWatch.ElapsedMilliseconds;
+                        Logger.LogProcess("mysqltime: " + mysqlTime);
                     }
-
+                    else
+                    {
+                        stopWatch.Reset();
+                        stopWatch.Start();
+                        newPost = client.NewPost(post);
+                        stopWatch.Stop();
+                        var wordpressSharpTime = stopWatch.ElapsedMilliseconds;
+                        Logger.LogProcess("wordpressSharpTime: " + wordpressSharpTime);
+                    }
                     if (useCache)
                     {
                         _blogCache.InsertId(blogUrl, id);
                     }
-
 
                     return Convert.ToInt32(newPost);
 
@@ -206,7 +228,7 @@ namespace WindowsFormsApplication1
                     {
                         Logger.LogProcess(item.ToString());
                     }
-                    Logger.LogProcess("Author:"+authorId);
+                    Logger.LogProcess("Author:" + authorId);
                     Logger.LogExceptions(exception);
                     return -1;
 
@@ -217,50 +239,7 @@ namespace WindowsFormsApplication1
 
         }
 
-        public void UploadFileFtp(Data file, string ftpAddress, string username, string password)
-        {
-            var request = (FtpWebRequest)WebRequest.Create(ftpAddress + "/" + Path.GetFileName(file.Name));
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-            request.Credentials = new NetworkCredential(username, password);
-            request.UsePassive = true;
-            request.UseBinary = true;
-            request.KeepAlive = false;
-            using (Stream reqStream = request.GetRequestStream())
-            {
-                reqStream.Write(file.Bits, 0, file.Bits.Length);
-                reqStream.Close();
-            }
 
-            request.Abort();
-
-
-        }
-
-        public void UploadFileFtp(string filePath, string ftpAddress, string username, string password)
-        {
-            var request = (FtpWebRequest) WebRequest.Create(ftpAddress+ "/" + Path.GetFileName(filePath));
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-            request.Credentials = new NetworkCredential(username, password);
-            request.UsePassive = true;
-            request.UseBinary = true;
-            request.KeepAlive = false;
-            byte[] buffer;
-            using(FileStream stream = File.OpenRead(filePath))
-            {
-                buffer = new byte[stream.Length];
-                stream.Read(buffer, 0, buffer.Length);
-                stream.Close();   
-            }
-            using (Stream reqStream = request.GetRequestStream())
-            {
-                reqStream.Write(buffer, 0, buffer.Length);
-                reqStream.Close();
-            }
-
-            request.Abort();
-            
-
-        }
 
     }
 }

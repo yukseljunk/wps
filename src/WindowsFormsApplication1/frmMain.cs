@@ -214,7 +214,7 @@ namespace WindowsFormsApplication1
                 SetStatus("Ready");
                 ResetBarStatus(true);
                 barStatus.Maximum = lvItems.SelectedItems.Count;
-                var etsyFactory = new EtsyFactory(SiteConfig, _blogCache, dal);
+                var etsyFactory = new EtsyFactory(SiteConfig, _blogCache, dal, chkNoAPI.Checked);
 
                 foreach (ListViewItem item in lvItems.SelectedItems)
                 {
