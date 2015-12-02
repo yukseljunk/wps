@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace WordpressScraper.Dal
 {
@@ -15,8 +14,7 @@ namespace WordpressScraper.Dal
         public Dal(string connectionString)
         {
             _connectionString = connectionString;
-            _connection = new MySqlConnection(_connectionString);
-            _connection.Open();
+            
         }
 
 
@@ -54,23 +52,22 @@ namespace WordpressScraper.Dal
 
                 if (exception.Message.Contains("mysql_native_password") && exception.Message.Contains("YES"))
                 {
-                    result.Add("You should specify your IP on Remote Database Access Hosts on mysql server, cpanel>Remote database access hosts>add an access host>your ip");
+                    result.Add(
+                        "You should specify your IP on Remote Database Access Hosts on mysql server, cpanel>Remote database access hosts>add an access host>your ip");
                 }
             }
+            finally
+            {
+                Dispose();
+            }
+
             return result;
         }
 
         private void CheckConnection()
         {
-            if (_connection.State == ConnectionState.Broken)
-            {
-                _connection.Open();
-
-            }
-            if (_connection.State == ConnectionState.Closed)
-            {
-                _connection = new MySqlConnection(_connectionString);
-            }
+            _connection = new MySqlConnection(_connectionString);
+            _connection.Open();
         }
 
         public DataSet GetData(string sql)
@@ -83,14 +80,21 @@ namespace WordpressScraper.Dal
         {
             var result = new List<DataSet>();
             CheckConnection();
-            foreach (var sql in sqls)
+            try
             {
-                var cmd = _connection.CreateCommand();
-                cmd.CommandText = sql;
-                var adapter = new MySqlDataAdapter(cmd);
-                var dataset = new DataSet();
-                adapter.Fill(dataset);
-                result.Add(dataset);
+                foreach (var sql in sqls)
+                {
+                    var cmd = _connection.CreateCommand();
+                    cmd.CommandText = sql;
+                    var adapter = new MySqlDataAdapter(cmd);
+                    var dataset = new DataSet();
+                    adapter.Fill(dataset);
+                    result.Add(dataset);
+                }
+            }
+            finally
+            {
+                Dispose();
             }
 
             return result;
@@ -100,25 +104,32 @@ namespace WordpressScraper.Dal
         {
             var result = new List<DataSet>();
             CheckConnection();
-
-            foreach (var sql in sqls)
+            try
             {
-                if (sql.Item2)
+                foreach (var sql in sqls)
                 {
-                    var cmd = _connection.CreateCommand();
-                    cmd.CommandText = sql.Item1;
-                    var adapter = new MySqlDataAdapter(cmd);
-                    var dataset = new DataSet();
-                    adapter.Fill(dataset);
-                    result.Add(dataset);
-                }
-                else
-                {
-                    var cmd = _connection.CreateCommand();
-                    cmd.CommandText = sql.Item1;
-                    cmd.ExecuteNonQuery();
+                    if (sql.Item2)
+                    {
+                        var cmd = _connection.CreateCommand();
+                        cmd.CommandText = sql.Item1;
+                        var adapter = new MySqlDataAdapter(cmd);
+                        var dataset = new DataSet();
+                        adapter.Fill(dataset);
+                        result.Add(dataset);
+                    }
+                    else
+                    {
+                        var cmd = _connection.CreateCommand();
+                        cmd.CommandText = sql.Item1;
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
+            finally
+            {
+                Dispose();
+            }
+
 
 
             return result;
@@ -127,12 +138,20 @@ namespace WordpressScraper.Dal
         public void ExecuteNonQuery(IList<string> sqls)
         {
             CheckConnection();
-            foreach (var sql in sqls)
+            try
             {
-                var cmd = _connection.CreateCommand();
-                cmd.CommandText = sql;
-                cmd.ExecuteNonQuery();
+                foreach (var sql in sqls)
+                {
+                    var cmd = _connection.CreateCommand();
+                    cmd.CommandText = sql;
+                    cmd.ExecuteNonQuery();
+                }
             }
+            finally
+            {
+                Dispose();
+            }
+
         }
 
         public void ExecuteNonQuery(string sql)
