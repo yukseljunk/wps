@@ -6,6 +6,13 @@ using WordPressSharp.Models;
 
 namespace WindowsFormsApplication1
 {
+    public class FtpConfig
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string Url { get; set; }
+    }
+    
     public class Ftp
     {
         public void UploadFileFtp(Data file, string ftpAddress, string username, string password)
@@ -13,7 +20,7 @@ namespace WindowsFormsApplication1
             var tryAgain = true;
             while (tryAgain)
             {
-                var request = (FtpWebRequest) WebRequest.Create(ftpAddress + "/" + Path.GetFileName(file.Name));
+                var request = (FtpWebRequest) WebRequest.Create("ftp://"+ftpAddress + "/" + Path.GetFileName(file.Name));
                 try
                 {
                     request.Method = WebRequestMethods.Ftp.UploadFile;
@@ -51,7 +58,7 @@ namespace WindowsFormsApplication1
 
         public void UploadFileFtp(string filePath, string ftpAddress, string username, string password)
         {
-            var request = (FtpWebRequest)WebRequest.Create(ftpAddress + "/" + Path.GetFileName(filePath));
+            var request = (FtpWebRequest)WebRequest.Create("ftp://" + ftpAddress + "/" + Path.GetFileName(filePath));
             try
             {
                 request.Method = WebRequestMethods.Ftp.UploadFile;
