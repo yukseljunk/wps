@@ -34,6 +34,17 @@ namespace WindowsFormsApplication1
             this.Text += " v" + Assembly.GetExecutingAssembly().GetName().Version;
             lblDateTime.Text = "";
             chkNoAPI_CheckedChanged(null, null);
+            FillSites();
+        }
+
+        private void FillSites()
+        {
+            chkSites.Items.Clear();
+            var siteFactory = new SiteFactory();
+            foreach (var name in siteFactory.GetNames)
+            {
+                chkSites.Items.Add(name);
+            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -214,7 +225,7 @@ namespace WindowsFormsApplication1
                 SetStatus("Ready");
                 ResetBarStatus(true);
                 barStatus.Maximum = lvItems.SelectedItems.Count;
-                var etsyFactory = new EtsyFactory(SiteConfig, FtpConfiguration, _blogCache, dal, chkNoAPI.Checked);
+                var postFactory = new PostFactory(SiteConfig, FtpConfiguration, _blogCache, dal, chkNoAPI.Checked);
 
                 foreach (ListViewItem item in lvItems.SelectedItems)
                 {
@@ -222,7 +233,7 @@ namespace WindowsFormsApplication1
                     SetStatus("Creating item on the blog:" + item.Text);
                     Application.DoEvents();
                     Item itemObject = ItemFromListView(item);
-                    var itemNo = etsyFactory.Create(itemObject, txtBlogUrl.Text, chkCache.Checked,
+                    var itemNo = postFactory.Create(itemObject, txtBlogUrl.Text, "etsy", chkCache.Checked,
                         chkFeatureImage.Checked);
                     Application.DoEvents();
                     barStatus.PerformStep();

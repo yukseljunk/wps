@@ -193,6 +193,7 @@
     <Compile Include="PttRequestResponse\RequestResponseWithoutCaptchaOmitExceptionsForHotelList.cs" />
     <Compile Include="PttRequestResponse\RequestResponseWithWebBrowser.cs" />
     <Compile Include="Site.cs" />
+    <Compile Include="SiteFactory.cs" />
     <Compile Include="TourInfo\ConverterFunctions.cs" />
     <Compile Include="TourInfo\ITourInfo.cs" />
     <Compile Include="TourInfo\ITourInfoConverter.cs" />

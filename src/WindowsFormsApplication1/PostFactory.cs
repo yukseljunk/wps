@@ -14,7 +14,7 @@ using WordpressScraper.Dal;
 
 namespace WindowsFormsApplication1
 {
-    public class EtsyFactory
+    public class PostFactory
     {
         private readonly WordPressSiteConfig _siteConfig;
         private readonly FtpConfig _ftpConfiguration;
@@ -24,7 +24,7 @@ namespace WindowsFormsApplication1
         private IList<int> _userIds;
         private string _ftpDir;
  
-        public EtsyFactory(WordPressSiteConfig siteConfig, FtpConfig ftpConfiguration, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true)
+        public PostFactory(WordPressSiteConfig siteConfig, FtpConfig ftpConfiguration, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true)
         {
             _siteConfig = siteConfig;
             _ftpConfiguration = ftpConfiguration;
@@ -51,7 +51,7 @@ namespace WindowsFormsApplication1
         /// <param name="useCache"></param>
         /// <param name="useFeatureImage"></param>
         /// <returns>id crated, 0 if exists, -1 if error, -2 if not valid</returns>
-        public int Create(Item item, string blogUrl, bool useCache = true, bool useFeatureImage = false)
+        public int Create(Item item, string blogUrl, string siteName, bool useCache = true, bool useFeatureImage = false)
         {
             var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
             var postDal = new PostDal(_dal);
@@ -67,7 +67,7 @@ namespace WindowsFormsApplication1
 
             try
             {
-                var id = "etsy_" + item.Id;
+                var id = siteName+"_" + item.Id;
                 if (useCache)
                 {
                     if (_blogCache.IdsPresent(blogUrl).Contains(id))

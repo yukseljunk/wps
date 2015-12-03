@@ -4,6 +4,13 @@ namespace PttLib
 {
     public class Dawanda : Site
     {
+        public override string Name
+        {
+            get
+            {
+                return "Dawanda";
+            }
+        }
         public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
         {
             pageCount = 500;

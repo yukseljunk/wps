@@ -9,6 +9,7 @@ namespace PttLib
 {
     public class Site
     {
+        public virtual string Name { get; private set; }
         public virtual string PageNoQsParameter
         {
             get { return "page"; }

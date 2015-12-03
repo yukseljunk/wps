@@ -59,7 +59,7 @@
     <Compile Include="Dal\Dal.cs" />
     <Compile Include="Dal\ImageDal.cs" />
     <Compile Include="Dal\TagDal.cs" />
-    <Compile Include="EtsyFactory.cs" />
+    <Compile Include="PostFactory.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
