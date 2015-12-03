@@ -88,6 +88,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txtFtpUrl = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.btnTestFtpConnection = new System.Windows.Forms.Button();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -645,6 +646,7 @@
             // grpFtp
             // 
             this.grpFtp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.grpFtp.Controls.Add(this.btnTestFtpConnection);
             this.grpFtp.Controls.Add(this.txtFtpPassword);
             this.grpFtp.Controls.Add(this.label9);
             this.grpFtp.Controls.Add(this.txtFtpUserName);
@@ -656,16 +658,16 @@
             this.grpFtp.Size = new System.Drawing.Size(285, 121);
             this.grpFtp.TabIndex = 24;
             this.grpFtp.TabStop = false;
-            this.grpFtp.Text = "FTP to uploads folder";
+            this.grpFtp.Text = "FTP to wp_content/uploads folder";
             // 
             // txtFtpPassword
             // 
             this.txtFtpPassword.Location = new System.Drawing.Point(75, 85);
             this.txtFtpPassword.Name = "txtFtpPassword";
             this.txtFtpPassword.PasswordChar = '*';
-            this.txtFtpPassword.Size = new System.Drawing.Size(182, 20);
+            this.txtFtpPassword.Size = new System.Drawing.Size(76, 20);
             this.txtFtpPassword.TabIndex = 6;
-            this.txtFtpPassword.Text = "Kazmanot111+";
+            this.txtFtpPassword.Text = "U4E9TrT;5!)F";
             // 
             // label9
             // 
@@ -709,6 +711,17 @@
             this.label11.Size = new System.Drawing.Size(20, 13);
             this.label11.TabIndex = 1;
             this.label11.Text = "Url";
+            // 
+            // btnTestFtpConnection
+            // 
+            this.btnTestFtpConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTestFtpConnection.Location = new System.Drawing.Point(157, 85);
+            this.btnTestFtpConnection.Name = "btnTestFtpConnection";
+            this.btnTestFtpConnection.Size = new System.Drawing.Size(100, 23);
+            this.btnTestFtpConnection.TabIndex = 13;
+            this.btnTestFtpConnection.Text = "Test connection";
+            this.btnTestFtpConnection.UseVisualStyleBackColor = true;
+            this.btnTestFtpConnection.Click += new System.EventHandler(this.btnTestFtpConnection_Click);
             // 
             // frmMain
             // 
@@ -812,6 +825,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtFtpUrl;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button btnTestFtpConnection;
     }
 }
 

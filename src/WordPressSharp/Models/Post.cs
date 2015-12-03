@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CookComputing.XmlRpc;
 using System.Diagnostics;
 
@@ -15,8 +16,13 @@ namespace WordPressSharp.Models
         public string PostType { get; set; }
 
         public string BlogUrl { get; set; }
-        public string MimeType { get; set; }
+       
 
+        /// <summary>
+        /// for image posts
+        /// </summary>
+        public string Url { get; set; }
+        
         [XmlRpcMember("post_title")]
         public string Title { get; set; }
 

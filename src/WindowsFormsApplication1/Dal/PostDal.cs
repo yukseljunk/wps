@@ -45,10 +45,10 @@ namespace WordpressScraper.Dal
                 "SET @l=LAST_INSERT_ID();" +
                 "Update wp_posts set guid=concat('{22}?p=',@l) where Id=@l;" +
                 "{23}{24}SELECT @l;",
-                post.Author, post.PublishDateTime.AddDays(-1).ToString("yyyy-MM-dd HH':'mm':'ss"), post.PublishDateTime.AddDays(-1).ToString("yyyy-MM-dd HH':'mm':'ss"), post.Content.EscapeSql(), post.Title.EscapeSql(), "", post.Status,
+                post.Author, post.PublishDateTime.ToString("yyyy-MM-dd HH':'mm':'ss"), post.PublishDateTime.ToString("yyyy-MM-dd HH':'mm':'ss"), post.Content.EscapeSql(), post.Title.EscapeSql(), "", post.Status,
                 post.CommentStatus, "open",
                 "", postName.EscapeSql(), "", "", DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), "", 0, "", 0,
-                post.PostType, post.MimeType, 0, post.BlogUrl.EscapeSql(), customFieldSql.ToString(),tagsSql.ToString());
+                post.PostType, "", 0, post.BlogUrl.EscapeSql(), customFieldSql.ToString(),tagsSql.ToString());
 
             var postInsertDataSet = _dal.GetData(sql);
 

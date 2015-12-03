@@ -327,7 +327,7 @@ namespace WindowsFormsApplication1
             get
             {
                 return new FtpConfig()
-                           {Url = txtFtpUrl.Text, UserName = txtFtpUserName.Text, Password = txtPassword.Text};
+                           {Url = txtFtpUrl.Text, UserName = txtFtpUserName.Text, Password = txtFtpPassword.Text};
             }
         }
 
@@ -495,6 +495,18 @@ namespace WindowsFormsApplication1
         {
             grpBlogProp.Enabled = !chkNoAPI.Checked;
             grpFtp.Enabled = chkNoAPI.Checked;
+        }
+
+        private void btnTestFtpConnection_Click(object sender, EventArgs e)
+        {
+            var ftp= new Ftp();
+            string result= ftp.TestConnection(FtpConfiguration);
+            if (string.IsNullOrEmpty(result))
+            {
+                MessageBox.Show("Successfull!");
+                return;
+            }
+            MessageBox.Show("Failed: "+result);
         }
     }
 }

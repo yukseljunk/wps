@@ -44,6 +44,10 @@ namespace WindowsFormsApplication1
                 catch (Exception exception)
                 {
                     Logger.LogExceptions(exception);
+                    if(exception.Message.Contains("Not logged in"))
+                    {
+                        break;
+                    }
                 }
                 finally
                 {
@@ -133,5 +137,29 @@ namespace WindowsFormsApplication1
             }
         }
 
+        public string TestConnection(FtpConfig ftpConfiguration)
+        {
+            var request = (FtpWebRequest)WebRequest.Create("ftp://" + ftpConfiguration.Url + "/");
+            request.Credentials = new NetworkCredential(ftpConfiguration.UserName, ftpConfiguration.Password);
+            request.Method = WebRequestMethods.Ftp.ListDirectory;
+            try
+            {
+                using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
+                {
+                    response.Close();
+                    return "";
+                }
+            }
+            catch(Exception exception)
+            {
+                return exception.ToString();
+            }
+            finally
+            {
+                request.Abort();
+                request = null;
+                GC.Collect();
+            }
+        }
     }
 }

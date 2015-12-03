@@ -56,6 +56,7 @@ namespace WindowsFormsApplication1
             var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
             var postDal = new PostDal(_dal);
             var tagDal = new TagDal(_dal);
+            var imageDal= new ImageDal(_dal);
             var converterFunctions = new ConverterFunctions();
             WordPressClient client = null;
 
@@ -106,6 +107,13 @@ namespace WindowsFormsApplication1
                                            Id = "1"
                                        }; //TODO:should go to mysql to insert this as post
 
+                        var imageId=imageDal.Insert(new ImagePost()
+                        {
+                            Url = uploaded.Url, 
+                            Author = authorId.ToString(),
+                            Alt= item.Title
+                        });
+                        uploaded.Id = imageId.ToString();
                         thumbnailUrl = uploaded.Url; //TODO:Will be thinking about this
                     }
                     else
