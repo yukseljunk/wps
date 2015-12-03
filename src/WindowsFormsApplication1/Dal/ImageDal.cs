@@ -27,8 +27,9 @@ namespace WordpressScraper.Dal
         /// image.Title=image.Name
         /// </summary>
         /// <param name="image"></param>
+        /// <param name="ftpDir"></param>
         /// <returns></returns>
-        public int Insert(ImagePost image)
+        public int Insert(ImagePost image, string ftpDir)
         {
             var customFields = new List<CustomField>();
             var customFieldSql = new StringBuilder();
@@ -36,10 +37,16 @@ namespace WordpressScraper.Dal
             {
                 customFields = image.CustomFields.ToList();
             }
+            var postName = Path.GetFileNameWithoutExtension(image.Url) + Path.GetExtension(image.Url);
 
-            if (string.IsNullOrEmpty(image.Alt))
+            if (!string.IsNullOrEmpty(image.Alt))
             {
                 customFields.Add(new CustomField() { Key = "_wp_attachment_image_alt", Value = image.Alt });
+                customFields.Add(new CustomField() { Key = "_wp_attached_file", Value = ftpDir + "/" + postName });
+
+                //TODO: figure out this data...
+                customFields.Add(new CustomField() { Key = "_wp_attachment_metadata", Value = "a:5:{s:5:\"width\";i:640;s:6:\"height\";i:640;s:4:\"file\";s:63:\"2015/12/shopping-cart-cover-for-girls--accessories-for-ba-1.jpg\";s:5:\"sizes\";a:1:{s:9:\"thumbnail\";a:4:{s:4:\"file\";s:63:\"shopping-cart-cover-for-girls--accessories-for-ba-1-150x150.jpg\";s:5:\"width\";i:150;s:6:\"height\";i:150;}}}" });
+
             }
 
             foreach (var customField in customFields)
@@ -51,13 +58,7 @@ namespace WordpressScraper.Dal
 
             }
 
-            var mimeType = image.MimeType;
-            if (string.IsNullOrEmpty(mimeType))
-            {
-                mimeType = "image/jpeg";
-            }
 
-            var postName = Path.GetFileNameWithoutExtension(image.Url) + Path.GetExtension(image.Url);
 
             var sql = string.Format(
                 "INSERT INTO wp_posts(post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, " +
@@ -65,11 +66,11 @@ namespace WordpressScraper.Dal
                 "menu_order, post_type, post_mime_type, comment_count) VALUES " +
                 "('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}');" +
                 "SET @l=LAST_INSERT_ID();" +
-                "{23}SELECT @l;",
+                "{22}SELECT @l;",
                 image.Author, image.PublishDateTime.ToString("yyyy-MM-dd HH':'mm':'ss"), image.PublishDateTime.ToString("yyyy-MM-dd HH':'mm':'ss"), image.Content.EscapeSql(), postName.EscapeSql(), image.Exerpt, "inherit",
                 "open", "closed",
                 "", postName.EscapeSql(), "", "", DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), "", 0, image.Url, 0,
-                "attachment", mimeType, 0, customFieldSql.ToString());
+                "attachment", image.MimeType, 0, customFieldSql.ToString());
 
             var postInsertDataSet = _dal.GetData(sql);
 

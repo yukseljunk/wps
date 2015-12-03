@@ -111,8 +111,10 @@ namespace WindowsFormsApplication1
                         {
                             Url = uploaded.Url, 
                             Author = authorId.ToString(),
-                            Alt= item.Title
-                        });
+                            Alt = item.Title + imageIndex,
+                            PublishDateTime = DateTime.Now,
+                            Content = item.Title + imageIndex
+                        }, _ftpDir);
                         uploaded.Id = imageId.ToString();
                         thumbnailUrl = uploaded.Url; //TODO:Will be thinking about this
                     }
