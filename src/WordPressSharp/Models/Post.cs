@@ -16,8 +16,9 @@ namespace WordPressSharp.Models
         public string PostType { get; set; }
 
         public string BlogUrl { get; set; }
-       
 
+        public List<string> ImageIds { get; set; }
+ 
         /// <summary>
         /// for image posts
         /// </summary>

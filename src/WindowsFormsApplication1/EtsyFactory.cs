@@ -116,17 +116,16 @@ namespace WindowsFormsApplication1
                             Content = item.Title + imageIndex
                         }, _ftpDir);
                         uploaded.Id = imageId.ToString();
-                        thumbnailUrl = uploaded.Url; //TODO:Will be thinking about this
                     }
                     else
                     {
                         uploaded = client.UploadFile(imageData);
-                        thumbnailUrl =
-                            Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
-                            Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" +
-                            Path.GetExtension(uploaded.Url);
+                       
                     }
-
+                    thumbnailUrl =
+                           Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
+                           Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" +
+                           Path.GetExtension(uploaded.Url);
                     imageUploads.Add(uploaded);
                     content.Append(
                         string.Format(
@@ -138,33 +137,33 @@ namespace WindowsFormsApplication1
                 content.Append(converterFunctions.ArrangeContent(item.Content));
 
                 var post = new Post
-                               {
-                                   PostType = "post",
-                                   Title = converterFunctions.FirstNWords(item.Title, 65, true),
-                                   Content = content.ToString(),
-                                   PublishDateTime = DateTime.Now,
-                                   Author = authorId.ToString(),
-                                   CommentStatus = "open",
-                                   Status = "draft",
-                                   BlogUrl = blogUrl,
-                                   CustomFields = new[]
-                                                      {
-                                                          new CustomField() {Key = "foreignkey", Value = id},
-                                                          new CustomField() {Key = "_aioseop_title", Value = item.Title}
-                                                          ,
-                                                          new CustomField()
-                                                              {
-                                                                  Key = "_aioseop_description",
-                                                                  Value = item.MetaDescription
-                                                              },
-                                                          new CustomField()
-                                                              {
-                                                                  Key = "_aioseop_keywords",
-                                                                  Value = string.Join(",", item.Tags)
-                                                              },
-                                                          new CustomField() {Key = "_thumbnail_id", Value = ""},
-                                                      }
-                               };
+                {
+                    PostType = "post",
+                    Title = converterFunctions.FirstNWords(item.Title, 65, true),
+                    Content = content.ToString(),
+                    PublishDateTime = DateTime.Now,
+                    Author = authorId.ToString(),
+                    CommentStatus = "open",
+                    Status = "draft",
+                    BlogUrl = blogUrl,
+                    CustomFields = new[]
+                    {
+                        new CustomField() {Key = "foreignkey", Value = id},
+                        new CustomField() {Key = "_aioseop_title", Value = item.Title}
+                        ,
+                        new CustomField()
+                            {
+                                Key = "_aioseop_description",
+                                Value = item.MetaDescription
+                            },
+                        new CustomField()
+                            {
+                                Key = "_aioseop_keywords",
+                                Value = string.Join(",", item.Tags)
+                            },
+                        new CustomField() {Key = "_thumbnail_id", Value = ""},
+                    }
+                };
 
                 if (imageUploads.Any())
                 {
@@ -172,6 +171,7 @@ namespace WindowsFormsApplication1
                     {
                         post.FeaturedImageId = imageUploads[0].Id;
                     }
+                    post.ImageIds = imageUploads.Select(i => i.Id).ToList();
                     post.CustomFields[4].Value = imageUploads[0].Id;
                 }
 
