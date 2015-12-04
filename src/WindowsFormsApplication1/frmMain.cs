@@ -14,7 +14,7 @@ namespace WindowsFormsApplication1
 {
     public partial class frmMain : Form
     {
-        private const string DefaultUrl = "https://www.etsy.com/search/accessories?q=baby+chair";
+        private const string DefaultKey = "baby chair";
         private BlogCache _blogCache;
         private bool StopToken = false;
         private ListViewColumnSorter lvwColumnSorter;
@@ -26,7 +26,7 @@ namespace WindowsFormsApplication1
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            txtUrl.Text = DefaultUrl;
+            txtUrl.Text = DefaultKey;
             btnGo.Enabled = false;
             btnStop.Enabled = false;
             btnStopScrape.Enabled = false;

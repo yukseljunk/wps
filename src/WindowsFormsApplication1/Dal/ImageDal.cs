@@ -43,17 +43,6 @@ namespace WordpressScraper.Dal
             {
                 customFields.Add(new CustomField() { Key = "_wp_attachment_image_alt", Value = image.Alt });
                 customFields.Add(new CustomField() { Key = "_wp_attached_file", Value = ftpDir + "/" + postName });
-
-                //TODO: figure out this data...
-                /*customFields.Add(new CustomField()
-                    {
-                        Key = "_wp_attachment_metadata", 
-                        Value = 
-                        string.Format(
-                        "a:5:{{s:5:\"width\";i:640;s:6:\"height\";i:640;s:4:\"file\";s:63:\"{{0}}/{{1}}{{2}}\";s:5:\"sizes\";a:3:{{s:9:\"thumbnail\";a:4:{{s:4:\"file\";s:63:\"{{1}}-150x150{{2}}\";s:5:\"width\";i:150;s:6:\"height\";i:150;s:9:\"mime-type\";s:10:\"image/jpeg\";}}s:6:\"medium\";a:4:{{s:4:\"file\";s:63:\"{{1}}-300x300{{2}}\";s:5:\"width\";i:300;s:6:\"height\";i:300;s:9:\"mime-type\";s:10:\"image/jpeg\";}}s:13:\"excerpt-thumb\";a:4:{{s:4:\"file\";s:63:\"{{1}}-250x250{{2}}\";s:5:\"width\";i:250;s:6:\"height\";i:250;s:9:\"mime-type\";s:10:\"image/jpeg\";}}}}s:10:\"image_meta\";a:11:{{s:8:\"aperture\";i:0;s:6:\"credit\";s:0:\"\";s:6:\"camera\";s:0:\"\";s:7:\"caption\";s:0:\"\";s:17:\"created_timestamp\";i:0;s:9:\"copyright\";s:0:\"\";s:12:\"focal_length\";i:0;s:3:\"iso\";i:0;s:13:\"shutter_speed\";i:0;s:5:\"title\";s:0:\"\";s:11:\"orientation\";i:0;}}}}",
-                        ftpDir, Path.GetFileNameWithoutExtension(image.Url), Path.GetExtension(image.Url))
-                    });
-                 */
             }
 
             foreach (var customField in customFields)

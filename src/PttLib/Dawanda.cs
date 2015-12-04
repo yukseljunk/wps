@@ -4,6 +4,11 @@ namespace PttLib
 {
     public class Dawanda : Site
     {
+        public override string UrlKeywordFormat
+        {
+            get { return "http://en.dawanda.com/search?q={0}"; }
+        }
+
         public override string Name
         {
             get
@@ -13,7 +18,12 @@ namespace PttLib
         }
         public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
         {
-            pageCount = 500;
+            pageCount = 0;
+            var pageNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='pagination extended']/a");
+            if (pageNodes != null)
+            {
+                pageCount = int.Parse(pageNodes[pageNodes.Count - 2].InnerText);
+            }
         }
 
         public override string TagsXPath

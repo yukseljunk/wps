@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Web;
 using HtmlAgilityPack;
 using PttLib.Helpers;
 
@@ -13,6 +14,14 @@ namespace PttLib
         public virtual string PageNoQsParameter
         {
             get { return "page"; }
+        }
+
+        public virtual string UrlKeywordFormat
+        {
+            get
+            {
+                return string.Format("https://www.{0}.com/search?q={{0}}", Name);
+            }
         }
 
         public string Get(string url, int page = 1)
@@ -36,9 +45,15 @@ namespace PttLib
             get { return "//div[@class='product-listview-wrapper']//article/a[2]"; }
         }
 
-        public IList<Tuple<string, string>> GetItems(string url, out int pageCount, int page = 1)
+        public string UrlFromKey(string key)
+        {
+            return string.Format(UrlKeywordFormat,  HttpUtility.UrlEncode(key));
+        }
+
+        public IList<Tuple<string, string>> GetItems(string keyword, out int pageCount, int page = 1)
         {
             var result = new List<Tuple<string, string>>();
+            var url = UrlFromKey(keyword);
             var html = Get(url, page);
             var uri = new Uri(url);
             var mainUrl = uri.Scheme + "://" + uri.Host;
@@ -114,7 +129,7 @@ namespace PttLib
         }
 
 
-        
+
         public virtual Item GetItem(string title, string url)
         {
             var item = new Item()
