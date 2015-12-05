@@ -115,16 +115,6 @@ namespace WindowsFormsApplication1
                             PublishDateTime = DateTime.Now,
                             Content = item.Title + imageIndex
                         });
-                        /*
-                        var imageId=imageDal.Insert(new ImagePost()
-                        {
-                            Url = uploaded.Url, 
-                            Author = authorId.ToString(),
-                            Alt = item.Title + imageIndex,
-                            PublishDateTime = DateTime.Now,
-                            Content = item.Title + imageIndex
-                        }, _ftpDir);
-                        uploaded.Id = imageId.ToString();*/
                     }
                     else
                     {
@@ -141,11 +131,13 @@ namespace WindowsFormsApplication1
                             "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
                             uploaded.Url, thumbnailUrl, item.Title));
                 }
-
-                var imageIds = imageDal.Insert(imagePosts, _ftpDir);
-                for (int i = 0; i < imageUploads.Count; i++)
+                if (_useMySqlFtpWay)
                 {
-                    imageUploads[i].Id = imageIds[i].ToString();
+                    var imageIds = imageDal.Insert(imagePosts, _ftpDir);
+                    for (int i = 0; i < imageUploads.Count; i++)
+                    {
+                        imageUploads[i].Id = imageIds[i].ToString();
+                    }
                 }
 
                 content.Append(string.Format("</div><h4>Price:${0}</h4>", item.Price));
@@ -242,6 +234,8 @@ namespace WindowsFormsApplication1
                         }
                     }
                 }
+
+
                 post.Terms = terms.ToArray();
                 string newPost = "-1";
                 var stopWatch = new Stopwatch();

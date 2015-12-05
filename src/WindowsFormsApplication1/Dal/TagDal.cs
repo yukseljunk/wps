@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using PttLib.Helpers;
 using PttLib.TourInfo;
@@ -27,11 +28,46 @@ namespace WordpressScraper.Dal
             return _dal.GetData(sql);
         }
 
+        public IList<int> InsertTag(IList<Term> terms)
+        {
+            var sql = "";
+            foreach (var term in terms)
+            {
+                sql += InsertSql(term);
+            }
+
+            var tagInsertDataSets = _dal.GetData(sql);
+            if (tagInsertDataSets.Tables.Count == 0) { return null; }
+            var result = new List<int>();
+            foreach (DataTable table in tagInsertDataSets.Tables)
+            {
+                var imageId = 0;
+                if (table.Rows.Count == 0) { result.Add(imageId); continue; }
+                if (table.Rows[0].ItemArray.Length == 0) { result.Add(imageId); continue; }
+                imageId = int.Parse(table.Rows[0][0].ToString());
+                result.Add(imageId);
+
+            }
+            return result;
+        }
+
         public int InsertTag(Term term)
         {
+            var tagInsertDataSet = _dal.GetData(InsertSql(term));
+
+            if (tagInsertDataSet.Tables.Count == 0) { return -1; }
+            if (tagInsertDataSet.Tables[0].Rows.Count == 0) { return -1; }
+            if (tagInsertDataSet.Tables[0].Rows[0].ItemArray.Length == 0) { return -1; }
+
+            var id = tagInsertDataSet.Tables[0].Rows[0][0].ToString();
+            return int.Parse(id);
+        }
+
+        public string InsertSql(Term term)
+        {
             var converterFunctions = new ConverterFunctions();
-            
-            var sql = string.Format(
+
+            return string.Format(
                 "INSERT INTO wp_terms(name, slug, term_group) VALUES" +
                 "('{0}','{1}',0);" +
                 "SET @l=LAST_INSERT_ID();" +
@@ -40,15 +76,6 @@ namespace WordpressScraper.Dal
                 term.Name.EscapeSql(),
                 converterFunctions.SeoUrl(term.Name).EscapeSql(),
                 term.Description.EscapeSql());
-
-            var tagInsertDataSet = _dal.GetData(sql);
-
-            if (tagInsertDataSet.Tables.Count == 0) { return -1; }
-            if (tagInsertDataSet.Tables[0].Rows.Count == 0) { return -1; }
-            if (tagInsertDataSet.Tables[0].Rows[0].ItemArray.Length == 0) { return -1; }
-
-            var id = tagInsertDataSet.Tables[0].Rows[0][0].ToString();
-            return int.Parse(id);
         }
     }
 }
