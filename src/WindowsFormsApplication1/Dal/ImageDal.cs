@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using PttLib.Helpers;
 using PttLib.TourInfo;
@@ -18,6 +19,29 @@ namespace WordpressScraper.Dal
             _dal = dal;
         }
 
+        public IList<int> Insert(IList<ImagePost> images, string ftpDir)
+        {
+            var sql = "";
+            foreach (var imagePost in images)
+            {
+                sql+=InsertSql(imagePost, ftpDir);
+            }
+
+            var postInsertDataSet = _dal.GetData(sql);
+            if (postInsertDataSet.Tables.Count == 0) { return null; }
+            var result = new List<int>();
+            foreach (DataTable table in postInsertDataSet.Tables)
+            {
+                var imageId = 0;
+                if (table.Rows.Count == 0) { result.Add(imageId); continue; }
+                if (table.Rows[0].ItemArray.Length == 0) { result.Add(imageId); continue; }
+                imageId = int.Parse(table.Rows[0][0].ToString());
+                result.Add(imageId);
+
+            }
+            return result;
+        }
+
         /// <summary>
         /// image.Content> description of the image
         /// image.Exerpt> caption of the image
@@ -30,6 +54,21 @@ namespace WordpressScraper.Dal
         /// <param name="ftpDir"></param>
         /// <returns></returns>
         public int Insert(ImagePost image, string ftpDir)
+        {
+            var sql = InsertSql(image, ftpDir);
+
+            var postInsertDataSet = _dal.GetData(sql);
+
+            if (postInsertDataSet.Tables.Count == 0) { return -1; }
+            if (postInsertDataSet.Tables[0].Rows.Count == 0) { return -1; }
+            if (postInsertDataSet.Tables[0].Rows[0].ItemArray.Length == 0) { return -1; }
+
+            var id = postInsertDataSet.Tables[0].Rows[0][0].ToString();
+            return int.Parse(id);
+        }
+
+
+        public string InsertSql(ImagePost image, string ftpDir)
         {
             var customFields = new List<CustomField>();
             var customFieldSql = new StringBuilder();
@@ -54,7 +93,7 @@ namespace WordpressScraper.Dal
 
             }
 
-            var sql = string.Format(
+            return string.Format(
                 "INSERT INTO wp_posts(post_author, post_date, post_date_gmt, post_content, post_title, post_excerpt, post_status, comment_status, " +
                 "ping_status, post_password, post_name, to_ping, pinged, post_modified, post_modified_gmt, post_content_filtered, post_parent, guid, " +
                 "menu_order, post_type, post_mime_type, comment_count) VALUES " +
@@ -66,14 +105,7 @@ namespace WordpressScraper.Dal
                 "", postName.EscapeSql(), "", "", DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), "", 0, image.Url, 0,
                 "attachment", image.MimeType, 0, customFieldSql.ToString());
 
-            var postInsertDataSet = _dal.GetData(sql);
 
-            if (postInsertDataSet.Tables.Count == 0) { return -1; }
-            if (postInsertDataSet.Tables[0].Rows.Count == 0) { return -1; }
-            if (postInsertDataSet.Tables[0].Rows[0].ItemArray.Length == 0) { return -1; }
-
-            var id = postInsertDataSet.Tables[0].Rows[0][0].ToString();
-            return int.Parse(id);
         }
 
     }

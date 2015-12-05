@@ -23,7 +23,7 @@ namespace WindowsFormsApplication1
         private readonly bool _useMySqlFtpWay;
         private IList<int> _userIds;
         private string _ftpDir;
- 
+
         public PostFactory(WordPressSiteConfig siteConfig, FtpConfig ftpConfiguration, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true)
         {
             _siteConfig = siteConfig;
@@ -56,7 +56,7 @@ namespace WindowsFormsApplication1
             var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
             var postDal = new PostDal(_dal);
             var tagDal = new TagDal(_dal);
-            var imageDal= new ImageDal(_dal);
+            var imageDal = new ImageDal(_dal);
             var converterFunctions = new ConverterFunctions();
             WordPressClient client = null;
 
@@ -67,7 +67,7 @@ namespace WindowsFormsApplication1
 
             try
             {
-                var id = siteName+"_" + item.Id;
+                var id = siteName + "_" + item.Id;
                 if (useCache)
                 {
                     if (_blogCache.IdsPresent(blogUrl).Contains(id))
@@ -88,7 +88,7 @@ namespace WindowsFormsApplication1
 
                 var imageIndex = 1;
                 IList<UploadResult> imageUploads = new List<UploadResult>();
-
+                var imagePosts = new List<ImagePost>();
                 foreach (var imageUrl in item.Images)
                 {
                     var imageData = Data.CreateFromUrl(imageUrl);
@@ -107,6 +107,15 @@ namespace WindowsFormsApplication1
                                            Id = "1"
                                        }; //TODO:should go to mysql to insert this as post
 
+                        imagePosts.Add(new ImagePost()
+                        {
+                            Url = uploaded.Url,
+                            Author = authorId.ToString(),
+                            Alt = item.Title + imageIndex,
+                            PublishDateTime = DateTime.Now,
+                            Content = item.Title + imageIndex
+                        });
+                        /*
                         var imageId=imageDal.Insert(new ImagePost()
                         {
                             Url = uploaded.Url, 
@@ -115,12 +124,12 @@ namespace WindowsFormsApplication1
                             PublishDateTime = DateTime.Now,
                             Content = item.Title + imageIndex
                         }, _ftpDir);
-                        uploaded.Id = imageId.ToString();
+                        uploaded.Id = imageId.ToString();*/
                     }
                     else
                     {
                         uploaded = client.UploadFile(imageData);
-                       
+
                     }
                     thumbnailUrl =
                            Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
@@ -132,6 +141,13 @@ namespace WindowsFormsApplication1
                             "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
                             uploaded.Url, thumbnailUrl, item.Title));
                 }
+
+                var imageIds = imageDal.Insert(imagePosts, _ftpDir);
+                for (int i = 0; i < imageUploads.Count; i++)
+                {
+                    imageUploads[i].Id = imageIds[i].ToString();
+                }
+
                 content.Append(string.Format("</div><h4>Price:${0}</h4>", item.Price));
                 content.Append("<strong>Description: </strong>");
                 content.Append(converterFunctions.ArrangeContent(item.Content));
