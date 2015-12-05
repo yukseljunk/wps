@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -204,6 +205,8 @@ namespace WindowsFormsApplication1
                 return;
             }
 
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
             CreateAuthors();
             using (var dal = new Dal(MySqlConnectionString))
             {
@@ -213,7 +216,8 @@ namespace WindowsFormsApplication1
                 StopToken = false;
                 bool errorFound = false;
 
-                lblDateTime.Text = DateTime.Now.ToShortTimeString();
+                
+                lblDateTime.Text = "Started at " + DateTime.Now.ToLongTimeString();
                 if (chkCache.Checked)
                 {
                     SetStatus("Loading present posts and tags in the blog(this may take some time)...");
@@ -262,6 +266,9 @@ namespace WindowsFormsApplication1
             }
             ResetBarStatus();
             EnDisItems(true);
+            stopWatch.Stop();
+            var mysqlTime = stopWatch.ElapsedMilliseconds;
+            lblDateTime.Text = "Took " + stopWatch.Elapsed.TotalMinutes.ToString("0.00") + " mins";
         }
 
         private void CreateAuthors()
@@ -337,8 +344,7 @@ namespace WindowsFormsApplication1
         {
             get
             {
-                return new FtpConfig()
-                           {Url = txtFtpUrl.Text, UserName = txtFtpUserName.Text, Password = txtFtpPassword.Text};
+                return new FtpConfig() { Url = txtFtpUrl.Text, UserName = txtFtpUserName.Text, Password = txtFtpPassword.Text };
             }
         }
 
@@ -510,14 +516,14 @@ namespace WindowsFormsApplication1
 
         private void btnTestFtpConnection_Click(object sender, EventArgs e)
         {
-            var ftp= new Ftp();
-            string result= ftp.TestConnection(FtpConfiguration);
+            var ftp = new Ftp();
+            string result = ftp.TestConnection(FtpConfiguration);
             if (string.IsNullOrEmpty(result))
             {
                 MessageBox.Show("Successfull!");
                 return;
             }
-            MessageBox.Show("Failed: "+result);
+            MessageBox.Show("Failed: " + result);
         }
     }
 }

@@ -634,8 +634,6 @@
             // 
             this.chkNoAPI.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkNoAPI.AutoSize = true;
-            this.chkNoAPI.Checked = true;
-            this.chkNoAPI.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkNoAPI.Location = new System.Drawing.Point(422, 554);
             this.chkNoAPI.Name = "chkNoAPI";
             this.chkNoAPI.Size = new System.Drawing.Size(181, 17);
