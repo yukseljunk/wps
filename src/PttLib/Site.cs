@@ -50,6 +50,13 @@ namespace PttLib
             return string.Format(UrlKeywordFormat,  HttpUtility.UrlEncode(key));
         }
 
+        /// <summary>
+        /// gets title and link values for keyword
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="pageCount"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         public IList<Tuple<string, string>> GetItems(string keyword, out int pageCount, int page = 1)
         {
             var result = new List<Tuple<string, string>>();

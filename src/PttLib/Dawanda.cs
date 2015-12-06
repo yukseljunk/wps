@@ -19,7 +19,7 @@ namespace PttLib
         public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
         {
             pageCount = 0;
-            var pageNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='pagination extended']/a");
+            var pageNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='pagination-container']/div/a");
             if (pageNodes != null)
             {
                 pageCount = int.Parse(pageNodes[pageNodes.Count - 2].InnerText);

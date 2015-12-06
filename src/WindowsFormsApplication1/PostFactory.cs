@@ -60,6 +60,7 @@ namespace WindowsFormsApplication1
         /// </summary>
         /// <param name="item"></param>
         /// <param name="blogUrl"></param>
+        /// <param name="siteName"> </param>
         /// <param name="useCache"></param>
         /// <param name="useFeatureImage"></param>
         /// <returns>id crated, 0 if exists, -1 if error, -2 if not valid</returns>

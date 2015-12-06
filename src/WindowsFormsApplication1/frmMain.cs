@@ -46,110 +46,135 @@ namespace WindowsFormsApplication1
             {
                 chkSites.Items.Add(name);
             }
+            chkSites.SetItemChecked(0, true);
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
             if (txtUrl.Text == "")
             {
-                MessageBox.Show("Enter Url!");
+                MessageBox.Show("Enter Keyword!");
                 return;
             }
+            var sitesCount = chkSites.CheckedItems.Count;
+            if (sitesCount == 0)
+            {
+                MessageBox.Show("Select sites!");
+                return;
+            }
+
             numPage_ValueChanged(null, null);
-            var allResults = new List<Tuple<string, string>>();
+
             var pageStart = (int)numPage.Value;
             var pageEnd = chkAllPages.Checked ? (int)numPageTo.Maximum : (int)numPageTo.Value;
-            ResetBarStatus(true);
             barStatus.Maximum = pageEnd - pageStart;
-            for (var page = pageStart; page <= pageEnd; page++)
-            {
-                Application.DoEvents();
-                SetStatus(string.Format("Getting Page {0}", page));
-                int pageCount;
-                var results = GetEtsyItems(txtUrl.Text, page, out pageCount);
-                if (page > pageCount)
-                {
-                    break;
-                }
-                barStatus.PerformStep();
-                if (results == null)
-                {
-                    continue;
-                }
-                allResults.AddRange(results);
-            }
-            SetStatus("Ready");
-            ResetBarStatus();
-            if (!allResults.Any())
-            {
-                MessageBox.Show(string.Format("No results found for url {0} for pages {1}-{2} ", txtUrl.Text, numPage.Value, numPageTo.Value));
-                return;
-            }
-
-            if (chkClearResults.Checked)
-            {
-                lvItems.Items.Clear();
-            }
-            btnStart.Enabled = false;
-            btnStopScrape.Enabled = true;
-            btnGo.Enabled = false;
             StopToken = false;
-            ResetBarStatus(true);
-            barStatus.Maximum = allResults.Count;
-            SetStatus("Filling items....");
-            var itemIndex = lvItems.Items.Count + 1;
-            Cursor.Current = Cursors.WaitCursor;
-            var blockIndex = 0;
-
-            do
+            var siteFactory = new SiteFactory();
+            var cleaned = false;
+            foreach (var checkedItem in chkSites.CheckedItems)
             {
-                var subResults = allResults.Skip(20 * blockIndex).Take(20);
-                if (!subResults.Any()) break;
-                blockIndex++;
+                var allResults = new List<Tuple<string, string>>();
+                ResetBarStatus(true);
+                var site = siteFactory.GetByName(checkedItem.ToString());
 
-                var listViewItems = new List<ListViewItem>();
-
-                foreach (var etsyResult in subResults)
+                for (var page = pageStart; page <= pageEnd; page++)
                 {
                     Application.DoEvents();
+                    SetStatus(string.Format("Getting Page {0}", page));
+                    int pageCount;
+                    var results = site.GetItems(txtUrl.Text, out pageCount, page);
+                    if (page > pageCount)
+                    {
+                        break;
+                    }
+                    barStatus.PerformStep();
+                    if (results == null)
+                    {
+                        continue;
+                    }
+                    allResults.AddRange(results);
+                }
+                SetStatus("Ready");
+                ResetBarStatus();
 
-                    var item = GetEtsyItem(etsyResult.Item1, etsyResult.Item2);
-                    string[] row1 =
+
+                if (!allResults.Any())
+                {
+                    MessageBox.Show(string.Format("No results found for keyword {0} for pages {1}-{2} for the site {3} ", txtUrl.Text, numPage.Value, numPageTo.Value, site.Name));
+                    continue;
+                }
+
+                if (chkClearResults.Checked && !cleaned)
+                {
+                    lvItems.Items.Clear();
+                    cleaned = true;
+                }
+
+                btnStart.Enabled = false;
+                btnStopScrape.Enabled = true;
+                btnGo.Enabled = false;
+                ResetBarStatus(true);
+                barStatus.Maximum = allResults.Count;
+                SetStatus("Filling items....");
+                var itemIndex = lvItems.Items.Count + 1;
+                Cursor.Current = Cursors.WaitCursor;
+                var blockIndex = 0;
+
+                do
+                {
+                    var subResults = allResults.Skip(20 * blockIndex).Take(20);
+                    if (!subResults.Any()) break;
+                    blockIndex++;
+
+                    var listViewItems = new List<ListViewItem>();
+
+                    foreach (var etsyResult in subResults)
+                    {
+                        Application.DoEvents();
+
+                        var item = site.GetItem(etsyResult.Item1, etsyResult.Item2);
+                        string[] row1 =
                         {
                             item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
                             item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
                             string.Join(",", item.Images), string.Join(",", item.Tags), ""
                         };
 
-                    var listViewitem = new ListViewItem(itemIndex.ToString());
-                    listViewitem.SubItems.AddRange(row1);
-                    listViewItems.Add(listViewitem);
-                    barStatus.PerformStep();
-                    itemIndex++;
+                        var listViewitem = new ListViewItem(itemIndex.ToString());
+                        listViewitem.SubItems.AddRange(row1);
+                        listViewItems.Add(listViewitem);
+                        barStatus.PerformStep();
+                        itemIndex++;
+                        if (StopToken)
+                        {
+                            break;
+                        }
+
+                    }
+
+                    lvItems.ListViewItemSorter = null;
+                    lvItems.BeginUpdate();
+                    lvItems.Items.AddRange(listViewItems.ToArray());
+                    lvItems.EndUpdate();
                     if (StopToken)
                     {
                         break;
                     }
+                } while (true);
 
-                }
+                SetStatus("Ready");
+                lvwColumnSorter = new ListViewColumnSorter();
+                lvItems.ListViewItemSorter = lvwColumnSorter;
 
-                lvItems.ListViewItemSorter = null;
-                lvItems.BeginUpdate();
-                lvItems.Items.AddRange(listViewItems.ToArray());
-                lvItems.EndUpdate();
+
                 if (StopToken)
                 {
                     break;
                 }
-            } while (true);
-
-            SetStatus("Ready");
-            lvwColumnSorter = new ListViewColumnSorter();
-            lvItems.ListViewItemSorter = lvwColumnSorter;
+            }
 
             ResetBarStatus();
-            btnGo.Enabled = allResults.Any();
-
+            btnGo.Enabled = lvItems.Items.Count > 0;
             btnStart.Enabled = true;
             Cursor.Current = Cursors.Default;
             btnStopScrape.Enabled = false;
@@ -163,29 +188,6 @@ namespace WindowsFormsApplication1
             barStatus.Visible = visible;
         }
 
-        private static IEnumerable<Tuple<string, string>> GetDawandaItems(string url, int page, out int pageCount)
-        {
-            var dawanda = new Dawanda();
-            return page == 0 ? dawanda.GetItems(url, out pageCount) : dawanda.GetItems(url, out pageCount, page);
-        }
-
-
-        private static IEnumerable<Tuple<string, string>> GetEtsyItems(string url, int page, out int pageCount)
-        {
-            var etsy = new Etsy();
-            return page == 0 ? etsy.GetItems(url, out pageCount) : etsy.GetItems(url, out pageCount, page);
-        }
-
-        private static Item GetEtsyItem(string title, string url)
-        {
-            var etsy = new Etsy();
-            return etsy.GetItem(title, url);
-        }
-        private static Item GetDawandaItem(string title, string url)
-        {
-            var dawanda = new Dawanda();
-            return dawanda.GetItem(title, url);
-        }
 
         private void btnSelectAll_Click(object sender, EventArgs e)
         {
