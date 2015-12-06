@@ -115,25 +115,32 @@ namespace WindowsFormsApplication1
                         }
 
                         imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
-
-                        var size = new Size(_maxImageDimension, _maxImageDimension);
-                        using (MemoryStream inStream = new MemoryStream(imageData.Bits))
+                        var resize = false;
+                        using(var img = Image.FromFile(tempImageFileName))
                         {
-                            using (MemoryStream outStream = new MemoryStream())
-                            {
-                                // Initialize the ImageFactory using the overload to preserve EXIF metadata.
-                                using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
-                                {
-                                    // Load, resize, set the format and quality and save an image.
-                                    imageFactory.Load(inStream)
-                                        .Resize(size)
-                                        .Save(tempImageFileName);
-                                }
-                                // Do something with the stream.
-                            }
+                            resize = img.Width > _maxImageDimension || img.Height > _maxImageDimension;
                         }
-                        imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
+                        if (resize)
+                        {
 
+                            var size = new Size(_maxImageDimension, _maxImageDimension);
+                            using (MemoryStream inStream = new MemoryStream(imageData.Bits))
+                            {
+                                using (var outStream = new MemoryStream())
+                                {
+                                    // Initialize the ImageFactory using the overload to preserve EXIF metadata.
+                                    using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                                    {
+                                        // Load, resize, set the format and quality and save an image.
+                                        imageFactory.Load(inStream)
+                                            .Constrain(size)
+                                            .Save(tempImageFileName);
+                                    }
+                                    // Do something with the stream.
+                                }
+                            }
+                            imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
+                        }
                     }
                     else
                     {
