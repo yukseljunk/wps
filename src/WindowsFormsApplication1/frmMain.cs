@@ -15,7 +15,7 @@ namespace WindowsFormsApplication1
 {
     public partial class frmMain : Form
     {
-        private const string DefaultKey = "baby chair";
+        private const string DefaultKey = "baby spoon";
         private BlogCache _blogCache;
         private bool StopToken = false;
         private ListViewColumnSorter lvwColumnSorter;
@@ -216,7 +216,7 @@ namespace WindowsFormsApplication1
                 StopToken = false;
                 bool errorFound = false;
 
-                
+
                 lblDateTime.Text = "Started at " + DateTime.Now.ToLongTimeString();
                 if (chkCache.Checked)
                 {
@@ -229,7 +229,7 @@ namespace WindowsFormsApplication1
                 SetStatus("Ready");
                 ResetBarStatus(true);
                 barStatus.Maximum = lvItems.SelectedItems.Count;
-                var postFactory = new PostFactory(SiteConfig, FtpConfiguration, _blogCache, dal, chkNoAPI.Checked);
+                var postFactory = new PostFactory(SiteConfig, FtpConfiguration, _blogCache, dal, chkNoAPI.Checked, chkResizeImages.Checked ? (int)numMaxImageDimension.Value : 0);
 
                 foreach (ListViewItem item in lvItems.SelectedItems)
                 {
@@ -326,7 +326,9 @@ namespace WindowsFormsApplication1
             grpAuthors.Enabled = enabled;
             btnStopScrape.Enabled = enabled;
             chkNoAPI.Enabled = enabled;
-
+            chkFeatureImage.Enabled = enabled;
+            chkResizeImages.Enabled = enabled;
+            numMaxImageDimension.Enabled = enabled;
             if (!enabled)
             {
                 grpBlogProp.Enabled = false;

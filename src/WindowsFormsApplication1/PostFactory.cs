@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Web;
+using ImageProcessor;
+using ImageProcessor.Imaging.Formats;
+using MimeTypes;
 using PttLib;
 using PttLib.Helpers;
 using PttLib.TourInfo;
@@ -21,16 +26,19 @@ namespace WindowsFormsApplication1
         private readonly BlogCache _blogCache;
         private readonly Dal _dal;
         private readonly bool _useMySqlFtpWay;
+        private readonly int _maxImageDimension;
         private IList<int> _userIds;
         private string _ftpDir;
+        private const string ImagesDir = "temp";
 
-        public PostFactory(WordPressSiteConfig siteConfig, FtpConfig ftpConfiguration, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true)
+        public PostFactory(WordPressSiteConfig siteConfig, FtpConfig ftpConfiguration, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true, int maxImageDimension = 0)
         {
             _siteConfig = siteConfig;
             _ftpConfiguration = ftpConfiguration;
             _blogCache = blogCache;
             _dal = dal;
             _useMySqlFtpWay = useMySqlFtpWay;
+            _maxImageDimension = maxImageDimension;
             var userDal = new UserDal(_dal);
             _userIds = userDal.UserIds();
 
@@ -39,6 +47,10 @@ namespace WindowsFormsApplication1
                 var ftp = new Ftp();
                 _ftpDir = DateTime.Now.Year + "/" + DateTime.Now.Month;
                 ftp.MakeFtpDir(_ftpConfiguration.Url, _ftpDir, _ftpConfiguration.UserName, _ftpConfiguration.Password);
+            }
+            if (maxImageDimension > 0)
+            {
+                Directory.CreateDirectory(ImagesDir);
             }
 
         }
@@ -91,7 +103,43 @@ namespace WindowsFormsApplication1
                 var imagePosts = new List<ImagePost>();
                 foreach (var imageUrl in item.Images)
                 {
-                    var imageData = Data.CreateFromUrl(imageUrl);
+                    Data imageData = null;
+                    if (_maxImageDimension > 0)
+                    {
+                        var extension = Path.GetExtension(imageUrl);
+                        var tempImageFileName = ImagesDir + "/" + "temp" + extension;
+                        //download image and resize it...
+                        using (WebClient webClient = new WebClient())
+                        {
+                            webClient.DownloadFile(imageUrl, tempImageFileName);
+                        }
+
+                        imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
+
+                        var size = new Size(_maxImageDimension, _maxImageDimension);
+                        using (MemoryStream inStream = new MemoryStream(imageData.Bits))
+                        {
+                            using (MemoryStream outStream = new MemoryStream())
+                            {
+                                // Initialize the ImageFactory using the overload to preserve EXIF metadata.
+                                using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                                {
+                                    // Load, resize, set the format and quality and save an image.
+                                    imageFactory.Load(inStream)
+                                        .Resize(size)
+                                        .Save(tempImageFileName);
+                                }
+                                // Do something with the stream.
+                            }
+                        }
+                        imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
+
+                    }
+                    else
+                    {
+                        imageData = Data.CreateFromUrl(imageUrl);
+                    }
+
                     imageData.Name = converterFunctions.SeoUrl(item.Title, 50) + "-" + imageIndex +
                                      Path.GetExtension(imageUrl);
                     imageIndex++;
