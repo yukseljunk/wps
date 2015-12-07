@@ -36,15 +36,19 @@ namespace PttLib.PttRequestResponse
 
                     if (!request.Chunked)
                     {
-                        //request.WrappedRequest.CookieContainer.Add(response.Cookies);//buna gerek yok gibi, request.Cookies ile debug edince GetResponse da cookiler otomatik olarak doluyor zaten                        
-                        using (var sr = new StreamReader(response.GetResponseStream(), encoding))
+                        //request.WrappedRequest.CookieContainer.Add(response.Cookies);//buna gerek yok gibi, request.Cookies ile debug edince GetResponse da cookiler otomatik olarak doluyor zaten     
+                        using (var respStream = response.GetResponseStream())
                         {
-                            result = sr.ReadToEnd();
-                            sr.Close();
+                            respStream.ReadTimeout = 1000;
+                            using (var sr = new StreamReader(respStream, encoding))
+                            {
+                                result = sr.ReadToEnd();
+                                sr.Close();
+                            }
+                            response.Close();
+                            request.Response = result;
+                            return result;
                         }
-                        response.Close();
-                        request.Response = result;
-                        return result;
                     }
                     else
                     {
@@ -66,10 +70,10 @@ namespace PttLib.PttRequestResponse
                             resStream.Flush();
                             resStream.Close();
                         }
-                        
+
                         response.Close();
                         request.Response = sb.ToString();
-                       
+
                         return sb.ToString();
                     }
                 }

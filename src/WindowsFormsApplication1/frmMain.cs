@@ -136,18 +136,21 @@ namespace WindowsFormsApplication1
                         Application.DoEvents();
 
                         var item = site.GetItem(etsyResult.Item1, etsyResult.Item2);
-                        string[] row1 =
+                        if (item != null)
                         {
-                            item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
-                            item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
-                            string.Join(",", item.Images), string.Join(",", item.Tags), site.Name, ""
-                        };
+                            string[] row1 =
+                            {
+                                item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
+                                item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
+                                string.Join(",", item.Images), string.Join(",", item.Tags), site.Name, ""
+                            };
 
-                        var listViewitem = new ListViewItem(itemIndex.ToString());
-                        listViewitem.SubItems.AddRange(row1);
-                        listViewItems.Add(listViewitem);
-                        barStatus.PerformStep();
-                        itemIndex++;
+                            var listViewitem = new ListViewItem(itemIndex.ToString());
+                            listViewitem.SubItems.AddRange(row1);
+                            listViewItems.Add(listViewitem);
+                            barStatus.PerformStep();
+                            itemIndex++;
+                        }
                         if (StopToken)
                         {
                             break;
@@ -532,6 +535,25 @@ namespace WindowsFormsApplication1
                 return;
             }
             MessageBox.Show("Failed: " + result);
+        }
+
+        private void btnScrumble_Click(object sender, EventArgs e)
+        {
+            var itemCount = lvItems.Items.Count;
+            if (itemCount == 0) return;
+            for (var i = 0; i < itemCount; i++)
+            {
+                var randomIndex = Helper.GetRandomNumber(0, itemCount);
+                var moveRandomIndex = Helper.GetRandomNumber(0, itemCount);
+                var item = lvItems.Items[randomIndex];
+                lvItems.Items.RemoveAt(randomIndex);
+                lvItems.Items.Insert(moveRandomIndex, item);
+               
+            }
+            for (var i = 0; i < itemCount; i++)
+            {
+                lvItems.Items[i].Text = (i + 1).ToString();
+            }
         }
     }
 }

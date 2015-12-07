@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
 using HtmlAgilityPack;
 
 namespace PttLib
@@ -16,6 +19,26 @@ namespace PttLib
                 return "Dawanda";
             }
         }
+
+        /// <summary>
+        /// gets title and link values for keyword
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="pageCount"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public override IList<Tuple<string, string>> GetItems(string keyword, out int pageCount, int page = 1)
+        {
+            Thread.Sleep(1000);
+            return base.GetItems(keyword, out pageCount, page);
+        }
+
+        public override Item GetItem(string title, string url)
+        {
+            Thread.Sleep(1000);
+            return base.GetItem(title, url);
+        }
+
         public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
         {
             pageCount = 0;

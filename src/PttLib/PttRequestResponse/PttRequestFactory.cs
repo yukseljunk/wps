@@ -17,8 +17,8 @@ namespace PttLib.PttRequestResponse
         private readonly CookieContainer _cookieContainer;
         private readonly string _viewStateValue;
         private readonly string _eventValidationValue;
-    
-        private const string SimplestRequestFormat = "<Request><Url>{0}</Url></Request>";
+
+        private const string SimplestRequestFormat = "<Request><Url>{0}</Url><Host></Host><keepalive>False</keepalive><Timeout>10000</Timeout></Request>";
 
         /// <summary>
         /// default ctor, proxy either changed or nulled, cookieContainer new
@@ -196,7 +196,7 @@ namespace PttLib.PttRequestResponse
             pttRequest.WrappedRequest.ContentType = XmlParse.GetStringNodeValue(requestNode, "contenttype", "text/html", true);
             pttRequest.WrappedRequest.Referer = XmlParse.GetStringNodeValue(requestNode, "referer",
                 uri.GetLeftPart(UriPartial.Authority), true);
-            pttRequest.WrappedRequest.Host = XmlParse.GetStringNodeValue(requestNode, "host", uri.Host, true);
+            //pttRequest.WrappedRequest.Host = XmlParse.GetStringNodeValue(requestNode, "host", uri.Host, true);
             pttRequest.WrappedRequest.UserAgent = XmlParse.GetStringNodeValue(requestNode, "useragent",
                 "Mozilla/5.0 (Windows NT 5.2; rv:9.0.1) Gecko/20100101 Firefox/9.0.1",
                 true);

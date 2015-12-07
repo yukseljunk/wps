@@ -198,6 +198,11 @@ namespace WindowsFormsApplication1
                 content.Append(string.Format("</div><h4>Price:${0}</h4>", item.Price));
                 content.Append("<strong>Description: </strong>");
                 content.Append(converterFunctions.ArrangeContent(item.Content));
+                content.Append("<br><strong>Source:</strong> <a href=\"");
+                content.Append(item.Url);
+                content.Append("\" rel=\"nofollow\" target=\"_blank\">");
+                content.Append(item.Site);
+                content.Append(".com</a>");
 
                 var post = new Post
                 {

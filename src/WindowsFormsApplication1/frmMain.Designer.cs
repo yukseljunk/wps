@@ -95,6 +95,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnScrumble = new System.Windows.Forms.Button();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -205,7 +206,7 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectAll.Location = new System.Drawing.Point(15, 519);
+            this.btnSelectAll.Location = new System.Drawing.Point(103, 519);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(85, 23);
             this.btnSelectAll.TabIndex = 6;
@@ -816,11 +817,23 @@
             // 
             site.Text = "Site";
             // 
+            // btnScrumble
+            // 
+            this.btnScrumble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnScrumble.Location = new System.Drawing.Point(12, 519);
+            this.btnScrumble.Name = "btnScrumble";
+            this.btnScrumble.Size = new System.Drawing.Size(85, 23);
+            this.btnScrumble.TabIndex = 31;
+            this.btnScrumble.Text = "Scramble";
+            this.btnScrumble.UseVisualStyleBackColor = true;
+            this.btnScrumble.Click += new System.EventHandler(this.btnScrumble_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1297, 752);
+            this.Controls.Add(this.btnScrumble);
             this.Controls.Add(this.grpTop);
             this.Controls.Add(this.numMaxImageDimension);
             this.Controls.Add(this.lblResizePix);
@@ -924,6 +937,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtUrl;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnScrumble;
     }
 }
 
