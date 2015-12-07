@@ -38,6 +38,7 @@
             System.Windows.Forms.ColumnHeader Image;
             System.Windows.Forms.ColumnHeader tags;
             System.Windows.Forms.ColumnHeader postId;
+            System.Windows.Forms.ColumnHeader site;
             this.btnStart = new System.Windows.Forms.Button();
             this.lvItems = new System.Windows.Forms.ListView();
             this.btnSelectAll = new System.Windows.Forms.Button();
@@ -104,6 +105,7 @@
             Image = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             tags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             postId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            site = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.grpBlogProp.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.grpMysql.SuspendLayout();
@@ -186,6 +188,7 @@
             price,
             Image,
             tags,
+            site,
             postId});
             this.lvItems.FullRowSelect = true;
             this.lvItems.GridLines = true;
@@ -808,6 +811,10 @@
             this.label1.Size = new System.Drawing.Size(48, 13);
             this.label1.TabIndex = 26;
             this.label1.Text = "Keyword";
+            // 
+            // site
+            // 
+            site.Text = "Site";
             // 
             // frmMain
             // 

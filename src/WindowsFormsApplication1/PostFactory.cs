@@ -60,11 +60,10 @@ namespace WindowsFormsApplication1
         /// </summary>
         /// <param name="item"></param>
         /// <param name="blogUrl"></param>
-        /// <param name="siteName"> </param>
         /// <param name="useCache"></param>
         /// <param name="useFeatureImage"></param>
         /// <returns>id crated, 0 if exists, -1 if error, -2 if not valid</returns>
-        public int Create(Item item, string blogUrl, string siteName, bool useCache = true, bool useFeatureImage = false)
+        public int Create(Item item, string blogUrl, bool useCache = true, bool useFeatureImage = false)
         {
             var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
             var postDal = new PostDal(_dal);
@@ -80,7 +79,7 @@ namespace WindowsFormsApplication1
 
             try
             {
-                var id = siteName + "_" + item.Id;
+                var id = item.Site + "_" + item.Id;
                 if (useCache)
                 {
                     if (_blogCache.IdsPresent(blogUrl).Contains(id))

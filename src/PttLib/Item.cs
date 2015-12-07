@@ -11,7 +11,7 @@ namespace PttLib
         public IList<string> Tags { get; set; }
         public IList<string> Images { get; set; }
         public double Price { get; set; }
-
+        public string Site { get; set; }
         public string Url { get; set; }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace PttLib
         public override string ToString()
         {
             return string.Format(
-                "Item Id:{0}\nTitle:{1}\nMeta Description: {2}\nContent: {3}\nTags: {4}\nImages:{5}\nPrice:{6}\nUrl:{7}\n",
+                "Item Site:{8}\nId:{0}\nTitle:{1}\nMeta Description: {2}\nContent: {3}\nTags: {4}\nImages:{5}\nPrice:{6}\nUrl:{7}\n",
                 Id,
                 Title,
                 MetaDescription,
@@ -31,7 +31,8 @@ namespace PttLib
                 string.Join(",", Tags),
                 string.Join(",", Images),
                 Price,
-                Url);
+                Url,
+                Site);
         }
     }
 }

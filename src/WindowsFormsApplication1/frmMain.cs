@@ -140,7 +140,7 @@ namespace WindowsFormsApplication1
                         {
                             item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
                             item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
-                            string.Join(",", item.Images), string.Join(",", item.Tags), ""
+                            string.Join(",", item.Images), string.Join(",", item.Tags), site.Name, ""
                         };
 
                         var listViewitem = new ListViewItem(itemIndex.ToString());
@@ -243,7 +243,7 @@ namespace WindowsFormsApplication1
                     SetStatus("Creating item on the blog:" + item.Text);
                     Application.DoEvents();
                     Item itemObject = ItemFromListView(item);
-                    var itemNo = postFactory.Create(itemObject, txtBlogUrl.Text, "etsy", chkCache.Checked,
+                    var itemNo = postFactory.Create(itemObject, txtBlogUrl.Text, chkCache.Checked,
                         chkFeatureImage.Checked);
                     Application.DoEvents();
                     barStatus.PerformStep();
@@ -265,7 +265,7 @@ namespace WindowsFormsApplication1
                             status = itemNo.ToString();
                             break;
                     }
-                    item.SubItems[9].Text = status;
+                    item.SubItems[10].Text = status;
                     item.EnsureVisible();
                 }
                 SetStatus("Transfer finished" + (errorFound ? " with errors" : ""));
@@ -309,7 +309,8 @@ namespace WindowsFormsApplication1
                 Content = item.SubItems[5].Text,
                 Price = double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                Images = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                Images = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
+                Site = item.SubItems[9].Text
 
             };
         }
@@ -389,7 +390,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             var item = lvItems.SelectedItems[0];
-            var postId = item.SubItems[9].Text;
+            var postId = item.SubItems[10].Text;
             if (postId == "" || postId == "Error" || postId == "Exists")
             {
                 MessageBox.Show("No post id or problematic one!");
