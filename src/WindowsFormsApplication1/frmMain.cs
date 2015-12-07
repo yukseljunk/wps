@@ -63,6 +63,8 @@ namespace WindowsFormsApplication1
                 return;
             }
 
+            grpTop.Enabled = false;
+
             numPage_ValueChanged(null, null);
 
             var pageStart = (int)numPage.Value;
@@ -111,8 +113,9 @@ namespace WindowsFormsApplication1
                 }
 
                 btnStart.Enabled = false;
-                btnStopScrape.Enabled = true;
                 btnGo.Enabled = false;
+                
+                btnStopScrape.Enabled = true;
                 ResetBarStatus(true);
                 barStatus.Maximum = allResults.Count;
                 SetStatus("Filling items....");
@@ -174,6 +177,7 @@ namespace WindowsFormsApplication1
             }
 
             ResetBarStatus();
+            grpTop.Enabled = true;
             btnGo.Enabled = lvItems.Items.Count > 0;
             btnStart.Enabled = true;
             Cursor.Current = Cursors.Default;
@@ -316,7 +320,6 @@ namespace WindowsFormsApplication1
             barStatus.Margin = new Padding(lblStatus.Width - 50, barStatus.Margin.Top, barStatus.Margin.Right,
                 barStatus.Margin.Bottom);
         }
-
 
         private void EnDisItems(bool enabled)
         {

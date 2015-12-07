@@ -172,7 +172,12 @@ namespace PttLib
             {
                 foreach (var image in images)
                 {
-                    item.Images.Add(image.Attributes[ImagesAttribute].Value);
+                    var imageUrl = image.Attributes[ImagesAttribute].Value;
+                    if (!imageUrl.StartsWith("http://") && !imageUrl.StartsWith("https://"))
+                    {
+                        imageUrl = "http:" + (imageUrl.StartsWith("//")?"":"//") + imageUrl;
+                    }
+                    item.Images.Add(imageUrl);
                 }
             }
 
