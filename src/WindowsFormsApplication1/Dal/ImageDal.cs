@@ -76,12 +76,12 @@ namespace WordpressScraper.Dal
             {
                 customFields = image.CustomFields.ToList();
             }
-            var postName = Path.GetFileNameWithoutExtension(image.Url) + Path.GetExtension(image.Url);
+            var postName = Path.GetFileNameWithoutExtension(image.Url);// + Path.GetExtension(image.Url);
 
             if (!string.IsNullOrEmpty(image.Alt))
             {
                 customFields.Add(new CustomField() { Key = "_wp_attachment_image_alt", Value = image.Alt });
-                customFields.Add(new CustomField() { Key = "_wp_attached_file", Value = ftpDir + "/" + postName });
+                customFields.Add(new CustomField() { Key = "_wp_attached_file", Value = ftpDir + "/" + postName + Path.GetExtension(image.Url) });
             }
 
             foreach (var customField in customFields)

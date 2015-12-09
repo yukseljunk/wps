@@ -176,6 +176,8 @@ namespace WindowsFormsApplication1
                         uploaded = client.UploadFile(imageData);
 
                     }
+                    //todo url su sekilde olmali, tabii bunu nasil cekecegini dusunmen gerekli: http://blog.guessornot.com/2015/12/09/wooden-baby-spoon/wooden-baby-spoon-1
+                    //gereken seyler: 1. permalink formati 2. ayni title li elemanlara yeni indeks verilmesi buradan yapilmali, wordpress e birakilmamali
                     thumbnailUrl =
                            Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
                            Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" +
