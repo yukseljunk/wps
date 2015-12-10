@@ -608,6 +608,7 @@ namespace WindowsFormsApplication1
 
         private void btnRemoveDuplicates_Click(object sender, EventArgs e)
         {
+            var itemsToRemove= new List<ListViewItem>();
             for (var i = 0; i < lvItems.Items.Count; i++)
             {
                 var baseItem = lvItems.Items[i];
@@ -616,11 +617,16 @@ namespace WindowsFormsApplication1
                     var compareItem = lvItems.Items[j];
                     if (compareItem.SubItems[3].Text == baseItem.SubItems[3].Text && compareItem.SubItems[4].Text == baseItem.SubItems[4].Text)
                     {
-                        lvItems.Items.Remove(compareItem);
-
+                        itemsToRemove.Add(compareItem);
                     }
                 }
             }
+
+            foreach (var item in itemsToRemove)
+            {
+                lvItems.Items.Remove(item);
+            }
+
             WhiteBackground();
             ArrangeOrder();
         }
