@@ -162,8 +162,17 @@ namespace WindowsFormsApplication1
                     {
                         imageData = Data.CreateFromUrl(imageUrl);
                     }
+                    var imageName = postTitle;
 
-                    imageData.Name = postTitle + "-" + imageIndex +
+                    var invalidChars=Path.GetInvalidFileNameChars().ToList();
+                    invalidChars.Add('\'');
+                    foreach (var invalidChar in invalidChars)
+                    {
+                        imageName = imageName.Replace(invalidChar.ToString(), "");
+
+                        imageName = imageName.Replace("&#" + ((int)invalidChar) + ";", "");
+                    }
+                    imageData.Name = imageName + "-" + imageIndex +
                                      Path.GetExtension(imageUrl);
                     imageIndex++;
                     UploadResult uploaded = null;
@@ -201,7 +210,7 @@ namespace WindowsFormsApplication1
                     imageUploads.Add(uploaded);
                     content.Append(
                         string.Format(
-                            "<div style=\"width: 70px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" width=\"70px\" height=\"70px\" title=\"{2}\" /></a></div>",
+                            "<div style=\"width: 150px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
                             uploaded.Url, thumbnailUrl, item.Title));
                 }
                 if (_useMySqlFtpWay)

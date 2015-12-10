@@ -13,6 +13,7 @@ namespace PttLib
         public double Price { get; set; }
         public string Site { get; set; }
         public string Url { get; set; }
+        public int WordCount { get; set; }
 
         /// <summary>
         /// Returns a string that represents the current object.

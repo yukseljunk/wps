@@ -142,7 +142,7 @@ namespace WindowsFormsApplication1
                             {
                                 item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
                                 item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
-                                string.Join(",", item.Images), string.Join(",", item.Tags), site.Name, ""
+                                string.Join(",", item.Images), string.Join(",", item.Tags), site.Name, item.WordCount.ToString(),""
                             };
 
                             var listViewitem = new ListViewItem(itemIndex.ToString());
@@ -268,7 +268,7 @@ namespace WindowsFormsApplication1
                             status = itemNo.ToString();
                             break;
                     }
-                    item.SubItems[10].Text = status;
+                    item.SubItems[11].Text = status;
                     item.EnsureVisible();
                 }
                 SetStatus("Transfer finished" + (errorFound ? " with errors" : ""));
@@ -393,7 +393,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             var item = lvItems.SelectedItems[0];
-            var postId = item.SubItems[10].Text;
+            var postId = item.SubItems[11].Text;
             if (postId == "" || postId == "Error" || postId == "Exists")
             {
                 MessageBox.Show("No post id or problematic one!");
@@ -608,7 +608,7 @@ namespace WindowsFormsApplication1
 
         private void btnRemoveDuplicates_Click(object sender, EventArgs e)
         {
-            var itemsToRemove= new List<ListViewItem>();
+            var itemsToRemove = new List<ListViewItem>();
             for (var i = 0; i < lvItems.Items.Count; i++)
             {
                 var baseItem = lvItems.Items[i];
@@ -650,7 +650,7 @@ namespace WindowsFormsApplication1
 
             }
 
-           
+
         }
     }
 }

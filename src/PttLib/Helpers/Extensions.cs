@@ -1,4 +1,6 @@
-﻿namespace PttLib.Helpers
+﻿using System.Text.RegularExpressions;
+
+namespace PttLib.Helpers
 {
     public static class Extensions
     {
@@ -31,6 +33,14 @@
             if (rightTokenStartIndex == -1) return result;
             return result.Substring(leftTokenStartIndex + leftToken.Length, rightTokenStartIndex - leftTokenStartIndex - leftToken.Length);
         }
+
+        public static int WordCount(this string input)
+        {
+            MatchCollection collection = Regex.Matches(input, @"[\S]+");
+            return collection.Count;
+        }
+
+
 
     }
 }

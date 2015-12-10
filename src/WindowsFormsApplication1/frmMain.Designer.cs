@@ -39,6 +39,7 @@
             System.Windows.Forms.ColumnHeader tags;
             System.Windows.Forms.ColumnHeader postId;
             System.Windows.Forms.ColumnHeader site;
+            System.Windows.Forms.ColumnHeader wordcount;
             this.btnStart = new System.Windows.Forms.Button();
             this.lvItems = new System.Windows.Forms.ListView();
             this.btnSelectAll = new System.Windows.Forms.Button();
@@ -111,6 +112,7 @@
             tags = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             postId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             site = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            wordcount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.grpBlogProp.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.grpMysql.SuspendLayout();
@@ -198,6 +200,7 @@
             Image,
             tags,
             site,
+            wordcount,
             postId});
             this.lvItems.FullRowSelect = true;
             this.lvItems.GridLines = true;
@@ -875,6 +878,11 @@
             this.btnNavigate.Text = "Go to link...";
             this.btnNavigate.UseVisualStyleBackColor = true;
             this.btnNavigate.Click += new System.EventHandler(this.btnNavigate_Click);
+            // 
+            // wordcount
+            // 
+            wordcount.Text = "Word Count";
+            wordcount.Width = 79;
             // 
             // frmMain
             // 

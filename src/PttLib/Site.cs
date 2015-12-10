@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using HtmlAgilityPack;
 using PttLib.Helpers;
+using PttLib.TourInfo;
 
 namespace PttLib
 {
@@ -47,7 +48,7 @@ namespace PttLib
 
         public string UrlFromKey(string key)
         {
-            return string.Format(UrlKeywordFormat,  HttpUtility.UrlEncode(key));
+            return string.Format(UrlKeywordFormat, HttpUtility.UrlEncode(key));
         }
 
         /// <summary>
@@ -175,7 +176,7 @@ namespace PttLib
                     var imageUrl = image.Attributes[ImagesAttribute].Value;
                     if (!imageUrl.StartsWith("http://") && !imageUrl.StartsWith("https://"))
                     {
-                        imageUrl = "http:" + (imageUrl.StartsWith("//")?"":"//") + imageUrl;
+                        imageUrl = "http:" + (imageUrl.StartsWith("//") ? "" : "//") + imageUrl;
                     }
                     item.Images.Add(imageUrl);
                 }
@@ -194,6 +195,8 @@ namespace PttLib
             }
             item.Title = title;
 
+            var converterFunctions = new ConverterFunctions();
+            item.WordCount = converterFunctions.StripTags(content.InnerHtml, new List<string>()).WordCount();
             var regex = new Regex(IdRegex);
             var match = regex.Match(url);
             if (match.Success)
@@ -203,7 +206,6 @@ namespace PttLib
 
             return item;
         }
-
-
+        
     }
 }
