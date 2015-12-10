@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Data;
-using WordPressSharp;
 using WordPressSharp.Models;
 using WordpressScraper.Dal;
 
@@ -8,33 +7,41 @@ namespace WindowsFormsApplication1
 {
     public class BlogCache
     {
+        private Dictionary<string, HashSet<string>> _titlesPresent = new Dictionary<string, HashSet<string>>();
         private Dictionary<string, HashSet<string>> _idsPresent = new Dictionary<string, HashSet<string>>();
         private Dictionary<string, HashSet<Term>> _tagsPresent = new Dictionary<string, HashSet<Term>>();
 
-        private readonly WordPressSiteConfig _siteConfig;
         private readonly Dal _dal;
 
-        public BlogCache(WordPressSiteConfig siteConfig, Dal dal)
+        public BlogCache(Dal dal)
         {
-            _siteConfig = siteConfig;
             _dal = dal;
         }
 
         public void Start(string blogUrl)
         {
             IdsPresent(blogUrl);
+            TitlesPresent(blogUrl);
             TagsPresent(blogUrl);
+
         }
+        
 
         public void InsertId(string blogUrl, string id)
         {
             _idsPresent[blogUrl].Add(id);
         }
 
+        public void InsertTitle(string blogUrl, string title)
+        {
+            _titlesPresent[blogUrl].Add(title);
+        }
+
         public void InsertTag(string blogUrl, Term tag)
         {
             _tagsPresent[blogUrl].Add(tag);
         }
+
 
         public HashSet<string> IdsPresent(string blogUrl)
         {
@@ -49,6 +56,20 @@ namespace WindowsFormsApplication1
             return _idsPresent[blogUrl];
         }
 
+        public HashSet<string> TitlesPresent(string blogUrl)
+        {
+            if (!_titlesPresent.ContainsKey(blogUrl))
+            {
+                _titlesPresent.Add(blogUrl, null);
+            }
+            if (_titlesPresent[blogUrl] == null)
+            {
+                _titlesPresent[blogUrl] = GetPostTitles();
+            }
+            return _titlesPresent[blogUrl];
+        }
+
+    
         public HashSet<Term> TagsPresent(string blogUrl)
         {
             if (!_tagsPresent.ContainsKey(blogUrl))
@@ -101,6 +122,21 @@ namespace WindowsFormsApplication1
 
             return result;
         }
+
+        private HashSet<string> GetPostTitles()
+        {
+            var result = new HashSet<string>();
+            var postDal = new PostDal(_dal);
+            var allTitles = postDal.GetAllTitles();
+            if (allTitles.Tables.Count == 0) return result;
+            if (allTitles.Tables[0].Rows.Count == 0) return result;
+            foreach (DataRow row in allTitles.Tables[0].Rows)
+            {
+                result.Add(row["post_title"].ToString());
+            }
+            return result;
+        }
+
 
     }
 }

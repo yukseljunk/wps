@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Windows.Forms;
 
@@ -51,8 +52,24 @@ namespace WindowsFormsApplication1
             listviewX = (ListViewItem)x;
             listviewY = (ListViewItem)y;
 
+            int xInt,yInt;
+            bool isNumeric = int.TryParse(listviewX.SubItems[ColumnToSort].Text, out xInt);
+            isNumeric &= int.TryParse(listviewY.SubItems[ColumnToSort].Text, out yInt);
+
             // Compare the two items
             compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+            if (isNumeric)
+            {
+                compareResult = Math.Sign(xInt.CompareTo(yInt));
+            }
+
+            double xDbl, yDbl;
+            bool isDouble = double.TryParse(listviewX.SubItems[ColumnToSort].Text, out xDbl);
+            isDouble &= double.TryParse(listviewY.SubItems[ColumnToSort].Text, out yDbl);
+            if (isDouble)
+            {
+                compareResult = Math.Sign(xDbl.CompareTo(yDbl));
+            }
 
             // Calculate correct return value based on object comparison
             if (OrderOfSort == SortOrder.Ascending)

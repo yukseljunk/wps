@@ -8,7 +8,6 @@ using System.Net;
 using System.Text;
 using System.Web;
 using ImageProcessor;
-using ImageProcessor.Imaging.Formats;
 using MimeTypes;
 using PttLib;
 using PttLib.Helpers;
@@ -96,6 +95,23 @@ namespace WindowsFormsApplication1
                     return -2;
                 }
 
+                var postTitle = converterFunctions.FirstNWords(item.Title, 65, true);
+                var initialPostTitle = postTitle;
+                if (_blogCache.TitlesPresent(blogUrl).Contains(postTitle))
+                {
+                    var postIndex = 2;
+                    while (true)
+                    {
+                        postTitle = initialPostTitle + "-" + postIndex;
+                        if (!_blogCache.TitlesPresent(blogUrl).Contains(postTitle))
+                        {
+                            break;
+                        }
+                        postIndex++;
+                    }
+                }
+                _blogCache.InsertTitle(blogUrl, postTitle);
+
                 var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
 
                 var imageIndex = 1;
@@ -116,7 +132,7 @@ namespace WindowsFormsApplication1
 
                         imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
                         var resize = false;
-                        using(var img = Image.FromFile(tempImageFileName))
+                        using (var img = Image.FromFile(tempImageFileName))
                         {
                             resize = img.Width > _maxImageDimension || img.Height > _maxImageDimension;
                         }
@@ -147,7 +163,7 @@ namespace WindowsFormsApplication1
                         imageData = Data.CreateFromUrl(imageUrl);
                     }
 
-                    imageData.Name = converterFunctions.SeoUrl(item.Title, 50) + "-" + imageIndex +
+                    imageData.Name = postTitle + "-" + imageIndex +
                                      Path.GetExtension(imageUrl);
                     imageIndex++;
                     UploadResult uploaded = null;
@@ -177,7 +193,7 @@ namespace WindowsFormsApplication1
 
                     }
                     //todo url su sekilde olmali, tabii bunu nasil cekecegini dusunmen gerekli: http://blog.guessornot.com/2015/12/09/wooden-baby-spoon/wooden-baby-spoon-1
-                    //gereken seyler: 1. permalink formati 2. ayni title li elemanlara yeni indeks verilmesi buradan yapilmali, wordpress e birakilmamali
+                    //gereken seyler: 1. permalink formati
                     thumbnailUrl =
                            Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
                            Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" +
@@ -205,11 +221,11 @@ namespace WindowsFormsApplication1
                 content.Append("\" rel=\"nofollow\" target=\"_blank\">");
                 content.Append(item.Site);
                 content.Append(".com</a>");
-
+                
                 var post = new Post
                 {
                     PostType = "post",
-                    Title = converterFunctions.FirstNWords(item.Title, 65, true),
+                    Title = postTitle,
                     Content = content.ToString(),
                     PublishDateTime = DateTime.Now,
                     Author = authorId.ToString(),

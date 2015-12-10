@@ -76,5 +76,10 @@ namespace WordpressScraper.Dal
 
         }
 
+        public DataSet GetAllTitles()
+        {
+            var sql = "Select post_title from wp_posts";
+            return _dal.GetData(sql);
+        }
     }
 }

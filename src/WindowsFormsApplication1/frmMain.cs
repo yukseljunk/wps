@@ -114,7 +114,7 @@ namespace WindowsFormsApplication1
 
                 btnStart.Enabled = false;
                 btnGo.Enabled = false;
-                
+
                 btnStopScrape.Enabled = true;
                 ResetBarStatus(true);
                 barStatus.Maximum = allResults.Count;
@@ -219,7 +219,7 @@ namespace WindowsFormsApplication1
             CreateAuthors();
             using (var dal = new Dal(MySqlConnectionString))
             {
-                _blogCache = new BlogCache(SiteConfig, dal);
+                _blogCache = new BlogCache(dal);
 
                 EnDisItems(false);
                 StopToken = false;
@@ -517,6 +517,7 @@ namespace WindowsFormsApplication1
 
             // Perform the sort with these new sort options.
             lvItems.Sort();
+            ArrangeOrder();
         }
 
         private void chkNoAPI_CheckedChanged(object sender, EventArgs e)
@@ -548,12 +549,80 @@ namespace WindowsFormsApplication1
                 var item = lvItems.Items[randomIndex];
                 lvItems.Items.RemoveAt(randomIndex);
                 lvItems.Items.Insert(moveRandomIndex, item);
-               
+
             }
+            ArrangeOrder();
+        }
+
+        private void ArrangeOrder()
+        {
+            var itemCount = lvItems.Items.Count;
             for (var i = 0; i < itemCount; i++)
             {
                 lvItems.Items[i].Text = (i + 1).ToString();
             }
+        }
+
+        private void WhiteBackground()
+        {
+            var itemCount = lvItems.Items.Count;
+            for (var i = 0; i < itemCount; i++)
+            {
+                lvItems.Items[i].BackColor = Color.White;
+            }
+        }
+
+        private void txtFindDuplicatePosts_Click(object sender, EventArgs e)
+        {
+            WhiteBackground();
+            foreach (ListViewItem item in lvItems.Items)
+            {
+                var color = Color.FromArgb(255, Helper.GetRandomNumber(125, 225), Helper.GetRandomNumber(125, 225), Helper.GetRandomNumber(125, 225));
+
+                foreach (ListViewItem item2 in lvItems.Items)
+                {
+
+                    if (item2.SubItems[3].Text == item.SubItems[3].Text && item2.SubItems[4].Text == item.SubItems[4].Text && item2.Text != item.Text)
+                    {
+                        item.BackColor = color;
+                        item2.BackColor = color;
+
+                    }
+                }
+            }
+        }
+
+        private void btnRemoveSelected_Click(object sender, EventArgs e)
+        {
+            if (lvItems.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Select items to remove!");
+                return;
+            }
+            foreach (ListViewItem selectedItem in lvItems.SelectedItems)
+            {
+                lvItems.Items.Remove(selectedItem);
+            }
+            ArrangeOrder();
+        }
+
+        private void btnRemoveDuplicates_Click(object sender, EventArgs e)
+        {
+            for (var i = 0; i < lvItems.Items.Count; i++)
+            {
+                var baseItem = lvItems.Items[i];
+                for (var j = i + 1; j < lvItems.Items.Count; j++)
+                {
+                    var compareItem = lvItems.Items[j];
+                    if (compareItem.SubItems[3].Text == baseItem.SubItems[3].Text && compareItem.SubItems[4].Text == baseItem.SubItems[4].Text)
+                    {
+                        lvItems.Items.Remove(compareItem);
+
+                    }
+                }
+            }
+            WhiteBackground();
+            ArrangeOrder();
         }
     }
 }

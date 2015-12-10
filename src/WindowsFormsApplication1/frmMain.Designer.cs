@@ -96,6 +96,9 @@
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnScrumble = new System.Windows.Forms.Button();
+            this.txtFindDuplicatePosts = new System.Windows.Forms.Button();
+            this.btnRemoveSelected = new System.Windows.Forms.Button();
+            this.btnRemoveDuplicates = new System.Windows.Forms.Button();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -163,10 +166,14 @@
             // 
             postId.Text = "Post Id";
             // 
+            // site
+            // 
+            site.Text = "Site";
+            // 
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(1097, 12);
+            this.btnStart.Location = new System.Drawing.Point(1095, 12);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(83, 23);
             this.btnStart.TabIndex = 4;
@@ -196,7 +203,7 @@
             this.lvItems.HideSelection = false;
             this.lvItems.Location = new System.Drawing.Point(14, 72);
             this.lvItems.Name = "lvItems";
-            this.lvItems.Size = new System.Drawing.Size(1249, 441);
+            this.lvItems.Size = new System.Drawing.Size(1247, 448);
             this.lvItems.TabIndex = 5;
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
@@ -206,7 +213,7 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectAll.Location = new System.Drawing.Point(103, 519);
+            this.btnSelectAll.Location = new System.Drawing.Point(103, 526);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(85, 23);
             this.btnSelectAll.TabIndex = 6;
@@ -223,7 +230,7 @@
             this.grpBlogProp.Controls.Add(this.label4);
             this.grpBlogProp.Controls.Add(this.txtBlogUrl);
             this.grpBlogProp.Controls.Add(this.label3);
-            this.grpBlogProp.Location = new System.Drawing.Point(15, 558);
+            this.grpBlogProp.Location = new System.Drawing.Point(15, 565);
             this.grpBlogProp.Name = "grpBlogProp";
             this.grpBlogProp.Size = new System.Drawing.Size(268, 124);
             this.grpBlogProp.TabIndex = 7;
@@ -285,7 +292,7 @@
             // btnGo
             // 
             this.btnGo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGo.Location = new System.Drawing.Point(868, 699);
+            this.btnGo.Location = new System.Drawing.Point(866, 706);
             this.btnGo.Name = "btnGo";
             this.btnGo.Size = new System.Drawing.Size(214, 23);
             this.btnGo.TabIndex = 8;
@@ -296,7 +303,7 @@
             // btnStop
             // 
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStop.Location = new System.Drawing.Point(1101, 700);
+            this.btnStop.Location = new System.Drawing.Point(1099, 707);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(176, 23);
             this.btnStop.TabIndex = 9;
@@ -307,7 +314,7 @@
             // btnStopScrape
             // 
             this.btnStopScrape.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStopScrape.Location = new System.Drawing.Point(1188, 13);
+            this.btnStopScrape.Location = new System.Drawing.Point(1186, 13);
             this.btnStopScrape.Name = "btnStopScrape";
             this.btnStopScrape.Size = new System.Drawing.Size(75, 23);
             this.btnStopScrape.TabIndex = 10;
@@ -318,7 +325,7 @@
             // btnGetPost
             // 
             this.btnGetPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetPost.Location = new System.Drawing.Point(868, 523);
+            this.btnGetPost.Location = new System.Drawing.Point(866, 530);
             this.btnGetPost.Name = "btnGetPost";
             this.btnGetPost.Size = new System.Drawing.Size(141, 23);
             this.btnGetPost.TabIndex = 11;
@@ -330,7 +337,7 @@
             // txtPostId
             // 
             this.txtPostId.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPostId.Location = new System.Drawing.Point(735, 525);
+            this.txtPostId.Location = new System.Drawing.Point(733, 532);
             this.txtPostId.Name = "txtPostId";
             this.txtPostId.Size = new System.Drawing.Size(101, 20);
             this.txtPostId.TabIndex = 12;
@@ -340,7 +347,7 @@
             // 
             this.chkFeatureImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkFeatureImage.AutoSize = true;
-            this.chkFeatureImage.Location = new System.Drawing.Point(656, 699);
+            this.chkFeatureImage.Location = new System.Drawing.Point(654, 706);
             this.chkFeatureImage.Name = "chkFeatureImage";
             this.chkFeatureImage.Size = new System.Drawing.Size(192, 17);
             this.chkFeatureImage.TabIndex = 13;
@@ -353,7 +360,7 @@
             this.chkClearResults.AutoSize = true;
             this.chkClearResults.Checked = true;
             this.chkClearResults.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkClearResults.Location = new System.Drawing.Point(963, 16);
+            this.chkClearResults.Location = new System.Drawing.Point(961, 16);
             this.chkClearResults.Name = "chkClearResults";
             this.chkClearResults.Size = new System.Drawing.Size(128, 17);
             this.chkClearResults.TabIndex = 14;
@@ -366,9 +373,9 @@
             this.lblStatus,
             this.barStatus,
             this.lblDateTime});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 730);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 737);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1297, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1295, 22);
             this.statusStrip1.TabIndex = 18;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -398,7 +405,7 @@
             this.chkCache.AutoSize = true;
             this.chkCache.Checked = true;
             this.chkCache.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCache.Location = new System.Drawing.Point(1177, 525);
+            this.chkCache.Location = new System.Drawing.Point(1175, 532);
             this.chkCache.Name = "chkCache";
             this.chkCache.Size = new System.Drawing.Size(87, 17);
             this.chkCache.TabIndex = 19;
@@ -418,7 +425,7 @@
             this.grpMysql.Controls.Add(this.label7);
             this.grpMysql.Controls.Add(this.txtMySqlIp);
             this.grpMysql.Controls.Add(this.label8);
-            this.grpMysql.Location = new System.Drawing.Point(313, 558);
+            this.grpMysql.Location = new System.Drawing.Point(313, 565);
             this.grpMysql.Name = "grpMysql";
             this.grpMysql.Size = new System.Drawing.Size(450, 124);
             this.grpMysql.TabIndex = 20;
@@ -510,9 +517,9 @@
             this.grpAuthors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpAuthors.Controls.Add(this.txtAuthors);
-            this.grpAuthors.Location = new System.Drawing.Point(1080, 558);
+            this.grpAuthors.Location = new System.Drawing.Point(1080, 565);
             this.grpAuthors.Name = "grpAuthors";
-            this.grpAuthors.Size = new System.Drawing.Size(184, 124);
+            this.grpAuthors.Size = new System.Drawing.Size(182, 124);
             this.grpAuthors.TabIndex = 21;
             this.grpAuthors.TabStop = false;
             this.grpAuthors.Text = "Authors";
@@ -526,14 +533,14 @@
             this.txtAuthors.Multiline = true;
             this.txtAuthors.Name = "txtAuthors";
             this.txtAuthors.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtAuthors.Size = new System.Drawing.Size(158, 90);
+            this.txtAuthors.Size = new System.Drawing.Size(156, 90);
             this.txtAuthors.TabIndex = 0;
             this.txtAuthors.Text = "John Doe\r\nJennifer X";
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(1024, 521);
+            this.button1.Location = new System.Drawing.Point(1022, 528);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(132, 23);
             this.button1.TabIndex = 22;
@@ -548,7 +555,7 @@
             this.chkNoAPI.AutoSize = true;
             this.chkNoAPI.Checked = true;
             this.chkNoAPI.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkNoAPI.Location = new System.Drawing.Point(438, 699);
+            this.chkNoAPI.Location = new System.Drawing.Point(436, 706);
             this.chkNoAPI.Name = "chkNoAPI";
             this.chkNoAPI.Size = new System.Drawing.Size(181, 17);
             this.chkNoAPI.TabIndex = 23;
@@ -566,7 +573,7 @@
             this.grpFtp.Controls.Add(this.label10);
             this.grpFtp.Controls.Add(this.txtFtpUrl);
             this.grpFtp.Controls.Add(this.label11);
-            this.grpFtp.Location = new System.Drawing.Point(779, 561);
+            this.grpFtp.Location = new System.Drawing.Point(779, 568);
             this.grpFtp.Name = "grpFtp";
             this.grpFtp.Size = new System.Drawing.Size(285, 121);
             this.grpFtp.TabIndex = 24;
@@ -642,18 +649,18 @@
             this.chkResizeImages.AutoSize = true;
             this.chkResizeImages.Checked = true;
             this.chkResizeImages.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkResizeImages.Location = new System.Drawing.Point(140, 699);
+            this.chkResizeImages.Location = new System.Drawing.Point(155, 706);
             this.chkResizeImages.Name = "chkResizeImages";
-            this.chkResizeImages.Size = new System.Drawing.Size(170, 17);
+            this.chkResizeImages.Size = new System.Drawing.Size(153, 17);
             this.chkResizeImages.TabIndex = 26;
-            this.chkResizeImages.Text = "Resize big images bigger than ";
+            this.chkResizeImages.Text = "Resize images bigger than ";
             this.chkResizeImages.UseVisualStyleBackColor = true;
             // 
             // lblResizePix
             // 
             this.lblResizePix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResizePix.AutoSize = true;
-            this.lblResizePix.Location = new System.Drawing.Point(379, 700);
+            this.lblResizePix.Location = new System.Drawing.Point(377, 707);
             this.lblResizePix.Name = "lblResizePix";
             this.lblResizePix.Size = new System.Drawing.Size(18, 13);
             this.lblResizePix.TabIndex = 28;
@@ -663,7 +670,7 @@
             // 
             this.numMaxImageDimension.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.numMaxImageDimension.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numMaxImageDimension.Location = new System.Drawing.Point(318, 698);
+            this.numMaxImageDimension.Location = new System.Drawing.Point(316, 705);
             this.numMaxImageDimension.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -698,7 +705,7 @@
             this.grpTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.grpTop.Location = new System.Drawing.Point(12, 0);
             this.grpTop.Name = "grpTop";
-            this.grpTop.Size = new System.Drawing.Size(933, 66);
+            this.grpTop.Size = new System.Drawing.Size(931, 66);
             this.grpTop.TabIndex = 30;
             this.grpTop.TabStop = false;
             // 
@@ -710,7 +717,7 @@
             this.chkSites.FormattingEnabled = true;
             this.chkSites.Items.AddRange(new object[] {
             "Etsy"});
-            this.chkSites.Location = new System.Drawing.Point(325, 24);
+            this.chkSites.Location = new System.Drawing.Point(323, 24);
             this.chkSites.MultiColumn = true;
             this.chkSites.Name = "chkSites";
             this.chkSites.Size = new System.Drawing.Size(300, 34);
@@ -720,7 +727,7 @@
             // 
             this.chkAllPages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAllPages.AutoSize = true;
-            this.chkAllPages.Location = new System.Drawing.Point(847, 31);
+            this.chkAllPages.Location = new System.Drawing.Point(845, 31);
             this.chkAllPages.Name = "chkAllPages";
             this.chkAllPages.Size = new System.Drawing.Size(70, 17);
             this.chkAllPages.TabIndex = 32;
@@ -731,7 +738,7 @@
             // 
             this.lblPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPageTo.AutoSize = true;
-            this.lblPageTo.Location = new System.Drawing.Point(746, 32);
+            this.lblPageTo.Location = new System.Drawing.Point(744, 32);
             this.lblPageTo.Name = "lblPageTo";
             this.lblPageTo.Size = new System.Drawing.Size(20, 13);
             this.lblPageTo.TabIndex = 31;
@@ -741,7 +748,7 @@
             // 
             this.numPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPageTo.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numPageTo.Location = new System.Drawing.Point(774, 28);
+            this.numPageTo.Location = new System.Drawing.Point(772, 28);
             this.numPageTo.Maximum = new decimal(new int[] {
             500,
             0,
@@ -765,7 +772,7 @@
             // 
             this.numPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPage.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numPage.Location = new System.Drawing.Point(673, 27);
+            this.numPage.Location = new System.Drawing.Point(671, 27);
             this.numPage.Maximum = new decimal(new int[] {
             500,
             0,
@@ -789,7 +796,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(635, 30);
+            this.label2.Location = new System.Drawing.Point(633, 30);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 28;
@@ -801,7 +808,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUrl.Location = new System.Drawing.Point(17, 31);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(298, 20);
+            this.txtUrl.Size = new System.Drawing.Size(296, 20);
             this.txtUrl.TabIndex = 27;
             // 
             // label1
@@ -813,14 +820,10 @@
             this.label1.TabIndex = 26;
             this.label1.Text = "Keyword";
             // 
-            // site
-            // 
-            site.Text = "Site";
-            // 
             // btnScrumble
             // 
             this.btnScrumble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnScrumble.Location = new System.Drawing.Point(12, 519);
+            this.btnScrumble.Location = new System.Drawing.Point(12, 526);
             this.btnScrumble.Name = "btnScrumble";
             this.btnScrumble.Size = new System.Drawing.Size(85, 23);
             this.btnScrumble.TabIndex = 31;
@@ -828,11 +831,47 @@
             this.btnScrumble.UseVisualStyleBackColor = true;
             this.btnScrumble.Click += new System.EventHandler(this.btnScrumble_Click);
             // 
+            // txtFindDuplicatePosts
+            // 
+            this.txtFindDuplicatePosts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtFindDuplicatePosts.Location = new System.Drawing.Point(334, 526);
+            this.txtFindDuplicatePosts.Name = "txtFindDuplicatePosts";
+            this.txtFindDuplicatePosts.Size = new System.Drawing.Size(132, 23);
+            this.txtFindDuplicatePosts.TabIndex = 32;
+            this.txtFindDuplicatePosts.Text = "Find Duplicates";
+            this.txtFindDuplicatePosts.UseVisualStyleBackColor = true;
+            this.txtFindDuplicatePosts.Click += new System.EventHandler(this.txtFindDuplicatePosts_Click);
+            // 
+            // btnRemoveSelected
+            // 
+            this.btnRemoveSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnRemoveSelected.Location = new System.Drawing.Point(194, 526);
+            this.btnRemoveSelected.Name = "btnRemoveSelected";
+            this.btnRemoveSelected.Size = new System.Drawing.Size(126, 23);
+            this.btnRemoveSelected.TabIndex = 33;
+            this.btnRemoveSelected.Text = "Remove Selected";
+            this.btnRemoveSelected.UseVisualStyleBackColor = true;
+            this.btnRemoveSelected.Click += new System.EventHandler(this.btnRemoveSelected_Click);
+            // 
+            // btnRemoveDuplicates
+            // 
+            this.btnRemoveDuplicates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnRemoveDuplicates.Location = new System.Drawing.Point(472, 526);
+            this.btnRemoveDuplicates.Name = "btnRemoveDuplicates";
+            this.btnRemoveDuplicates.Size = new System.Drawing.Size(126, 23);
+            this.btnRemoveDuplicates.TabIndex = 34;
+            this.btnRemoveDuplicates.Text = "Remove Duplicates";
+            this.btnRemoveDuplicates.UseVisualStyleBackColor = true;
+            this.btnRemoveDuplicates.Click += new System.EventHandler(this.btnRemoveDuplicates_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1297, 752);
+            this.ClientSize = new System.Drawing.Size(1295, 759);
+            this.Controls.Add(this.btnRemoveDuplicates);
+            this.Controls.Add(this.btnRemoveSelected);
+            this.Controls.Add(this.txtFindDuplicatePosts);
             this.Controls.Add(this.btnScrumble);
             this.Controls.Add(this.grpTop);
             this.Controls.Add(this.numMaxImageDimension);
@@ -938,6 +977,9 @@
         private System.Windows.Forms.TextBox txtUrl;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnScrumble;
+        private System.Windows.Forms.Button txtFindDuplicatePosts;
+        private System.Windows.Forms.Button btnRemoveSelected;
+        private System.Windows.Forms.Button btnRemoveDuplicates;
     }
 }
 
