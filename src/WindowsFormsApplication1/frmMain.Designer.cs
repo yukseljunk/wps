@@ -99,6 +99,7 @@
             this.txtFindDuplicatePosts = new System.Windows.Forms.Button();
             this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnRemoveDuplicates = new System.Windows.Forms.Button();
+            this.btnNavigate = new System.Windows.Forms.Button();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -864,11 +865,23 @@
             this.btnRemoveDuplicates.UseVisualStyleBackColor = true;
             this.btnRemoveDuplicates.Click += new System.EventHandler(this.btnRemoveDuplicates_Click);
             // 
+            // btnNavigate
+            // 
+            this.btnNavigate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnNavigate.Location = new System.Drawing.Point(605, 528);
+            this.btnNavigate.Name = "btnNavigate";
+            this.btnNavigate.Size = new System.Drawing.Size(126, 23);
+            this.btnNavigate.TabIndex = 35;
+            this.btnNavigate.Text = "Go to link...";
+            this.btnNavigate.UseVisualStyleBackColor = true;
+            this.btnNavigate.Click += new System.EventHandler(this.btnNavigate_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1295, 759);
+            this.Controls.Add(this.btnNavigate);
             this.Controls.Add(this.btnRemoveDuplicates);
             this.Controls.Add(this.btnRemoveSelected);
             this.Controls.Add(this.txtFindDuplicatePosts);
@@ -980,6 +993,7 @@
         private System.Windows.Forms.Button txtFindDuplicatePosts;
         private System.Windows.Forms.Button btnRemoveSelected;
         private System.Windows.Forms.Button btnRemoveDuplicates;
+        private System.Windows.Forms.Button btnNavigate;
     }
 }
 

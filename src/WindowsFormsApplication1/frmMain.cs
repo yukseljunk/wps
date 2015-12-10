@@ -630,5 +630,27 @@ namespace WindowsFormsApplication1
             WhiteBackground();
             ArrangeOrder();
         }
+
+        private void btnNavigate_Click(object sender, EventArgs e)
+        {
+            if (lvItems.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Select item to navigate!");
+                return;
+            }
+            foreach (ListViewItem selectedItem in lvItems.SelectedItems)
+            {
+                var url = selectedItem.SubItems[2].Text;
+                if (string.IsNullOrWhiteSpace(url))
+                {
+                    return;
+                }
+                if (!url.StartsWith("http")) url = "http://" + url;
+                Process.Start(url);
+
+            }
+
+           
+        }
     }
 }
