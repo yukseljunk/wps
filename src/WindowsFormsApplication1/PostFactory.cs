@@ -185,8 +185,7 @@ namespace WindowsFormsApplication1
                                        {
                                            Url = blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Name,
                                            Id = "1"
-                                       }; //TODO:should go to mysql to insert this as post
-
+                                       };
                         imagePosts.Add(new ImagePost()
                         {
                             Url = uploaded.Url,
@@ -201,7 +200,7 @@ namespace WindowsFormsApplication1
                         uploaded = client.UploadFile(imageData);
 
                     }
-                    //todo url su sekilde olmali, tabii bunu nasil cekecegini dusunmen gerekli: http://blog.guessornot.com/2015/12/09/wooden-baby-spoon/wooden-baby-spoon-1
+                    //todo url su sekilde olmali, tabii bunu nasil cekecegini dusunmen gerekli: http://blog.guessornot.com/wooden-baby-spoon/wooden-baby-spoon-1
                     //gereken seyler: 1. permalink formati
                     thumbnailUrl =
                            Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
@@ -211,7 +210,7 @@ namespace WindowsFormsApplication1
                     content.Append(
                         string.Format(
                             "<div style=\"width: 150px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
-                            uploaded.Url, thumbnailUrl, item.Title));
+                            blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageData.Name), thumbnailUrl, item.Title));
                 }
                 if (_useMySqlFtpWay)
                 {
