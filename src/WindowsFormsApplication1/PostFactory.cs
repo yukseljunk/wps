@@ -174,7 +174,7 @@ namespace WindowsFormsApplication1
                     }
                     imageData.Name = imageName + "-" + imageIndex +
                                      Path.GetExtension(imageUrl);
-                    imageIndex++;
+                    
                     UploadResult uploaded = null;
                     var thumbnailUrl = String.Empty;
                     if (_useMySqlFtpWay)
@@ -188,6 +188,7 @@ namespace WindowsFormsApplication1
                                        };
                         imagePosts.Add(new ImagePost()
                         {
+                            Title = converterFunctions.SeoUrl(imageName + "-" + imageIndex),
                             Url = uploaded.Url,
                             Author = authorId.ToString(),
                             Alt = item.Title + imageIndex,
@@ -210,7 +211,9 @@ namespace WindowsFormsApplication1
                     content.Append(
                         string.Format(
                             "<div style=\"width: 150px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
-                            blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageData.Name), thumbnailUrl, item.Title));
+                            blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageName + "-" + imageIndex), thumbnailUrl, item.Title));
+
+                    imageIndex++;
                 }
                 if (_useMySqlFtpWay)
                 {

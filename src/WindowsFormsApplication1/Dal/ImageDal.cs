@@ -102,7 +102,7 @@ namespace WordpressScraper.Dal
                 "{22}SELECT @l;",
                 image.Author, image.PublishDateTime.ToString("yyyy-MM-dd HH':'mm':'ss"), image.PublishDateTime.ToString("yyyy-MM-dd HH':'mm':'ss"), image.Content.EscapeSql(), postName.EscapeSql(), image.Exerpt, "inherit",
                 "open", "closed",
-                "", postName.EscapeSql(), "", "", DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), "", 0, image.Url, 0,
+                "", image.Title.EscapeSql(), "", "", DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), "", 0, image.Url, 0,
                 "attachment", image.MimeType, 0, customFieldSql.ToString());
 
 
