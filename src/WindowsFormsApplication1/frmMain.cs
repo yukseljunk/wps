@@ -238,7 +238,7 @@ namespace WindowsFormsApplication1
                 SetStatus("Ready");
                 ResetBarStatus(true);
                 barStatus.Maximum = lvItems.SelectedItems.Count;
-                var postFactory = new PostFactory(SiteConfig, FtpConfiguration, _blogCache, dal, chkNoAPI.Checked, chkResizeImages.Checked ? (int)numMaxImageDimension.Value : 0);
+                var postFactory = new PostFactory(SiteConfig, FtpConfiguration, _blogCache, dal, chkNoAPI.Checked, chkResizeImages.Checked ? (int)numMaxImageDimension.Value : 0, (int)numThumbnailSize.Value);
 
                 foreach (ListViewItem item in lvItems.SelectedItems)
                 {
@@ -310,7 +310,7 @@ namespace WindowsFormsApplication1
                 Title = item.SubItems[3].Text,
                 MetaDescription = item.SubItems[4].Text,
                 Content = item.SubItems[5].Text,
-                Price = string.IsNullOrEmpty(item.SubItems[6].Text) ? 0: double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
+                Price = string.IsNullOrEmpty(item.SubItems[6].Text) ? 0 : double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
                 Images = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
                 Site = item.SubItems[9].Text

@@ -27,11 +27,12 @@ namespace WindowsFormsApplication1
         private readonly Dal _dal;
         private readonly bool _useMySqlFtpWay;
         private readonly int _maxImageDimension;
+        private readonly int _thumbnailSize;
         private IList<int> _userIds;
         private string _ftpDir;
         private const string ImagesDir = "temp";
 
-        public PostFactory(WordPressSiteConfig siteConfig, FtpConfig ftpConfiguration, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true, int maxImageDimension = 0)
+        public PostFactory(WordPressSiteConfig siteConfig, FtpConfig ftpConfiguration, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true, int maxImageDimension = 0, int thumbnailSize = 150)
         {
             _siteConfig = siteConfig;
             _ftpConfiguration = ftpConfiguration;
@@ -39,6 +40,7 @@ namespace WindowsFormsApplication1
             _dal = dal;
             _useMySqlFtpWay = useMySqlFtpWay;
             _maxImageDimension = maxImageDimension;
+            _thumbnailSize = thumbnailSize;
             var userDal = new UserDal(_dal);
             _userIds = userDal.UserIds();
 
@@ -197,11 +199,7 @@ namespace WindowsFormsApplication1
                         uploaded = client.UploadFile(imageData);
 
                     }
-                    //todo url su sekilde olmali, tabii bunu nasil cekecegini dusunmen gerekli: http://blog.guessornot.com/wooden-baby-spoon/wooden-baby-spoon-1
-                    //gereken seyler: 1. permalink formati
-                    thumbnailUrl =
-                        blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageName + "-" + imageIndex + "-150x150" + extension;
-                           
+                    thumbnailUrl = string.Format("{0}/wp-content/uploads/{1}/{2}-{3}-{4}x{4}{5}", blogUrl, _ftpDir, imageName, imageIndex, _thumbnailSize, extension);
                     imageUploads.Add(uploaded);
                     content.Append(
                         string.Format(
@@ -379,7 +377,7 @@ namespace WindowsFormsApplication1
             }
             result = result.Replace("&quot;", "");
             var rgx = new Regex("[^a-zA-Z0-9 ]");
-            result= rgx.Replace(result, " ").Trim();
+            result = rgx.Replace(result, " ").Trim();
             result = result.Replace("     ", " ").Replace("    ", " ").Replace("   ", " ").Replace("  ", " ");
             return result;
         }

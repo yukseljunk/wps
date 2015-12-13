@@ -101,6 +101,9 @@
             this.btnRemoveSelected = new System.Windows.Forms.Button();
             this.btnRemoveDuplicates = new System.Windows.Forms.Button();
             this.btnNavigate = new System.Windows.Forms.Button();
+            this.numThumbnailSize = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -122,6 +125,7 @@
             this.grpTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPageTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numThumbnailSize)).BeginInit();
             this.SuspendLayout();
             // 
             // No
@@ -181,7 +185,7 @@
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(1109, 12);
+            this.btnStart.Location = new System.Drawing.Point(1196, 12);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(83, 23);
             this.btnStart.TabIndex = 4;
@@ -212,7 +216,7 @@
             this.lvItems.HideSelection = false;
             this.lvItems.Location = new System.Drawing.Point(14, 72);
             this.lvItems.Name = "lvItems";
-            this.lvItems.Size = new System.Drawing.Size(1261, 436);
+            this.lvItems.Size = new System.Drawing.Size(1348, 420);
             this.lvItems.TabIndex = 5;
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
@@ -222,7 +226,7 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectAll.Location = new System.Drawing.Point(103, 514);
+            this.btnSelectAll.Location = new System.Drawing.Point(103, 498);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(85, 23);
             this.btnSelectAll.TabIndex = 6;
@@ -239,7 +243,7 @@
             this.grpBlogProp.Controls.Add(this.label4);
             this.grpBlogProp.Controls.Add(this.txtBlogUrl);
             this.grpBlogProp.Controls.Add(this.label3);
-            this.grpBlogProp.Location = new System.Drawing.Point(15, 553);
+            this.grpBlogProp.Location = new System.Drawing.Point(15, 537);
             this.grpBlogProp.Name = "grpBlogProp";
             this.grpBlogProp.Size = new System.Drawing.Size(268, 124);
             this.grpBlogProp.TabIndex = 7;
@@ -301,7 +305,7 @@
             // btnGo
             // 
             this.btnGo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGo.Location = new System.Drawing.Point(880, 694);
+            this.btnGo.Location = new System.Drawing.Point(967, 678);
             this.btnGo.Name = "btnGo";
             this.btnGo.Size = new System.Drawing.Size(214, 23);
             this.btnGo.TabIndex = 8;
@@ -312,7 +316,7 @@
             // btnStop
             // 
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStop.Location = new System.Drawing.Point(1113, 695);
+            this.btnStop.Location = new System.Drawing.Point(1200, 679);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(176, 23);
             this.btnStop.TabIndex = 9;
@@ -323,7 +327,7 @@
             // btnStopScrape
             // 
             this.btnStopScrape.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStopScrape.Location = new System.Drawing.Point(1200, 13);
+            this.btnStopScrape.Location = new System.Drawing.Point(1287, 13);
             this.btnStopScrape.Name = "btnStopScrape";
             this.btnStopScrape.Size = new System.Drawing.Size(75, 23);
             this.btnStopScrape.TabIndex = 10;
@@ -334,7 +338,7 @@
             // btnGetPost
             // 
             this.btnGetPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetPost.Location = new System.Drawing.Point(793, 517);
+            this.btnGetPost.Location = new System.Drawing.Point(880, 501);
             this.btnGetPost.Name = "btnGetPost";
             this.btnGetPost.Size = new System.Drawing.Size(124, 23);
             this.btnGetPost.TabIndex = 11;
@@ -346,16 +350,17 @@
             // txtPostId
             // 
             this.txtPostId.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPostId.Location = new System.Drawing.Point(923, 519);
+            this.txtPostId.Location = new System.Drawing.Point(1010, 503);
             this.txtPostId.Name = "txtPostId";
             this.txtPostId.Size = new System.Drawing.Size(118, 20);
             this.txtPostId.TabIndex = 12;
+            this.txtPostId.Visible = false;
             // 
             // chkFeatureImage
             // 
             this.chkFeatureImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkFeatureImage.AutoSize = true;
-            this.chkFeatureImage.Location = new System.Drawing.Point(668, 694);
+            this.chkFeatureImage.Location = new System.Drawing.Point(755, 678);
             this.chkFeatureImage.Name = "chkFeatureImage";
             this.chkFeatureImage.Size = new System.Drawing.Size(192, 17);
             this.chkFeatureImage.TabIndex = 13;
@@ -368,7 +373,7 @@
             this.chkClearResults.AutoSize = true;
             this.chkClearResults.Checked = true;
             this.chkClearResults.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkClearResults.Location = new System.Drawing.Point(975, 16);
+            this.chkClearResults.Location = new System.Drawing.Point(1062, 16);
             this.chkClearResults.Name = "chkClearResults";
             this.chkClearResults.Size = new System.Drawing.Size(128, 17);
             this.chkClearResults.TabIndex = 14;
@@ -381,9 +386,9 @@
             this.lblStatus,
             this.barStatus,
             this.lblDateTime});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 725);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 709);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1309, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1396, 22);
             this.statusStrip1.TabIndex = 18;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -413,7 +418,7 @@
             this.chkCache.AutoSize = true;
             this.chkCache.Checked = true;
             this.chkCache.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCache.Location = new System.Drawing.Point(1189, 520);
+            this.chkCache.Location = new System.Drawing.Point(1276, 504);
             this.chkCache.Name = "chkCache";
             this.chkCache.Size = new System.Drawing.Size(87, 17);
             this.chkCache.TabIndex = 19;
@@ -433,7 +438,7 @@
             this.grpMysql.Controls.Add(this.label7);
             this.grpMysql.Controls.Add(this.txtMySqlIp);
             this.grpMysql.Controls.Add(this.label8);
-            this.grpMysql.Location = new System.Drawing.Point(313, 553);
+            this.grpMysql.Location = new System.Drawing.Point(313, 537);
             this.grpMysql.Name = "grpMysql";
             this.grpMysql.Size = new System.Drawing.Size(450, 124);
             this.grpMysql.TabIndex = 20;
@@ -525,9 +530,9 @@
             this.grpAuthors.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpAuthors.Controls.Add(this.txtAuthors);
-            this.grpAuthors.Location = new System.Drawing.Point(1080, 553);
+            this.grpAuthors.Location = new System.Drawing.Point(1080, 537);
             this.grpAuthors.Name = "grpAuthors";
-            this.grpAuthors.Size = new System.Drawing.Size(196, 124);
+            this.grpAuthors.Size = new System.Drawing.Size(283, 124);
             this.grpAuthors.TabIndex = 21;
             this.grpAuthors.TabStop = false;
             this.grpAuthors.Text = "Authors";
@@ -541,19 +546,20 @@
             this.txtAuthors.Multiline = true;
             this.txtAuthors.Name = "txtAuthors";
             this.txtAuthors.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtAuthors.Size = new System.Drawing.Size(170, 90);
+            this.txtAuthors.Size = new System.Drawing.Size(257, 90);
             this.txtAuthors.TabIndex = 0;
             this.txtAuthors.Text = "John Doe\r\nJennifer X";
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(1051, 517);
+            this.button1.Location = new System.Drawing.Point(1138, 501);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(132, 23);
             this.button1.TabIndex = 22;
             this.button1.Text = "Set Title";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // chkNoAPI
@@ -562,7 +568,7 @@
             this.chkNoAPI.AutoSize = true;
             this.chkNoAPI.Checked = true;
             this.chkNoAPI.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkNoAPI.Location = new System.Drawing.Point(450, 694);
+            this.chkNoAPI.Location = new System.Drawing.Point(537, 678);
             this.chkNoAPI.Name = "chkNoAPI";
             this.chkNoAPI.Size = new System.Drawing.Size(181, 17);
             this.chkNoAPI.TabIndex = 23;
@@ -580,7 +586,7 @@
             this.grpFtp.Controls.Add(this.label10);
             this.grpFtp.Controls.Add(this.txtFtpUrl);
             this.grpFtp.Controls.Add(this.label11);
-            this.grpFtp.Location = new System.Drawing.Point(779, 556);
+            this.grpFtp.Location = new System.Drawing.Point(779, 540);
             this.grpFtp.Name = "grpFtp";
             this.grpFtp.Size = new System.Drawing.Size(285, 121);
             this.grpFtp.TabIndex = 24;
@@ -656,7 +662,7 @@
             this.chkResizeImages.AutoSize = true;
             this.chkResizeImages.Checked = true;
             this.chkResizeImages.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkResizeImages.Location = new System.Drawing.Point(169, 694);
+            this.chkResizeImages.Location = new System.Drawing.Point(256, 678);
             this.chkResizeImages.Name = "chkResizeImages";
             this.chkResizeImages.Size = new System.Drawing.Size(153, 17);
             this.chkResizeImages.TabIndex = 26;
@@ -667,7 +673,7 @@
             // 
             this.lblResizePix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResizePix.AutoSize = true;
-            this.lblResizePix.Location = new System.Drawing.Point(391, 695);
+            this.lblResizePix.Location = new System.Drawing.Point(478, 679);
             this.lblResizePix.Name = "lblResizePix";
             this.lblResizePix.Size = new System.Drawing.Size(18, 13);
             this.lblResizePix.TabIndex = 28;
@@ -677,7 +683,7 @@
             // 
             this.numMaxImageDimension.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.numMaxImageDimension.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numMaxImageDimension.Location = new System.Drawing.Point(330, 693);
+            this.numMaxImageDimension.Location = new System.Drawing.Point(417, 677);
             this.numMaxImageDimension.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -712,7 +718,7 @@
             this.grpTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.grpTop.Location = new System.Drawing.Point(12, 0);
             this.grpTop.Name = "grpTop";
-            this.grpTop.Size = new System.Drawing.Size(945, 66);
+            this.grpTop.Size = new System.Drawing.Size(1032, 66);
             this.grpTop.TabIndex = 30;
             this.grpTop.TabStop = false;
             // 
@@ -724,7 +730,7 @@
             this.chkSites.FormattingEnabled = true;
             this.chkSites.Items.AddRange(new object[] {
             "Etsy"});
-            this.chkSites.Location = new System.Drawing.Point(337, 24);
+            this.chkSites.Location = new System.Drawing.Point(424, 24);
             this.chkSites.MultiColumn = true;
             this.chkSites.Name = "chkSites";
             this.chkSites.Size = new System.Drawing.Size(300, 34);
@@ -734,7 +740,7 @@
             // 
             this.chkAllPages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAllPages.AutoSize = true;
-            this.chkAllPages.Location = new System.Drawing.Point(859, 31);
+            this.chkAllPages.Location = new System.Drawing.Point(946, 31);
             this.chkAllPages.Name = "chkAllPages";
             this.chkAllPages.Size = new System.Drawing.Size(70, 17);
             this.chkAllPages.TabIndex = 32;
@@ -745,7 +751,7 @@
             // 
             this.lblPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPageTo.AutoSize = true;
-            this.lblPageTo.Location = new System.Drawing.Point(758, 32);
+            this.lblPageTo.Location = new System.Drawing.Point(845, 32);
             this.lblPageTo.Name = "lblPageTo";
             this.lblPageTo.Size = new System.Drawing.Size(20, 13);
             this.lblPageTo.TabIndex = 31;
@@ -755,7 +761,7 @@
             // 
             this.numPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPageTo.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numPageTo.Location = new System.Drawing.Point(786, 28);
+            this.numPageTo.Location = new System.Drawing.Point(873, 28);
             this.numPageTo.Maximum = new decimal(new int[] {
             500,
             0,
@@ -779,7 +785,7 @@
             // 
             this.numPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPage.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numPage.Location = new System.Drawing.Point(685, 27);
+            this.numPage.Location = new System.Drawing.Point(772, 27);
             this.numPage.Maximum = new decimal(new int[] {
             500,
             0,
@@ -803,7 +809,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(647, 30);
+            this.label2.Location = new System.Drawing.Point(734, 30);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 28;
@@ -815,7 +821,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUrl.Location = new System.Drawing.Point(17, 31);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(310, 20);
+            this.txtUrl.Size = new System.Drawing.Size(397, 20);
             this.txtUrl.TabIndex = 27;
             // 
             // label1
@@ -830,7 +836,7 @@
             // btnScrumble
             // 
             this.btnScrumble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnScrumble.Location = new System.Drawing.Point(12, 514);
+            this.btnScrumble.Location = new System.Drawing.Point(12, 498);
             this.btnScrumble.Name = "btnScrumble";
             this.btnScrumble.Size = new System.Drawing.Size(85, 23);
             this.btnScrumble.TabIndex = 31;
@@ -841,7 +847,7 @@
             // txtFindDuplicatePosts
             // 
             this.txtFindDuplicatePosts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtFindDuplicatePosts.Location = new System.Drawing.Point(334, 514);
+            this.txtFindDuplicatePosts.Location = new System.Drawing.Point(334, 498);
             this.txtFindDuplicatePosts.Name = "txtFindDuplicatePosts";
             this.txtFindDuplicatePosts.Size = new System.Drawing.Size(132, 23);
             this.txtFindDuplicatePosts.TabIndex = 32;
@@ -852,7 +858,7 @@
             // btnRemoveSelected
             // 
             this.btnRemoveSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveSelected.Location = new System.Drawing.Point(194, 514);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(194, 498);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(126, 23);
             this.btnRemoveSelected.TabIndex = 33;
@@ -863,7 +869,7 @@
             // btnRemoveDuplicates
             // 
             this.btnRemoveDuplicates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveDuplicates.Location = new System.Drawing.Point(472, 514);
+            this.btnRemoveDuplicates.Location = new System.Drawing.Point(472, 498);
             this.btnRemoveDuplicates.Name = "btnRemoveDuplicates";
             this.btnRemoveDuplicates.Size = new System.Drawing.Size(126, 23);
             this.btnRemoveDuplicates.TabIndex = 34;
@@ -874,7 +880,7 @@
             // btnNavigate
             // 
             this.btnNavigate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnNavigate.Location = new System.Drawing.Point(605, 516);
+            this.btnNavigate.Location = new System.Drawing.Point(605, 500);
             this.btnNavigate.Name = "btnNavigate";
             this.btnNavigate.Size = new System.Drawing.Size(126, 23);
             this.btnNavigate.TabIndex = 35;
@@ -882,11 +888,58 @@
             this.btnNavigate.UseVisualStyleBackColor = true;
             this.btnNavigate.Click += new System.EventHandler(this.btnNavigate_Click);
             // 
+            // numThumbnailSize
+            // 
+            this.numThumbnailSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.numThumbnailSize.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.numThumbnailSize.Location = new System.Drawing.Point(155, 677);
+            this.numThumbnailSize.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numThumbnailSize.Minimum = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.numThumbnailSize.Name = "numThumbnailSize";
+            this.numThumbnailSize.Size = new System.Drawing.Size(55, 20);
+            this.numThumbnailSize.TabIndex = 36;
+            this.numThumbnailSize.Value = new decimal(new int[] {
+            150,
+            0,
+            0,
+            0});
+            // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(213, 682);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(18, 13);
+            this.label12.TabIndex = 37;
+            this.label12.Text = "px";
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(70, 679);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(79, 13);
+            this.label13.TabIndex = 38;
+            this.label13.Text = "Thumbnail Size";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1309, 747);
+            this.ClientSize = new System.Drawing.Size(1396, 731);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.numThumbnailSize);
             this.Controls.Add(this.btnNavigate);
             this.Controls.Add(this.btnRemoveDuplicates);
             this.Controls.Add(this.btnRemoveSelected);
@@ -932,6 +985,7 @@
             this.grpTop.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPageTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numThumbnailSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1000,6 +1054,9 @@
         private System.Windows.Forms.Button btnRemoveSelected;
         private System.Windows.Forms.Button btnRemoveDuplicates;
         private System.Windows.Forms.Button btnNavigate;
+        private System.Windows.Forms.NumericUpDown numThumbnailSize;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
     }
 }
 
