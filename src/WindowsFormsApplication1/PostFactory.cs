@@ -376,7 +376,7 @@ namespace WindowsFormsApplication1
             }
             var rgx = new Regex("[^a-zA-Z0-9 ]");
             result= rgx.Replace(result, "").Trim();
-            result = result.Replace("     ", "").Replace("    ", "").Replace("   ", "").Replace("  ", "");
+            result = result.Replace("     ", " ").Replace("    ", " ").Replace("   ", " ").Replace("  ", " ");
             return result;
         }
     }
