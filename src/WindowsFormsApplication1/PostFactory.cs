@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using ImageProcessor;
 using MimeTypes;
@@ -120,9 +121,10 @@ namespace WindowsFormsApplication1
                 foreach (var imageUrl in item.Images)
                 {
                     Data imageData = null;
+                    var extension = Path.GetExtension(imageUrl).ToLower();
+
                     if (_maxImageDimension > 0)
                     {
-                        var extension = Path.GetExtension(imageUrl);
                         var tempImageFileName = ImagesDir + "/" + "temp" + extension;
                         //download image and resize it...
                         using (WebClient webClient = new WebClient())
@@ -162,19 +164,10 @@ namespace WindowsFormsApplication1
                     {
                         imageData = Data.CreateFromUrl(imageUrl);
                     }
-                    var imageName = postTitle;
-
-                    var invalidChars=Path.GetInvalidFileNameChars().ToList();
-                    invalidChars.Add('\'');
-                    foreach (var invalidChar in invalidChars)
-                    {
-                        imageName = imageName.Replace(invalidChar.ToString(), "");
-
-                        imageName = imageName.Replace("&#" + ((int)invalidChar) + ";", "");
-                    }
+                    var imageName = RefineImageName(postTitle);
                     imageData.Name = imageName + "-" + imageIndex +
-                                     Path.GetExtension(imageUrl);
-                    
+                                     extension;
+
                     UploadResult uploaded = null;
                     var thumbnailUrl = String.Empty;
                     if (_useMySqlFtpWay)
@@ -204,9 +197,8 @@ namespace WindowsFormsApplication1
                     //todo url su sekilde olmali, tabii bunu nasil cekecegini dusunmen gerekli: http://blog.guessornot.com/wooden-baby-spoon/wooden-baby-spoon-1
                     //gereken seyler: 1. permalink formati
                     thumbnailUrl =
-                           Path.GetDirectoryName(uploaded.Url).Replace("http:\\", "http:\\\\").Replace("\\", "/") + "/" +
-                           Path.GetFileNameWithoutExtension(uploaded.Url) + "-150x150" +
-                           Path.GetExtension(uploaded.Url);
+                        blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageName + "-" + imageIndex + "-150x150" + extension;
+                           
                     imageUploads.Add(uploaded);
                     content.Append(
                         string.Format(
@@ -232,7 +224,7 @@ namespace WindowsFormsApplication1
                 content.Append("\" rel=\"nofollow\" target=\"_blank\">");
                 content.Append(item.Site);
                 content.Append(".com</a>");
-                
+
                 var post = new Post
                 {
                     PostType = "post",
@@ -370,6 +362,22 @@ namespace WindowsFormsApplication1
                 }
             }
             return -1;
+        }
+
+        private static string RefineImageName(string imageName)
+        {
+            var result = imageName;
+            var invalidChars = Path.GetInvalidFileNameChars().ToList();
+            invalidChars.Add('\'');
+            foreach (var invalidChar in invalidChars)
+            {
+                result = result.Replace(invalidChar.ToString(), "");
+                result = result.Replace("&#" + ((int)invalidChar) + ";", "");
+            }
+            var rgx = new Regex("[^a-zA-Z0-9 ]");
+            result= rgx.Replace(result, "").Trim();
+            result = result.Replace("     ", "").Replace("    ", "").Replace("   ", "").Replace("  ", "");
+            return result;
         }
     }
 }

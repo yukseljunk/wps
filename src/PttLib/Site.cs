@@ -192,11 +192,11 @@ namespace PttLib
             if (content != null)
             {
                 item.Content = Regex.Replace(content.InnerHtml, "<a.*>.*</a>", "");
+                var converterFunctions = new ConverterFunctions();
+                item.WordCount = converterFunctions.StripTags(content.InnerHtml, new List<string>()).WordCount();
+
             }
             item.Title = title;
-
-            var converterFunctions = new ConverterFunctions();
-            item.WordCount = converterFunctions.StripTags(content.InnerHtml, new List<string>()).WordCount();
             var regex = new Regex(IdRegex);
             var match = regex.Match(url);
             if (match.Success)

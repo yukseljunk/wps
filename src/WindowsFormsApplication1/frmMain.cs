@@ -310,7 +310,7 @@ namespace WindowsFormsApplication1
                 Title = item.SubItems[3].Text,
                 MetaDescription = item.SubItems[4].Text,
                 Content = item.SubItems[5].Text,
-                Price = double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
+                Price = string.IsNullOrEmpty(item.SubItems[6].Text) ? 0: double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
                 Images = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
                 Site = item.SubItems[9].Text
@@ -479,19 +479,8 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in lvItems.Items)
-            {
-                foreach (ListViewItem item2 in lvItems.Items)
-                {
-                    if (item2.SubItems[1].Text == item.SubItems[1].Text && item2.Text != item.Text)
-                    {
-                        var color = Color.FromArgb(255, Helper.GetRandomNumber(1, 255), Helper.GetRandomNumber(1, 255), Helper.GetRandomNumber(1, 255));
-                        item.BackColor = color;
-                        item2.BackColor = color;
-                        break;
-                    }
-                }
-            }
+            if (lvItems.SelectedItems.Count == 0) return;
+            lvItems.SelectedItems[0].SubItems[3].Text = txtPostId.Text;
         }
 
         private void lvItems_ColumnClick(object sender, ColumnClickEventArgs e)
