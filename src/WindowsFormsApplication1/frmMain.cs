@@ -36,6 +36,13 @@ namespace WindowsFormsApplication1
             lblDateTime.Text = "";
             chkNoAPI_CheckedChanged(null, null);
             FillSites();
+
+#if (DEBUG)
+
+            txtPostId.Visible = true;
+            button1.Visible = true;
+#endif
+
         }
 
         private void FillSites()
@@ -338,6 +345,7 @@ namespace WindowsFormsApplication1
             chkFeatureImage.Enabled = enabled;
             chkResizeImages.Enabled = enabled;
             numMaxImageDimension.Enabled = enabled;
+            numThumbnailSize.Enabled = enabled;
             if (!enabled)
             {
                 grpBlogProp.Enabled = false;
