@@ -120,8 +120,11 @@ namespace WindowsFormsApplication1
                 var imagePosts = new List<ImagePost>();
                 foreach (var imageUrl in item.Images)
                 {
+                    var uri = new Uri(imageUrl);
+                    var imageUrlWithoutQs = uri.GetLeftPart(UriPartial.Path);
+
                     Data imageData = null;
-                    var extension = Path.GetExtension(imageUrl).ToLower();
+                    var extension = Path.GetExtension(imageUrlWithoutQs).ToLower();
 
                     if (_maxImageDimension > 0)
                     {
@@ -374,8 +377,9 @@ namespace WindowsFormsApplication1
                 result = result.Replace(invalidChar.ToString(), "");
                 result = result.Replace("&#" + ((int)invalidChar) + ";", "");
             }
+            result = result.Replace("&quot;", "");
             var rgx = new Regex("[^a-zA-Z0-9 ]");
-            result= rgx.Replace(result, "").Trim();
+            result= rgx.Replace(result, " ").Trim();
             result = result.Replace("     ", " ").Replace("    ", " ").Replace("   ", " ").Replace("  ", " ");
             return result;
         }
