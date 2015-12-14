@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -21,26 +22,91 @@ namespace WindowsFormsApplication1
 {
     public class PostFactory
     {
+
+        #region Private Fields
+
         private readonly WordPressSiteConfig _siteConfig;
         private readonly FtpConfig _ftpConfiguration;
         private readonly BlogCache _blogCache;
         private readonly Dal _dal;
+        private readonly string _blogUrl;
         private readonly bool _useMySqlFtpWay;
         private readonly int _maxImageDimension;
         private readonly int _thumbnailSize;
+        private readonly bool _useCache;
+        private readonly bool _useFeatureImage;
         private IList<int> _userIds;
         private string _ftpDir;
+
+        #endregion
+
+        #region BackgroundWorker
+        static BackgroundWorker _bw;
+
+        #endregion
+        #region Event Handlers
+
+        public event EventHandler<Item> PostBeingCreated;
+
+        public void OnPostBeingCreated(Item e)
+        {
+            EventHandler<Item> handler = PostBeingCreated;
+            if (handler != null) handler(this, e);
+        }
+
+        public event EventHandler<Item> PostCreated;
+        public event EventHandler<IList<Item>> PostsCreated;
+
+        public event EventHandler PostCreationStopped;
+
+        public void OnPostCreationStopped(EventArgs e)
+        {
+            EventHandler handler = PostCreationStopped;
+            if (handler != null) handler(this, e);
+        }
+
+        public void OnPostsCreated(IList<Item> e)
+        {
+            EventHandler<IList<Item>> handler = PostsCreated;
+            if (handler != null) handler(this, e);
+        }
+
+        public void OnPostCreated(Item e)
+        {
+            EventHandler<Item> handler = PostCreated;
+            if (handler != null) handler(this, e);
+        }
+
+        #endregion
+
+        public void CancelPostCreation()
+        {
+            if (_bw.IsBusy) _bw.CancelAsync();
+        }
+
         private const string ImagesDir = "temp";
 
-        public PostFactory(WordPressSiteConfig siteConfig, FtpConfig ftpConfiguration, BlogCache blogCache, Dal dal, bool useMySqlFtpWay = true, int maxImageDimension = 0, int thumbnailSize = 150)
+        public PostFactory(WordPressSiteConfig siteConfig,
+            FtpConfig ftpConfiguration,
+            BlogCache blogCache,
+            Dal dal,
+            string blogUrl,
+            bool useMySqlFtpWay = true,
+            int maxImageDimension = 0,
+            int thumbnailSize = 150,
+            bool useCache = true,
+            bool useFeatureImage = false)
         {
             _siteConfig = siteConfig;
             _ftpConfiguration = ftpConfiguration;
             _blogCache = blogCache;
             _dal = dal;
+            _blogUrl = blogUrl;
             _useMySqlFtpWay = useMySqlFtpWay;
             _maxImageDimension = maxImageDimension;
             _thumbnailSize = thumbnailSize;
+            _useCache = useCache;
+            _useFeatureImage = useFeatureImage;
             var userDal = new UserDal(_dal);
             _userIds = userDal.UserIds();
 
@@ -57,15 +123,86 @@ namespace WindowsFormsApplication1
 
         }
 
+
+        public void Create(IList<Item> items)
+        {
+            _bw = new BackgroundWorker
+            {
+                WorkerReportsProgress = true,
+                WorkerSupportsCancellation = true
+            };
+            _bw.DoWork += (obj, e) => CreatePosts(items, e);
+            _bw.ProgressChanged += CreatePostProgress;
+            _bw.RunWorkerCompleted += CreatePostsFinished;
+            _bw.RunWorkerAsync(items);
+
+        }
+
+        private void CreatePostsFinished(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                OnPostsCreated(null);
+                OnPostCreationStopped(null);
+            }
+            else if (e.Error != null)
+            {
+                OnPostsCreated(null);                
+            }            
+            else
+            {
+                if (e.Result != null)
+                {
+                    OnPostsCreated((List<Item>)e.Result);
+                }
+                
+            }
+        }
+
+        private void CreatePostProgress(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.UserState != null)
+            {
+                var item = (Item) e.UserState;
+                if (item.PostId > int.MinValue)
+                {
+                    OnPostCreated(item);
+                }
+                else
+                {
+                    OnPostBeingCreated(item);
+                }
+            }
+        }
+
+        private void CreatePosts(IList<Item> items, DoWorkEventArgs e)
+        {
+            var itemIndex = 0;
+            var itemCount = items.Count;
+            foreach (var item in items)
+            {
+                itemIndex++;
+                item.PostId = int.MinValue;
+                _bw.ReportProgress(itemIndex / itemCount * 100, item);
+                var itemPostId = Create(item);
+                item.PostId = itemPostId;
+                _bw.ReportProgress(itemIndex / itemCount * 100, item);
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+            }
+            e.Result = items;
+        }
+
         /// <summary>
         /// create item
         /// </summary>
         /// <param name="item"></param>
-        /// <param name="blogUrl"></param>
-        /// <param name="useCache"></param>
-        /// <param name="useFeatureImage"></param>
+        /// <param name="_blogUrl"></param>
         /// <returns>id crated, 0 if exists, -1 if error, -2 if not valid</returns>
-        public int Create(Item item, string blogUrl, bool useCache = true, bool useFeatureImage = false)
+        public int Create(Item item)
         {
             var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
             var postDal = new PostDal(_dal);
@@ -82,9 +219,9 @@ namespace WindowsFormsApplication1
             try
             {
                 var id = item.Site + "_" + item.Id;
-                if (useCache)
+                if (_useCache)
                 {
-                    if (_blogCache.IdsPresent(blogUrl).Contains(id))
+                    if (_blogCache.IdsPresent(_blogUrl).Contains(id))
                     {
                         return 0;
                     }
@@ -100,20 +237,20 @@ namespace WindowsFormsApplication1
 
                 var postTitle = converterFunctions.FirstNWords(item.Title, 65, true);
                 var initialPostTitle = postTitle;
-                if (_blogCache.TitlesPresent(blogUrl).Contains(postTitle))
+                if (_blogCache.TitlesPresent(_blogUrl).Contains(postTitle))
                 {
                     var postIndex = 2;
                     while (true)
                     {
                         postTitle = initialPostTitle + "-" + postIndex;
-                        if (!_blogCache.TitlesPresent(blogUrl).Contains(postTitle))
+                        if (!_blogCache.TitlesPresent(_blogUrl).Contains(postTitle))
                         {
                             break;
                         }
                         postIndex++;
                     }
                 }
-                _blogCache.InsertTitle(blogUrl, postTitle);
+                _blogCache.InsertTitle(_blogUrl, postTitle);
 
                 var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
 
@@ -181,7 +318,7 @@ namespace WindowsFormsApplication1
                                           _ftpConfiguration.UserName, _ftpConfiguration.Password);
                         uploaded = new UploadResult()
                                        {
-                                           Url = blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Name,
+                                           Url = _blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Name,
                                            Id = "1"
                                        };
                         imagePosts.Add(new ImagePost()
@@ -199,12 +336,12 @@ namespace WindowsFormsApplication1
                         uploaded = client.UploadFile(imageData);
 
                     }
-                    thumbnailUrl = string.Format("{0}/wp-content/uploads/{1}/{2}-{3}-{4}x{4}{5}", blogUrl, _ftpDir, imageName, imageIndex, _thumbnailSize, extension);
+                    thumbnailUrl = string.Format("{0}/wp-content/uploads/{1}/{2}-{3}-{4}x{4}{5}", _blogUrl, _ftpDir, imageName, imageIndex, _thumbnailSize, extension);
                     imageUploads.Add(uploaded);
                     content.Append(
                         string.Format(
                             "<div style=\"width: 150px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
-                            blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageName + "-" + imageIndex), thumbnailUrl, item.Title));
+                            _blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageName + "-" + imageIndex), thumbnailUrl, item.Title));
 
                     imageIndex++;
                 }
@@ -235,7 +372,7 @@ namespace WindowsFormsApplication1
                     Author = authorId.ToString(),
                     CommentStatus = "open",
                     Status = "draft",
-                    BlogUrl = blogUrl,
+                    BlogUrl = _blogUrl,
                     CustomFields = new[]
                     {
                         new CustomField() {Key = "foreignkey", Value = id},
@@ -257,7 +394,7 @@ namespace WindowsFormsApplication1
 
                 if (imageUploads.Any())
                 {
-                    if (useFeatureImage)
+                    if (_useFeatureImage)
                     {
                         post.FeaturedImageId = imageUploads[0].Id;
                     }
@@ -268,10 +405,10 @@ namespace WindowsFormsApplication1
                 var terms = new List<Term>();
                 foreach (var tag in item.Tags)
                 {
-                    if (useCache)
+                    if (_useCache)
                     {
                         var tagOnBlog =
-                            _blogCache.TagsPresent(blogUrl).FirstOrDefault(
+                            _blogCache.TagsPresent(_blogUrl).FirstOrDefault(
                                 t =>
                                 HttpUtility.HtmlDecode(t.Name).Trim().ToLowerInvariant() ==
                                 HttpUtility.HtmlDecode(converterFunctions.RemoveDiacritics(tag)).Trim().ToLowerInvariant
@@ -297,9 +434,9 @@ namespace WindowsFormsApplication1
                                 t.Id = termId;
                             }
 
-                            if (useCache)
+                            if (_useCache)
                             {
-                                _blogCache.InsertTag(blogUrl, t);
+                                _blogCache.InsertTag(_blogUrl, t);
                             }
 
                             if (!terms.Select(term => term.Id).Contains(t.Id))
@@ -338,9 +475,9 @@ namespace WindowsFormsApplication1
                     var wordpressSharpTime = stopWatch.ElapsedMilliseconds;
                     Logger.LogProcess("wordpressSharpTime: " + wordpressSharpTime);
                 }
-                if (useCache)
+                if (_useCache)
                 {
-                    _blogCache.InsertId(blogUrl, id);
+                    _blogCache.InsertId(_blogUrl, id);
                 }
 
                 return Convert.ToInt32(newPost);

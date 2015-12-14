@@ -19,6 +19,9 @@ namespace WindowsFormsApplication1
         private BlogCache _blogCache;
         private bool StopToken = false;
         private ListViewColumnSorter lvwColumnSorter;
+        private Stopwatch _stopWatch = new Stopwatch();
+        private PostFactory _postFactory = null;
+
 
         public frmMain()
         {
@@ -40,7 +43,7 @@ namespace WindowsFormsApplication1
 #if (DEBUG)
 
             txtPostId.Visible = true;
-            button1.Visible = true;
+            btnSetTitle.Visible = true;
 #endif
 
         }
@@ -79,7 +82,6 @@ namespace WindowsFormsApplication1
             barStatus.Maximum = pageEnd - pageStart;
             StopToken = false;
             var siteFactory = new SiteFactory();
-            var cleaned = false;
             foreach (var checkedItem in chkSites.CheckedItems)
             {
                 var allResults = new List<Tuple<string, string>>();
@@ -111,12 +113,6 @@ namespace WindowsFormsApplication1
                 {
                     MessageBox.Show(string.Format("No results found for keyword {0} for pages {1}-{2} for the site {3} ", txtUrl.Text, numPage.Value, numPageTo.Value, site.Name));
                     continue;
-                }
-
-                if (chkClearResults.Checked && !cleaned)
-                {
-                    lvItems.Items.Clear();
-                    cleaned = true;
                 }
 
                 btnStart.Enabled = false;
@@ -213,6 +209,50 @@ namespace WindowsFormsApplication1
         }
 
 
+        private void PostCreationStopped(object sender, EventArgs e)
+        {
+            ResetBarStatus();
+            SetStatus("Post creation stopped");
+        }
+
+        private void PostBeingCreated(object sender, Item e)
+        {
+            SetStatus("Creating item on the blog: " + e.Order);
+        }
+
+        private void PostsCreated(object sender, IList<Item> e)
+        {
+            ResetBarStatus();
+            EnDisItems(true);
+            _stopWatch.Stop();
+            lblDateTime.Text = string.Format("Took {0} mins", _stopWatch.Elapsed.TotalMinutes.ToString("0.00"));
+        }
+
+        private void PostCreated(object sender, Item e)
+        {
+            barStatus.PerformStep();
+            var status = "";
+            switch (e.PostId)
+            {
+                case -1:
+                    status = "Error";
+                    break;
+                case 0:
+                    status = "Exists";
+                    break;
+                case -2:
+                    status = "Invalid";
+                    break;
+                default:
+                    status = e.PostId.ToString();
+                    break;
+            }
+            var lvItem = lvItems.FindItemWithText(e.Order.ToString());
+            if (lvItem == null) return;
+            lvItem.SubItems[11].Text = status;
+            lvItem.EnsureVisible();
+        }
+
         private void btnGo_Click(object sender, EventArgs e)
         {
             if (lvItems.SelectedItems.Count == 0)
@@ -221,19 +261,19 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
+            _stopWatch = new Stopwatch();
+            _stopWatch.Start();
             CreateAuthors();
+
+            EnDisItems(false);
+            StopToken = false;
+
+            lblDateTime.Text = "Started at " + DateTime.Now.ToLongTimeString();
+
             using (var dal = new Dal(MySqlConnectionString))
             {
                 _blogCache = new BlogCache(dal);
 
-                EnDisItems(false);
-                StopToken = false;
-                bool errorFound = false;
-
-
-                lblDateTime.Text = "Started at " + DateTime.Now.ToLongTimeString();
                 if (chkCache.Checked)
                 {
                     SetStatus("Loading present posts and tags in the blog(this may take some time)...");
@@ -241,50 +281,28 @@ namespace WindowsFormsApplication1
                     _blogCache.Start(txtBlogUrl.Text);
                     Application.DoEvents();
                 }
-
                 SetStatus("Ready");
                 ResetBarStatus(true);
                 barStatus.Maximum = lvItems.SelectedItems.Count;
-                var postFactory = new PostFactory(SiteConfig, FtpConfiguration, _blogCache, dal, chkNoAPI.Checked, chkResizeImages.Checked ? (int)numMaxImageDimension.Value : 0, (int)numThumbnailSize.Value);
-
-                foreach (ListViewItem item in lvItems.SelectedItems)
-                {
-                    if (StopToken) break;
-                    SetStatus("Creating item on the blog:" + item.Text);
-                    Application.DoEvents();
-                    Item itemObject = ItemFromListView(item);
-                    var itemNo = postFactory.Create(itemObject, txtBlogUrl.Text, chkCache.Checked,
+                _postFactory = new PostFactory(
+                        SiteConfig,
+                        FtpConfiguration,
+                        _blogCache,
+                        dal,
+                        txtBlogUrl.Text,
+                        chkNoAPI.Checked,
+                        chkResizeImages.Checked ? (int)numMaxImageDimension.Value : 0,
+                        (int)numThumbnailSize.Value,
+                        chkCache.Checked,
                         chkFeatureImage.Checked);
-                    Application.DoEvents();
-                    barStatus.PerformStep();
-
-                    var status = "";
-                    switch (itemNo)
-                    {
-                        case -1:
-                            errorFound = true;
-                            status = "Error";
-                            break;
-                        case 0:
-                            status = "Exists";
-                            break;
-                        case -2:
-                            status = "Invalid";
-                            break;
-                        default:
-                            status = itemNo.ToString();
-                            break;
-                    }
-                    item.SubItems[11].Text = status;
-                    item.EnsureVisible();
-                }
-                SetStatus("Transfer finished" + (errorFound ? " with errors" : ""));
+                var items = ItemsFromListView(lvItems.SelectedItems);
+                _postFactory.PostCreated += PostCreated;
+                _postFactory.PostBeingCreated += PostBeingCreated;
+                _postFactory.PostsCreated += PostsCreated;
+                _postFactory.PostCreationStopped += PostCreationStopped;
+                _postFactory.Create(items);
             }
-            ResetBarStatus();
-            EnDisItems(true);
-            stopWatch.Stop();
-            var mysqlTime = stopWatch.ElapsedMilliseconds;
-            lblDateTime.Text = "Took " + stopWatch.Elapsed.TotalMinutes.ToString("0.00") + " mins";
+        
         }
 
         private void CreateAuthors()
@@ -308,10 +326,16 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private IList<Item> ItemsFromListView(ListView.SelectedListViewItemCollection items)
+        {
+            return (from object item in items select ItemFromListView((ListViewItem)item)).ToList();
+        }
+
         private Item ItemFromListView(ListViewItem item)
         {
             return new Item()
             {
+                Order = int.Parse(item.Text),
                 Id = int.Parse(item.SubItems[1].Text),
                 Url = item.SubItems[2].Text,
                 Title = item.SubItems[3].Text,
@@ -377,8 +401,12 @@ namespace WindowsFormsApplication1
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            StopToken = true;
+            SetStatus("Waiting for the last operation to finish for stopping...");
             btnStop.Enabled = false;
+            if(_postFactory!=null)
+            {
+                _postFactory.CancelPostCreation();
+            }
         }
 
         private void btnStopScrape_Click(object sender, EventArgs e)
@@ -485,11 +513,6 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (lvItems.SelectedItems.Count == 0) return;
-            lvItems.SelectedItems[0].SubItems[3].Text = txtPostId.Text;
-        }
 
         private void lvItems_ColumnClick(object sender, ColumnClickEventArgs e)
         {
@@ -649,5 +672,14 @@ namespace WindowsFormsApplication1
 
 
         }
+
+        private void btnSetTitle_Click(object sender, EventArgs e)
+        {
+            if (lvItems.SelectedItems.Count == 0) return;
+            lvItems.SelectedItems[0].SubItems[3].Text = txtPostId.Text;
+
+        }
+
+
     }
 }
