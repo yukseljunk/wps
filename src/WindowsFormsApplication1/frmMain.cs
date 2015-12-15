@@ -59,6 +59,73 @@ namespace WindowsFormsApplication1
             chkSites.SetItemChecked(0, true);
         }
 
+        private void btnGoAsync_Click(object sender, EventArgs e)
+        {
+            if (txtUrl.Text == "")
+            {
+                MessageBox.Show("Enter Keyword!");
+                return;
+            }
+            var sitesCount = chkSites.CheckedItems.Count;
+            if (sitesCount == 0)
+            {
+                MessageBox.Show("Select sites!");
+                return;
+            }
+
+            grpTop.Enabled = false;
+            numPage_ValueChanged(null, null);
+
+            var pageStart = (int)numPage.Value;
+            var pageEnd = chkAllPages.Checked ? (int)numPageTo.Maximum : (int)numPageTo.Value;
+            barStatus.Maximum = pageEnd - pageStart;
+
+            var sourceItemFactory= new SourceItemFactory();
+            sourceItemFactory.NoSourceFound += NoSourceFound;
+            sourceItemFactory.GettingSourceItemsStopped += GettingSourceItemsStopped;
+            sourceItemFactory.ProcessFinished += GettingSourceItemsFinished;
+            sourceItemFactory.SourceItemGot += SourceItemGot;
+            sourceItemFactory.SourceItemsGot += SourceItemsGot;
+            var checkedSites= (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();
+            sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count + 1);
+
+        }
+
+        private void SourceItemsGot(object sender, IList<ListViewItem> e)
+        {
+            lvItems.ListViewItemSorter = null;
+            lvItems.BeginUpdate();
+            lvItems.Items.AddRange(e.ToArray());
+            lvItems.EndUpdate();
+        }
+
+        private void SourceItemGot(object sender, ListViewItem e)
+        {
+            
+        }
+
+        private void GettingSourceItemsFinished(object sender, EventArgs e)
+        {
+            ResetBarStatus();
+            grpTop.Enabled = true;
+            btnGo.Enabled = lvItems.Items.Count > 0;
+            btnStart.Enabled = true;
+            Cursor.Current = Cursors.Default;
+            btnStopScrape.Enabled = false;
+
+        }
+
+        private void GettingSourceItemsStopped(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void NoSourceFound(object sender, string e)
+        {
+            
+        }
+
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             if (txtUrl.Text == "")
@@ -302,7 +369,7 @@ namespace WindowsFormsApplication1
                 _postFactory.PostCreationStopped += PostCreationStopped;
                 _postFactory.Create(items);
             }
-        
+
         }
 
         private void CreateAuthors()
@@ -403,7 +470,7 @@ namespace WindowsFormsApplication1
         {
             SetStatus("Waiting for the last operation to finish for stopping...");
             btnStop.Enabled = false;
-            if(_postFactory!=null)
+            if (_postFactory != null)
             {
                 _postFactory.CancelPostCreation();
             }
@@ -670,7 +737,6 @@ namespace WindowsFormsApplication1
 
             }
 
-
         }
 
         private void btnSetTitle_Click(object sender, EventArgs e)
@@ -679,7 +745,6 @@ namespace WindowsFormsApplication1
             lvItems.SelectedItems[0].SubItems[3].Text = txtPostId.Text;
 
         }
-
 
     }
 }

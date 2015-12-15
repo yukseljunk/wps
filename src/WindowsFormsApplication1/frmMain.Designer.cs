@@ -103,6 +103,7 @@
             this.numThumbnailSize = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
+            this.btnGoAsync = new System.Windows.Forms.Button();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -921,11 +922,23 @@
             this.label13.TabIndex = 38;
             this.label13.Text = "Thumbnail Size";
             // 
+            // btnGoAsync
+            // 
+            this.btnGoAsync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGoAsync.Location = new System.Drawing.Point(1100, 12);
+            this.btnGoAsync.Name = "btnGoAsync";
+            this.btnGoAsync.Size = new System.Drawing.Size(83, 23);
+            this.btnGoAsync.TabIndex = 39;
+            this.btnGoAsync.Text = "Go Aysnc!";
+            this.btnGoAsync.UseVisualStyleBackColor = true;
+            this.btnGoAsync.Click += new System.EventHandler(this.btnGoAsync_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1396, 731);
+            this.Controls.Add(this.btnGoAsync);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.numThumbnailSize);
@@ -1044,6 +1057,7 @@
         private System.Windows.Forms.NumericUpDown numThumbnailSize;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button btnGoAsync;
     }
 }
 

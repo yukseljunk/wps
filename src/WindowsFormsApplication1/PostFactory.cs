@@ -135,7 +135,7 @@ namespace WindowsFormsApplication1
             _bw.DoWork += (obj, e) => CreatePosts(items, e);
             _bw.ProgressChanged += CreatePostProgress;
             _bw.RunWorkerCompleted += CreatePostsFinished;
-            _bw.RunWorkerAsync(items);
+            _bw.RunWorkerAsync();
 
         }
 
@@ -148,15 +148,15 @@ namespace WindowsFormsApplication1
             }
             else if (e.Error != null)
             {
-                OnPostsCreated(null);                
-            }            
+                OnPostsCreated(null);
+            }
             else
             {
                 if (e.Result != null)
                 {
                     OnPostsCreated((List<Item>)e.Result);
                 }
-                
+
             }
         }
 
@@ -164,7 +164,7 @@ namespace WindowsFormsApplication1
         {
             if (e.UserState != null)
             {
-                var item = (Item) e.UserState;
+                var item = (Item)e.UserState;
                 if (item.PostId > int.MinValue)
                 {
                     OnPostCreated(item);
