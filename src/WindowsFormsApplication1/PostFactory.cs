@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using ImageProcessor;
 using MimeTypes;
@@ -184,6 +185,7 @@ namespace WindowsFormsApplication1
                 itemIndex++;
                 item.PostId = int.MinValue;
                 _bw.ReportProgress(itemIndex / itemCount * 100, item);
+                Thread.Sleep(TimeSpan.FromSeconds(1));
                 var itemPostId = Create(item);
                 item.PostId = itemPostId;
                 _bw.ReportProgress(itemIndex / itemCount * 100, item);
