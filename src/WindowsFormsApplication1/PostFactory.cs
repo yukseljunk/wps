@@ -186,8 +186,31 @@ namespace WindowsFormsApplication1
                 item.PostId = int.MinValue;
                 _bw.ReportProgress(itemIndex / itemCount * 100, item);
                 Thread.Sleep(TimeSpan.FromSeconds(1));
-                var itemPostId = Create(item);
-                item.PostId = itemPostId;
+
+                var itemPresent = false;
+
+                var id = item.Site + "_" + item.Id;
+                if (_useCache)
+                {
+                    if (_blogCache.IdsPresent(_blogUrl).Contains(id))
+                    {
+                        item.PostId = 0;
+                        itemPresent = true;
+                    }
+                }
+
+                if (!itemPresent)
+                {
+                    var itemPostId = Create(item, id);
+
+                    item.PostId = itemPostId;
+
+                    if (_useCache)
+                    {
+                        _blogCache.InsertId(_blogUrl, id);
+                    }
+                }
+
                 _bw.ReportProgress(itemIndex / itemCount * 100, item);
                 if (_bw.CancellationPending)
                 {
@@ -204,7 +227,7 @@ namespace WindowsFormsApplication1
         /// <param name="item"></param>
         /// <param name="_blogUrl"></param>
         /// <returns>id crated, 0 if exists, -1 if error, -2 if not valid</returns>
-        public int Create(Item item)
+        public int Create(Item item, string foreignKey)
         {
             var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
             var postDal = new PostDal(_dal);
@@ -220,14 +243,6 @@ namespace WindowsFormsApplication1
 
             try
             {
-                var id = item.Site + "_" + item.Id;
-                if (_useCache)
-                {
-                    if (_blogCache.IdsPresent(_blogUrl).Contains(id))
-                    {
-                        return 0;
-                    }
-                }
                 var ftp = new Ftp();
 
                 //validation
@@ -264,50 +279,9 @@ namespace WindowsFormsApplication1
                     var uri = new Uri(imageUrl);
                     var imageUrlWithoutQs = uri.GetLeftPart(UriPartial.Path);
 
-                    Data imageData = null;
-                    var extension = Path.GetExtension(imageUrlWithoutQs).ToLower();
-
-                    if (_maxImageDimension > 0)
-                    {
-                        var tempImageFileName = ImagesDir + "/" + "temp" + extension;
-                        //download image and resize it...
-                        using (WebClient webClient = new WebClient())
-                        {
-                            webClient.DownloadFile(imageUrl, tempImageFileName);
-                        }
-
-                        imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
-                        var resize = false;
-                        using (var img = Image.FromFile(tempImageFileName))
-                        {
-                            resize = img.Width > _maxImageDimension || img.Height > _maxImageDimension;
-                        }
-                        if (resize)
-                        {
-
-                            var size = new Size(_maxImageDimension, _maxImageDimension);
-                            using (MemoryStream inStream = new MemoryStream(imageData.Bits))
-                            {
-                                using (var outStream = new MemoryStream())
-                                {
-                                    // Initialize the ImageFactory using the overload to preserve EXIF metadata.
-                                    using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
-                                    {
-                                        // Load, resize, set the format and quality and save an image.
-                                        imageFactory.Load(inStream)
-                                            .Constrain(size)
-                                            .Save(tempImageFileName);
-                                    }
-                                    // Do something with the stream.
-                                }
-                            }
-                            imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
-                        }
-                    }
-                    else
-                    {
-                        imageData = Data.CreateFromUrl(imageUrl);
-                    }
+                    var extension = Path.GetExtension(imageUrlWithoutQs).ToLower(); 
+                    
+                    var imageData = GetImageData(extension, imageUrl);
                     var imageName = RefineImageName(postTitle);
                     imageData.Name = imageName + "-" + imageIndex +
                                      extension;
@@ -377,7 +351,7 @@ namespace WindowsFormsApplication1
                     BlogUrl = _blogUrl,
                     CustomFields = new[]
                     {
-                        new CustomField() {Key = "foreignkey", Value = id},
+                        new CustomField() {Key = "foreignkey", Value = foreignKey},
                         new CustomField() {Key = "_aioseop_title", Value = item.Title}
                         ,
                         new CustomField()
@@ -477,10 +451,7 @@ namespace WindowsFormsApplication1
                     var wordpressSharpTime = stopWatch.ElapsedMilliseconds;
                     Logger.LogProcess("wordpressSharpTime: " + wordpressSharpTime);
                 }
-                if (_useCache)
-                {
-                    _blogCache.InsertId(_blogUrl, id);
-                }
+                
 
                 return Convert.ToInt32(newPost);
             }
@@ -502,6 +473,47 @@ namespace WindowsFormsApplication1
                 }
             }
             return -1;
+        }
+
+        private Data GetImageData(string extension, string imageUrl)
+        {
+            if (_maxImageDimension <= 0)
+            {
+                return Data.CreateFromUrl(imageUrl);
+            }
+
+            var tempImageFileName = ImagesDir + "/" + "temp" + extension;
+            //download image and resize it...
+            using (WebClient webClient = new WebClient())
+            {
+                webClient.DownloadFile(imageUrl, tempImageFileName);
+            }
+
+            var imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
+            bool resize;
+            using (var img = Image.FromFile(tempImageFileName))
+            {
+                resize = img.Width > _maxImageDimension || img.Height > _maxImageDimension;
+            }
+            if (!resize) return imageData;
+
+            var size = new Size(_maxImageDimension, _maxImageDimension);
+            using (MemoryStream inStream = new MemoryStream(imageData.Bits))
+            {
+                using (var outStream = new MemoryStream())
+                {
+                    // Initialize the ImageFactory using the overload to preserve EXIF metadata.
+                    using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                    {
+                        // Load, resize, set the format and quality and save an image.
+                        imageFactory.Load(inStream)
+                            .Constrain(size)
+                            .Save(tempImageFileName);
+                    }
+                }
+            }
+            imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
+            return imageData;
         }
 
         private static string RefineImageName(string imageName)
