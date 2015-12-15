@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -198,10 +197,15 @@ namespace WindowsFormsApplication1
                         itemPresent = true;
                     }
                 }
-
-                if (!itemPresent)
+                if (item.IsInvalid)
                 {
-                    var itemPostId = Create(item, id);
+                    item.PostId = -2;
+                }
+                var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
+
+                if (!itemPresent && !item.IsInvalid)
+                {
+                    var itemPostId = Create(item, id, authorId);
 
                     item.PostId = itemPostId;
 
@@ -221,18 +225,70 @@ namespace WindowsFormsApplication1
             e.Result = items;
         }
 
+
+        private void CreatePosts(IList<Item> items, DoWorkEventArgs e, int minWordCount)
+        {
+            var itemIndex = 0;
+            var itemCount = items.Count;
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                itemIndex++;
+                item.PostId = int.MinValue;
+                _bw.ReportProgress(itemIndex / itemCount * 100, item);
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+
+                var itemPresent = false;
+
+                var id = item.Site + "_" + item.Id;
+                if (_useCache)
+                {
+                    if (_blogCache.IdsPresent(_blogUrl).Contains(id))
+                    {
+                        item.PostId = 0;
+                        itemPresent = true;
+                    }
+                }
+                if (item.IsInvalid)
+                {
+                    item.PostId = -2;
+                }
+                var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
+
+                if (!itemPresent && !item.IsInvalid)
+                {
+                    var itemPostId = Create(item, id, authorId);
+
+                    item.PostId = itemPostId;
+
+                    if (_useCache)
+                    {
+                        _blogCache.InsertId(_blogUrl, id);
+                    }
+                
+                }
+
+                _bw.ReportProgress(itemIndex / itemCount * 100, item);
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+            }
+            e.Result = items;
+        }
+
+
         /// <summary>
         /// create item
         /// </summary>
         /// <param name="item"></param>
-        /// <param name="_blogUrl"></param>
-        /// <returns>id crated, 0 if exists, -1 if error, -2 if not valid</returns>
-        public int Create(Item item, string foreignKey)
+        /// <param name="foreignKey"> </param>
+        /// <param name="authorId"> </param>
+        /// <returns>id crated, -1 if error</returns>
+        private int Create(Item item, string foreignKey, int authorId)
         {
-            var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
             var postDal = new PostDal(_dal);
-
-            var converterFunctions = new ConverterFunctions();
             WordPressClient client = null;
 
             if (!_useMySqlFtpWay)
@@ -242,34 +298,17 @@ namespace WindowsFormsApplication1
 
             try
             {
-                //validation
-                if (item.Images.Count == 0 || string.IsNullOrWhiteSpace(item.Title.Trim()) ||
-                    string.IsNullOrWhiteSpace(item.Content.Trim()))
-                {
-                    return -2;
-                }
-
                 var postTitle = GetPostTitle(item);
                 _blogCache.InsertTitle(_blogUrl, postTitle);
 
-                var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
-
+                var content = new StringBuilder();
                 var imageUploads = GetImageUploads(item, postTitle, authorId, client, content);
-
-                content.Append(string.Format("</div><h4>Price:${0}</h4>", item.Price));
-                content.Append("<strong>Description: </strong>");
-                content.Append(converterFunctions.ArrangeContent(item.Content));
-                content.Append("<br><strong>Source:</strong> <a href=\"");
-                content.Append(item.Url);
-                content.Append("\" rel=\"nofollow\" target=\"_blank\">");
-                content.Append(item.Site);
-                content.Append(".com</a>");
 
                 var post = new Post
                 {
                     PostType = "post",
                     Title = postTitle,
-                    Content = content.ToString(),
+                    Content = string.Format(item.PostBody(), content),
                     PublishDateTime = DateTime.Now,
                     Author = authorId.ToString(),
                     CommentStatus = "open",
@@ -303,29 +342,10 @@ namespace WindowsFormsApplication1
                     post.ImageIds = imageUploads.Select(i => i.Id).ToList();
                     post.CustomFields[4].Value = imageUploads[0].Id;
                 }
-                
+
                 post.Terms = GetTags(item, client).ToArray();
                 string newPost = "-1";
-                var stopWatch = new Stopwatch();
-                if (_useMySqlFtpWay)
-                {
-                    stopWatch.Start();
-                    newPost = postDal.InsertPost(post).ToString();
-                    stopWatch.Stop();
-                    var mysqlTime = stopWatch.ElapsedMilliseconds;
-                    Logger.LogProcess("mysqltime: " + mysqlTime);
-                }
-                else
-                {
-                    stopWatch.Reset();
-                    stopWatch.Start();
-                    newPost = client.NewPost(post);
-                    stopWatch.Stop();
-                    var wordpressSharpTime = stopWatch.ElapsedMilliseconds;
-                    Logger.LogProcess("wordpressSharpTime: " + wordpressSharpTime);
-                }
-
-
+                newPost = _useMySqlFtpWay ? postDal.InsertPost(post).ToString() : client.NewPost(post);
                 return Convert.ToInt32(newPost);
             }
             catch (Exception exception)
@@ -348,10 +368,11 @@ namespace WindowsFormsApplication1
             return -1;
         }
 
+
         private IList<UploadResult> GetImageUploads(Item item, string postTitle, int authorId,
             WordPressClient client, StringBuilder content)
         {
-            var converterFunctions= new ConverterFunctions();
+            var converterFunctions = new ConverterFunctions();
             var imageDal = new ImageDal(_dal);
             var ftp = new Ftp();
             var imageIndex = 1;
@@ -406,7 +427,7 @@ namespace WindowsFormsApplication1
 
                 imageIndex++;
             }
-            
+
             if (!_useMySqlFtpWay) return imageUploads;
 
             var imageIds = imageDal.Insert(imagePosts, _ftpDir);

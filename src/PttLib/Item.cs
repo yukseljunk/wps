@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Text;
+using PttLib.TourInfo;
 
 namespace PttLib
 {
@@ -37,5 +39,32 @@ namespace PttLib
                 Url,
                 Site);
         }
+
+        public string PostBody()
+        {
+            var converterFunctions = new ConverterFunctions();
+            var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">{0}");
+            content.Append(string.Format("</div><h4>Price:${0}</h4>", Price));
+            content.Append("<strong>Description: </strong>");
+            content.Append(converterFunctions.ArrangeContent(Content));
+            content.Append("<br><strong>Source:</strong> <a href=\"");
+            content.Append(Url);
+            content.Append("\" rel=\"nofollow\" target=\"_blank\">");
+            content.Append(Site);
+            content.Append(".com</a>");
+
+            return content.ToString();
+
+        }
+
+        public bool IsInvalid
+        {
+            get
+            {
+                return Images.Count == 0 || string.IsNullOrWhiteSpace(Title.Trim()) ||
+                       string.IsNullOrWhiteSpace(Content.Trim());
+            }
+        }
+
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using WordPressSharp.Models;
@@ -117,7 +118,12 @@ namespace WindowsFormsApplication1
             if (allMeta.Tables[0].Rows.Count == 0) return result;
             foreach (DataRow row in allMeta.Tables[0].Rows)
             {
-                result.Add(row["meta_value"].ToString());
+                var foreignKeys = row["meta_value"].ToString();
+                var keys=foreignKeys.Split(new string[] {","}, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var key in keys)
+                {
+                    result.Add(key);
+                }
             }
 
             return result;
