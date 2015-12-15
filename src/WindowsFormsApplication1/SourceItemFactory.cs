@@ -10,6 +10,7 @@ namespace WindowsFormsApplication1
 {
     public class SourceItemFactory
     {
+        private const int BlockSize = 15;
         #region BackgroundWorker
         static BackgroundWorker _bw;
 
@@ -22,6 +23,7 @@ namespace WindowsFormsApplication1
         public event EventHandler GettingSourceItemsStopped;
         public event EventHandler ProcessFinished;
         public event EventHandler<string> NoSourceFound;
+        public event EventHandler<int> PageParsed;
 
 
         protected virtual void OnProcessFinished()
@@ -52,6 +54,12 @@ namespace WindowsFormsApplication1
             var handler = NoSourceFound;
             if (handler != null) handler(this, e);
         }
+
+        protected virtual void OnPageParsed(int e)
+        {
+            var handler = PageParsed;
+            if (handler != null) handler(this, e);
+        }
         #endregion
 
         public void GetSourceItems(IList<string> siteNames, string keyword, int pageStart, int pageEnd, int startingOrder)
@@ -66,13 +74,16 @@ namespace WindowsFormsApplication1
             _bw.RunWorkerCompleted += GettingSourceItemsFinished;
             _bw.RunWorkerAsync();
 
-
-
         }
 
         private void GettingSourceItemsFinished(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (e.Cancelled)
+            {
+                OnGettingSourceItemsStopped();
+            }
             OnProcessFinished();
+        
         }
 
         private void SingleSourceItemGot(object sender, ProgressChangedEventArgs e)
@@ -94,10 +105,21 @@ namespace WindowsFormsApplication1
 
                 if (!string.IsNullOrEmpty(e.UserState.ToString()))
                 {
+                    int count;
+                    if (Int32.TryParse(e.UserState.ToString(), out count))
+                    {
+                        OnPageParsed(count);
+                        return;
+                    }
                     OnNoSourceFound(e.UserState.ToString());
                 }
                 
             }
+        }
+
+        public void CancelGettingSource()
+        {
+            if (_bw.IsBusy) _bw.CancelAsync();
         }
 
         private void GetSourceItemsOnWorker(IList<string> siteNames, string keyword, int pageStart, int pageEnd, int startingOrder, DoWorkEventArgs e)
@@ -127,20 +149,23 @@ namespace WindowsFormsApplication1
                     }
                     allResults.AddRange(results);
                 }
-
-
+                
                 if (!allResults.Any())
                 {
-                    _bw.ReportProgress(100, string.Format("No results found for keyword {0} for pages {1}-{2} for the site {3} ", keyword, pageStart, pageEnd, site.Name));
+                    if (!e.Cancel)
+                    {
+                        _bw.ReportProgress(100, string.Format("No results found for keyword {0} for pages {1}-{2} for the site {3} ", keyword, pageStart, pageEnd, site.Name));
+                    }
                     continue;
                 }
-
+                _bw.ReportProgress(100, allResults.Count);
+                    
                 var itemIndex = startingOrder;
                 var allResultsCount = allResults.Count;
                 var blockIndex = 0;
                 do
                 {
-                    var subResults = allResults.Skip(5 * blockIndex).Take(20);
+                    var subResults = allResults.Skip(BlockSize * blockIndex).Take(BlockSize);
                     if (!subResults.Any()) break;
                     blockIndex++;
 
@@ -190,6 +215,5 @@ namespace WindowsFormsApplication1
         }
 
 
-      
     }
 }

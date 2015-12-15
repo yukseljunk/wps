@@ -17,10 +17,10 @@ namespace WindowsFormsApplication1
     {
         private const string DefaultKey = "baby spoon";
         private BlogCache _blogCache;
-        private bool StopToken = false;
         private ListViewColumnSorter lvwColumnSorter;
         private Stopwatch _stopWatch = new Stopwatch();
         private PostFactory _postFactory = null;
+        private SourceItemFactory _sourceItemFactory = null;
 
 
         public frmMain()
@@ -59,36 +59,10 @@ namespace WindowsFormsApplication1
             chkSites.SetItemChecked(0, true);
         }
 
-        private void btnGoAsync_Click(object sender, EventArgs e)
+        private void PageParsed(object sender, int e)
         {
-            if (txtUrl.Text == "")
-            {
-                MessageBox.Show("Enter Keyword!");
-                return;
-            }
-            var sitesCount = chkSites.CheckedItems.Count;
-            if (sitesCount == 0)
-            {
-                MessageBox.Show("Select sites!");
-                return;
-            }
-
-            grpTop.Enabled = false;
-            numPage_ValueChanged(null, null);
-
-            var pageStart = (int)numPage.Value;
-            var pageEnd = chkAllPages.Checked ? (int)numPageTo.Maximum : (int)numPageTo.Value;
-            barStatus.Maximum = pageEnd - pageStart;
-
-            var sourceItemFactory= new SourceItemFactory();
-            sourceItemFactory.NoSourceFound += NoSourceFound;
-            sourceItemFactory.GettingSourceItemsStopped += GettingSourceItemsStopped;
-            sourceItemFactory.ProcessFinished += GettingSourceItemsFinished;
-            sourceItemFactory.SourceItemGot += SourceItemGot;
-            sourceItemFactory.SourceItemsGot += SourceItemsGot;
-            var checkedSites= (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();
-            sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count + 1);
-
+            ResetBarStatus(true);
+            barStatus.Maximum = e;
         }
 
         private void SourceItemsGot(object sender, IList<ListViewItem> e)
@@ -101,7 +75,8 @@ namespace WindowsFormsApplication1
 
         private void SourceItemGot(object sender, ListViewItem e)
         {
-            
+            SetStatus("Got "+ e.SubItems[1].Text);
+            barStatus.PerformStep();
         }
 
         private void GettingSourceItemsFinished(object sender, EventArgs e)
@@ -112,17 +87,22 @@ namespace WindowsFormsApplication1
             btnStart.Enabled = true;
             Cursor.Current = Cursors.Default;
             btnStopScrape.Enabled = false;
+            lvwColumnSorter = new ListViewColumnSorter();
+            lvItems.ListViewItemSorter = lvwColumnSorter;
+            SetStatus("Getting source items finished");
 
         }
 
         private void GettingSourceItemsStopped(object sender, EventArgs e)
         {
-            
+            ResetBarStatus();
+            GettingSourceItemsFinished(null, null);
+            SetStatus("Getting source items stopped!");
         }
 
         private void NoSourceFound(object sender, string e)
         {
-            
+            MessageBox.Show(e);
         }
 
 
@@ -141,121 +121,26 @@ namespace WindowsFormsApplication1
             }
 
             grpTop.Enabled = false;
-
             numPage_ValueChanged(null, null);
+            Cursor.Current = Cursors.WaitCursor;
+            btnStopScrape.Enabled = true;
+            ResetBarStatus(true);
+            btnStart.Enabled = false;
+            btnGo.Enabled = false;
 
             var pageStart = (int)numPage.Value;
             var pageEnd = chkAllPages.Checked ? (int)numPageTo.Maximum : (int)numPageTo.Value;
             barStatus.Maximum = pageEnd - pageStart;
-            StopToken = false;
-            var siteFactory = new SiteFactory();
-            foreach (var checkedItem in chkSites.CheckedItems)
-            {
-                var allResults = new List<Tuple<string, string>>();
-                ResetBarStatus(true);
-                var site = siteFactory.GetByName(checkedItem.ToString());
 
-                for (var page = pageStart; page <= pageEnd; page++)
-                {
-                    Application.DoEvents();
-                    SetStatus(string.Format("Getting Page {0}", page));
-                    int pageCount;
-                    var results = site.GetItems(txtUrl.Text, out pageCount, page);
-                    if (page > pageCount)
-                    {
-                        break;
-                    }
-                    barStatus.PerformStep();
-                    if (results == null)
-                    {
-                        continue;
-                    }
-                    allResults.AddRange(results);
-                }
-                SetStatus("Ready");
-                ResetBarStatus();
-
-
-                if (!allResults.Any())
-                {
-                    MessageBox.Show(string.Format("No results found for keyword {0} for pages {1}-{2} for the site {3} ", txtUrl.Text, numPage.Value, numPageTo.Value, site.Name));
-                    continue;
-                }
-
-                btnStart.Enabled = false;
-                btnGo.Enabled = false;
-
-                btnStopScrape.Enabled = true;
-                ResetBarStatus(true);
-                barStatus.Maximum = allResults.Count;
-                SetStatus("Filling items....");
-                var itemIndex = lvItems.Items.Count + 1;
-                Cursor.Current = Cursors.WaitCursor;
-                var blockIndex = 0;
-
-                do
-                {
-                    var subResults = allResults.Skip(20 * blockIndex).Take(20);
-                    if (!subResults.Any()) break;
-                    blockIndex++;
-
-                    var listViewItems = new List<ListViewItem>();
-
-                    foreach (var etsyResult in subResults)
-                    {
-                        Application.DoEvents();
-
-                        var item = site.GetItem(etsyResult.Item1, etsyResult.Item2);
-                        if (item != null)
-                        {
-                            string[] row1 =
-                            {
-                                item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
-                                item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
-                                string.Join(",", item.Images), string.Join(",", item.Tags), site.Name, item.WordCount.ToString(),""
-                            };
-
-                            var listViewitem = new ListViewItem(itemIndex.ToString());
-                            listViewitem.SubItems.AddRange(row1);
-                            listViewItems.Add(listViewitem);
-                            barStatus.PerformStep();
-                            itemIndex++;
-                        }
-                        if (StopToken)
-                        {
-                            break;
-                        }
-
-                    }
-
-                    lvItems.ListViewItemSorter = null;
-                    lvItems.BeginUpdate();
-                    lvItems.Items.AddRange(listViewItems.ToArray());
-                    lvItems.EndUpdate();
-                    if (StopToken)
-                    {
-                        break;
-                    }
-                } while (true);
-
-                SetStatus("Ready");
-                lvwColumnSorter = new ListViewColumnSorter();
-                lvItems.ListViewItemSorter = lvwColumnSorter;
-
-
-                if (StopToken)
-                {
-                    break;
-                }
-            }
-
-            ResetBarStatus();
-            grpTop.Enabled = true;
-            btnGo.Enabled = lvItems.Items.Count > 0;
-            btnStart.Enabled = true;
-            Cursor.Current = Cursors.Default;
-            btnStopScrape.Enabled = false;
-
+            _sourceItemFactory = new SourceItemFactory();
+            _sourceItemFactory.NoSourceFound += NoSourceFound;
+            _sourceItemFactory.GettingSourceItemsStopped += GettingSourceItemsStopped;
+            _sourceItemFactory.ProcessFinished += GettingSourceItemsFinished;
+            _sourceItemFactory.SourceItemGot += SourceItemGot;
+            _sourceItemFactory.PageParsed += PageParsed;
+            _sourceItemFactory.SourceItemsGot += SourceItemsGot;
+            var checkedSites = (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();
+            _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count + 1);
 
         }
 
@@ -333,8 +218,7 @@ namespace WindowsFormsApplication1
             CreateAuthors();
 
             EnDisItems(false);
-            StopToken = false;
-
+           
             lblDateTime.Text = "Started at " + DateTime.Now.ToLongTimeString();
 
             using (var dal = new Dal(MySqlConnectionString))
@@ -478,7 +362,7 @@ namespace WindowsFormsApplication1
 
         private void btnStopScrape_Click(object sender, EventArgs e)
         {
-            StopToken = true;
+            _sourceItemFactory.CancelGettingSource();
             btnStopScrape.Enabled = false;
         }
 
