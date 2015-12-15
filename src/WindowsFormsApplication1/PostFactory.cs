@@ -231,8 +231,7 @@ namespace WindowsFormsApplication1
         {
             var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
             var postDal = new PostDal(_dal);
-            var tagDal = new TagDal(_dal);
-            var imageDal = new ImageDal(_dal);
+
             var converterFunctions = new ConverterFunctions();
             WordPressClient client = null;
 
@@ -243,8 +242,6 @@ namespace WindowsFormsApplication1
 
             try
             {
-                var ftp = new Ftp();
-
                 //validation
                 if (item.Images.Count == 0 || string.IsNullOrWhiteSpace(item.Title.Trim()) ||
                     string.IsNullOrWhiteSpace(item.Content.Trim()))
@@ -252,83 +249,12 @@ namespace WindowsFormsApplication1
                     return -2;
                 }
 
-                var postTitle = converterFunctions.FirstNWords(item.Title, 65, true);
-                var initialPostTitle = postTitle;
-                if (_blogCache.TitlesPresent(_blogUrl).Contains(postTitle))
-                {
-                    var postIndex = 2;
-                    while (true)
-                    {
-                        postTitle = initialPostTitle + "-" + postIndex;
-                        if (!_blogCache.TitlesPresent(_blogUrl).Contains(postTitle))
-                        {
-                            break;
-                        }
-                        postIndex++;
-                    }
-                }
+                var postTitle = GetPostTitle(item);
                 _blogCache.InsertTitle(_blogUrl, postTitle);
 
                 var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">");
 
-                var imageIndex = 1;
-                IList<UploadResult> imageUploads = new List<UploadResult>();
-                var imagePosts = new List<ImagePost>();
-                foreach (var imageUrl in item.Images)
-                {
-                    var uri = new Uri(imageUrl);
-                    var imageUrlWithoutQs = uri.GetLeftPart(UriPartial.Path);
-
-                    var extension = Path.GetExtension(imageUrlWithoutQs).ToLower(); 
-                    
-                    var imageData = GetImageData(extension, imageUrl);
-                    var imageName = RefineImageName(postTitle);
-                    imageData.Name = imageName + "-" + imageIndex +
-                                     extension;
-
-                    UploadResult uploaded = null;
-                    var thumbnailUrl = String.Empty;
-                    if (_useMySqlFtpWay)
-                    {
-                        ftp.UploadFileFtp(imageData, _ftpConfiguration.Url + "/" + _ftpDir,
-                                          _ftpConfiguration.UserName, _ftpConfiguration.Password);
-                        uploaded = new UploadResult()
-                                       {
-                                           Url = _blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Name,
-                                           Id = "1"
-                                       };
-                        imagePosts.Add(new ImagePost()
-                        {
-                            Title = converterFunctions.SeoUrl(imageName + "-" + imageIndex),
-                            Url = uploaded.Url,
-                            Author = authorId.ToString(),
-                            Alt = item.Title + imageIndex,
-                            PublishDateTime = DateTime.Now,
-                            Content = item.Title + imageIndex
-                        });
-                    }
-                    else
-                    {
-                        uploaded = client.UploadFile(imageData);
-
-                    }
-                    thumbnailUrl = string.Format("{0}/wp-content/uploads/{1}/{2}-{3}-{4}x{4}{5}", _blogUrl, _ftpDir, imageName, imageIndex, _thumbnailSize, extension);
-                    imageUploads.Add(uploaded);
-                    content.Append(
-                        string.Format(
-                            "<div style=\"width: 150px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
-                            _blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageName + "-" + imageIndex), thumbnailUrl, item.Title));
-
-                    imageIndex++;
-                }
-                if (_useMySqlFtpWay)
-                {
-                    var imageIds = imageDal.Insert(imagePosts, _ftpDir);
-                    for (int i = 0; i < imageUploads.Count; i++)
-                    {
-                        imageUploads[i].Id = imageIds[i].ToString();
-                    }
-                }
+                var imageUploads = GetImageUploads(item, postTitle, authorId, client, content);
 
                 content.Append(string.Format("</div><h4>Price:${0}</h4>", item.Price));
                 content.Append("<strong>Description: </strong>");
@@ -377,61 +303,8 @@ namespace WindowsFormsApplication1
                     post.ImageIds = imageUploads.Select(i => i.Id).ToList();
                     post.CustomFields[4].Value = imageUploads[0].Id;
                 }
-
-                var terms = new List<Term>();
-                foreach (var tag in item.Tags)
-                {
-                    if (_useCache)
-                    {
-                        var tagOnBlog =
-                            _blogCache.TagsPresent(_blogUrl).FirstOrDefault(
-                                t =>
-                                HttpUtility.HtmlDecode(t.Name).Trim().ToLowerInvariant() ==
-                                HttpUtility.HtmlDecode(converterFunctions.RemoveDiacritics(tag)).Trim().ToLowerInvariant
-                                    ());
-                        if (tagOnBlog == null)
-                        {
-                            var t = new Term
-                                        {
-                                            Name = converterFunctions.RemoveDiacritics(tag),
-                                            Description = tag,
-                                            Slug = tag.Replace(" ", "_"),
-                                            Taxonomy = "post_tag"
-                                        };
-
-                            if (_useMySqlFtpWay)
-                            {
-                                var tId = tagDal.InsertTag(t);
-                                t.Id = tId.ToString();
-                            }
-                            else
-                            {
-                                var termId = client.NewTerm(t);
-                                t.Id = termId;
-                            }
-
-                            if (_useCache)
-                            {
-                                _blogCache.InsertTag(_blogUrl, t);
-                            }
-
-                            if (!terms.Select(term => term.Id).Contains(t.Id))
-                            {
-                                terms.Add(t);
-                            }
-                        }
-                        else
-                        {
-                            if (!terms.Select(term => term.Id).Contains(tagOnBlog.Id))
-                            {
-                                terms.Add(tagOnBlog);
-                            }
-                        }
-                    }
-                }
-
-
-                post.Terms = terms.ToArray();
+                
+                post.Terms = GetTags(item, client).ToArray();
                 string newPost = "-1";
                 var stopWatch = new Stopwatch();
                 if (_useMySqlFtpWay)
@@ -451,7 +324,7 @@ namespace WindowsFormsApplication1
                     var wordpressSharpTime = stopWatch.ElapsedMilliseconds;
                     Logger.LogProcess("wordpressSharpTime: " + wordpressSharpTime);
                 }
-                
+
 
                 return Convert.ToInt32(newPost);
             }
@@ -473,6 +346,153 @@ namespace WindowsFormsApplication1
                 }
             }
             return -1;
+        }
+
+        private IList<UploadResult> GetImageUploads(Item item, string postTitle, int authorId,
+            WordPressClient client, StringBuilder content)
+        {
+            var converterFunctions= new ConverterFunctions();
+            var imageDal = new ImageDal(_dal);
+            var ftp = new Ftp();
+            var imageIndex = 1;
+            IList<UploadResult> imageUploads = new List<UploadResult>();
+            var imagePosts = new List<ImagePost>();
+            foreach (var imageUrl in item.Images)
+            {
+                var uri = new Uri(imageUrl);
+                var imageUrlWithoutQs = uri.GetLeftPart(UriPartial.Path);
+
+                var extension = Path.GetExtension(imageUrlWithoutQs).ToLower();
+
+                var imageData = GetImageData(extension, imageUrl);
+                var imageName = RefineImageName(postTitle);
+                imageData.Name = imageName + "-" + imageIndex +
+                                 extension;
+
+                UploadResult uploaded = null;
+                var thumbnailUrl = String.Empty;
+                if (_useMySqlFtpWay)
+                {
+                    ftp.UploadFileFtp(imageData, _ftpConfiguration.Url + "/" + _ftpDir,
+                        _ftpConfiguration.UserName, _ftpConfiguration.Password);
+                    uploaded = new UploadResult()
+                    {
+                        Url = _blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Name,
+                        Id = "1"
+                    };
+                    imagePosts.Add(new ImagePost()
+                    {
+                        Title = converterFunctions.SeoUrl(imageName + "-" + imageIndex),
+                        Url = uploaded.Url,
+                        Author = authorId.ToString(),
+                        Alt = item.Title + imageIndex,
+                        PublishDateTime = DateTime.Now,
+                        Content = item.Title + imageIndex
+                    });
+                }
+                else
+                {
+                    uploaded = client.UploadFile(imageData);
+                }
+
+                thumbnailUrl = string.Format("{0}/wp-content/uploads/{1}/{2}-{3}-{4}x{4}{5}", _blogUrl, _ftpDir, imageName,
+                    imageIndex, _thumbnailSize, extension);
+                imageUploads.Add(uploaded);
+                content.Append(
+                    string.Format(
+                        "<div style=\"width: 150px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
+                        _blogUrl + converterFunctions.SeoUrl(postTitle) + "/" +
+                        converterFunctions.SeoUrl(imageName + "-" + imageIndex), thumbnailUrl, item.Title));
+
+                imageIndex++;
+            }
+            
+            if (!_useMySqlFtpWay) return imageUploads;
+
+            var imageIds = imageDal.Insert(imagePosts, _ftpDir);
+            for (int i = 0; i < imageUploads.Count; i++)
+            {
+                imageUploads[i].Id = imageIds[i].ToString();
+            }
+            return imageUploads;
+        }
+
+        private List<Term> GetTags(Item item, WordPressClient client)
+        {
+            var converterFunctions = new ConverterFunctions();
+            var terms = new List<Term>();
+            var tagDal = new TagDal(_dal);
+            foreach (var tag in item.Tags)
+            {
+                if (_useCache)
+                {
+                    var tagOnBlog =
+                        _blogCache.TagsPresent(_blogUrl).FirstOrDefault(
+                            t =>
+                                HttpUtility.HtmlDecode(t.Name).Trim().ToLowerInvariant() ==
+                                HttpUtility.HtmlDecode(converterFunctions.RemoveDiacritics(tag)).Trim().ToLowerInvariant
+                                    ());
+                    if (tagOnBlog == null)
+                    {
+                        var t = new Term
+                        {
+                            Name = converterFunctions.RemoveDiacritics(tag),
+                            Description = tag,
+                            Slug = tag.Replace(" ", "_"),
+                            Taxonomy = "post_tag"
+                        };
+
+                        if (_useMySqlFtpWay)
+                        {
+                            var tId = tagDal.InsertTag(t);
+                            t.Id = tId.ToString();
+                        }
+                        else
+                        {
+                            var termId = client.NewTerm(t);
+                            t.Id = termId;
+                        }
+
+                        if (_useCache)
+                        {
+                            _blogCache.InsertTag(_blogUrl, t);
+                        }
+
+                        if (!terms.Select(term => term.Id).Contains(t.Id))
+                        {
+                            terms.Add(t);
+                        }
+                    }
+                    else
+                    {
+                        if (!terms.Select(term => term.Id).Contains(tagOnBlog.Id))
+                        {
+                            terms.Add(tagOnBlog);
+                        }
+                    }
+                }
+            }
+            return terms;
+        }
+
+        private string GetPostTitle(Item item)
+        {
+            var converterFunctions = new ConverterFunctions();
+            var postTitle = converterFunctions.FirstNWords(item.Title, 65, true);
+            if (!_blogCache.TitlesPresent(_blogUrl).Contains(postTitle)) return postTitle;
+
+            var initialPostTitle = postTitle;
+            var postIndex = 2;
+            while (true)
+            {
+                postTitle = initialPostTitle + "-" + postIndex;
+                if (!_blogCache.TitlesPresent(_blogUrl).Contains(postTitle))
+                {
+                    break;
+                }
+                postIndex++;
+            }
+            return postTitle;
         }
 
         private Data GetImageData(string extension, string imageUrl)
