@@ -131,7 +131,7 @@ namespace WindowsFormsApplication1
                 WorkerReportsProgress = true,
                 WorkerSupportsCancellation = true
             };
-            _bw.DoWork += (obj, e) => CreatePosts(items, e);
+            _bw.DoWork += (obj, e) => CreatePosts(items, e, 200);
             _bw.ProgressChanged += CreatePostProgress;
             _bw.RunWorkerCompleted += CreatePostsFinished;
             _bw.RunWorkerAsync();
@@ -230,6 +230,11 @@ namespace WindowsFormsApplication1
         {
             var itemIndex = 0;
             var itemCount = items.Count;
+
+            var mainQueue = new Queue<Queue<Item>>();
+            var subQueue = new Queue<Item>();
+            Queue<Item> lastQueue = null;
+
             for (int i = 0; i < items.Count; i++)
             {
                 var item = items[i];
@@ -257,15 +262,35 @@ namespace WindowsFormsApplication1
 
                 if (!itemPresent && !item.IsInvalid)
                 {
-                    var itemPostId = Create(item, id, authorId);
 
-                    item.PostId = itemPostId;
-
-                    if (_useCache)
+                    if (item.WordCount >= minWordCount)
                     {
-                        _blogCache.InsertId(_blogUrl, id);
+                        var q = new Queue<Item>();
+                        q.Enqueue(item);
+                        mainQueue.Enqueue(q);
+                        lastQueue = q;
+                        continue;
                     }
-                
+
+                    subQueue.Enqueue(item);
+                    if (subQueue.Sum(it => it.WordCount) >= minWordCount)
+                    {
+                        var q = CloneQueue(subQueue);
+                        mainQueue.Enqueue(q);
+                        lastQueue = q;
+                        subQueue.Clear();
+                    }
+
+
+                    /* var itemPostId = Create(item, id, authorId);
+
+                     item.PostId = itemPostId;
+
+                     if (_useCache)
+                     {
+                         _blogCache.InsertId(_blogUrl, id);
+                     }*/
+
                 }
 
                 _bw.ReportProgress(itemIndex / itemCount * 100, item);
@@ -275,7 +300,38 @@ namespace WindowsFormsApplication1
                     break;
                 }
             }
+
+            if (lastQueue != null)
+            {
+                while (subQueue.Count > 0)
+                {
+                    lastQueue.Enqueue(subQueue.Dequeue());
+                }
+            }
+
+            /* foreach (var qi in mainQueue)
+             {
+                 foreach (var sqi in qi)
+                 {
+                     Console.Write(sqi + ",");
+                 }
+                 Console.WriteLine("");
+             }*/
+
             e.Result = items;
+        }
+
+
+        private static Queue<T> CloneQueue<T>(Queue<T> queue)
+        {
+            var result = new Queue<T>();
+
+            while (queue.Count > 0)
+            {
+                result.Enqueue(queue.Dequeue());
+            }
+
+            return result;
         }
 
 

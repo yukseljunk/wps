@@ -295,7 +295,8 @@ namespace WindowsFormsApplication1
                 Price = string.IsNullOrEmpty(item.SubItems[6].Text) ? 0 : double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
                 Images = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                Site = item.SubItems[9].Text
+                Site = item.SubItems[9].Text,
+                WordCount = int.Parse(item.SubItems[10].Text)
 
             };
         }
