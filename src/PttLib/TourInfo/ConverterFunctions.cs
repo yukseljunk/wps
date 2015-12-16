@@ -194,6 +194,7 @@ namespace PttLib.TourInfo
         {
             input = RemoveTags(input, new List<string>() { "a" });
             input = StripTags(input, new List<string>() {"table", "th", "tr", "td", "ul", "li", "p", "br", "strong"});
+            input = input.Replace("{", "{{").Replace("}", "}}");
             return input;
         }
 

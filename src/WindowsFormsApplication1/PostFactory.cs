@@ -258,8 +258,7 @@ namespace WindowsFormsApplication1
                 {
                     item.PostId = -2;
                 }
-                var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
-
+                
                 if (!itemPresent && !item.IsInvalid)
                 {
 
@@ -281,16 +280,6 @@ namespace WindowsFormsApplication1
                         subQueue.Clear();
                     }
 
-
-                    /* var itemPostId = Create(item, id, authorId);
-
-                     item.PostId = itemPostId;
-
-                     if (_useCache)
-                     {
-                         _blogCache.InsertId(_blogUrl, id);
-                     }*/
-
                 }
 
                 _bw.ReportProgress(itemIndex / itemCount * 100, item);
@@ -308,15 +297,30 @@ namespace WindowsFormsApplication1
                     lastQueue.Enqueue(subQueue.Dequeue());
                 }
             }
+            else//nothing on main queue
+            {
+                mainQueue.Enqueue(subQueue);
+            }
+            var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
 
-            /* foreach (var qi in mainQueue)
+             foreach (var qi in mainQueue)
              {
+                 var postId = CreateMerged(qi.ToList(), authorId);
                  foreach (var sqi in qi)
                  {
-                     Console.Write(sqi + ",");
+                   //  Console.Write(sqi + ",");
                  }
-                 Console.WriteLine("");
-             }*/
+                 //Console.WriteLine("");
+
+                 /* var itemPostId = Create(item, id, authorId);
+
+                  item.PostId = itemPostId;
+
+                  if (_useCache)
+                  {
+                      _blogCache.InsertId(_blogUrl, id);
+                  }*/
+             }
 
             e.Result = items;
         }
@@ -334,6 +338,52 @@ namespace WindowsFormsApplication1
             return result;
         }
 
+        private int CreateMerged(IList<Item> items, int authorId)
+        {
+            if(items==null || !items.Any())
+            {
+                return -1;
+            }
+            if(items.Count==1)
+            {
+                return Create(items[0], items[0].Site + "_" + items[0].Id, authorId);
+            }
+
+            var idCombined = "";// item.Site + "_" + item.Id;
+                
+            var combinedItem = new Item()
+                                   {
+                                       Title = items[0].Title,
+                                       Price = 0
+                                   };
+            var contentCombined = "";
+            var metaDescCombined = "";
+            var combinedImages = new List<string>();
+            var combinedTags = new List<string>();
+            for (var i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                if (idCombined != "") idCombined += ",";
+                idCombined += item.Site + "_" + item.Id;
+                if (i > 0)
+                {
+                    contentCombined += "<h2>" + item.Title + "</h2><br/>";
+                }               
+                contentCombined += item.Content;
+                metaDescCombined += item.MetaDescription + " ";
+                combinedImages.AddRange(item.Images);
+                combinedTags.AddRange(item.Tags);
+            }
+            combinedItem.MetaDescription = metaDescCombined;
+            combinedItem.Content = contentCombined;
+            combinedItem.Images = combinedImages;
+            combinedItem.Tags = combinedTags;
+
+            combinedItem.Site = "";
+            combinedItem.Url = "";
+
+            return Create(combinedItem, idCombined, authorId);
+        }
 
         /// <summary>
         /// create item
