@@ -143,7 +143,7 @@ namespace PttLib
             var item = new Item()
                            {
                                Tags = new List<string>(),
-                               Images = new List<string>(),
+                               ItemImages = new List<ItemImage>(),
                                Url = url
                            };
 
@@ -178,7 +178,7 @@ namespace PttLib
                     {
                         imageUrl = "http:" + (imageUrl.StartsWith("//") ? "" : "//") + imageUrl;
                     }
-                    item.Images.Add(imageUrl);
+                    item.ItemImages.Add(new ItemImage() { OriginalSource = imageUrl });
                 }
             }
 
@@ -206,6 +206,6 @@ namespace PttLib
 
             return item;
         }
-        
+
     }
 }

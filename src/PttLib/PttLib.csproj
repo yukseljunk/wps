@@ -149,6 +149,8 @@
     <Compile Include="Helpers\XmlParse.cs" />
     <Compile Include="Helpers\XmlSerializer.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="ItemImage.cs" />
+    <Compile Include="MultiItem.cs" />
     <Compile Include="Operators\IOperatorFactory.cs" />
     <Compile Include="Operators\OperatorFactory.cs" />
     <Compile Include="Operators\Operator\Anex.cs" />

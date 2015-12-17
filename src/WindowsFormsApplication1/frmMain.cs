@@ -284,6 +284,7 @@ namespace WindowsFormsApplication1
 
         private Item ItemFromListView(ListViewItem item)
         {
+            var imageUrls=item.SubItems[7].Text.Split(new string[] {","}, StringSplitOptions.RemoveEmptyEntries);
             return new Item()
             {
                 Order = int.Parse(item.Text),
@@ -294,7 +295,7 @@ namespace WindowsFormsApplication1
                 Content = item.SubItems[5].Text,
                 Price = string.IsNullOrEmpty(item.SubItems[6].Text) ? 0 : double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                Images = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
+                ItemImages = imageUrls.Select(imageUrl => new ItemImage() {OriginalSource = imageUrl}).ToList(),
                 Site = item.SubItems[9].Text,
                 WordCount = int.Parse(item.SubItems[10].Text)
 

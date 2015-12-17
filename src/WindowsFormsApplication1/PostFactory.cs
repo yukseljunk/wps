@@ -188,10 +188,9 @@ namespace WindowsFormsApplication1
 
                 var itemPresent = false;
 
-                var id = item.Site + "_" + item.Id;
                 if (_useCache)
                 {
-                    if (_blogCache.IdsPresent(_blogUrl).Contains(id))
+                    if (_blogCache.IdsPresent(_blogUrl).Contains(item.ForeignKey))
                     {
                         item.PostId = 0;
                         itemPresent = true;
@@ -205,13 +204,13 @@ namespace WindowsFormsApplication1
 
                 if (!itemPresent && !item.IsInvalid)
                 {
-                    var itemPostId = Create(item, id, authorId);
+                    var itemPostId = Create(item, authorId);
 
                     item.PostId = itemPostId;
 
                     if (_useCache)
                     {
-                        _blogCache.InsertId(_blogUrl, id);
+                        _blogCache.InsertId(_blogUrl, item.ForeignKey);
                     }
                 }
 
@@ -240,15 +239,12 @@ namespace WindowsFormsApplication1
                 var item = items[i];
                 itemIndex++;
                 item.PostId = int.MinValue;
-                _bw.ReportProgress(itemIndex / itemCount * 100, item);
-                Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 var itemPresent = false;
 
-                var id = item.Site + "_" + item.Id;
                 if (_useCache)
                 {
-                    if (_blogCache.IdsPresent(_blogUrl).Contains(id))
+                    if (_blogCache.IdsPresent(_blogUrl).Contains(item.ForeignKey))
                     {
                         item.PostId = 0;
                         itemPresent = true;
@@ -258,7 +254,13 @@ namespace WindowsFormsApplication1
                 {
                     item.PostId = -2;
                 }
-                
+
+                if (itemPresent || item.IsInvalid)
+                {
+                    _bw.ReportProgress(itemIndex / itemCount * 100, item);
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                }
+
                 if (!itemPresent && !item.IsInvalid)
                 {
 
@@ -281,8 +283,11 @@ namespace WindowsFormsApplication1
                     }
 
                 }
+                if (itemPresent || item.IsInvalid)
+                {
+                    _bw.ReportProgress(itemIndex / itemCount * 100, item);
 
-                _bw.ReportProgress(itemIndex / itemCount * 100, item);
+                }
                 if (_bw.CancellationPending)
                 {
                     e.Cancel = true;
@@ -301,27 +306,34 @@ namespace WindowsFormsApplication1
             {
                 mainQueue.Enqueue(subQueue);
             }
-            var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
 
-             foreach (var qi in mainQueue)
-             {
-                 var postId = CreateMerged(qi.ToList(), authorId);
-                 foreach (var sqi in qi)
-                 {
-                   //  Console.Write(sqi + ",");
-                 }
-                 //Console.WriteLine("");
+            if (mainQueue.Count > 0)
+            {
+                var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
 
-                 /* var itemPostId = Create(item, id, authorId);
+                foreach (var qi in mainQueue)
+                {
+                    if (qi.Count == 0) continue;
 
-                  item.PostId = itemPostId;
+                    _bw.ReportProgress(itemIndex / itemCount * 100, qi.First());
 
-                  if (_useCache)
-                  {
-                      _blogCache.InsertId(_blogUrl, id);
-                  }*/
-             }
+                    var postId = CreateMerged(qi.ToList(), authorId);
+                    var id = "";
+                    foreach (var sqi in qi)
+                    {
+                        sqi.PostId = postId;
+                        _bw.ReportProgress(itemIndex / itemCount * 100, sqi);
+                        if (id != "") id = "," + id;
+                        id += sqi.Site + "_" + sqi.Id;
+                    }
 
+                    if (_useCache)
+                    {
+                        _blogCache.InsertId(_blogUrl, id);
+                    }
+
+                }
+            }
             e.Result = items;
         }
 
@@ -340,49 +352,16 @@ namespace WindowsFormsApplication1
 
         private int CreateMerged(IList<Item> items, int authorId)
         {
-            if(items==null || !items.Any())
+            if (items == null || !items.Any())
             {
                 return -1;
             }
-            if(items.Count==1)
+            if (items.Count == 1)
             {
-                return Create(items[0], items[0].Site + "_" + items[0].Id, authorId);
+                return Create(items[0], authorId);
             }
 
-            var idCombined = "";// item.Site + "_" + item.Id;
-                
-            var combinedItem = new Item()
-                                   {
-                                       Title = items[0].Title,
-                                       Price = 0
-                                   };
-            var contentCombined = "";
-            var metaDescCombined = "";
-            var combinedImages = new List<string>();
-            var combinedTags = new List<string>();
-            for (var i = 0; i < items.Count; i++)
-            {
-                var item = items[i];
-                if (idCombined != "") idCombined += ",";
-                idCombined += item.Site + "_" + item.Id;
-                if (i > 0)
-                {
-                    contentCombined += "<h2>" + item.Title + "</h2><br/>";
-                }               
-                contentCombined += item.Content;
-                metaDescCombined += item.MetaDescription + " ";
-                combinedImages.AddRange(item.Images);
-                combinedTags.AddRange(item.Tags);
-            }
-            combinedItem.MetaDescription = metaDescCombined;
-            combinedItem.Content = contentCombined;
-            combinedItem.Images = combinedImages;
-            combinedItem.Tags = combinedTags;
-
-            combinedItem.Site = "";
-            combinedItem.Url = "";
-
-            return Create(combinedItem, idCombined, authorId);
+            return Create(new MultiItem(items), authorId);
         }
 
         /// <summary>
@@ -392,7 +371,7 @@ namespace WindowsFormsApplication1
         /// <param name="foreignKey"> </param>
         /// <param name="authorId"> </param>
         /// <returns>id crated, -1 if error</returns>
-        private int Create(Item item, string foreignKey, int authorId)
+        private int Create(Item item, int authorId)
         {
             var postDal = new PostDal(_dal);
             WordPressClient client = null;
@@ -407,14 +386,13 @@ namespace WindowsFormsApplication1
                 var postTitle = GetPostTitle(item);
                 _blogCache.InsertTitle(_blogUrl, postTitle);
 
-                var content = new StringBuilder();
-                var imageUploads = GetImageUploads(item, postTitle, authorId, client, content);
+                var imageUploads = GetImageUploads(item, postTitle, authorId, client);
 
                 var post = new Post
                 {
                     PostType = "post",
                     Title = postTitle,
-                    Content = string.Format(item.PostBody(), content),
+                    Content = item.PostBody(),
                     PublishDateTime = DateTime.Now,
                     Author = authorId.ToString(),
                     CommentStatus = "open",
@@ -422,7 +400,7 @@ namespace WindowsFormsApplication1
                     BlogUrl = _blogUrl,
                     CustomFields = new[]
                     {
-                        new CustomField() {Key = "foreignkey", Value = foreignKey},
+                        new CustomField() {Key = "foreignkey", Value = item.ForeignKey},
                         new CustomField() {Key = "_aioseop_title", Value = item.Title}
                         ,
                         new CustomField()
@@ -476,7 +454,7 @@ namespace WindowsFormsApplication1
 
 
         private IList<UploadResult> GetImageUploads(Item item, string postTitle, int authorId,
-            WordPressClient client, StringBuilder content)
+            WordPressClient client)
         {
             var converterFunctions = new ConverterFunctions();
             var imageDal = new ImageDal(_dal);
@@ -484,8 +462,9 @@ namespace WindowsFormsApplication1
             var imageIndex = 1;
             IList<UploadResult> imageUploads = new List<UploadResult>();
             var imagePosts = new List<ImagePost>();
-            foreach (var imageUrl in item.Images)
+            foreach (var itemImage in item.ItemImages)
             {
+                var imageUrl = itemImage.OriginalSource;
                 var uri = new Uri(imageUrl);
                 var imageUrlWithoutQs = uri.GetLeftPart(UriPartial.Path);
 
@@ -525,12 +504,8 @@ namespace WindowsFormsApplication1
                 thumbnailUrl = string.Format("{0}/wp-content/uploads/{1}/{2}-{3}-{4}x{4}{5}", _blogUrl, _ftpDir, imageName,
                     imageIndex, _thumbnailSize, extension);
                 imageUploads.Add(uploaded);
-                content.Append(
-                    string.Format(
-                        "<div style=\"width: 150px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
-                        _blogUrl + converterFunctions.SeoUrl(postTitle) + "/" +
-                        converterFunctions.SeoUrl(imageName + "-" + imageIndex), thumbnailUrl, item.Title));
-
+                itemImage.NewSource = thumbnailUrl;
+                itemImage.Link = _blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageName + "-" + imageIndex);
                 imageIndex++;
             }
 

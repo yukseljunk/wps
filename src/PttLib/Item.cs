@@ -7,17 +7,22 @@ namespace PttLib
     public class Item
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string MetaDescription { get; set; }
-        public string Content { get; set; }
-        public IList<string> Tags { get; set; }
-        public IList<string> Images { get; set; }
-        public double Price { get; set; }
-        public string Site { get; set; }
-        public string Url { get; set; }
+        public virtual string Title { get; set; }
+        public virtual string MetaDescription { get; set; }
+        public virtual string Content { get; set; }
+        public virtual IList<string> Tags { get; set; }
+        public virtual IList<ItemImage> ItemImages { get; set; }
+        public virtual double Price { get; set; }
+        public virtual string Site { get; set; }
+        public virtual string Url { get; set; }
         public int WordCount { get; set; }
         public int PostId { get; set; }
         public int Order { get; set; }
+
+        public virtual string ForeignKey
+        {
+            get { return Site + "_" + Id; }
+        }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -34,25 +39,44 @@ namespace PttLib
                 MetaDescription,
                 Content.Substring(0, Content.Length > 100 ? 100 : Content.Length - 1) + "...",
                 string.Join(",", Tags),
-                string.Join(",", Images),
+                string.Join(",", ItemImages),
                 Price,
                 Url,
                 Site);
         }
 
-        public string PostBody()
+        public virtual string PostBody()
         {
             var converterFunctions = new ConverterFunctions();
-            var content = new StringBuilder("<div style=\"width: 300px; margin-right: 10px;\">{0}");
-            content.Append(string.Format("</div><h4>Price:${0}</h4>", Price));
+            var content = new StringBuilder("");
+            if (ItemImages.Count > 0)
+            {
+                content.Append("<div style=\"width: 300px; margin-right: 10px;\">");
+                foreach (var itemImage in ItemImages)
+                {
+                    content.Append(string.Format(
+                        "<div style=\"width: 150px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
+                        itemImage.Link, itemImage.NewSource, Title));
+
+                }
+                content.Append("</div>");
+
+            }
+
+            if (((int)(Price * 100)) > 0)
+            {
+                content.Append(string.Format("<h4>Price:${0}</h4>", Price));
+            }
             content.Append("<strong>Description: </strong>");
             content.Append(converterFunctions.ArrangeContent(Content));
-            content.Append("<br><strong>Source:</strong> <a href=\"");
-            content.Append(Url);
-            content.Append("\" rel=\"nofollow\" target=\"_blank\">");
-            content.Append(Site);
-            content.Append(".com</a>");
-
+            if (!string.IsNullOrEmpty(Url))
+            {
+                content.Append("<br><strong>Source:</strong> <a href=\"");
+                content.Append(Url);
+                content.Append("\" rel=\"nofollow\" target=\"_blank\">");
+                content.Append(Site);
+                content.Append(".com</a>");
+            }
             return content.ToString();
 
         }
@@ -61,7 +85,7 @@ namespace PttLib
         {
             get
             {
-                return Images.Count == 0 || string.IsNullOrWhiteSpace(Title.Trim()) ||
+                return ItemImages.Count == 0 || string.IsNullOrWhiteSpace(Title.Trim()) ||
                        string.IsNullOrWhiteSpace(Content.Trim());
             }
         }
