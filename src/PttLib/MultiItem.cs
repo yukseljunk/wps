@@ -109,7 +109,7 @@ namespace PttLib
             }
         }
 
-        public override string PostBody()
+        public override string PostBody(bool includePriceAndSource = true)
         {
             var result = new StringBuilder();
             var itemIndex = 0;
@@ -118,9 +118,9 @@ namespace PttLib
                 if(itemIndex>0)
                 {
                     result.Append("<div style='clear:both;width:500px;'></div>");
-                    result.Append(string.Format("<h2>{0}</h2><br/>",item.Title));
+                    //result.Append(string.Format("<h2>{0}</h2><br/>",item.Title));
                 }
-                result.Append(item.PostBody());
+                result.Append(item.PostBody(false));
                 itemIndex++;
             }
 

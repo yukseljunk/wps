@@ -45,7 +45,7 @@ namespace PttLib
                 Site);
         }
 
-        public virtual string PostBody()
+        public virtual string PostBody(bool includePriceAndSource = true)
         {
             var converterFunctions = new ConverterFunctions();
             var content = new StringBuilder("");
@@ -63,13 +63,13 @@ namespace PttLib
 
             }
 
-            if (((int)(Price * 100)) > 0)
+            if (((int)(Price * 100)) > 0 && includePriceAndSource)
             {
                 content.Append(string.Format("<h4>Price:${0}</h4>", Price));
             }
-            content.Append("<strong>Description: </strong>");
+            content.Append(string.Format("<h2>{0}</h2>", Title));
             content.Append(converterFunctions.ArrangeContent(Content));
-            if (!string.IsNullOrEmpty(Url))
+            if (!string.IsNullOrEmpty(Url) && includePriceAndSource)
             {
                 content.Append("<br><strong>Source:</strong> <a href=\"");
                 content.Append(Url);

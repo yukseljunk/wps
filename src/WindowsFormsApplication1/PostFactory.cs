@@ -120,9 +120,7 @@ namespace WindowsFormsApplication1
             {
                 Directory.CreateDirectory(ImagesDir);
             }
-
         }
-
 
         public void Create(IList<Item> items)
         {
@@ -131,7 +129,7 @@ namespace WindowsFormsApplication1
                 WorkerReportsProgress = true,
                 WorkerSupportsCancellation = true
             };
-            _bw.DoWork += (obj, e) => CreatePosts(items, e, 200);
+            _bw.DoWork += (obj, e) => CreatePosts(items, e, 600);
             _bw.ProgressChanged += CreatePostProgress;
             _bw.RunWorkerCompleted += CreatePostsFinished;
             _bw.RunWorkerAsync();
