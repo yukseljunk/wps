@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace WordpressScraper.Helpers
 {
     /// <summary>
     /// This class is an implementation of the 'IComparer' interface.

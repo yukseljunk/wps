@@ -17,6 +17,7 @@ using PttLib.TourInfo;
 using WordPressSharp;
 using WordPressSharp.Models;
 using WordpressScraper.Dal;
+using WordpressScraper.Helpers;
 
 namespace WindowsFormsApplication1
 {
@@ -385,7 +386,7 @@ namespace WindowsFormsApplication1
                 _blogCache.InsertTitle(_blogUrl, postTitle);
 
                 var imageUploads = GetImageUploads(item, postTitle, authorId, client);
-
+                var yoastFocusKey = StopwordTool.RemoveStopwords(postTitle, true);
                 var post = new Post
                 {
                     PostType = "post",
@@ -399,18 +400,11 @@ namespace WindowsFormsApplication1
                     CustomFields = new[]
                     {
                         new CustomField() {Key = "foreignkey", Value = item.ForeignKey},
-                        new CustomField() {Key = "_aioseop_title", Value = item.Title}
-                        ,
-                        new CustomField()
-                            {
-                                Key = "_aioseop_description",
-                                Value = item.MetaDescription
-                            },
-                        new CustomField()
-                            {
-                                Key = "_aioseop_keywords",
-                                Value = string.Join(",", item.Tags)
-                            },
+                        new CustomField() {Key = "_aioseop_title", Value = item.Title},
+                        new CustomField(){Key = "_aioseop_description",Value = item.MetaDescription},
+                        new CustomField(){Key = "_aioseop_keywords",Value = string.Join(",", item.Tags)},
+                        new CustomField(){Key = "_yoast_wpseo_focuskw_text_input",Value = yoastFocusKey},
+                        new CustomField(){Key = "_yoast_wpseo_focuskw",Value = yoastFocusKey},
                         new CustomField() {Key = "_thumbnail_id", Value = ""},
                     }
                 };

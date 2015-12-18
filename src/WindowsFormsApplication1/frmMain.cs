@@ -10,6 +10,7 @@ using PttLib;
 using PttLib.Helpers;
 using WordPressSharp;
 using WordpressScraper.Dal;
+using WordpressScraper.Helpers;
 
 namespace WindowsFormsApplication1
 {
