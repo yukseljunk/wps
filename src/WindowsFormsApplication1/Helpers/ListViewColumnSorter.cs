@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace WordpressScraper.Helpers
@@ -70,6 +71,16 @@ namespace WordpressScraper.Helpers
             {
                 compareResult = Math.Sign(xDbl.CompareTo(yDbl));
             }
+
+            DateTime xDate, yDate;
+            bool isDate = DateTime.TryParse(listviewX.SubItems[ColumnToSort].Text, new CultureInfo("en-US"), DateTimeStyles.None, out xDate);
+            isDate &= DateTime.TryParse(listviewY.SubItems[ColumnToSort].Text, new CultureInfo("en-US"), DateTimeStyles.None, out yDate);
+            if (isDate)
+            {
+                compareResult = xDate.CompareTo(yDate);
+            }
+
+
 
             // Calculate correct return value based on object comparison
             if (OrderOfSort == SortOrder.Ascending)

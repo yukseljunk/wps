@@ -21,7 +21,7 @@ namespace PttLib
         {
             get
             {
-                return string.Format("https://www.{0}.com/search?q={{0}}", Name);
+                return string.Format("https://www.{0}.com/search?q={{0}}&order=most_relevant", Name);
             }
         }
 
@@ -58,9 +58,9 @@ namespace PttLib
         /// <param name="pageCount"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public virtual IList<Tuple<string, string>> GetItems(string keyword, out int pageCount, int page = 1)
+        public virtual IList<Tuple<string, string, string>> GetItems(string keyword, out int pageCount, int page = 1)
         {
-            var result = new List<Tuple<string, string>>();
+            var result = new List<Tuple<string, string, string>>();
             var url = UrlFromKey(keyword);
             var html = Get(url, page);
             var uri = new Uri(url);
@@ -89,13 +89,18 @@ namespace PttLib
                             }
                             link = mainUrl + link;
                         }
-                        result.Add(new Tuple<string, string>(itemNode.Attributes["title"].Value, link));
+                        result.Add(new Tuple<string, string, string>(itemNode.Attributes["title"].Value, link, GetExtraInfo(itemNode)));
                     }
                 }
             }
             return result;
         }
 
+        protected virtual string GetExtraInfo(HtmlNode itemNode)
+        {
+            return null;
+        }
+        
         public virtual void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
         {
             pageCount = 0;
@@ -136,9 +141,19 @@ namespace PttLib
             get { return @"/listing/(.*?)/"; }
         }
 
+        public string DateTimeXPath
+        {
+            get { return "//div[@id='fineprint']/ul/li[1]"; }
+        }
+
+        public string DateTimeRegex
+        {
+            get { return @"Listed on (.*)"; }
+        }
 
 
-        public virtual Item GetItem(string title, string url)
+
+        public virtual Item GetItem(string title, string url,string extraInfo)
         {
             var item = new Item()
                            {
@@ -204,8 +219,20 @@ namespace PttLib
                 item.Id = Int32.Parse(match.Groups[1].Value);
             }
 
+            var dateTime = htmlDoc.DocumentNode.SelectSingleNode(DateTimeXPath);
+            if (dateTime != null)
+            {
+                regex = new Regex(DateTimeRegex);
+                match = regex.Match(dateTime.InnerText);
+                if (match.Success)
+                {
+                    item.Created = DateTime.Parse(match.Groups[1].Value);
+                }
+
+            }
             return item;
         }
+
 
     }
 }

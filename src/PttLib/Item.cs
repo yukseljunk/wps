@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using PttLib.TourInfo;
 
@@ -18,6 +19,7 @@ namespace PttLib
         public int WordCount { get; set; }
         public int PostId { get; set; }
         public int Order { get; set; }
+        public DateTime Created { get; set; }
 
         public virtual string ForeignKey
         {

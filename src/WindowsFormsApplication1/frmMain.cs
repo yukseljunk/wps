@@ -22,7 +22,7 @@ namespace WindowsFormsApplication1
         private Stopwatch _stopWatch = new Stopwatch();
         private PostFactory _postFactory = null;
         private SourceItemFactory _sourceItemFactory = null;
-
+        private const int PostIdColumnIndex = 12;
 
         public frmMain()
         {
@@ -202,7 +202,7 @@ namespace WindowsFormsApplication1
             }
             var lvItem = lvItems.FindItemWithText(e.Order.ToString());
             if (lvItem == null) return;
-            lvItem.SubItems[11].Text = status;
+            lvItem.SubItems[PostIdColumnIndex].Text = status;
             lvItem.EnsureVisible();
         }
 
@@ -383,7 +383,7 @@ namespace WindowsFormsApplication1
                 return;
             }
             var item = lvItems.SelectedItems[0];
-            var postId = item.SubItems[11].Text;
+            var postId = item.SubItems[PostIdColumnIndex].Text;
             if (postId == "" || postId == "Error" || postId == "Exists")
             {
                 MessageBox.Show("No post id or problematic one!");

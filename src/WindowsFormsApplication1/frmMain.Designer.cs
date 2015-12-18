@@ -40,6 +40,7 @@
             System.Windows.Forms.ColumnHeader postId;
             System.Windows.Forms.ColumnHeader site;
             System.Windows.Forms.ColumnHeader wordcount;
+            System.Windows.Forms.ColumnHeader date;
             this.btnStart = new System.Windows.Forms.Button();
             this.lvItems = new System.Windows.Forms.ListView();
             this.btnSelectAll = new System.Windows.Forms.Button();
@@ -115,6 +116,7 @@
             postId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             site = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             wordcount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.grpBlogProp.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.grpMysql.SuspendLayout();
@@ -209,6 +211,7 @@
             tags,
             site,
             wordcount,
+            date,
             postId});
             this.lvItems.FullRowSelect = true;
             this.lvItems.GridLines = true;
@@ -920,6 +923,11 @@
             this.label13.Size = new System.Drawing.Size(79, 13);
             this.label13.TabIndex = 38;
             this.label13.Text = "Thumbnail Size";
+            // 
+            // date
+            // 
+            date.Text = "Date";
+            date.Width = 98;
             // 
             // frmMain
             // 

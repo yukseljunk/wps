@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1
 
         #endregion
         #region Events
-        
+
         public event EventHandler<IList<ListViewItem>> SourceItemsGot;
         public event EventHandler<ListViewItem> SourceItemGot;
         public event EventHandler GettingSourceItemsStopped;
@@ -83,7 +83,7 @@ namespace WindowsFormsApplication1
                 OnGettingSourceItemsStopped();
             }
             OnProcessFinished();
-        
+
         }
 
         private void SingleSourceItemGot(object sender, ProgressChangedEventArgs e)
@@ -113,7 +113,7 @@ namespace WindowsFormsApplication1
                     }
                     OnNoSourceFound(e.UserState.ToString());
                 }
-                
+
             }
         }
 
@@ -127,7 +127,7 @@ namespace WindowsFormsApplication1
             var siteFactory = new SiteFactory();
             foreach (var siteName in siteNames)
             {
-                var allResults = new List<Tuple<string, string>>();
+                var allResults = new List<Tuple<string, string, string>>();
                 var site = siteFactory.GetByName(siteName);
 
                 for (var page = pageStart; page <= pageEnd; page++)
@@ -149,7 +149,7 @@ namespace WindowsFormsApplication1
                     }
                     allResults.AddRange(results);
                 }
-                
+
                 if (!allResults.Any())
                 {
                     if (!e.Cancel)
@@ -159,7 +159,7 @@ namespace WindowsFormsApplication1
                     continue;
                 }
                 _bw.ReportProgress(100, allResults.Count);
-                    
+
                 var itemIndex = startingOrder;
                 var allResultsCount = allResults.Count;
                 var blockIndex = 0;
@@ -174,14 +174,16 @@ namespace WindowsFormsApplication1
                     foreach (var etsyResult in subResults)
                     {
 
-                        var item = site.GetItem(etsyResult.Item1, etsyResult.Item2);
+                        var item = site.GetItem(etsyResult.Item1, etsyResult.Item2, etsyResult.Item3);
                         if (item != null)
                         {
                             string[] row1 =
                             {
                                 item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
                                 item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
-                                string.Join(",", item.ItemImages.Select(ii=>ii.OriginalSource)), string.Join(",", item.Tags), site.Name, item.WordCount.ToString(),""
+                                string.Join(",", item.ItemImages.Select(ii=>ii.OriginalSource)), string.Join(",", item.Tags), site.Name, item.WordCount.ToString(),
+                                item.Created.ToString("dd-MMM-yyyy", new CultureInfo("en-US")),
+                                ""
                             };
 
                             var listViewitem = new ListViewItem(itemIndex.ToString());
@@ -201,7 +203,7 @@ namespace WindowsFormsApplication1
                     }
 
                     _bw.ReportProgress((itemIndex - startingOrder) / allResultsCount * 100, listViewItems);
-                    
+
                     if (_bw.CancellationPending)
                     {
                         e.Cancel = true;
