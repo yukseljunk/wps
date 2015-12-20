@@ -24,7 +24,7 @@ namespace WordpressScraper.Dal
             var sql = "";
             foreach (var imagePost in images)
             {
-                sql+=InsertSql(imagePost, ftpDir);
+                sql += InsertSql(imagePost, ftpDir);
             }
 
             var postInsertDataSet = _dal.GetData(sql);
@@ -78,11 +78,67 @@ namespace WordpressScraper.Dal
             }
             var postName = Path.GetFileNameWithoutExtension(image.Url);// + Path.GetExtension(image.Url);
 
+            var extension = Path.GetExtension(image.Url);
+            var attachFile = ftpDir + "/" + postName + extension;
+
             if (!string.IsNullOrEmpty(image.Alt))
             {
                 customFields.Add(new CustomField() { Key = "_wp_attachment_image_alt", Value = image.Alt });
-                customFields.Add(new CustomField() { Key = "_wp_attached_file", Value = ftpDir + "/" + postName + Path.GetExtension(image.Url) });
             }
+            customFields.Add(new CustomField() { Key = "_wp_attached_file", Value = attachFile });
+
+            var thumbnailName = string.Format("{0}-{1}x{2}{3}", postName, image.ThumbnailWidth, image.ThumbnailHeight, extension);
+            var attachmentMetaData = string.Format("a:5:{{" +
+                "s:5:\"width\";i:{0};" +
+                "s:6:\"height\";i:{1};" +
+                "s:4:\"file\";s:{8}:\"{2}\";" +
+                "s:5:\"sizes\";a:3:{{" +
+                    "s:9:\"thumbnail\";a:4:{{" +
+                        "s:4:\"file\";s:{10}:\"{9}\";" +
+                        "s:5:\"width\";i:{3};" +
+                        "s:6:\"height\";i:{4};" +
+                        "s:9:\"mime-type\";s:{11}:\"{6}\";" +
+                        "}}" +
+                    "s:6:\"medium\";a:4:{{" +
+                        "s:4:\"file\";s:{9}:\"{7}-164x300{5}\";" +
+                        "s:5:\"width\";i:164;" +
+                        "s:6:\"height\";i:300;" +
+                        "s:9:\"mime-type\";s:{11}:\"{6}\";}}" +
+                    "s:13:\"excerpt-thumb\";a:4:{{" +
+                        "s:4:\"file\";s:{9}:\"{7}-191x350{5}\";" +
+                        "s:5:\"width\";i:191;" +
+                        "s:6:\"height\";i:350;" +
+                        "s:9:\"mime-type\";s:{11}:\"{6}\";" +
+                        "}}" +
+                    "}}" +
+                "s:10:\"image_meta\";a:11:{{" +
+                    "s:8:\"aperture\";i:0;" +
+                    "s:6:\"credit\";s:0:\"\";" +
+                    "s:6:\"camera\";s:0:\"\";" +
+                    "s:7:\"caption\";s:0:\"\";" +
+                    "s:17:\"created_timestamp\";i:0;" +
+                    "s:9:\"copyright\";s:0:\"\";" +
+                    "s:12:\"focal_length\";i:0;" +
+                    "s:3:\"iso\";i:0;" +
+                    "s:13:\"shutter_speed\";i:0;" +
+                    "s:5:\"title\";s:0:\"\";" +
+                    "s:11:\"orientation\";i:0;" +
+                    "}}" +
+                "}}",
+                image.Width,
+                image.Height,
+                attachFile,
+                image.ThumbnailWidth,
+                image.ThumbnailHeight,
+                extension,
+                image.MimeType,
+                postName,
+                attachFile.Length,
+                thumbnailName,
+                thumbnailName.Length,
+                image.MimeType.Length);
+
+            customFields.Add(new CustomField() { Key = "_wp_attachment_metadata", Value = attachmentMetaData });
 
             foreach (var customField in customFields)
             {

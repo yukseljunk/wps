@@ -461,8 +461,8 @@ namespace WindowsFormsApplication1
                 var imageUrlWithoutQs = uri.GetLeftPart(UriPartial.Path);
 
                 var extension = Path.GetExtension(imageUrlWithoutQs).ToLower();
-
-                var imageData = GetImageData(extension, imageUrl);
+                int imageWidth, imageHeight;
+                var imageData = GetImageData(extension, imageUrl, out imageWidth, out imageHeight);
                 var imageName = RefineImageName(postTitle);
                 imageData.Name = imageName + "-" + imageIndex +
                                  extension;
@@ -485,7 +485,11 @@ namespace WindowsFormsApplication1
                         Author = authorId.ToString(),
                         Alt = item.Title + imageIndex,
                         PublishDateTime = DateTime.Now,
-                        Content = item.Title + imageIndex
+                        Content = item.Title + imageIndex,
+                        Width = imageWidth,
+                        Height = imageHeight,
+                        ThumbnailWidth = _thumbnailSize,
+                        ThumbnailHeight = _thumbnailSize
                     });
                 }
                 else
@@ -589,13 +593,8 @@ namespace WindowsFormsApplication1
             return postTitle;
         }
 
-        private Data GetImageData(string extension, string imageUrl)
+        private Data GetImageData(string extension, string imageUrl, out int width, out int height)
         {
-            if (_maxImageDimension <= 0)
-            {
-                return Data.CreateFromUrl(imageUrl);
-            }
-
             var tempImageFileName = ImagesDir + "/" + "temp" + extension;
             //download image and resize it...
             using (WebClient webClient = new WebClient())
@@ -607,6 +606,9 @@ namespace WindowsFormsApplication1
             bool resize;
             using (var img = Image.FromFile(tempImageFileName))
             {
+                width = img.Width;
+                height = img.Height;
+
                 resize = img.Width > _maxImageDimension || img.Height > _maxImageDimension;
             }
             if (!resize) return imageData;
@@ -620,9 +622,11 @@ namespace WindowsFormsApplication1
                     using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
                     {
                         // Load, resize, set the format and quality and save an image.
-                        imageFactory.Load(inStream)
+                        var imgf=imageFactory.Load(inStream)
                             .Constrain(size)
                             .Save(tempImageFileName);
+                        width = imgf.Image.Width;
+                        height = imgf.Image.Height;
                     }
                 }
             }
