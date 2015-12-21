@@ -464,18 +464,20 @@ namespace WindowsFormsApplication1
                 int imageWidth, imageHeight;
                 var imageData = GetImageData(extension, imageUrl, out imageWidth, out imageHeight);
                 var imageName = RefineImageName(postTitle);
-                imageData.Name = imageName + "-" + imageIndex +
-                                 extension;
+                imageData.Item1.Name = imageName + "-" + imageIndex + extension;
+                imageData.Item2.Name = imageName + "-" + imageIndex + "-" + _thumbnailSize + "x" + _thumbnailSize + extension;
 
                 UploadResult uploaded = null;
                 var thumbnailUrl = String.Empty;
                 if (_useMySqlFtpWay)
                 {
-                    ftp.UploadFileFtp(imageData, _ftpConfiguration.Url + "/" + _ftpDir,
+                    ftp.UploadFileFtp(imageData.Item1, _ftpConfiguration.Url + "/" + _ftpDir,
+                        _ftpConfiguration.UserName, _ftpConfiguration.Password);
+                    ftp.UploadFileFtp(imageData.Item2, _ftpConfiguration.Url + "/" + _ftpDir,
                         _ftpConfiguration.UserName, _ftpConfiguration.Password);
                     uploaded = new UploadResult()
                     {
-                        Url = _blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Name,
+                        Url = _blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Item1.Name,
                         Id = "1"
                     };
                     imagePosts.Add(new ImagePost()
@@ -494,7 +496,7 @@ namespace WindowsFormsApplication1
                 }
                 else
                 {
-                    uploaded = client.UploadFile(imageData);
+                    uploaded = client.UploadFile(imageData.Item1);
                 }
 
                 thumbnailUrl = string.Format("{0}/wp-content/uploads/{1}/{2}-{3}-{4}x{4}{5}", _blogUrl, _ftpDir, imageName,
@@ -593,7 +595,7 @@ namespace WindowsFormsApplication1
             return postTitle;
         }
 
-        private Data GetImageData(string extension, string imageUrl, out int width, out int height)
+        private Tuple<Data, Data> GetImageData(string extension, string imageUrl, out int width, out int height)
         {
             var tempImageFileName = ImagesDir + "/" + "temp" + extension;
             //download image and resize it...
@@ -611,9 +613,9 @@ namespace WindowsFormsApplication1
 
                 resize = img.Width > _maxImageDimension || img.Height > _maxImageDimension;
             }
-            if (!resize) return imageData;
 
-            var size = new Size(_maxImageDimension, _maxImageDimension);
+            var thumbFileName = ImagesDir + "/" + "temp_thumb" + extension;
+            var size = new Size(_thumbnailSize, _thumbnailSize);
             using (MemoryStream inStream = new MemoryStream(imageData.Bits))
             {
                 using (var outStream = new MemoryStream())
@@ -622,7 +624,28 @@ namespace WindowsFormsApplication1
                     using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
                     {
                         // Load, resize, set the format and quality and save an image.
-                        var imgf=imageFactory.Load(inStream)
+                        var imgf = imageFactory.Load(inStream)
+                            .Constrain(size)
+                            .Save(thumbFileName);
+                        width = imgf.Image.Width;
+                        height = imgf.Image.Height;
+                    }
+                }
+            }
+            var thumbImageData = Data.CreateFromFilePath(thumbFileName, MimeTypeMap.GetMimeType(extension));
+
+            if (!resize) return new Tuple<Data, Data>(imageData, thumbImageData);
+
+            size = new Size(_maxImageDimension, _maxImageDimension);
+            using (MemoryStream inStream = new MemoryStream(imageData.Bits))
+            {
+                using (var outStream = new MemoryStream())
+                {
+                    // Initialize the ImageFactory using the overload to preserve EXIF metadata.
+                    using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                    {
+                        // Load, resize, set the format and quality and save an image.
+                        var imgf = imageFactory.Load(inStream)
                             .Constrain(size)
                             .Save(tempImageFileName);
                         width = imgf.Image.Width;
@@ -631,7 +654,7 @@ namespace WindowsFormsApplication1
                 }
             }
             imageData = Data.CreateFromFilePath(tempImageFileName, MimeTypeMap.GetMimeType(extension));
-            return imageData;
+            return new Tuple<Data, Data>(imageData, thumbImageData);
         }
 
         private static string RefineImageName(string imageName)
