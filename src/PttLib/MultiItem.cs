@@ -47,9 +47,23 @@ namespace PttLib
             get
             {
                 var combinedImages = new List<ItemImage>();
-                foreach (var item in _items)
+                for (int i = 0; i < _items.Count; i++)
                 {
-                    combinedImages.AddRange(item.ItemImages);
+                    if (i == 0)
+                    {
+                        foreach (var itemImage in _items[i].ItemImages)
+                        {
+                            itemImage.Primary = true;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var itemImage in _items[i].ItemImages)
+                        {
+                            itemImage.Primary = false;
+                        }
+                    }
+                    combinedImages.AddRange(_items[i].ItemImages);
                 }
                 return combinedImages;
             }
@@ -109,18 +123,17 @@ namespace PttLib
             }
         }
 
-        public override string PostBody(bool includePriceAndSource = true)
+        public override string PostBody(int thumbnailSize, bool includePriceAndSource = true)
         {
             var result = new StringBuilder();
             var itemIndex = 0;
             foreach (var item in _items)
             {
-                if(itemIndex>0)
+                if (itemIndex > 0)
                 {
                     result.Append("<div style='clear:both;width:500px;'></div>");
-                    //result.Append(string.Format("<h2>{0}</h2><br/>",item.Title));
                 }
-                result.Append(item.PostBody(false));
+                result.Append(item.PostBody(thumbnailSize, false));
                 itemIndex++;
             }
 

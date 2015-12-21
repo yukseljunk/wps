@@ -183,6 +183,11 @@
             wordcount.Text = "Word Count";
             wordcount.Width = 79;
             // 
+            // date
+            // 
+            date.Text = "Date";
+            date.Width = 98;
+            // 
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -600,7 +605,7 @@
             this.txtFtpPassword.PasswordChar = '*';
             this.txtFtpPassword.Size = new System.Drawing.Size(76, 20);
             this.txtFtpPassword.TabIndex = 6;
-            this.txtFtpPassword.Text = "U4E9TrT;5!)F";
+            this.txtFtpPassword.Text = "x6b8a[o!bxFe";
             // 
             // label9
             // 
@@ -617,7 +622,7 @@
             this.txtFtpUserName.Name = "txtFtpUserName";
             this.txtFtpUserName.Size = new System.Drawing.Size(182, 20);
             this.txtFtpUserName.TabIndex = 4;
-            this.txtFtpUserName.Text = "bloggon@nalgorithm.com";
+            this.txtFtpUserName.Text = "bloggon2@nalgorithm.com";
             // 
             // label10
             // 
@@ -923,11 +928,6 @@
             this.label13.Size = new System.Drawing.Size(79, 13);
             this.label13.TabIndex = 38;
             this.label13.Text = "Thumbnail Size";
-            // 
-            // date
-            // 
-            date.Text = "Date";
-            date.Width = 98;
             // 
             // frmMain
             // 

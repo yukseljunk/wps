@@ -5,6 +5,8 @@ namespace PttLib
         public string OriginalSource { get; set; }
         public string NewSource { get; set; }
         public string Link { get; set; }
+        public Item ContainingItem { get; set; }
+        public bool Primary { get; set; }
 
         public override string ToString()
         {

@@ -76,7 +76,7 @@ namespace WindowsFormsApplication1
 
         private void SourceItemGot(object sender, ListViewItem e)
         {
-            SetStatus("Got "+ e.SubItems[1].Text);
+            SetStatus("Got " + e.SubItems[1].Text);
             barStatus.PerformStep();
         }
 
@@ -219,7 +219,7 @@ namespace WindowsFormsApplication1
             CreateAuthors();
 
             EnDisItems(false);
-           
+
             lblDateTime.Text = "Started at " + DateTime.Now.ToLongTimeString();
 
             using (var dal = new Dal(MySqlConnectionString))
@@ -285,8 +285,8 @@ namespace WindowsFormsApplication1
 
         private Item ItemFromListView(ListViewItem item)
         {
-            var imageUrls=item.SubItems[7].Text.Split(new string[] {","}, StringSplitOptions.RemoveEmptyEntries);
-            return new Item()
+            var imageUrls = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            var postItem= new Item()
             {
                 Order = int.Parse(item.Text),
                 Id = int.Parse(item.SubItems[1].Text),
@@ -296,11 +296,19 @@ namespace WindowsFormsApplication1
                 Content = item.SubItems[5].Text,
                 Price = string.IsNullOrEmpty(item.SubItems[6].Text) ? 0 : double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                ItemImages = imageUrls.Select(imageUrl => new ItemImage() {OriginalSource = imageUrl}).ToList(),
+                ItemImages = imageUrls.Select(imageUrl => new ItemImage() { OriginalSource = imageUrl, Primary = true}).ToList(),
                 Site = item.SubItems[9].Text,
                 WordCount = int.Parse(item.SubItems[10].Text)
 
             };
+            if (postItem.ItemImages != null)
+            {
+                foreach (var itemImage in postItem.ItemImages)
+                {
+                    itemImage.ContainingItem = postItem;
+                }
+            }
+            return postItem;
         }
 
         private void SetStatus(string status)

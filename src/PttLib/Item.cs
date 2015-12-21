@@ -47,18 +47,18 @@ namespace PttLib
                 Site);
         }
 
-        public virtual string PostBody(bool includePriceAndSource = true)
+        public virtual string PostBody(int thumbnailSize, bool includePriceAndSource = true)
         {
             var converterFunctions = new ConverterFunctions();
             var content = new StringBuilder("");
             if (ItemImages.Count > 0)
             {
-                content.Append("<div style=\"width: 300px; margin-right: 10px;\">");
+                content.Append(string.Format("<div style=\"width: {0}px; margin-right: 10px;;height:{1}px\">", (2 * thumbnailSize + 30), thumbnailSize));
                 foreach (var itemImage in ItemImages)
                 {
                     content.Append(string.Format(
-                        "<div style=\"width: 150px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
-                        itemImage.Link, itemImage.NewSource, Title));
+                        "<div style=\"width: {3}px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
+                        itemImage.Link, itemImage.NewSource, Title, thumbnailSize));
 
                 }
                 content.Append("</div>");

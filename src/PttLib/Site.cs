@@ -100,7 +100,7 @@ namespace PttLib
         {
             return null;
         }
-        
+
         public virtual void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
         {
             pageCount = 0;
@@ -153,7 +153,7 @@ namespace PttLib
 
 
 
-        public virtual Item GetItem(string title, string url,string extraInfo)
+        public virtual Item GetItem(string title, string url, string extraInfo)
         {
             var item = new Item()
                            {
@@ -193,7 +193,7 @@ namespace PttLib
                     {
                         imageUrl = "http:" + (imageUrl.StartsWith("//") ? "" : "//") + imageUrl;
                     }
-                    item.ItemImages.Add(new ItemImage() { OriginalSource = imageUrl });
+                    item.ItemImages.Add(new ItemImage() { OriginalSource = imageUrl, Primary = true });
                 }
             }
 

@@ -114,13 +114,11 @@ namespace WindowsFormsApplication1
             if (useMySqlFtpWay)
             {
                 var ftp = new Ftp();
-                _ftpDir = DateTime.Now.Year + "/" + DateTime.Now.Month;
+                _ftpDir = "wp-content/uploads/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
                 ftp.MakeFtpDir(_ftpConfiguration.Url, _ftpDir, _ftpConfiguration.UserName, _ftpConfiguration.Password);
             }
-            if (maxImageDimension > 0)
-            {
-                Directory.CreateDirectory(ImagesDir);
-            }
+            Directory.CreateDirectory(ImagesDir);
+
         }
 
         public void Create(IList<Item> items)
@@ -391,7 +389,7 @@ namespace WindowsFormsApplication1
                 {
                     PostType = "post",
                     Title = postTitle,
-                    Content = item.PostBody(),
+                    Content = item.PostBody(_thumbnailSize),
                     PublishDateTime = DateTime.Now,
                     Author = authorId.ToString(),
                     CommentStatus = "open",
@@ -464,8 +462,21 @@ namespace WindowsFormsApplication1
                 int imageWidth, imageHeight;
                 var imageData = GetImageData(extension, imageUrl, out imageWidth, out imageHeight);
                 var imageName = RefineImageName(postTitle);
-                imageData.Item1.Name = imageName + "-" + imageIndex + extension;
-                imageData.Item2.Name = imageName + "-" + imageIndex + "-" + _thumbnailSize + "x" + _thumbnailSize + extension;
+               
+                if (!itemImage.Primary)
+                {
+                    var multiItem = item as MultiItem;
+                    if (multiItem != null)
+                    {
+                        var pt = converterFunctions.FirstNWords(itemImage.ContainingItem.Title, 65, true);
+                        imageName = RefineImageName(pt) + " " + itemImage.ContainingItem.Site.Substring(0, 2) + " " +
+                                         itemImage.ContainingItem.Id;
+                    }
+                }
+                var imageStart = imageName + "-" + imageIndex;
+                imageData.Item1.Name = imageStart + extension;
+                imageData.Item2.Name = imageStart + "-" + _thumbnailSize + "x" + _thumbnailSize + extension;
+
 
                 UploadResult uploaded = null;
                 var thumbnailUrl = String.Empty;
@@ -477,12 +488,12 @@ namespace WindowsFormsApplication1
                         _ftpConfiguration.UserName, _ftpConfiguration.Password);
                     uploaded = new UploadResult()
                     {
-                        Url = _blogUrl + "/wp-content/uploads/" + _ftpDir + "/" + imageData.Item1.Name,
+                        Url = _blogUrl + "/" + _ftpDir + "/" + imageData.Item1.Name,
                         Id = "1"
                     };
                     imagePosts.Add(new ImagePost()
                     {
-                        Title = converterFunctions.SeoUrl(imageName + "-" + imageIndex),
+                        Title = converterFunctions.SeoUrl(imageStart),
                         Url = uploaded.Url,
                         Author = authorId.ToString(),
                         Alt = item.Title + imageIndex,
@@ -499,7 +510,7 @@ namespace WindowsFormsApplication1
                     uploaded = client.UploadFile(imageData.Item1);
                 }
 
-                thumbnailUrl = string.Format("{0}/wp-content/uploads/{1}/{2}-{3}-{4}x{4}{5}", _blogUrl, _ftpDir, imageName,
+                thumbnailUrl = string.Format("{0}/{1}/{2}-{3}-{4}x{4}{5}", _blogUrl, _ftpDir, imageName,
                     imageIndex, _thumbnailSize, extension);
                 imageUploads.Add(uploaded);
                 itemImage.NewSource = thumbnailUrl;
@@ -627,8 +638,6 @@ namespace WindowsFormsApplication1
                         var imgf = imageFactory.Load(inStream)
                             .Constrain(size)
                             .Save(thumbFileName);
-                        width = imgf.Image.Width;
-                        height = imgf.Image.Height;
                     }
                 }
             }
