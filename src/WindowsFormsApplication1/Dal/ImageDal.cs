@@ -88,6 +88,7 @@ namespace WordpressScraper.Dal
             customFields.Add(new CustomField() { Key = "_wp_attached_file", Value = attachFile });
 
             var thumbnailName = string.Format("{0}-{1}x{2}{3}", postName, image.ThumbnailWidth, image.ThumbnailHeight, extension);
+            var orientation = image.Width >= image.Height ? 0 : 1;
             var attachmentMetaData = string.Format("a:5:{{" +
                 "s:5:\"width\";i:{0};" +
                 "s:6:\"height\";i:{1};" +
@@ -100,12 +101,12 @@ namespace WordpressScraper.Dal
                         "s:9:\"mime-type\";s:{11}:\"{6}\";" +
                         "}}" +
                     "s:6:\"medium\";a:4:{{" +
-                        "s:4:\"file\";s:{9}:\"{7}-164x300{5}\";" +
+                        "s:4:\"file\";s:{10}:\"{7}-164x300{5}\";" +
                         "s:5:\"width\";i:164;" +
                         "s:6:\"height\";i:300;" +
                         "s:9:\"mime-type\";s:{11}:\"{6}\";}}" +
                     "s:13:\"excerpt-thumb\";a:4:{{" +
-                        "s:4:\"file\";s:{9}:\"{7}-191x350{5}\";" +
+                        "s:4:\"file\";s:{10}:\"{7}-191x350{5}\";" +
                         "s:5:\"width\";i:191;" +
                         "s:6:\"height\";i:350;" +
                         "s:9:\"mime-type\";s:{11}:\"{6}\";" +
@@ -118,11 +119,11 @@ namespace WordpressScraper.Dal
                     "s:7:\"caption\";s:0:\"\";" +
                     "s:17:\"created_timestamp\";i:0;" +
                     "s:9:\"copyright\";s:0:\"\";" +
-                    "s:12:\"focal_length\";i:0;" +
-                    "s:3:\"iso\";i:0;" +
+                    "s:12:\"focal_length\";s:2:\"50\";" +
+                    "s:3:\"iso\";s:3:\"800\";" +
                     "s:13:\"shutter_speed\";i:0;" +
                     "s:5:\"title\";s:0:\"\";" +
-                    "s:11:\"orientation\";i:0;" +
+                    "s:11:\"orientation\";i:{12};" +
                     "}}" +
                 "}}",
                 image.Width,
@@ -136,7 +137,8 @@ namespace WordpressScraper.Dal
                 attachFile.Length,
                 thumbnailName,
                 thumbnailName.Length,
-                image.MimeType.Length);
+                image.MimeType.Length,
+                orientation);
 
             customFields.Add(new CustomField() { Key = "_wp_attachment_metadata", Value = attachmentMetaData });
 
