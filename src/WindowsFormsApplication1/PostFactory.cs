@@ -461,8 +461,8 @@ namespace WindowsFormsApplication1
                 var extension = Path.GetExtension(imageUrlWithoutQs).ToLower();
                 int imageWidth, imageHeight;
                 var imageData = GetImageData(extension, imageUrl, out imageWidth, out imageHeight);
-                var imageName = RefineImageName(postTitle);
-               
+                var imageName = RefineImageName(postTitle) + " " + itemImage.ContainingItem.Site.Substring(0, 2);
+
                 if (!itemImage.Primary)
                 {
                     var multiItem = item as MultiItem;
@@ -514,7 +514,7 @@ namespace WindowsFormsApplication1
                     imageIndex, _thumbnailSize, extension);
                 imageUploads.Add(uploaded);
                 itemImage.NewSource = thumbnailUrl;
-                itemImage.Link = _blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageName + "-" + imageIndex);
+                itemImage.Link = _blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageStart);
                 imageIndex++;
             }
 
@@ -625,8 +625,26 @@ namespace WindowsFormsApplication1
                 resize = img.Width > _maxImageDimension || img.Height > _maxImageDimension;
             }
 
+            var thumbWidth = width;
+            var thumbHeight = height;
+            var cropRect = new Rectangle();
+            if (width > height)
+            {
+                thumbHeight = _thumbnailSize;
+                thumbWidth = (int)((width / (double)height) * _thumbnailSize);
+                cropRect = new Rectangle((thumbWidth - thumbHeight) / 2, 0, thumbHeight, thumbHeight);
+            }
+            else
+            {
+                thumbWidth = _thumbnailSize;
+                thumbHeight =(int)(((height / (double)width)) * _thumbnailSize);
+                cropRect = new Rectangle(0, (thumbHeight - thumbWidth) / 2, thumbWidth, thumbWidth);
+
+            }
+
             var thumbFileName = ImagesDir + "/" + "temp_thumb" + extension;
-            var size = new Size(_thumbnailSize, _thumbnailSize);
+
+            var size = new Size(thumbWidth, thumbHeight);
             using (MemoryStream inStream = new MemoryStream(imageData.Bits))
             {
                 using (var outStream = new MemoryStream())
@@ -637,14 +655,15 @@ namespace WindowsFormsApplication1
                         // Load, resize, set the format and quality and save an image.
                         var imgf = imageFactory.Load(inStream)
                             .Constrain(size)
+                            .Crop(cropRect)
                             .Save(thumbFileName);
                     }
                 }
             }
+
             var thumbImageData = Data.CreateFromFilePath(thumbFileName, MimeTypeMap.GetMimeType(extension));
 
             if (!resize) return new Tuple<Data, Data>(imageData, thumbImageData);
-
             size = new Size(_maxImageDimension, _maxImageDimension);
             using (MemoryStream inStream = new MemoryStream(imageData.Bits))
             {
