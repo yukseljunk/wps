@@ -9,11 +9,13 @@ using System.Windows.Forms;
 using PttLib;
 using PttLib.Helpers;
 using WordPressSharp;
+using WordpressScraper;
 using WordpressScraper.Dal;
 using WordpressScraper.Helpers;
 
 namespace WindowsFormsApplication1
 {
+
     public partial class frmMain : Form
     {
         private const string DefaultKey = "baby spoon";
@@ -23,6 +25,7 @@ namespace WindowsFormsApplication1
         private PostFactory _postFactory = null;
         private SourceItemFactory _sourceItemFactory = null;
         private const int PostIdColumnIndex = 12;
+        private ProgramOptions _options;
 
         public frmMain()
         {
@@ -38,7 +41,6 @@ namespace WindowsFormsApplication1
             System.IO.Directory.CreateDirectory("Logs");
             this.Text += " v" + Assembly.GetExecutingAssembly().GetName().Version;
             lblDateTime.Text = "";
-            chkNoAPI_CheckedChanged(null, null);
             FillSites();
 
 #if (DEBUG)
@@ -223,6 +225,9 @@ namespace WindowsFormsApplication1
                 return;
             }
 
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+
             _stopWatch = new Stopwatch();
             _stopWatch.Start();
             CreateAuthors();
@@ -235,7 +240,7 @@ namespace WindowsFormsApplication1
             {
                 _blogCache = new BlogCache(dal);
 
-                if (chkCache.Checked)
+                if (_options.UseCache)
                 {
                     SetStatus("Loading present posts and tags in the blog(this may take some time)...");
                     Application.DoEvents();
@@ -251,12 +256,12 @@ namespace WindowsFormsApplication1
                         _blogCache,
                         dal,
                         txtBlogUrl.Text,
-                        chkNoAPI.Checked,
-                        chkResizeImages.Checked ? (int)numMaxImageDimension.Value : 0,
-                        (int)numThumbnailSize.Value,
-                        chkCache.Checked,
-                        chkFeatureImage.Checked,
-                        (int)numMerge.Value);
+                        _options.UseFtp,
+                        _options.ResizeImages ? _options.ResizeSize : 0,
+                        _options.ThumbnailSize,
+                        _options.UseCache,
+                        _options.MakeFirstImageAsFeature,
+                        _options.MergeBlockSize);
                 var items = ItemsFromListView(lvItems.SelectedItems);
                 _postFactory.PostCreated += PostCreated;
                 _postFactory.PostBeingCreated += PostBeingCreated;
@@ -337,22 +342,9 @@ namespace WindowsFormsApplication1
             grpMysql.Enabled = enabled;
             grpAuthors.Enabled = enabled;
             btnStopScrape.Enabled = enabled;
-            chkNoAPI.Enabled = enabled;
-            chkFeatureImage.Enabled = enabled;
-            chkResizeImages.Enabled = enabled;
-            numMaxImageDimension.Enabled = enabled;
-            numThumbnailSize.Enabled = enabled;
-            if (!enabled)
-            {
-                grpBlogProp.Enabled = false;
-                grpFtp.Enabled = false;
+            grpBlogProp.Enabled = enabled;
+            grpFtp.Enabled = enabled;
 
-            }
-            else
-            {
-                grpBlogProp.Enabled = !chkNoAPI.Checked;
-                grpFtp.Enabled = chkNoAPI.Checked;
-            }
         }
 
         public FtpConfig FtpConfiguration
@@ -510,12 +502,6 @@ namespace WindowsFormsApplication1
             // Perform the sort with these new sort options.
             lvItems.Sort();
             ArrangeOrder();
-        }
-
-        private void chkNoAPI_CheckedChanged(object sender, EventArgs e)
-        {
-            grpBlogProp.Enabled = !chkNoAPI.Checked;
-            grpFtp.Enabled = chkNoAPI.Checked;
         }
 
         private void btnTestFtpConnection_Click(object sender, EventArgs e)
