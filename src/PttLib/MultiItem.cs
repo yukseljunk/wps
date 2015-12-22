@@ -72,14 +72,16 @@ namespace PttLib
         {
             get
             {
-                return "";
+                if (_items.Count == 0) return null;
+                return Items[0].Site;
             }
         }
         public override string Url
         {
             get
             {
-                return "";
+                if (_items.Count == 0) return null;
+                return Items[0].Url;
             }
         }
 
@@ -123,7 +125,7 @@ namespace PttLib
             }
         }
 
-        public override string PostBody(int thumbnailSize, bool includePriceAndSource = true)
+        public override string PostBody(int thumbnailSize, bool includePrice = true)
         {
             var result = new StringBuilder();
             var itemIndex = 0;

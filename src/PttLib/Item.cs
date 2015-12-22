@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Windows.Forms.VisualStyles;
+using PttLib.Helpers;
 using PttLib.TourInfo;
 
 namespace PttLib
@@ -47,7 +50,7 @@ namespace PttLib
                 Site);
         }
 
-        public virtual string PostBody(int thumbnailSize, bool includePriceAndSource = true)
+        public virtual string PostBody(int thumbnailSize, bool includePrice = true)
         {
             var converterFunctions = new ConverterFunctions();
             var content = new StringBuilder("");
@@ -65,20 +68,26 @@ namespace PttLib
 
             }
 
-            if (((int)(Price * 100)) > 0 && includePriceAndSource)
+            if (((int)(Price * 100)) > 0 && includePrice)
             {
                 content.Append(string.Format("<h4>Price:${0}</h4>", Price));
             }
             content.Append(string.Format("<h2>{0}</h2>", Title));
             content.Append(converterFunctions.ArrangeContent(Content));
-            if (!string.IsNullOrEmpty(Url) && includePriceAndSource)
+
+            content.Append("<br><strong>Source:</strong> <a href=\"");
+            content.Append(Url);
+            content.Append("\" rel=\"nofollow\" target=\"_blank\">");
+            var randomWordCount = Helper.GetRandomNumber(3, 8);
+            var titleWordCount = Title.WordCount();
+            if (titleWordCount < randomWordCount)
             {
-                content.Append("<br><strong>Source:</strong> <a href=\"");
-                content.Append(Url);
-                content.Append("\" rel=\"nofollow\" target=\"_blank\">");
-                content.Append(Site);
-                content.Append(".com</a>");
+                randomWordCount = titleWordCount;
             }
+            var firstWords = string.Join(" ",Title.Split().Take(randomWordCount));
+            content.Append(firstWords);
+            content.Append("</a>");
+
             return content.ToString();
 
         }
