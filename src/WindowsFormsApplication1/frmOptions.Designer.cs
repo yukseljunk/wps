@@ -41,6 +41,9 @@
             this.chkResizeImages = new System.Windows.Forms.CheckBox();
             this.chkNoAPI = new System.Windows.Forms.CheckBox();
             this.chkFeatureImage = new System.Windows.Forms.CheckBox();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
+            this.chkShowMessageBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMerge)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numThumbnailSize)).BeginInit();
@@ -51,6 +54,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.chkShowMessageBox);
             this.panel1.Controls.Add(this.chkCache);
             this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.numMerge);
@@ -65,7 +69,7 @@
             this.panel1.Controls.Add(this.chkFeatureImage);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(354, 273);
+            this.panel1.Size = new System.Drawing.Size(354, 282);
             this.panel1.TabIndex = 54;
             // 
             // chkCache
@@ -73,13 +77,13 @@
             this.chkCache.AutoSize = true;
             this.chkCache.Checked = true;
             this.chkCache.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCache.Location = new System.Drawing.Point(29, 217);
+            this.chkCache.Enabled = false;
+            this.chkCache.Location = new System.Drawing.Point(27, 250);
             this.chkCache.Name = "chkCache";
             this.chkCache.Size = new System.Drawing.Size(87, 17);
             this.chkCache.TabIndex = 65;
             this.chkCache.Text = "Use Caching";
             this.chkCache.UseVisualStyleBackColor = true;
-            this.chkCache.Visible = false;
             // 
             // label15
             // 
@@ -229,17 +233,55 @@
             this.chkFeatureImage.Text = "Make First Image as Feature Image";
             this.chkFeatureImage.UseVisualStyleBackColor = true;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(291, 312);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 55;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnOk
+            // 
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOk.Location = new System.Drawing.Point(201, 312);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.TabIndex = 56;
+            this.btnOk.Text = "OK";
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
+            // chkShowMessageBox
+            // 
+            this.chkShowMessageBox.AutoSize = true;
+            this.chkShowMessageBox.Checked = true;
+            this.chkShowMessageBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowMessageBox.Location = new System.Drawing.Point(27, 217);
+            this.chkShowMessageBox.Name = "chkShowMessageBox";
+            this.chkShowMessageBox.Size = new System.Drawing.Size(197, 17);
+            this.chkShowMessageBox.TabIndex = 66;
+            this.chkShowMessageBox.Text = "Show message boxes when needed";
+            this.chkShowMessageBox.UseVisualStyleBackColor = true;
+            // 
             // frmOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(376, 346);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(380, 347);
+            this.Controls.Add(this.btnOk);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.panel1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmOptions";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
+            this.Load += new System.EventHandler(this.frmOptions_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMerge)).EndInit();
@@ -264,6 +306,9 @@
         private System.Windows.Forms.CheckBox chkResizeImages;
         private System.Windows.Forms.CheckBox chkNoAPI;
         private System.Windows.Forms.CheckBox chkFeatureImage;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnOk;
+        private System.Windows.Forms.CheckBox chkShowMessageBox;
 
     }
 }

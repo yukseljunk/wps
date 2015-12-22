@@ -94,6 +94,14 @@ namespace WindowsFormsApplication1
             lvItems.ListViewItemSorter = lvwColumnSorter;
             SetStatus("Getting source items finished");
 
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+
+            if(_options.ShowMessageBoxes)
+            {
+                MessageBox.Show("Getting source items finished");
+            }
+
             _sourceItemFactory.NoSourceFound -= NoSourceFound;
             _sourceItemFactory.GettingSourceItemsStopped -= GettingSourceItemsStopped;
             _sourceItemFactory.ProcessFinished -= GettingSourceItemsFinished;
@@ -114,7 +122,12 @@ namespace WindowsFormsApplication1
 
         private void NoSourceFound(object sender, string e)
         {
-            MessageBox.Show(e);
+            SetStatus(e);
+
+            if (_options.ShowMessageBoxes)
+            {
+                MessageBox.Show(e);
+            }
         }
 
 
@@ -189,7 +202,12 @@ namespace WindowsFormsApplication1
             ResetBarStatus();
             EnDisItems(true);
             _stopWatch.Stop();
-            lblDateTime.Text = string.Format("Took {0} mins", _stopWatch.Elapsed.TotalMinutes.ToString("0.00"));
+            var timeTook = _stopWatch.Elapsed.TotalMinutes.ToString("0.00");
+            lblDateTime.Text = string.Format("Took {0} mins", timeTook);
+            if(_options.ShowMessageBoxes)
+            {
+                MessageBox.Show(string.Format("Post creation finished, took {0} mins", timeTook));
+            }
         }
 
         private void PostCreated(object sender, Item e)
@@ -230,7 +248,7 @@ namespace WindowsFormsApplication1
 
             _stopWatch = new Stopwatch();
             _stopWatch.Start();
-            CreateAuthors();
+            //CreateAuthors();
 
             EnDisItems(false);
 
@@ -272,6 +290,7 @@ namespace WindowsFormsApplication1
 
         }
 
+        /*
         private void CreateAuthors()
         {
             if (string.IsNullOrEmpty(txtAuthors.Text))
@@ -291,7 +310,7 @@ namespace WindowsFormsApplication1
                     userDal.InsertUser(author);
                 }
             }
-        }
+        }*/
 
         private IList<Item> ItemsFromListView(ListView.SelectedListViewItemCollection items)
         {
@@ -335,12 +354,12 @@ namespace WindowsFormsApplication1
 
         private void EnDisItems(bool enabled)
         {
+            optionsToolStripMenuItem.Enabled = enabled;
             btnStop.Enabled = !enabled;
             btnGo.Enabled = enabled;
             btnStart.Enabled = enabled;
             lvItems.Enabled = enabled;
             grpMysql.Enabled = enabled;
-            grpAuthors.Enabled = enabled;
             btnStopScrape.Enabled = enabled;
             grpBlogProp.Enabled = enabled;
             grpFtp.Enabled = enabled;
@@ -642,8 +661,20 @@ namespace WindowsFormsApplication1
 
         private void btnSetTitle_Click(object sender, EventArgs e)
         {
+         
             if (lvItems.SelectedItems.Count == 0) return;
             lvItems.SelectedItems[0].SubItems[3].Text = txtPostId.Text;
+
+        }
+
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frmOptions = new frmOptions();
+            frmOptions.ShowDialog();
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
         }
 
