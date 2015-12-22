@@ -246,7 +246,8 @@ namespace WindowsFormsApplication1
                         chkResizeImages.Checked ? (int)numMaxImageDimension.Value : 0,
                         (int)numThumbnailSize.Value,
                         chkCache.Checked,
-                        chkFeatureImage.Checked);
+                        chkFeatureImage.Checked,
+                        (int)numMerge.Value);
                 var items = ItemsFromListView(lvItems.SelectedItems);
                 _postFactory.PostCreated += PostCreated;
                 _postFactory.PostBeingCreated += PostBeingCreated;
@@ -286,7 +287,7 @@ namespace WindowsFormsApplication1
         private Item ItemFromListView(ListViewItem item)
         {
             var imageUrls = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            var postItem= new Item()
+            var postItem = new Item()
             {
                 Order = int.Parse(item.Text),
                 Id = int.Parse(item.SubItems[1].Text),
@@ -296,7 +297,7 @@ namespace WindowsFormsApplication1
                 Content = item.SubItems[5].Text,
                 Price = string.IsNullOrEmpty(item.SubItems[6].Text) ? 0 : double.Parse(item.SubItems[6].Text, CultureInfo.InvariantCulture),
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                ItemImages = imageUrls.Select(imageUrl => new ItemImage() { OriginalSource = imageUrl, Primary = true}).ToList(),
+                ItemImages = imageUrls.Select(imageUrl => new ItemImage() { OriginalSource = imageUrl, Primary = true }).ToList(),
                 Site = item.SubItems[9].Text,
                 WordCount = int.Parse(item.SubItems[10].Text)
 

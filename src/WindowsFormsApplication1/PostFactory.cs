@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
@@ -36,6 +35,7 @@ namespace WindowsFormsApplication1
         private readonly int _thumbnailSize;
         private readonly bool _useCache;
         private readonly bool _useFeatureImage;
+        private readonly int _mergeSize;
         private IList<int> _userIds;
         private string _ftpDir;
 
@@ -96,7 +96,8 @@ namespace WindowsFormsApplication1
             int maxImageDimension = 0,
             int thumbnailSize = 150,
             bool useCache = true,
-            bool useFeatureImage = false)
+            bool useFeatureImage = false,
+            int mergeSize = 600)
         {
             _siteConfig = siteConfig;
             _ftpConfiguration = ftpConfiguration;
@@ -108,6 +109,7 @@ namespace WindowsFormsApplication1
             _thumbnailSize = thumbnailSize;
             _useCache = useCache;
             _useFeatureImage = useFeatureImage;
+            _mergeSize = mergeSize;
             var userDal = new UserDal(_dal);
             _userIds = userDal.UserIds();
 
@@ -128,7 +130,7 @@ namespace WindowsFormsApplication1
                 WorkerReportsProgress = true,
                 WorkerSupportsCancellation = true
             };
-            _bw.DoWork += (obj, e) => CreatePosts(items, e, 600);
+            _bw.DoWork += (obj, e) => CreatePosts(items, e, _mergeSize);
             _bw.ProgressChanged += CreatePostProgress;
             _bw.RunWorkerCompleted += CreatePostsFinished;
             _bw.RunWorkerAsync();
@@ -637,7 +639,7 @@ namespace WindowsFormsApplication1
             else
             {
                 thumbWidth = _thumbnailSize;
-                thumbHeight =(int)(((height / (double)width)) * _thumbnailSize);
+                thumbHeight = (int)(((height / (double)width)) * _thumbnailSize);
                 cropRect = new Rectangle(0, (thumbHeight - thumbWidth) / 2, thumbWidth, thumbWidth);
 
             }
