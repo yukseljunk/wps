@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
@@ -226,6 +227,7 @@ namespace WindowsFormsApplication1
 
         private void CreatePosts(IList<Item> items, DoWorkEventArgs e, int minWordCount)
         {
+            Logger.LogProcess(string.Format("CreatePosts coming minWordCount:{0} for {1} items", minWordCount, items.Count));
             var itemIndex = 0;
             var itemCount = items.Count;
 
@@ -236,6 +238,7 @@ namespace WindowsFormsApplication1
             for (int i = 0; i < items.Count; i++)
             {
                 var item = items[i];
+                Logger.LogProcess(string.Format("Item in the loop '{0}' with {1} words", item.Title , item.WordCount));
                 itemIndex++;
                 item.PostId = int.MinValue;
 
@@ -262,9 +265,9 @@ namespace WindowsFormsApplication1
 
                 if (!itemPresent && !item.IsInvalid)
                 {
-
                     if (item.WordCount >= minWordCount)
                     {
+                        Logger.LogProcess(string.Format("Item '{0}' is bigger than wordcount:{1}, adding to mainqueue a single itemed queue", item.Title, item.WordCount));
                         var q = new Queue<Item>();
                         q.Enqueue(item);
                         mainQueue.Enqueue(q);
@@ -273,9 +276,15 @@ namespace WindowsFormsApplication1
                     }
 
                     subQueue.Enqueue(item);
+                    Logger.LogProcess(string.Format("Item '{0}' is smaller than wordcount:{1}, adding to mainqueue sub queue, size of {2} with total word count {3}", item.Title, item.WordCount, subQueue.Count, subQueue.Sum(it => it.WordCount)));
+                    
                     if (subQueue.Sum(it => it.WordCount) >= minWordCount)
                     {
+                        Logger.LogProcess(string.Format("Subqueue word count sum '{0}' is bigger than min wordcount:{1}, adding to mainqueue", subQueue.Sum(it => it.WordCount), minWordCount));
                         var q = CloneQueue(subQueue);
+
+                        Logger.LogProcess(string.Format("Cloned the Subqueue, item count {1} and word count sum '{0}' adding to mainqueue", q.Sum(it => it.WordCount), q.Count));
+                        
                         mainQueue.Enqueue(q);
                         lastQueue = q;
                         subQueue.Clear();
@@ -298,24 +307,35 @@ namespace WindowsFormsApplication1
             {
                 while (subQueue.Count > 0)
                 {
+                    Logger.LogProcess(string.Format("Subqueue item '{0}' moved to lastQueue", subQueue.Peek().Title));
                     lastQueue.Enqueue(subQueue.Dequeue());
                 }
             }
             else//nothing on main queue
             {
+                Logger.LogProcess(string.Format("Subqueue queued to main queue for {0} items", subQueue.Count));
                 mainQueue.Enqueue(subQueue);
             }
 
             if (mainQueue.Count > 0)
             {
                 var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
-
+                Logger.LogProcess(string.Format("Main queue has {0} items", mainQueue.Count));
+                
                 foreach (var qi in mainQueue)
                 {
-                    if (qi.Count == 0) continue;
+                    if (qi.Count == 0)
+                    {
+                        Logger.LogProcess("Main queue iterating, queue has 0 items");
+                        continue;
+                    }
 
                     _bw.ReportProgress(itemIndex / itemCount * 100, qi.First());
 
+                    var itemsToMerge = qi.Aggregate("", (current, sqi) => current + (sqi.Title + ","));
+
+                    Logger.LogProcess("Merging: "+ itemsToMerge);
+                    
                     var postId = CreateMerged(qi.ToList(), authorId);
                     var id = "";
                     foreach (var sqi in qi)

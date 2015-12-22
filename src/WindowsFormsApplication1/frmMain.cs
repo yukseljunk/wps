@@ -92,6 +92,15 @@ namespace WindowsFormsApplication1
             lvItems.ListViewItemSorter = lvwColumnSorter;
             SetStatus("Getting source items finished");
 
+            _sourceItemFactory.NoSourceFound -= NoSourceFound;
+            _sourceItemFactory.GettingSourceItemsStopped -= GettingSourceItemsStopped;
+            _sourceItemFactory.ProcessFinished -= GettingSourceItemsFinished;
+            _sourceItemFactory.SourceItemGot -= SourceItemGot;
+            _sourceItemFactory.PageParsed -= PageParsed;
+            _sourceItemFactory.SourceItemsGot -= SourceItemsGot;
+
+            _sourceItemFactory = null;
+
         }
 
         private void GettingSourceItemsStopped(object sender, EventArgs e)
@@ -299,7 +308,7 @@ namespace WindowsFormsApplication1
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
                 ItemImages = imageUrls.Select(imageUrl => new ItemImage() { OriginalSource = imageUrl, Primary = true }).ToList(),
                 Site = item.SubItems[9].Text,
-                WordCount = int.Parse(item.SubItems[10].Text)
+                WordCount = int.Parse(item.SubItems[10].Text, new CultureInfo("en-US"))
 
             };
             if (postItem.ItemImages != null)
@@ -590,8 +599,13 @@ namespace WindowsFormsApplication1
             foreach (ListViewItem selectedItem in lvItems.SelectedItems)
             {
                 lvItems.Items.Remove(selectedItem);
+                if (selectedItem is IDisposable)
+                {
+                    ((IDisposable)selectedItem).Dispose();
+                }
             }
             ArrangeOrder();
+            GC.Collect();
         }
 
         private void btnRemoveDuplicates_Click(object sender, EventArgs e)

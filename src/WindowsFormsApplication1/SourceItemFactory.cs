@@ -181,7 +181,7 @@ namespace WindowsFormsApplication1
                             {
                                 item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
                                 item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
-                                string.Join(",", item.ItemImages.Select(ii=>ii.OriginalSource)), string.Join(",", item.Tags), site.Name, item.WordCount.ToString(),
+                                string.Join(",", item.ItemImages.Select(ii=>ii.OriginalSource)), string.Join(",", item.Tags), site.Name, item.WordCount.ToString(new CultureInfo("en-US")),
                                 item.Created.ToString("dd-MMM-yyyy", new CultureInfo("en-US")),
                                 ""
                             };
