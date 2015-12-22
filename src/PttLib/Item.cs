@@ -53,11 +53,11 @@ namespace PttLib
             var content = new StringBuilder("");
             if (ItemImages.Count > 0)
             {
-                content.Append(string.Format("<div style=\"width: {0}px; margin-right: 10px;;height:{1}px\">", (2 * thumbnailSize + 30), thumbnailSize));
+                content.Append(string.Format("<div style=\"width: {0}px; margin-right: 10px;\">", (2 * thumbnailSize + 30)));
                 foreach (var itemImage in ItemImages)
                 {
                     content.Append(string.Format(
-                        "<div style=\"width: {3}px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
+                        "<div style=\"width: {3}px; height: {3}px; float: left; margin-right: 15px; margin-bottom: 3px;\"><a href=\"{0}\"><img src=\"{1}\" alt=\"{2}\" title=\"{2}\" /></a></div>",
                         itemImage.Link, itemImage.NewSource, Title, thumbnailSize));
 
                 }
