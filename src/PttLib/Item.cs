@@ -50,7 +50,7 @@ namespace PttLib
                 Site);
         }
 
-        public virtual string PostBody(int thumbnailSize, bool includePrice = true)
+        public virtual string PostBody(int thumbnailSize, bool includePriceAndSource = true)
         {
             var converterFunctions = new ConverterFunctions();
             var content = new StringBuilder("");
@@ -68,13 +68,23 @@ namespace PttLib
 
             }
 
-            if (((int)(Price * 100)) > 0 && includePrice)
+            if (((int)(Price * 100)) > 0 && includePriceAndSource)
             {
                 content.Append(string.Format("<h4>Price:${0}</h4>", Price));
             }
             content.Append(string.Format("<h2>{0}</h2>", Title));
             content.Append(converterFunctions.ArrangeContent(Content));
+            if (!string.IsNullOrEmpty(Url) && includePriceAndSource)
+            {
+                content.Append(SourceStatement());
+            }
+            return content.ToString();
 
+        }
+
+        public string SourceStatement()
+        {
+            var content=new StringBuilder();
             content.Append("<br><strong>Source:</strong> <a href=\"");
             content.Append(Url);
             content.Append("\" rel=\"nofollow\" target=\"_blank\">");
@@ -84,12 +94,10 @@ namespace PttLib
             {
                 randomWordCount = titleWordCount;
             }
-            var firstWords = string.Join(" ",Title.Split().Take(randomWordCount));
+            var firstWords = string.Join(" ", Title.Split().Take(randomWordCount));
             content.Append(firstWords);
             content.Append("</a>");
-
             return content.ToString();
-
         }
 
         public bool IsInvalid

@@ -125,20 +125,25 @@ namespace PttLib
             }
         }
 
-        public override string PostBody(int thumbnailSize, bool includePrice = true)
+        public override string PostBody(int thumbnailSize, bool includePriceAndSource = true)
         {
             var result = new StringBuilder();
             var itemIndex = 0;
+            var sourceStatement = "";
             foreach (var item in _items)
             {
                 if (itemIndex > 0)
                 {
                     result.Append("<div style='clear:both;width:500px;'></div>");
                 }
+                else
+                {
+                    sourceStatement = item.SourceStatement();
+                }
                 result.Append(item.PostBody(thumbnailSize, false));
                 itemIndex++;
             }
-
+            result.Append(sourceStatement);
             return result.ToString();
         }
     }
