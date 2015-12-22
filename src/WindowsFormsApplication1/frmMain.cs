@@ -522,6 +522,8 @@ namespace WindowsFormsApplication1
 
         private void btnScrumble_Click(object sender, EventArgs e)
         {
+            lvItems.ListViewItemSorter = null;
+
             var itemCount = lvItems.Items.Count;
             if (itemCount == 0) return;
             for (var i = 0; i < itemCount; i++)
@@ -534,6 +536,9 @@ namespace WindowsFormsApplication1
 
             }
             ArrangeOrder();
+            lvwColumnSorter = new ListViewColumnSorter();
+            lvItems.ListViewItemSorter = lvwColumnSorter;
+
         }
 
         private void ArrangeOrder()
