@@ -262,7 +262,7 @@ namespace WindowsFormsApplication1
                 {
                     SetStatus("Loading present posts and tags in the blog(this may take some time)...");
                     Application.DoEvents();
-                    _blogCache.Start(txtBlogUrl.Text);
+                    _blogCache.Start(_options.BlogUrl);
                     Application.DoEvents();
                 }
                 SetStatus("Ready");
@@ -273,7 +273,7 @@ namespace WindowsFormsApplication1
                         FtpConfiguration,
                         _blogCache,
                         dal,
-                        txtBlogUrl.Text,
+                        _options.BlogUrl,
                         _options.UseFtp,
                         _options.ResizeImages ? _options.ResizeSize : 0,
                         _options.ThumbnailSize,
@@ -355,22 +355,19 @@ namespace WindowsFormsApplication1
         private void EnDisItems(bool enabled)
         {
             optionsToolStripMenuItem.Enabled = enabled;
+            settingsToolStripMenuItem.Enabled = enabled;
             btnStop.Enabled = !enabled;
             btnGo.Enabled = enabled;
             btnStart.Enabled = enabled;
             lvItems.Enabled = enabled;
-            grpMysql.Enabled = enabled;
             btnStopScrape.Enabled = enabled;
-            grpBlogProp.Enabled = enabled;
-            grpFtp.Enabled = enabled;
-
         }
 
         public FtpConfig FtpConfiguration
         {
             get
             {
-                return new FtpConfig() { Url = txtFtpUrl.Text, UserName = txtFtpUserName.Text, Password = txtFtpPassword.Text };
+                return new FtpConfig() { Url = _options.FtpUrl, UserName = _options.FtpUser, Password = _options.FtpPassword};
             }
         }
 
@@ -378,7 +375,7 @@ namespace WindowsFormsApplication1
         {
             get
             {
-                return new WordPressSiteConfig() { BaseUrl = txtBlogUrl.Text, BlogId = 1, Username = txtUserName.Text, Password = txtPassword.Text };
+                return new WordPressSiteConfig() { BaseUrl =_options.BlogUrl , BlogId = 1, Username = _options.BlogUser, Password = _options.BlogPassword};
             }
         }
 
@@ -471,26 +468,9 @@ namespace WindowsFormsApplication1
         {
             get
             {
-                return string.Format("Server={0};Database={1};Uid={2};Pwd={3}; Allow User Variables=True", txtMySqlIp.Text, txtMySqlDatabase.Text, txtMysqlUser.Text, txtMySqlPass.Text);
-
+                return string.Format("Server={0};Database={1};Uid={2};Pwd={3}; Allow User Variables=True", _options.DatabaseUrl, _options.DatabaseName,  _options.DatabaseUser, _options.DatabasePassword);
             }
         }
-        private void btnTestMySqlConnection_Click(object sender, EventArgs e)
-        {
-            using (var dal = new Dal(MySqlConnectionString))
-            {
-                var testConnection = dal.TestConnection();
-                if (testConnection != null)
-                {
-                    foreach (var result in testConnection)
-                    {
-                        MessageBox.Show(result);
-                    }
-                }
-            }
-
-        }
-
         private void lvItems_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -521,18 +501,6 @@ namespace WindowsFormsApplication1
             // Perform the sort with these new sort options.
             lvItems.Sort();
             ArrangeOrder();
-        }
-
-        private void btnTestFtpConnection_Click(object sender, EventArgs e)
-        {
-            var ftp = new Ftp();
-            string result = ftp.TestConnection(FtpConfiguration);
-            if (string.IsNullOrEmpty(result))
-            {
-                MessageBox.Show("Successfull!");
-                return;
-            }
-            MessageBox.Show("Failed: " + result);
         }
 
         private void btnScrumble_Click(object sender, EventArgs e)
@@ -675,7 +643,13 @@ namespace WindowsFormsApplication1
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var frmSettings = new frmSettings();
+            frmSettings.ShowDialog();
+        }
 
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(this.Text);
         }
 
     }

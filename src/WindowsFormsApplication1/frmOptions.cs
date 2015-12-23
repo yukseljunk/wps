@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WordpressScraper.Helpers;
 
 namespace WordpressScraper
 {
@@ -29,20 +30,9 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("UseFtp", chkNoAPI.Checked.ToString()));
             settings.Add(new Tuple<string, string>("UseCache", chkCache.Checked.ToString()));
             settings.Add(new Tuple<string, string>("ShowMessageBoxes", chkShowMessageBox.Checked.ToString()));
-            UpdateSettings(settings);
+            ConfigurationHelper.UpdateSettings(settings);
             this.Dispose();
             this.Close();
-
-        }
-        private static void UpdateSettings(IList<Tuple<string, string>> keysValues)
-        {
-            Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            foreach (var keyValue in keysValues)
-            {
-                configuration.AppSettings.Settings[keyValue.Item1].Value = keyValue.Item2;
-            }
-            configuration.Save();
-            ConfigurationManager.RefreshSection("appSettings");
 
         }
 
