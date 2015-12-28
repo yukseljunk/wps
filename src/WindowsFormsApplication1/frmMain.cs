@@ -107,10 +107,16 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.ProcessFinished -= GettingSourceItemsFinished;
             _sourceItemFactory.SourceItemGot -= SourceItemGot;
             _sourceItemFactory.PageParsed -= PageParsed;
+            _sourceItemFactory.TotalResultsFound -= TotalResultsFound;
             _sourceItemFactory.SourceItemsGot -= SourceItemsGot;
 
             _sourceItemFactory = null;
 
+        }
+
+        private void TotalResultsFound(object sender, int e)
+        {
+            lblTotalResults.Text = e.ToString();
         }
 
         private void GettingSourceItemsStopped(object sender, EventArgs e)
@@ -162,6 +168,7 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.GettingSourceItemsStopped += GettingSourceItemsStopped;
             _sourceItemFactory.ProcessFinished += GettingSourceItemsFinished;
             _sourceItemFactory.SourceItemGot += SourceItemGot;
+            _sourceItemFactory.TotalResultsFound += TotalResultsFound;
             _sourceItemFactory.PageParsed += PageParsed;
             _sourceItemFactory.SourceItemsGot += SourceItemsGot;
             var checkedSites = (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();

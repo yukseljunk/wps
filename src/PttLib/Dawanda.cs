@@ -32,6 +32,17 @@ namespace PttLib
             return itemNode.PreviousSibling.PreviousSibling.SelectSingleNode("img").Attributes["src"].Value;
         }
 
+        protected override void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc)
+        {
+            var contentNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@id='category_tree']/ul/li[1]/a");
+            totalItemCount = 0;
+
+            if (contentNode == null) return;
+
+            totalItemCount = Int32.Parse(contentNode.Attributes["data-count"].Value, NumberStyles.AllowThousands, new CultureInfo("en-US"));
+
+        }
+
         /// <summary>
         /// gets title and link values for keyword
         /// </summary>
@@ -39,16 +50,16 @@ namespace PttLib
         /// <param name="pageCount"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public override IList<Tuple<string, string, string>> GetItems(string keyword, out int pageCount, int page = 1)
+        public override IList<Tuple<string, string, string>> GetItems(string keyword, out int pageCount, out int totalItemCount, int page = 1)
         {
             Thread.Sleep(1000);
-            return base.GetItems(keyword, out pageCount, page);
+            return base.GetItems(keyword, out pageCount, out totalItemCount, page);
         }
 
         public override Item GetItem(string title, string url, string extraInfo)
         {
             Thread.Sleep(1000);
-            var item=base.GetItem(title, url, extraInfo);
+            var item = base.GetItem(title, url, extraInfo);
             if (item == null) return null;
 
             var regex = new Regex(@"\?(\d{8})");

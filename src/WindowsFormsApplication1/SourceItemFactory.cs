@@ -24,6 +24,7 @@ namespace WindowsFormsApplication1
         public event EventHandler ProcessFinished;
         public event EventHandler<string> NoSourceFound;
         public event EventHandler<int> PageParsed;
+        public event EventHandler<int> TotalResultsFound;
 
 
         protected virtual void OnProcessFinished()
@@ -58,6 +59,11 @@ namespace WindowsFormsApplication1
         protected virtual void OnPageParsed(int e)
         {
             var handler = PageParsed;
+            if (handler != null) handler(this, e);
+        }
+        protected virtual void OnTotalResultsFound(int e)
+        {
+            var handler = TotalResultsFound;
             if (handler != null) handler(this, e);
         }
         #endregion
@@ -111,6 +117,12 @@ namespace WindowsFormsApplication1
                         OnPageParsed(count);
                         return;
                     }
+                    if (e.UserState.ToString().StartsWith("found"))
+                    {
+                        var totalResults=int.Parse(e.UserState.ToString().Replace("found",""));
+                        OnTotalResultsFound(totalResults);
+                        return;
+                    }
                     OnNoSourceFound(e.UserState.ToString());
                 }
 
@@ -129,11 +141,12 @@ namespace WindowsFormsApplication1
             {
                 var allResults = new List<Tuple<string, string, string>>();
                 var site = siteFactory.GetByName(siteName);
-
+                int totalItemCount = 0;
                 for (var page = pageStart; page <= pageEnd; page++)
                 {
                     int pageCount;
-                    var results = site.GetItems(keyword, out pageCount, page);
+
+                    var results = site.GetItems(keyword, out pageCount, out totalItemCount, page);
                     if (page > pageCount)
                     {
                         break;
@@ -159,6 +172,7 @@ namespace WindowsFormsApplication1
                     continue;
                 }
                 _bw.ReportProgress(100, allResults.Count);
+                _bw.ReportProgress(100, "found"+totalItemCount);
 
                 var itemIndex = startingOrder;
                 var allResultsCount = allResults.Count;
@@ -217,5 +231,6 @@ namespace WindowsFormsApplication1
         }
 
 
+      
     }
 }

@@ -56,9 +56,10 @@ namespace PttLib
         /// </summary>
         /// <param name="keyword"></param>
         /// <param name="pageCount"></param>
+        /// <param name="totalItemCount"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public virtual IList<Tuple<string, string, string>> GetItems(string keyword, out int pageCount, int page = 1)
+        public virtual IList<Tuple<string, string, string>> GetItems(string keyword, out int pageCount, out int totalItemCount, int page = 1)
         {
             var result = new List<Tuple<string, string, string>>();
             var url = UrlFromKey(keyword);
@@ -66,6 +67,7 @@ namespace PttLib
             var uri = new Uri(url);
             var mainUrl = uri.Scheme + "://" + uri.Host;
             pageCount = 0;
+            totalItemCount = 0;
             if (html == null) return null;
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.LoadHtml(html);
@@ -73,7 +75,7 @@ namespace PttLib
             if (htmlDoc.DocumentNode != null)
             {
                 GetPageCount(out pageCount, htmlDoc);
-
+                GetItemCount(out totalItemCount, htmlDoc);
                 var itemNodes = htmlDoc.DocumentNode.SelectNodes(ItemsXPath);
 
                 if (itemNodes != null)
@@ -94,6 +96,22 @@ namespace PttLib
                 }
             }
             return result;
+        }
+
+        protected virtual void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc)
+        {
+            var contentNode=htmlDoc.DocumentNode.SelectSingleNode("//div[@id='content']");
+            totalItemCount = 0;
+
+            if (contentNode == null) return;
+
+            var regex = new Regex(@"\((.*) Results\)");
+            var match = regex.Match(contentNode.InnerHtml);
+            if (match.Success)
+            {
+                totalItemCount = Int32.Parse(match.Groups[1].Value, NumberStyles.AllowThousands, new CultureInfo("en-US"));
+            }
+
         }
 
         protected virtual string GetExtraInfo(HtmlNode itemNode)
