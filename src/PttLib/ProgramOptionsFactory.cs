@@ -1,6 +1,7 @@
 using System;
+using PttLib.Helpers;
 
-namespace WordpressScraper
+namespace PttLib
 {
     public class ProgramOptionsFactory
     {
@@ -27,6 +28,27 @@ namespace WordpressScraper
                                   FtpUser = System.Configuration.ConfigurationManager.AppSettings["FtpUser"],
                                   FtpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"]
                               };
+            return options;
+        }
+
+        public ProgramOptions Get(string configPath)
+        {
+            var html = new HtmlAgilityPack.HtmlDocument();
+            html.Load(configPath);
+
+            var options = new ProgramOptions();
+            options.BlogUrl = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/blogurl", "", true);
+            options.BlogUser = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/bloguser", "", true);
+            options.BlogPassword = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/blogpassword", "", true);
+            options.DatabaseUrl = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/databaseurl", "", true);
+            options.DatabaseName = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/databasename", "", true);
+            options.DatabaseUser = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/databaseuser", "", true);
+            options.DatabasePassword = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/databasepassword", "", true);
+
+            options.FtpUrl = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/ftpurl", "", true);
+            options.FtpUser = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/ftpuser", "", true);
+            options.FtpPassword = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/ftppassword", "", true);
+            
             return options;
         }
     }

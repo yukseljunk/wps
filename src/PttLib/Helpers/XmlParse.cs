@@ -6,7 +6,7 @@ using HtmlAgilityPack;
 
 namespace PttLib.Helpers
 {
-    class XmlParse
+    public class XmlParse
     {
         public static List<int> GetIntegerListNodeValue(HtmlNode htmlNode, string xpath)
         {

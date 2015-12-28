@@ -1,4 +1,4 @@
-namespace WordpressScraper
+namespace PttLib
 {
     public class ProgramOptions
     {

@@ -171,6 +171,8 @@
     <Compile Include="Operators\Query\Query.cs" />
     <Compile Include="Operators\Query\QueryBuilder.cs" />
     <Compile Include="Operators\Query\QueryFactory.cs" />
+    <Compile Include="ProgramOptions.cs" />
+    <Compile Include="ProgramOptionsFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PttRequestResponse\CaptchaRequestResponse\AnexCaptcha.cs" />
     <Compile Include="PttRequestResponse\CaptchaRequestResponse\CoralCaptcha.cs" />

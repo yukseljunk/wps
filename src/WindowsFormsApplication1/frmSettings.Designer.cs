@@ -57,6 +57,8 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoadSettings = new System.Windows.Forms.Button();
+            this.openSettingFile = new System.Windows.Forms.OpenFileDialog();
+            this.saveSettings = new System.Windows.Forms.SaveFileDialog();
             this.grpFtp.SuspendLayout();
             this.grpMysql.SuspendLayout();
             this.grpBlogProp.SuspendLayout();
@@ -349,6 +351,10 @@
             this.btnLoadSettings.UseVisualStyleBackColor = true;
             this.btnLoadSettings.Click += new System.EventHandler(this.btnLoadSettings_Click);
             // 
+            // openSettingFile
+            // 
+            this.openSettingFile.FileName = "openFileDialog1";
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -409,5 +415,7 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnLoadSettings;
+        private System.Windows.Forms.OpenFileDialog openSettingFile;
+        private System.Windows.Forms.SaveFileDialog saveSettings;
     }
 }
