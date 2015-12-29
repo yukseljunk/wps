@@ -79,6 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Artfire.cs" />
     <Compile Include="CaptchaBreaker\CaptchaBreakerFactory.cs" />
     <Compile Include="CaptchaBreaker\Coral\CoralBreaker.cs" />
     <Compile Include="CaptchaBreaker\Coral\Guesser\CaptchaGuess.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Operators\Query\Query.cs" />
     <Compile Include="Operators\Query\QueryBuilder.cs" />
     <Compile Include="Operators\Query\QueryFactory.cs" />
+    <Compile Include="OverStock.cs" />
     <Compile Include="ProgramOptions.cs" />
     <Compile Include="ProgramOptionsFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

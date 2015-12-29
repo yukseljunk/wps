@@ -8,7 +8,9 @@ namespace PttLib
         private List<Site> _sites = new List<Site>()
                                        {
                                            new Etsy(),
-                                           new Dawanda()
+                                           new Dawanda(),
+                                           new Artfire(),
+                                           new OverStock()
                                        };
         public List<Site> GetAll
         {
