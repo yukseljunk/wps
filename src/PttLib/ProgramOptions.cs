@@ -24,5 +24,13 @@ namespace PttLib
         public string FtpUser { get; set; }
         public string FtpPassword { get; set; }
 
+
+        public int TitleContainsKeywordScore { get; set; }
+        public int TitleStartsWithKeywordScore { get; set; }
+        public int ContentContainsKeywordScore { get; set; }
+        public int ContentFirst100ContainsKeywordScore { get; set; }
+        public int KeywordRatioScore { get; set; }
+
+
     }
 }

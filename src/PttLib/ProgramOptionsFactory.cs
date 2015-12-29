@@ -9,7 +9,7 @@ namespace PttLib
         {
             var options = new ProgramOptions()
                               {
-                                  MakeFirstImageAsFeature =bool.Parse(System.Configuration.ConfigurationManager.AppSettings["MakeFirstImageAsFeature"]),
+                                  MakeFirstImageAsFeature = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["MakeFirstImageAsFeature"]),
                                   MergeBlockSize = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["MergeBlockSize"]),
                                   ThumbnailSize = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ThumbnailSize"]),
                                   ResizeImages = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["ResizeImages"]),
@@ -26,9 +26,17 @@ namespace PttLib
                                   DatabasePassword = System.Configuration.ConfigurationManager.AppSettings["DatabasePassword"],
                                   FtpUrl = System.Configuration.ConfigurationManager.AppSettings["FtpUrl"],
                                   FtpUser = System.Configuration.ConfigurationManager.AppSettings["FtpUser"],
-                                  FtpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"]
+                                  FtpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"],
+
+                                  TitleContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["TitleContainsKeywordScore"]),
+                                  TitleStartsWithKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["TitleStartsWithKeywordScore"]),
+                                  ContentContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ContentContainsKeywordScore"]),
+                                  ContentFirst100ContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ContentFirst100ContainsKeywordScore"]),
+                                  KeywordRatioScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["KeywordRatioScore"])
+
                               };
             return options;
+
         }
 
         public ProgramOptions Get(string configPath)
@@ -48,7 +56,7 @@ namespace PttLib
             options.FtpUrl = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/ftpurl", "", true);
             options.FtpUser = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/ftpuser", "", true);
             options.FtpPassword = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/ftppassword", "", true);
-            
+
             return options;
         }
     }

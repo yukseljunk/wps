@@ -24,7 +24,7 @@ namespace WindowsFormsApplication1
         private Stopwatch _stopWatch = new Stopwatch();
         private PostFactory _postFactory = null;
         private SourceItemFactory _sourceItemFactory = null;
-        private const int PostIdColumnIndex = 12;
+        private const int PostIdColumnIndex = 13;
         private ProgramOptions _options;
 
         public frmMain()
@@ -97,7 +97,7 @@ namespace WindowsFormsApplication1
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
 
-            if(_options.ShowMessageBoxes)
+            if (_options.ShowMessageBoxes)
             {
                 MessageBox.Show("Getting source items finished");
             }
@@ -218,7 +218,7 @@ namespace WindowsFormsApplication1
             _stopWatch.Stop();
             var timeTook = _stopWatch.Elapsed.TotalMinutes.ToString("0.00");
             lblDateTime.Text = string.Format("Took {0} mins", timeTook);
-            if(_options.ShowMessageBoxes)
+            if (_options.ShowMessageBoxes)
             {
                 MessageBox.Show(string.Format("Post creation finished, took {0} mins", timeTook));
             }
@@ -333,6 +333,7 @@ namespace WindowsFormsApplication1
 
         private Item ItemFromListView(ListViewItem item)
         {
+
             var imageUrls = item.SubItems[7].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             var postItem = new Item()
             {
@@ -381,7 +382,7 @@ namespace WindowsFormsApplication1
         {
             get
             {
-                return new FtpConfig() { Url = _options.FtpUrl, UserName = _options.FtpUser, Password = _options.FtpPassword};
+                return new FtpConfig() { Url = _options.FtpUrl, UserName = _options.FtpUser, Password = _options.FtpPassword };
             }
         }
 
@@ -389,7 +390,7 @@ namespace WindowsFormsApplication1
         {
             get
             {
-                return new WordPressSiteConfig() { BaseUrl =_options.BlogUrl , BlogId = 1, Username = _options.BlogUser, Password = _options.BlogPassword};
+                return new WordPressSiteConfig() { BaseUrl = _options.BlogUrl, BlogId = 1, Username = _options.BlogUser, Password = _options.BlogPassword };
             }
         }
 
@@ -482,7 +483,7 @@ namespace WindowsFormsApplication1
         {
             get
             {
-                return string.Format("Server={0};Database={1};Uid={2};Pwd={3}; Allow User Variables=True", _options.DatabaseUrl, _options.DatabaseName,  _options.DatabaseUser, _options.DatabasePassword);
+                return string.Format("Server={0};Database={1};Uid={2};Pwd={3}; Allow User Variables=True", _options.DatabaseUrl, _options.DatabaseName, _options.DatabaseUser, _options.DatabasePassword);
             }
         }
         private void lvItems_SelectedIndexChanged(object sender, EventArgs e)
@@ -643,7 +644,7 @@ namespace WindowsFormsApplication1
 
         private void btnSetTitle_Click(object sender, EventArgs e)
         {
-         
+
             if (lvItems.SelectedItems.Count == 0) return;
             lvItems.SelectedItems[0].SubItems[3].Text = txtPostId.Text;
 

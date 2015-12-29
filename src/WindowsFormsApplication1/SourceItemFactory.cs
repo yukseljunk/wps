@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using PttLib;
+using WordpressScraper;
 
 namespace WindowsFormsApplication1
 {
@@ -137,6 +138,7 @@ namespace WindowsFormsApplication1
         private void GetSourceItemsOnWorker(IList<string> siteNames, string keyword, int pageStart, int pageEnd, int startingOrder, DoWorkEventArgs e)
         {
             var siteFactory = new SiteFactory();
+            var relevanceCalculater = new RelevanceCalculator();
             foreach (var siteName in siteNames)
             {
                 var allResults = new List<Tuple<string, string, string>>();
@@ -191,12 +193,14 @@ namespace WindowsFormsApplication1
                         var item = site.GetItem(etsyResult.Item1, etsyResult.Item2, etsyResult.Item3);
                         if (item != null)
                         {
+                            var relevance = relevanceCalculater.GetRelevance(item, keyword);
                             string[] row1 =
                             {
                                 item.Id.ToString(), item.Url, item.Title, item.MetaDescription, item.Content,
                                 item.Price.ToString(CultureInfo.GetCultureInfo("en-US")),
                                 string.Join(",", item.ItemImages.Select(ii=>ii.OriginalSource)), string.Join(",", item.Tags), site.Name, item.WordCount.ToString(new CultureInfo("en-US")),
                                 item.Created.ToString("dd-MMM-yyyy", new CultureInfo("en-US")),
+                                relevance.ToString(),
                                 ""
                             };
 

@@ -21,7 +21,7 @@ namespace PttLib
         {
             get
             {
-                return string.Format("https://www.{0}.com/search?q={{0}}&order=most_relevant", Name);
+                return string.Format("https://www.{0}.com/search?q={{0}}&order=date_desc", Name);
             }
         }
 
@@ -177,7 +177,8 @@ namespace PttLib
                            {
                                Tags = new List<string>(),
                                ItemImages = new List<ItemImage>(),
-                               Url = url
+                               Url = url//,
+                               //Keyword = keyword
                            };
 
             var itemHtml = WebHelper.CurlSimple(url);

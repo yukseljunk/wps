@@ -11,7 +11,7 @@ namespace PttLib
     {
         public override string UrlKeywordFormat
         {
-            get { return "http://en.dawanda.com/search?q={0}"; }
+            get { return "http://en.dawanda.com/search?q={0}&sort_by=newest_products"; }
         }
 
         public override string Name

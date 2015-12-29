@@ -1,12 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PttLib;
 using WordpressScraper.Helpers;
@@ -31,6 +24,13 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("UseFtp", chkNoAPI.Checked.ToString()));
             settings.Add(new Tuple<string, string>("UseCache", chkCache.Checked.ToString()));
             settings.Add(new Tuple<string, string>("ShowMessageBoxes", chkShowMessageBox.Checked.ToString()));
+
+            settings.Add(new Tuple<string, string>("TitleContainsKeywordScore", numTitleContainsKeyword.Value.ToString()));
+            settings.Add(new Tuple<string, string>("TitleStartsWithKeywordScore", numTitleStartsKeyword.Value.ToString()));
+            settings.Add(new Tuple<string, string>("ContentContainsKeywordScore", numContentContainsKeyword.Value.ToString()));
+            settings.Add(new Tuple<string, string>("ContentFirst100ContainsKeywordScore", numFirst100Content.Value.ToString()));
+            settings.Add(new Tuple<string, string>("KeywordRatioScore", numKeywordContentRatio.Value.ToString()));
+
             ConfigurationHelper.UpdateSettings(settings);
             this.Dispose();
             this.Close();
@@ -56,6 +56,14 @@ namespace WordpressScraper
             chkNoAPI.Checked = options.UseFtp;
             chkCache.Checked = options.UseCache;
             chkShowMessageBox.Checked = options.ShowMessageBoxes;
+
+            numTitleContainsKeyword.Value = options.TitleContainsKeywordScore;
+            numTitleStartsKeyword.Value = options.TitleStartsWithKeywordScore;
+            numContentContainsKeyword.Value = options.ContentContainsKeywordScore;
+            numFirst100Content.Value = options.ContentFirst100ContainsKeywordScore;
+            numKeywordContentRatio.Value = options.KeywordRatioScore;
+
+            toolTip.SetToolTip(lblKeywordContentRatio, "For every percentage, give this much of score");
         }
 
     }

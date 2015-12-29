@@ -230,7 +230,7 @@ namespace WindowsFormsApplication1
             Logger.LogProcess(string.Format("CreatePosts coming minWordCount:{0} for {1} items", minWordCount, items.Count));
             var itemIndex = 0;
             var itemCount = items.Count;
-
+            
             var mainQueue = new Queue<Queue<Item>>();
             var subQueue = new Queue<Item>();
             Queue<Item> lastQueue = null;
@@ -335,7 +335,7 @@ namespace WindowsFormsApplication1
                     var itemsToMerge = qi.Aggregate("", (current, sqi) => current + (sqi.Title + ","));
 
                     Logger.LogProcess("Merging: "+ itemsToMerge);
-                    
+
                     var postId = CreateMerged(qi.ToList(), authorId);
                     var id = "";
                     foreach (var sqi in qi)

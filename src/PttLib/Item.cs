@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms.VisualStyles;
+using System.Text.RegularExpressions;
 using PttLib.Helpers;
 using PttLib.TourInfo;
 
@@ -23,7 +24,7 @@ namespace PttLib
         public int PostId { get; set; }
         public int Order { get; set; }
         public DateTime Created { get; set; }
-
+       
         public virtual string ForeignKey
         {
             get { return Site + "_" + Id; }
