@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ColumnHeader No;
             System.Windows.Forms.ColumnHeader Id;
             System.Windows.Forms.ColumnHeader Url;
@@ -76,6 +77,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblTotalResults = new System.Windows.Forms.Label();
+            this.totalCountTooltip = new System.Windows.Forms.ToolTip(this.components);
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -553,13 +555,18 @@
             // 
             // lblTotalResults
             // 
-            this.lblTotalResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTotalResults.AutoSize = true;
-            this.lblTotalResults.Location = new System.Drawing.Point(1237, 620);
+            this.lblTotalResults.Location = new System.Drawing.Point(12, 663);
             this.lblTotalResults.Name = "lblTotalResults";
             this.lblTotalResults.Size = new System.Drawing.Size(13, 13);
             this.lblTotalResults.TabIndex = 37;
+            this.lblTotalResults.Tag = "";
             this.lblTotalResults.Text = "0";
+            // 
+            // totalCountTooltip
+            // 
+            this.totalCountTooltip.IsBalloon = true;
             // 
             // frmMain
             // 
@@ -638,6 +645,7 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.Label lblTotalResults;
+        private System.Windows.Forms.ToolTip totalCountTooltip;
     }
 }
 

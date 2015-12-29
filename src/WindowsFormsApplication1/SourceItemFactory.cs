@@ -24,7 +24,7 @@ namespace WindowsFormsApplication1
         public event EventHandler ProcessFinished;
         public event EventHandler<string> NoSourceFound;
         public event EventHandler<int> PageParsed;
-        public event EventHandler<int> TotalResultsFound;
+        public event EventHandler<string> TotalResultsFound;
 
 
         protected virtual void OnProcessFinished()
@@ -61,7 +61,7 @@ namespace WindowsFormsApplication1
             var handler = PageParsed;
             if (handler != null) handler(this, e);
         }
-        protected virtual void OnTotalResultsFound(int e)
+        protected virtual void OnTotalResultsFound(string e)
         {
             var handler = TotalResultsFound;
             if (handler != null) handler(this, e);
@@ -119,7 +119,7 @@ namespace WindowsFormsApplication1
                     }
                     if (e.UserState.ToString().StartsWith("found"))
                     {
-                        var totalResults=int.Parse(e.UserState.ToString().Replace("found",""));
+                        var totalResults = e.UserState.ToString().Replace("found ", "");
                         OnTotalResultsFound(totalResults);
                         return;
                     }
@@ -172,7 +172,7 @@ namespace WindowsFormsApplication1
                     continue;
                 }
                 _bw.ReportProgress(100, allResults.Count);
-                _bw.ReportProgress(100, "found"+totalItemCount);
+                _bw.ReportProgress(100, string.Format("found {0}({1}/{2})", siteName, allResults.Count, totalItemCount));
 
                 var itemIndex = startingOrder;
                 var allResultsCount = allResults.Count;
@@ -231,6 +231,6 @@ namespace WindowsFormsApplication1
         }
 
 
-      
+
     }
 }

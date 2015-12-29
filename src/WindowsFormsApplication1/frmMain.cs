@@ -114,9 +114,15 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void TotalResultsFound(object sender, int e)
+        private void TotalResultsFound(object sender, string e)
         {
-            lblTotalResults.Text = e.ToString();
+            if (lblTotalResults.Text != "")
+            {
+                lblTotalResults.Text += ", ";
+            }
+            lblTotalResults.Text += e;
+            totalCountTooltip.SetToolTip(lblTotalResults, lblTotalResults.Text);
+
         }
 
         private void GettingSourceItemsStopped(object sender, EventArgs e)
@@ -158,6 +164,7 @@ namespace WindowsFormsApplication1
             ResetBarStatus(true);
             btnStart.Enabled = false;
             btnGo.Enabled = false;
+            lblTotalResults.Text = "";
 
             var pageStart = (int)numPage.Value;
             var pageEnd = chkAllPages.Checked ? (int)numPageTo.Maximum : (int)numPageTo.Value;
