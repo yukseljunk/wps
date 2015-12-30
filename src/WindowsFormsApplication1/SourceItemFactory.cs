@@ -69,14 +69,14 @@ namespace WindowsFormsApplication1
         }
         #endregion
 
-        public void GetSourceItems(IList<string> siteNames, string keyword, int pageStart, int pageEnd, int startingOrder)
+        public void GetSourceItems(IList<string> siteNames, string keyword, int pageStart, int pageEnd)
         {
             _bw = new BackgroundWorker
             {
                 WorkerReportsProgress = true,
                 WorkerSupportsCancellation = true
             };
-            _bw.DoWork += (obj, e) => GetSourceItemsOnWorker(siteNames, keyword, pageStart, pageEnd, startingOrder, e);
+            _bw.DoWork += (obj, e) => GetSourceItemsOnWorker(siteNames, keyword, pageStart, pageEnd, e);
             _bw.ProgressChanged += SingleSourceItemGot;
             _bw.RunWorkerCompleted += GettingSourceItemsFinished;
             _bw.RunWorkerAsync();
@@ -135,10 +135,11 @@ namespace WindowsFormsApplication1
             if (_bw.IsBusy) _bw.CancelAsync();
         }
 
-        private void GetSourceItemsOnWorker(IList<string> siteNames, string keyword, int pageStart, int pageEnd, int startingOrder, DoWorkEventArgs e)
+        private void GetSourceItemsOnWorker(IList<string> siteNames, string keyword, int pageStart, int pageEnd, DoWorkEventArgs e)
         {
             var siteFactory = new SiteFactory();
             var relevanceCalculater = new RelevanceCalculator();
+            var itemIndex = 0;
             foreach (var siteName in siteNames)
             {
                 var allResults = new List<Tuple<string, string, string>>();
@@ -176,7 +177,7 @@ namespace WindowsFormsApplication1
                 _bw.ReportProgress(100, allResults.Count);
                 _bw.ReportProgress(100, string.Format("found {0}({1}/{2})", siteName, allResults.Count, totalItemCount));
 
-                var itemIndex = startingOrder;
+                
                 var allResultsCount = allResults.Count;
                 var blockIndex = 0;
                 do
@@ -208,7 +209,7 @@ namespace WindowsFormsApplication1
                             listViewitem.SubItems.AddRange(row1);
                             listViewItems.Add(listViewitem);
 
-                            _bw.ReportProgress((itemIndex - startingOrder) / allResultsCount * 100, listViewitem);
+                            _bw.ReportProgress((itemIndex) / allResultsCount * 100, listViewitem);
 
                             itemIndex++;
                         }
@@ -220,7 +221,7 @@ namespace WindowsFormsApplication1
 
                     }
 
-                    _bw.ReportProgress((itemIndex - startingOrder) / allResultsCount * 100, listViewItems);
+                    _bw.ReportProgress((itemIndex) / allResultsCount * 100, listViewItems);
 
                     if (_bw.CancellationPending)
                     {

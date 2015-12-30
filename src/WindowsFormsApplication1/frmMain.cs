@@ -179,7 +179,7 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.PageParsed += PageParsed;
             _sourceItemFactory.SourceItemsGot += SourceItemsGot;
             var checkedSites = (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();
-            _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count + 1);
+            _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd);
 
         }
 
