@@ -18,7 +18,7 @@ namespace PttLib.PttRequestResponse
         private readonly string _viewStateValue;
         private readonly string _eventValidationValue;
 
-        private const string SimplestRequestFormat = "<Request><Url>{0}</Url><Host></Host><keepalive>False</keepalive><Timeout>10000</Timeout></Request>";
+        private const string SimplestRequestFormat = "<Request><Url>{0}</Url><Host></Host><keepalive>False</keepalive><Timeout>10000</Timeout><ContentType>{1}</ContentType></Request>";
 
         /// <summary>
         /// default ctor, proxy either changed or nulled, cookieContainer new
@@ -82,9 +82,9 @@ namespace PttLib.PttRequestResponse
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public IPttRequest SimpleRequest(string url)
+        public IPttRequest SimpleRequest(string url, string contentType="text/html")
         {
-            var serialized = string.Format(SimplestRequestFormat, url);
+            var serialized = string.Format(SimplestRequestFormat, url, contentType);
             return Deserialize(serialized);
         }
 

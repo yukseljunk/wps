@@ -15,23 +15,23 @@ namespace PttLib.Helpers
         public static int UsedRequestCount;// { get; set; }
         public static DateTime LastRequestTime;// { get; set; }
 
-        public static string CurlSimple(string url)
+        public static string CurlSimple(string url, string contentType = "text/html")
         {
             try
             {
                 var requestFactory = new PttRequestFactory();
-                var pttRequest = requestFactory.SimpleRequest(url);
+                var pttRequest = requestFactory.SimpleRequest(url, contentType);
                 var response = new PttResponse();
-                return response.GetResponse(pttRequest);                
+                return response.GetResponse(pttRequest);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Logger.LogExceptions(exception);
             }
             return null;
         }
 
-        public static string CurlSimplePost(string url, string postData, string host, bool chunked=false)
+        public static string CurlSimplePost(string url, string postData, string host, bool chunked = false)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace PttLib.Helpers
                 var pttResponse = new PttResponse();
                 return pttResponse.GetResponse(pttRequest);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Logger.LogExceptions(exception);
             }
@@ -69,7 +69,7 @@ namespace PttLib.Helpers
                 {
                     viewState = match.Groups["val"].Value;
                 }
-                
+
             }
             return viewState;
         }
@@ -98,8 +98,8 @@ namespace PttLib.Helpers
             ServicePointManager.MaxServicePointIdleTime = 10000;
         }
 
-        public static Tuple<string,int> GetProxyForOperator(string operatorNameForProxyCheck)
-        {   
+        public static Tuple<string, int> GetProxyForOperator(string operatorNameForProxyCheck)
+        {
             if (String.IsNullOrEmpty(operatorNameForProxyCheck)) return null;
             //operator proxy listesinde var mi kontrol et ona gore devam
 
@@ -110,7 +110,7 @@ namespace PttLib.Helpers
 
         }
 
-        public static void ArrangeProxy(ref IWebProxy proxy, string operatorName=null)
+        public static void ArrangeProxy(ref IWebProxy proxy, string operatorName = null)
         {
             var proxyForOperator = GetProxyForOperator(operatorName);
             if (proxyForOperator != null)
@@ -180,9 +180,9 @@ namespace PttLib.Helpers
                     }
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
-                
+
 
             }
             return null;

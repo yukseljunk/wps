@@ -9,6 +9,6 @@ namespace PttLib.PttRequestResponse
 
         IEnumerable<IPttRequest> DeserializeList(string serialized, IPttRequest lastRequest, FillSessionJarDelegate fillSessionJar);
 
-        IPttRequest SimpleRequest(string url);
+        IPttRequest SimpleRequest(string url, string contentType = "text/html");
     }
 }

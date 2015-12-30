@@ -25,7 +25,7 @@ namespace PttLib
             }
         }
 
-        public string Get(string url, int page = 1)
+        public virtual string Get(string url, int page = 1)
         {
             var urlToAsk = url.Replace(" ", "+");
             if (urlToAsk.Contains("?"))
