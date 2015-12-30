@@ -91,16 +91,21 @@ namespace PttLib
                             }
                             link = mainUrl + link;
                         }
-                        result.Add(new Tuple<string, string, string>(itemNode.Attributes["title"].Value, link, GetExtraInfo(itemNode)));
+                        result.Add(new Tuple<string, string, string>(GetTitleFromSingleItem(itemNode), link, GetExtraInfo(itemNode)));
                     }
                 }
             }
             return result;
         }
 
+        protected virtual string GetTitleFromSingleItem(HtmlNode itemNode)
+        {
+            return itemNode.Attributes["title"].Value;
+        }
+
         protected virtual void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc)
         {
-            var contentNode=htmlDoc.DocumentNode.SelectSingleNode("//div[@id='content']");
+            var contentNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@id='content']");
             totalItemCount = 0;
 
             if (contentNode == null) return;
@@ -202,6 +207,7 @@ namespace PttLib
                 }
             }
 
+
             var images = htmlDoc.DocumentNode.SelectNodes(ImagesXPath);
             if (images != null)
             {
@@ -219,7 +225,7 @@ namespace PttLib
             var metaPrice = htmlDoc.DocumentNode.SelectSingleNode(PriceXPath);
             if (metaPrice != null)
             {
-                item.Price = Double.Parse(metaPrice.Attributes["content"].Value, CultureInfo.InvariantCulture);
+                item.Price = GetPriceValue(metaPrice);
             }
 
             var content = htmlDoc.DocumentNode.SelectSingleNode(DescriptionXPath);
@@ -252,6 +258,9 @@ namespace PttLib
             return item;
         }
 
-
+        protected virtual double GetPriceValue(HtmlNode metaPrice)
+        {
+            return Double.Parse(metaPrice.Attributes["content"].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture);
+        }
     }
 }
