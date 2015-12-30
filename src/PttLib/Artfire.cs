@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 
 namespace PttLib
@@ -83,6 +84,39 @@ namespace PttLib
                 return "data-x-large";
             }
         }
+
+        public override string DateTimeXPath
+        {
+            get { return "//img[@class='img-thumbnail']"; }
+        }
+
+        public override string DateTimeRegex
+        {
+            get { return @"/products/(\d{4}/\d{2}/\d{2})/"; }
+        }
+
+        private string DateTimeAltXPath
+        {
+            get { return "//meta[@name='twitter:image:src']"; }
+        }
+        protected override void SetCreatedDate(HtmlDocument htmlDoc, Item item)
+        {
+            var dateTimeNode = htmlDoc.DocumentNode.SelectSingleNode(DateTimeXPath);
+            if (dateTimeNode == null)
+            {
+                dateTimeNode = htmlDoc.DocumentNode.SelectSingleNode(DateTimeAltXPath);
+            }
+            if (dateTimeNode != null)
+            {
+                var regex = new Regex(DateTimeRegex);
+                var match = regex.Match(dateTimeNode.OuterHtml);
+                if (match.Success)
+                {
+                    item.Created = DateTime.Parse(match.Groups[1].Value);
+                }
+            }
+        }
+
         public override string PriceXPath
         {
             get

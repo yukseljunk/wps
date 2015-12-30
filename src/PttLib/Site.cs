@@ -164,12 +164,12 @@ namespace PttLib
             get { return @"/listing/(.*?)/"; }
         }
 
-        public string DateTimeXPath
+        public virtual string DateTimeXPath
         {
             get { return "//div[@id='fineprint']/ul/li[1]"; }
         }
 
-        public string DateTimeRegex
+        public virtual string DateTimeRegex
         {
             get { return @"Listed on (.*)"; }
         }
@@ -244,20 +244,24 @@ namespace PttLib
                 item.Id = Int32.Parse(match.Groups[1].Value);
             }
 
-            var dateTime = htmlDoc.DocumentNode.SelectSingleNode(DateTimeXPath);
-            if (dateTime != null)
+            SetCreatedDate(htmlDoc, item);
+            return item;
+        }
+
+        protected  virtual void SetCreatedDate(HtmlDocument htmlDoc, Item item)
+        {
+            var dateTimeNode = htmlDoc.DocumentNode.SelectSingleNode(DateTimeXPath);
+            if (dateTimeNode != null)
             {
-                regex = new Regex(DateTimeRegex);
-                match = regex.Match(dateTime.InnerText);
+                var regex = new Regex(DateTimeRegex);
+                var match = regex.Match(dateTimeNode.InnerText);
                 if (match.Success)
                 {
                     item.Created = DateTime.Parse(match.Groups[1].Value);
                 }
-
             }
-            return item;
         }
-
+        
         protected virtual double GetPriceValue(HtmlNode metaPrice)
         {
             return Double.Parse(metaPrice.Attributes["content"].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture);
