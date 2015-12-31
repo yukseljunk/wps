@@ -30,6 +30,7 @@ namespace PttLib
                 (d.totalResults/50+1).ToString());
         }
 
+
         public override string Name
         {
             get
@@ -69,6 +70,30 @@ namespace PttLib
             }
         }
 
+        public override string ImagesAttribute
+        {
+            get { return "data-max-img"; }
+        }
 
+        public override string ImagesXPath
+        {
+            get { return "//div[@class='thumb-section']//li"; }
+        }
+
+        public override string PriceXPath
+        {
+            get { return "//span[@itemprop='price']"; }
+        }
+        public override string DescriptionXPath
+        {
+            get { return "//div[@class='description toggle-content']"; }
+        }
+        public override string IdRegex
+        {
+            get
+            {
+                return @"/(\d+)/product.html";
+            }
+        }
     }
 }

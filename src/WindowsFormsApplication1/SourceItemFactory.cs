@@ -139,7 +139,7 @@ namespace WindowsFormsApplication1
         {
             var siteFactory = new SiteFactory();
             var relevanceCalculater = new RelevanceCalculator();
-            var itemIndex = 0;
+            var itemIndex = 1;
             foreach (var siteName in siteNames)
             {
                 var allResults = new List<Tuple<string, string, string>>();
