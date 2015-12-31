@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using Newtonsoft.Json.Linq;
 using PttLib.Helpers;
 
 namespace PttLib
@@ -16,10 +17,17 @@ namespace PttLib
         public override string Get(string url, int page = 1)
         {
             var urlToAsk = url.Replace(" ", "+");
-            urlToAsk = string.Format(urlToAsk, (page-1)*50+1);
+            urlToAsk = string.Format(urlToAsk, (page - 1) * 50 + 1);
 
-            return WebHelper.CurlSimple(urlToAsk);
-            
+            var response = WebHelper.CurlSimple(urlToAsk, "application/json");
+            if (!response.StartsWith("{")) return response;
+
+            dynamic d = JObject.Parse(response);
+            return string.Format(
+                "<html><head></head><body><ul id='result-products'>{0}</ul><span class='results-count'><span>{1}</span></span><ul class='pagination'><li><div class='pagination-page-text'>X of {2}</div></li></ul></body></html>", 
+                d.html, 
+                d.totalResults,
+                (d.totalResults/50+1).ToString());
         }
 
         public override string Name
