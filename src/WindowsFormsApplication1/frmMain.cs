@@ -136,6 +136,9 @@ namespace WindowsFormsApplication1
         {
             SetStatus(e);
 
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+
             if (_options.ShowMessageBoxes)
             {
                 MessageBox.Show(e);
