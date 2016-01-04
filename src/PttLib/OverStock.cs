@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
 using PttLib.Helpers;
@@ -37,6 +38,7 @@ namespace PttLib
                 {
                     break;
                 }
+                Thread.Sleep(TimeSpan.FromSeconds(3));
                 tryCount++;
             }
 

@@ -33,6 +33,7 @@ namespace PttLib
         public override Item GetItem(string title, string url, string extraInfo)
         {
             var item=base.GetItem(title, url, extraInfo);
+            if (item == null || item.Tags == null) return item;
             if (item.Tags.Contains("All Products"))
             {
                 item.Tags.Remove("All Products");
