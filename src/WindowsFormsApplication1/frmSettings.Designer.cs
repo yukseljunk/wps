@@ -59,9 +59,17 @@
             this.btnLoadSettings = new System.Windows.Forms.Button();
             this.openSettingFile = new System.Windows.Forms.OpenFileDialog();
             this.saveSettings = new System.Windows.Forms.SaveFileDialog();
+            this.grpProxy = new System.Windows.Forms.GroupBox();
+            this.numProxyPort = new System.Windows.Forms.NumericUpDown();
+            this.chkUseProxy = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtProxyIp = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.grpFtp.SuspendLayout();
             this.grpMysql.SuspendLayout();
             this.grpBlogProp.SuspendLayout();
+            this.grpProxy.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).BeginInit();
             this.SuspendLayout();
             // 
             // grpFtp
@@ -312,7 +320,7 @@
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(146, 608);
+            this.btnOk.Location = new System.Drawing.Point(142, 726);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 58;
@@ -323,7 +331,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(236, 608);
+            this.btnCancel.Location = new System.Drawing.Point(223, 726);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 57;
@@ -355,12 +363,80 @@
             // 
             this.openSettingFile.FileName = "openFileDialog1";
             // 
+            // grpProxy
+            // 
+            this.grpProxy.Controls.Add(this.numProxyPort);
+            this.grpProxy.Controls.Add(this.chkUseProxy);
+            this.grpProxy.Controls.Add(this.label1);
+            this.grpProxy.Controls.Add(this.txtProxyIp);
+            this.grpProxy.Controls.Add(this.label2);
+            this.grpProxy.Location = new System.Drawing.Point(26, 600);
+            this.grpProxy.Name = "grpProxy";
+            this.grpProxy.Size = new System.Drawing.Size(281, 106);
+            this.grpProxy.TabIndex = 61;
+            this.grpProxy.TabStop = false;
+            this.grpProxy.Text = "Proxy Settings";
+            // 
+            // numProxyPort
+            // 
+            this.numProxyPort.Location = new System.Drawing.Point(75, 78);
+            this.numProxyPort.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numProxyPort.Name = "numProxyPort";
+            this.numProxyPort.Size = new System.Drawing.Size(64, 20);
+            this.numProxyPort.TabIndex = 10;
+            this.numProxyPort.Value = new decimal(new int[] {
+            21324,
+            0,
+            0,
+            0});
+            // 
+            // chkUseProxy
+            // 
+            this.chkUseProxy.AutoSize = true;
+            this.chkUseProxy.Location = new System.Drawing.Point(15, 20);
+            this.chkUseProxy.Name = "chkUseProxy";
+            this.chkUseProxy.Size = new System.Drawing.Size(74, 17);
+            this.chkUseProxy.TabIndex = 9;
+            this.chkUseProxy.Text = "Use Proxy";
+            this.chkUseProxy.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 78);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(26, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Port";
+            // 
+            // txtProxyIp
+            // 
+            this.txtProxyIp.Location = new System.Drawing.Point(75, 46);
+            this.txtProxyIp.Name = "txtProxyIp";
+            this.txtProxyIp.Size = new System.Drawing.Size(182, 20);
+            this.txtProxyIp.TabIndex = 6;
+            this.txtProxyIp.Text = "192.3.252.232";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 49);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(17, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "IP";
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(323, 649);
+            this.ClientSize = new System.Drawing.Size(330, 770);
+            this.Controls.Add(this.grpProxy);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnLoadSettings);
             this.Controls.Add(this.btnOk);
@@ -380,6 +456,9 @@
             this.grpMysql.PerformLayout();
             this.grpBlogProp.ResumeLayout(false);
             this.grpBlogProp.PerformLayout();
+            this.grpProxy.ResumeLayout(false);
+            this.grpProxy.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -417,5 +496,11 @@
         private System.Windows.Forms.Button btnLoadSettings;
         private System.Windows.Forms.OpenFileDialog openSettingFile;
         private System.Windows.Forms.SaveFileDialog saveSettings;
+        private System.Windows.Forms.GroupBox grpProxy;
+        private System.Windows.Forms.NumericUpDown numProxyPort;
+        private System.Windows.Forms.CheckBox chkUseProxy;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtProxyIp;
+        private System.Windows.Forms.Label label2;
     }
 }

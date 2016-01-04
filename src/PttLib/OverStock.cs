@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Net;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
@@ -18,16 +19,35 @@ namespace PttLib
         {
             var urlToAsk = url.Replace(" ", "+");
             urlToAsk = string.Format(urlToAsk, (page - 1) * 50 + 1);
+            var maxTry = 3;
+            var tryCount = 0;
+            var response = "";
+            while (tryCount < maxTry)
+            {
+                if (_options.UseProxy)
+                {
+                    response = WebHelper.CurlSimple(urlToAsk, "application/json",
+                        new WebProxy(_options.ProxyAddress + ":" + _options.ProxyPort));
+                }
+                else
+                {
+                    response = WebHelper.CurlSimple(urlToAsk, "application/json");
+                }
+                if (!string.IsNullOrEmpty(response))
+                {
+                    break;
+                }
+                tryCount++;
+            }
 
-            var response = WebHelper.CurlSimple(urlToAsk, "application/json");
             if (!response.StartsWith("{")) return response;
 
             dynamic d = JObject.Parse(response);
             return string.Format(
-                "<html><head></head><body><ul id='result-products'>{0}</ul><span class='results-count'><span>{1}</span></span><ul class='pagination'><li><div class='pagination-page-text'>X of {2}</div></li></ul></body></html>", 
-                d.html, 
+                "<html><head></head><body><ul id='result-products'>{0}</ul><span class='results-count'><span>{1}</span></span><ul class='pagination'><li><div class='pagination-page-text'>X of {2}</div></li></ul></body></html>",
+                d.html,
                 d.totalResults,
-                (d.totalResults/50+1).ToString());
+                (d.totalResults / 50 + 1).ToString());
         }
 
 

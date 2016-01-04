@@ -48,6 +48,15 @@ namespace WordpressScraper
             var programOptionsFactory = new ProgramOptionsFactory();
             var options = programOptionsFactory.Get();
 
+            FixEmptyNumericUpDown(numMerge);
+            FixEmptyNumericUpDown(numThumbnailSize);
+            FixEmptyNumericUpDown(numMaxImageDimension);
+            FixEmptyNumericUpDown(numTitleContainsKeyword);
+            FixEmptyNumericUpDown(numTitleStartsKeyword);
+            FixEmptyNumericUpDown(numContentContainsKeyword);
+            FixEmptyNumericUpDown(numFirst100Content);
+            FixEmptyNumericUpDown(numKeywordContentRatio);
+
             chkFeatureImage.Checked = options.MakeFirstImageAsFeature;
             numMerge.Value = options.MergeBlockSize;
             numThumbnailSize.Value = options.ThumbnailSize;
@@ -66,5 +75,12 @@ namespace WordpressScraper
             toolTip.SetToolTip(lblKeywordContentRatio, "For every percentage, give this much of score");
         }
 
+        private void FixEmptyNumericUpDown(NumericUpDown control)
+        {
+            if (control.Text == "")
+            {
+                control.Text = "0";
+            }
+        }
     }
 }

@@ -35,7 +35,11 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("FtpUrl", txtFtpUrl.Text));
             settings.Add(new Tuple<string, string>("FtpUser", txtFtpUserName.Text));
             settings.Add(new Tuple<string, string>("FtpPassword", txtFtpPassword.Text));
-            
+            settings.Add(new Tuple<string, string>("ProxyAddress", txtProxyIp.Text));
+            settings.Add(new Tuple<string, string>("ProxyPort", numProxyPort.Value.ToString()));
+            settings.Add(new Tuple<string, string>("UseProxy", chkUseProxy.Checked.ToString()));
+
+
             ConfigurationHelper.UpdateSettings(settings);
 
             this.Dispose();
@@ -63,6 +67,18 @@ namespace WordpressScraper
             txtFtpUrl.Text = options.FtpUrl;
             txtFtpUserName.Text = options.FtpUser;
             txtFtpPassword.Text = options.FtpPassword;
+            txtProxyIp.Text = options.ProxyAddress;
+            FixEmptyNumericUpDown(numProxyPort);
+            numProxyPort.Value = options.ProxyPort;
+            chkUseProxy.Checked = options.UseProxy;
+        }
+
+        private void FixEmptyNumericUpDown(NumericUpDown control)
+        {
+            if (control.Text == "")
+            {
+                control.Text = "0";
+            }
         }
 
         private string MySqlConnectionString
@@ -137,10 +153,13 @@ namespace WordpressScraper
                 DatabasePassword = txtMySqlPass.Text,
                 FtpUrl = txtFtpUrl.Text,
                 FtpUser = txtFtpUserName.Text,
-                FtpPassword = txtFtpPassword.Text
+                FtpPassword = txtFtpPassword.Text,
+                ProxyAddress = txtProxyIp.Text,
+                ProxyPort = (int)numProxyPort.Value,
+                UseProxy = chkUseProxy.Checked
             };
 
-            var xmlSerializer= new XmlSerializer();
+            var xmlSerializer = new XmlSerializer();
             xmlSerializer.Serialize(saveSettings.FileName, options);
         }
 

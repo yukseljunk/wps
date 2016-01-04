@@ -182,7 +182,7 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.PageParsed += PageParsed;
             _sourceItemFactory.SourceItemsGot += SourceItemsGot;
             var checkedSites = (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();
-            _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd);
+            _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count+1);
 
         }
 
@@ -466,8 +466,18 @@ namespace WindowsFormsApplication1
 
         }
 
+        private void FixEmptyNumericUpDown(NumericUpDown control)
+        {
+            if (control.Text == "")
+            {
+                control.Text = "0";
+            }
+        }
+
+
         private void numPage_ValueChanged(object sender, EventArgs e)
         {
+            FixEmptyNumericUpDown(numPageTo);
             if ((int)numPageTo.Value < (int)numPage.Value)
             {
                 numPageTo.Value = numPage.Value;
@@ -476,6 +486,7 @@ namespace WindowsFormsApplication1
 
         private void numPageTo_ValueChanged(object sender, EventArgs e)
         {
+            FixEmptyNumericUpDown(numPage);
             if ((int)numPageTo.Value < (int)numPage.Value)
             {
                 numPage.Value = numPageTo.Value;

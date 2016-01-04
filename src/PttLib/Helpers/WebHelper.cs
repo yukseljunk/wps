@@ -15,11 +15,12 @@ namespace PttLib.Helpers
         public static int UsedRequestCount;// { get; set; }
         public static DateTime LastRequestTime;// { get; set; }
 
-        public static string CurlSimple(string url, string contentType = "text/html")
+        public static string CurlSimple(string url, string contentType = "text/html", IWebProxy proxy = null, CookieContainer cookieContainer = null)
         {
             try
             {
-                var requestFactory = new PttRequestFactory();
+                PttRequestFactory requestFactory = null;
+                requestFactory = proxy != null ? new PttRequestFactory(proxy, cookieContainer) : new PttRequestFactory();
                 var pttRequest = requestFactory.SimpleRequest(url, contentType);
                 var response = new PttResponse();
                 return response.GetResponse(pttRequest);
@@ -30,6 +31,7 @@ namespace PttLib.Helpers
             }
             return null;
         }
+
 
         public static string CurlSimplePost(string url, string postData, string host, bool chunked = false)
         {

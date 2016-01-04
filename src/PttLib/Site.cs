@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using HtmlAgilityPack;
@@ -11,6 +12,14 @@ namespace PttLib
 {
     public class Site
     {
+        protected ProgramOptions _options = null;
+
+        public Site()
+        {
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+        }
+
         public virtual string Name { get; private set; }
         public virtual string PageNoQsParameter
         {
@@ -37,6 +46,11 @@ namespace PttLib
                 urlToAsk += "?";
             }
             urlToAsk += PageNoQsParameter + "=" + page;
+
+            if (_options.UseProxy)
+            {
+                return WebHelper.CurlSimple(urlToAsk, "text/html", new WebProxy(_options.ProxyAddress + ":" + _options.ProxyPort));
+            }
             return WebHelper.CurlSimple(urlToAsk);
 
         }
@@ -186,7 +200,16 @@ namespace PttLib
                                //Keyword = keyword
                            };
 
-            var itemHtml = WebHelper.CurlSimple(url);
+            string itemHtml = "";
+            if (_options.UseProxy)
+            {
+                itemHtml = WebHelper.CurlSimple(url, "text/html",
+                    new WebProxy(_options.ProxyAddress + ":" + _options.ProxyPort));
+            }
+            else
+            {
+                itemHtml = WebHelper.CurlSimple(url);
+            }
             if (itemHtml == null) return null;
 
             var htmlDoc = new HtmlDocument();
@@ -248,7 +271,7 @@ namespace PttLib
             return item;
         }
 
-        protected  virtual void SetCreatedDate(HtmlDocument htmlDoc, Item item)
+        protected virtual void SetCreatedDate(HtmlDocument htmlDoc, Item item)
         {
             var dateTimeNode = htmlDoc.DocumentNode.SelectSingleNode(DateTimeXPath);
             if (dateTimeNode != null)
@@ -261,7 +284,7 @@ namespace PttLib
                 }
             }
         }
-        
+
         protected virtual double GetPriceValue(HtmlNode metaPrice)
         {
             return Double.Parse(metaPrice.Attributes["content"].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture);

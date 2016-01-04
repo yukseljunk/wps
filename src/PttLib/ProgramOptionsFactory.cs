@@ -32,8 +32,12 @@ namespace PttLib
                                   TitleStartsWithKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["TitleStartsWithKeywordScore"]),
                                   ContentContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ContentContainsKeywordScore"]),
                                   ContentFirst100ContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ContentFirst100ContainsKeywordScore"]),
-                                  KeywordRatioScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["KeywordRatioScore"])
+                                  KeywordRatioScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["KeywordRatioScore"]),
 
+                                  ProxyPort = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ProxyPort"]),
+                                  ProxyAddress = System.Configuration.ConfigurationManager.AppSettings["ProxyAddress"],
+                                  UseProxy = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseProxy"])
+                                  
                               };
             return options;
 
@@ -56,6 +60,10 @@ namespace PttLib
             options.FtpUrl = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/ftpurl", "", true);
             options.FtpUser = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/ftpuser", "", true);
             options.FtpPassword = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/ftppassword", "", true);
+
+            options.ProxyAddress = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/proxyaddress", "", true);
+            options.ProxyPort = XmlParse.GetIntegerNodeValue(html.DocumentNode, "/programoptions/proxyport", 0);
+            options.UseProxy = XmlParse.GetBooleanNodeValue(html.DocumentNode, "/programoptions/useproxy", false);
 
             return options;
         }

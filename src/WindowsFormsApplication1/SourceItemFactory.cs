@@ -68,15 +68,15 @@ namespace WindowsFormsApplication1
             if (handler != null) handler(this, e);
         }
         #endregion
-
-        public void GetSourceItems(IList<string> siteNames, string keyword, int pageStart, int pageEnd)
+        
+        public void GetSourceItems(IList<string> siteNames, string keyword, int pageStart, int pageEnd, int startingOrder)
         {
             _bw = new BackgroundWorker
             {
                 WorkerReportsProgress = true,
                 WorkerSupportsCancellation = true
             };
-            _bw.DoWork += (obj, e) => GetSourceItemsOnWorker(siteNames, keyword, pageStart, pageEnd, e);
+            _bw.DoWork += (obj, e) => GetSourceItemsOnWorker(siteNames, keyword, pageStart, pageEnd, startingOrder, e);
             _bw.ProgressChanged += SingleSourceItemGot;
             _bw.RunWorkerCompleted += GettingSourceItemsFinished;
             _bw.RunWorkerAsync();
@@ -135,11 +135,11 @@ namespace WindowsFormsApplication1
             if (_bw.IsBusy) _bw.CancelAsync();
         }
 
-        private void GetSourceItemsOnWorker(IList<string> siteNames, string keyword, int pageStart, int pageEnd, DoWorkEventArgs e)
+        private void GetSourceItemsOnWorker(IList<string> siteNames, string keyword, int pageStart, int pageEnd,int startingOrder, DoWorkEventArgs e)
         {
             var siteFactory = new SiteFactory();
             var relevanceCalculater = new RelevanceCalculator();
-            var itemIndex = 1;
+            var itemIndex = startingOrder ; //+1 ?
             foreach (var siteName in siteNames)
             {
                 var allResults = new List<Tuple<string, string, string>>();
@@ -209,7 +209,7 @@ namespace WindowsFormsApplication1
                             listViewitem.SubItems.AddRange(row1);
                             listViewItems.Add(listViewitem);
 
-                            _bw.ReportProgress((itemIndex) / allResultsCount * 100, listViewitem);
+                            _bw.ReportProgress((itemIndex - startingOrder) / allResultsCount * 100, listViewitem);
 
                             itemIndex++;
                         }
@@ -221,7 +221,7 @@ namespace WindowsFormsApplication1
 
                     }
 
-                    _bw.ReportProgress((itemIndex) / allResultsCount * 100, listViewItems);
+                    _bw.ReportProgress((itemIndex - startingOrder) / allResultsCount * 100, listViewItems);
 
                     if (_bw.CancellationPending)
                     {
