@@ -702,6 +702,63 @@ namespace WindowsFormsApplication1
 
         private void btnRelevanceScramble_Click(object sender, EventArgs e)
         {
+            var ccea= new ColumnClickEventArgs(12);
+            if (lvwColumnSorter == null) return;
+            lvwColumnSorter.SortColumn = 12;
+            lvwColumnSorter.Order = SortOrder.Ascending;
+            lvItems_ColumnClick(null, ccea);
+
+            var mergeBlockSize = 200; //get from programoptions
+
+            var zeroRelevanceStartIndex = -1;
+            for (int i = 0; i < lvItems.Items.Count; i++)
+            {
+                var item = lvItems.Items[i];
+                var relevanceScore = int.Parse(item.SubItems[12].Text);
+                if (relevanceScore == 0)
+                {
+                    zeroRelevanceStartIndex = i;
+                    break;
+                }
+            }
+            if (zeroRelevanceStartIndex == -1)
+            {
+                MessageBox.Show("No 0 relevance item found, scramble not to be done!");
+                return;
+            }
+
+            var primaryPostIndex = 0;
+            var cumulativeWordCount = 0;
+
+            for (int i = 0; i < lvItems.Items.Count; i++)
+            {
+                var item = lvItems.Items[i];
+                var wordCount = int.Parse(item.SubItems[10].Text);
+                cumulativeWordCount += wordCount;
+
+                if (cumulativeWordCount >= mergeBlockSize)
+                {
+                    //finish this block, start a new block
+                    primaryPostIndex = i;
+                    cumulativeWordCount = 0;
+                }
+                else
+                {
+                    //continue to this block
+
+                    var itemToMove = lvItems.Items[zeroRelevanceStartIndex];
+                    lvItems.Items.Remove(itemToMove);
+                    lvItems.Items.Insert(primaryPostIndex + 1, itemToMove);
+
+                }
+                
+                
+                
+                
+                var relevanceScore = int.Parse(item.SubItems[12].Text);
+                MessageBox.Show(wordCount.ToString());
+
+            }
 
         }
 

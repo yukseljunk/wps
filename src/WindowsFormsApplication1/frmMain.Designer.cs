@@ -537,10 +537,12 @@
             // 
             this.btnDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDown.Image = ((System.Drawing.Image)(resources.GetObject("btnDown.Image")));
-            this.btnDown.Location = new System.Drawing.Point(292, 4);
+            this.btnDown.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.btnDown.Location = new System.Drawing.Point(304, 4);
             this.btnDown.Name = "btnDown";
-            this.btnDown.Size = new System.Drawing.Size(63, 24);
+            this.btnDown.Size = new System.Drawing.Size(74, 24);
             this.btnDown.TabIndex = 47;
+            this.btnDown.Text = "Down";
             this.btnDown.UseVisualStyleBackColor = true;
             this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
             // 
@@ -558,7 +560,7 @@
             // btnNavigate
             // 
             this.btnNavigate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnNavigate.Location = new System.Drawing.Point(865, 6);
+            this.btnNavigate.Location = new System.Drawing.Point(886, 7);
             this.btnNavigate.Name = "btnNavigate";
             this.btnNavigate.Size = new System.Drawing.Size(126, 23);
             this.btnNavigate.TabIndex = 44;
@@ -569,17 +571,20 @@
             // 
             this.btnUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnUp.Image = ((System.Drawing.Image)(resources.GetObject("btnUp.Image")));
+            this.btnUp.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.btnUp.Location = new System.Drawing.Point(226, 5);
             this.btnUp.Name = "btnUp";
-            this.btnUp.Size = new System.Drawing.Size(60, 23);
+            this.btnUp.Size = new System.Drawing.Size(72, 23);
             this.btnUp.TabIndex = 46;
+            this.btnUp.Text = "Up";
+            this.btnUp.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnUp.UseVisualStyleBackColor = true;
             this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
             // 
             // btnRemoveDuplicates
             // 
             this.btnRemoveDuplicates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveDuplicates.Location = new System.Drawing.Point(732, 4);
+            this.btnRemoveDuplicates.Location = new System.Drawing.Point(753, 5);
             this.btnRemoveDuplicates.Name = "btnRemoveDuplicates";
             this.btnRemoveDuplicates.Size = new System.Drawing.Size(126, 23);
             this.btnRemoveDuplicates.TabIndex = 43;
@@ -589,7 +594,7 @@
             // btnRemoveSelected
             // 
             this.btnRemoveSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveSelected.Location = new System.Drawing.Point(454, 4);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(475, 5);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(126, 23);
             this.btnRemoveSelected.TabIndex = 42;
@@ -599,7 +604,7 @@
             // txtFindDuplicatePosts
             // 
             this.txtFindDuplicatePosts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtFindDuplicatePosts.Location = new System.Drawing.Point(594, 4);
+            this.txtFindDuplicatePosts.Location = new System.Drawing.Point(615, 5);
             this.txtFindDuplicatePosts.Name = "txtFindDuplicatePosts";
             this.txtFindDuplicatePosts.Size = new System.Drawing.Size(132, 23);
             this.txtFindDuplicatePosts.TabIndex = 41;
@@ -620,7 +625,7 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectAll.Location = new System.Drawing.Point(363, 4);
+            this.btnSelectAll.Location = new System.Drawing.Point(384, 5);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(85, 23);
             this.btnSelectAll.TabIndex = 39;
