@@ -82,14 +82,22 @@ namespace WindowsFormsApplication1
             barStatus.PerformStep();
         }
 
+        private void EnDis(bool enabled)
+        {
+            grpTop.Enabled = enabled;
+            pnlItemOps.Enabled = enabled;
+            btnStart.Enabled = enabled;
+            btnStopScrape.Enabled = !enabled;
+            
+            
+        }
+
         private void GettingSourceItemsFinished(object sender, EventArgs e)
         {
             ResetBarStatus();
-            grpTop.Enabled = true;
+            EnDis(true);
             btnGo.Enabled = lvItems.Items.Count > 0;
-            btnStart.Enabled = true;
             Cursor.Current = Cursors.Default;
-            btnStopScrape.Enabled = false;
             lvwColumnSorter = new ListViewColumnSorter();
             lvItems.ListViewItemSorter = lvwColumnSorter;
             SetStatus("Getting source items finished");
@@ -159,13 +167,10 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Select sites!");
                 return;
             }
-
-            grpTop.Enabled = false;
+            EnDis(false);
             numPage_ValueChanged(null, null);
             Cursor.Current = Cursors.WaitCursor;
-            btnStopScrape.Enabled = true;
             ResetBarStatus(true);
-            btnStart.Enabled = false;
             btnGo.Enabled = false;
             lblTotalResults.Text = "";
 
@@ -374,11 +379,13 @@ namespace WindowsFormsApplication1
         {
             optionsToolStripMenuItem.Enabled = enabled;
             settingsToolStripMenuItem.Enabled = enabled;
+            settingsToolStripMenuItem.Enabled = enabled;
             btnStop.Enabled = !enabled;
             btnGo.Enabled = enabled;
             btnStart.Enabled = enabled;
             lvItems.Enabled = enabled;
             btnStopScrape.Enabled = enabled;
+            pnlItemOps.Enabled = enabled;
         }
 
         public FtpConfig FtpConfiguration
@@ -679,6 +686,40 @@ namespace WindowsFormsApplication1
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show(this.Text);
+        }
+
+        private void btnUp_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lvItems.SelectedItems)
+            {
+                var index = item.Index;
+                if (index==0) break;
+                lvItems.Items.RemoveAt(index);
+                lvItems.Items.Insert(index-1, item);
+            }
+        }
+
+
+        private void btnRelevanceScramble_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDown_Click(object sender, EventArgs e)
+        {
+            if (lvItems.SelectedItems.Count == 0) return;
+            for (int i = lvItems.SelectedItems.Count-1; i >= 0; i--)
+            {
+                var item = lvItems.SelectedItems[i];
+                var index = item.Index;
+                if (index == lvItems.Items.Count-1)
+                {
+                    break;
+                }
+                lvItems.Items.RemoveAt(index);
+                lvItems.Items.Insert(index + 1, item);
+
+            }
         }
 
     }
