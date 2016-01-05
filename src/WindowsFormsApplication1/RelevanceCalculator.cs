@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using PttLib;
@@ -40,11 +41,61 @@ namespace WordpressScraper
             {
                 score += contentFirst100ContainsKeywordScore;
             }
-            score += KeywordRatio(item, keyword) * keywordRatioScore;
+            if (KeywordRatio(item, keyword) >= 1)
+            {
+                score += keywordRatioScore;
+            }
+
+            score += GetRelevanceForNonExactMatch(item, keyword);
+
             return score;
         }
 
-       
+        private int GetRelevanceForNonExactMatch(Item item, string keyword)
+        {
+            var nonExactTitleContainsKeywordScore = _programOptions.NonExactTitleContainsKeywordScore;
+            var nonExactContentContainsKeywordScore = _programOptions.NonExactContentContainsKeywordScore;
+            var nonExactKeywordRatioScore = _programOptions.NonExactKeywordRatioScore;
+            var score = 0;
+            var keywords = keyword.Split(new [] {" "}, StringSplitOptions.RemoveEmptyEntries);
+            
+            if(NonExactMatch(item.Title, keywords))
+            {
+                score += nonExactTitleContainsKeywordScore;
+            }
+            if (NonExactMatch(item.Content, keywords))
+            {
+                score += nonExactContentContainsKeywordScore;
+            }
+            var minRatio = 0;
+            foreach (var kw in keywords)
+            {
+                var ratio = KeywordRatio(item, kw);
+                if (minRatio > ratio)
+                {
+                    minRatio = ratio;
+                }
+            }
+            if (minRatio >= 1)
+            {
+                score += nonExactKeywordRatioScore;
+            }
+            return score;
+        }
+
+        private static bool NonExactMatch(string input, string[] keywords)
+        {
+            var titleMatches = true;
+            foreach (var kw in keywords)
+            {
+                if (!Regex.IsMatch(input, kw, RegexOptions.IgnoreCase))
+                {
+                    titleMatches = false;
+                }
+            }
+            return titleMatches;
+        }
+
 
         public int KeywordRatio(Item item, string keyword)
         {

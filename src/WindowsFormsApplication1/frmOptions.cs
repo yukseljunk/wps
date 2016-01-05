@@ -31,6 +31,10 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("ContentFirst100ContainsKeywordScore", numFirst100Content.Value.ToString()));
             settings.Add(new Tuple<string, string>("KeywordRatioScore", numKeywordContentRatio.Value.ToString()));
 
+            settings.Add(new Tuple<string, string>("NonExactTitleContainsKeywordScore", numNETitleContainsKeyword.Value.ToString()));
+            settings.Add(new Tuple<string, string>("NonExactContentContainsKeywordScore", numNEContentContainsKeyword.Value.ToString()));
+            settings.Add(new Tuple<string, string>("NonExactKeywordRatioScore", numNEKeywordContentRatio.Value.ToString()));
+            
             ConfigurationHelper.UpdateSettings(settings);
             this.Dispose();
             this.Close();
@@ -56,6 +60,9 @@ namespace WordpressScraper
             FixEmptyNumericUpDown(numContentContainsKeyword);
             FixEmptyNumericUpDown(numFirst100Content);
             FixEmptyNumericUpDown(numKeywordContentRatio);
+            FixEmptyNumericUpDown(numNEContentContainsKeyword);
+            FixEmptyNumericUpDown(numNETitleContainsKeyword);
+            FixEmptyNumericUpDown(numNEKeywordContentRatio);
 
             chkFeatureImage.Checked = options.MakeFirstImageAsFeature;
             numMerge.Value = options.MergeBlockSize;
@@ -71,6 +78,10 @@ namespace WordpressScraper
             numContentContainsKeyword.Value = options.ContentContainsKeywordScore;
             numFirst100Content.Value = options.ContentFirst100ContainsKeywordScore;
             numKeywordContentRatio.Value = options.KeywordRatioScore;
+
+            numNETitleContainsKeyword.Value = options.NonExactTitleContainsKeywordScore;
+            numNEContentContainsKeyword.Value = options.NonExactContentContainsKeywordScore;
+            numNEKeywordContentRatio.Value = options.NonExactKeywordRatioScore;
 
             toolTip.SetToolTip(lblKeywordContentRatio, "For every percentage, give this much of score");
         }

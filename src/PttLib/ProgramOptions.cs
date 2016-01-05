@@ -31,6 +31,10 @@ namespace PttLib
         public int ContentFirst100ContainsKeywordScore { get; set; }
         public int KeywordRatioScore { get; set; }
 
+        public int NonExactTitleContainsKeywordScore { get; set; }
+        public int NonExactContentContainsKeywordScore { get; set; }
+        public int NonExactKeywordRatioScore { get; set; }
+
         public string ProxyAddress { get; set; }
         public int ProxyPort { get; set; }
         public bool UseProxy { get; set; }

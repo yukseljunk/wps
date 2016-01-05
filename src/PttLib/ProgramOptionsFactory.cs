@@ -34,6 +34,10 @@ namespace PttLib
                                   ContentFirst100ContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ContentFirst100ContainsKeywordScore"]),
                                   KeywordRatioScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["KeywordRatioScore"]),
 
+                                  NonExactTitleContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["NonExactTitleContainsKeywordScore"]),
+                                  NonExactContentContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["NonExactContentContainsKeywordScore"]),
+                                  NonExactKeywordRatioScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["NonExactKeywordRatioScore"]),
+
                                   ProxyPort = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ProxyPort"]),
                                   ProxyAddress = System.Configuration.ConfigurationManager.AppSettings["ProxyAddress"],
                                   UseProxy = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseProxy"])

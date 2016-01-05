@@ -58,6 +58,14 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.numNEKeywordContentRatio = new System.Windows.Forms.NumericUpDown();
+            this.numNEContentContainsKeyword = new System.Windows.Forms.NumericUpDown();
+            this.numNETitleContainsKeyword = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numKeywordContentRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFirst100Content)).BeginInit();
@@ -67,12 +75,23 @@
             ((System.ComponentModel.ISupportInitialize)(this.numMerge)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numThumbnailSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxImageDimension)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numNEKeywordContentRatio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numNEContentContainsKeyword)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numNETitleContainsKeyword)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label11);
+            this.panel1.Controls.Add(this.label10);
+            this.panel1.Controls.Add(this.label7);
+            this.panel1.Controls.Add(this.label8);
+            this.panel1.Controls.Add(this.label9);
+            this.panel1.Controls.Add(this.numNEKeywordContentRatio);
+            this.panel1.Controls.Add(this.numNEContentContainsKeyword);
+            this.panel1.Controls.Add(this.numNETitleContainsKeyword);
             this.panel1.Controls.Add(this.lblKeywordContentRatio);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
@@ -100,7 +119,7 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(288, 485);
+            this.panel1.Size = new System.Drawing.Size(288, 620);
             this.panel1.TabIndex = 54;
             // 
             // lblKeywordContentRatio
@@ -108,9 +127,9 @@
             this.lblKeywordContentRatio.AutoSize = true;
             this.lblKeywordContentRatio.Location = new System.Drawing.Point(24, 445);
             this.lblKeywordContentRatio.Name = "lblKeywordContentRatio";
-            this.lblKeywordContentRatio.Size = new System.Drawing.Size(116, 13);
+            this.lblKeywordContentRatio.Size = new System.Drawing.Size(146, 13);
             this.lblKeywordContentRatio.TabIndex = 78;
-            this.lblKeywordContentRatio.Text = "Keyword Content Ratio";
+            this.lblKeywordContentRatio.Text = "Keyword Content Ratio gt 1pt";
             this.toolTip.SetToolTip(this.lblKeywordContentRatio, "For every percentage, give this much of score");
             // 
             // label6
@@ -145,9 +164,9 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(24, 288);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 13);
+            this.label2.Size = new System.Drawing.Size(121, 13);
             this.label2.TabIndex = 73;
-            this.label2.Text = "Scores";
+            this.label2.Text = "Exact Match Scores";
             // 
             // label1
             // 
@@ -161,12 +180,12 @@
             // numKeywordContentRatio
             // 
             this.numKeywordContentRatio.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numKeywordContentRatio.Location = new System.Drawing.Point(164, 445);
+            this.numKeywordContentRatio.Location = new System.Drawing.Point(186, 438);
             this.numKeywordContentRatio.Name = "numKeywordContentRatio";
             this.numKeywordContentRatio.Size = new System.Drawing.Size(55, 20);
             this.numKeywordContentRatio.TabIndex = 71;
             this.numKeywordContentRatio.Value = new decimal(new int[] {
-            1,
+            17,
             0,
             0,
             0});
@@ -174,12 +193,12 @@
             // numFirst100Content
             // 
             this.numFirst100Content.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numFirst100Content.Location = new System.Drawing.Point(166, 405);
+            this.numFirst100Content.Location = new System.Drawing.Point(186, 405);
             this.numFirst100Content.Name = "numFirst100Content";
             this.numFirst100Content.Size = new System.Drawing.Size(55, 20);
             this.numFirst100Content.TabIndex = 70;
             this.numFirst100Content.Value = new decimal(new int[] {
-            10,
+            5,
             0,
             0,
             0});
@@ -187,12 +206,12 @@
             // numContentContainsKeyword
             // 
             this.numContentContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numContentContainsKeyword.Location = new System.Drawing.Point(166, 379);
+            this.numContentContainsKeyword.Location = new System.Drawing.Point(186, 379);
             this.numContentContainsKeyword.Name = "numContentContainsKeyword";
             this.numContentContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numContentContainsKeyword.TabIndex = 69;
             this.numContentContainsKeyword.Value = new decimal(new int[] {
-            10,
+            25,
             0,
             0,
             0});
@@ -200,12 +219,12 @@
             // numTitleStartsKeyword
             // 
             this.numTitleStartsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numTitleStartsKeyword.Location = new System.Drawing.Point(166, 353);
+            this.numTitleStartsKeyword.Location = new System.Drawing.Point(186, 351);
             this.numTitleStartsKeyword.Name = "numTitleStartsKeyword";
             this.numTitleStartsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numTitleStartsKeyword.TabIndex = 68;
             this.numTitleStartsKeyword.Value = new decimal(new int[] {
-            10,
+            7,
             0,
             0,
             0});
@@ -213,12 +232,12 @@
             // numTitleContainsKeyword
             // 
             this.numTitleContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numTitleContainsKeyword.Location = new System.Drawing.Point(166, 327);
+            this.numTitleContainsKeyword.Location = new System.Drawing.Point(186, 327);
             this.numTitleContainsKeyword.Name = "numTitleContainsKeyword";
             this.numTitleContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numTitleContainsKeyword.TabIndex = 67;
             this.numTitleContainsKeyword.Value = new decimal(new int[] {
-            10,
+            25,
             0,
             0,
             0});
@@ -401,14 +420,14 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(24, 301);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(205, 13);
+            this.label3.Size = new System.Drawing.Size(235, 13);
             this.label3.TabIndex = 74;
-            this.label3.Text = "_________________________________";
+            this.label3.Text = "______________________________________";
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(224, 503);
+            this.btnCancel.Location = new System.Drawing.Point(227, 648);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 55;
@@ -419,7 +438,7 @@
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(145, 503);
+            this.btnOk.Location = new System.Drawing.Point(146, 648);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 56;
@@ -427,12 +446,98 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(26, 579);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(146, 13);
+            this.label7.TabIndex = 84;
+            this.label7.Text = "Keyword Content Ratio gt 1pt";
+            this.toolTip.SetToolTip(this.label7, "For every percentage, give this much of score");
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(26, 551);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(132, 13);
+            this.label8.TabIndex = 83;
+            this.label8.Text = "Content Contains Keyword";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(24, 522);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(115, 13);
+            this.label9.TabIndex = 82;
+            this.label9.Text = "Title Contains Keyword";
+            // 
+            // numNEKeywordContentRatio
+            // 
+            this.numNEKeywordContentRatio.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.numNEKeywordContentRatio.Location = new System.Drawing.Point(186, 579);
+            this.numNEKeywordContentRatio.Name = "numNEKeywordContentRatio";
+            this.numNEKeywordContentRatio.Size = new System.Drawing.Size(55, 20);
+            this.numNEKeywordContentRatio.TabIndex = 81;
+            this.numNEKeywordContentRatio.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // numNEContentContainsKeyword
+            // 
+            this.numNEContentContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.numNEContentContainsKeyword.Location = new System.Drawing.Point(186, 551);
+            this.numNEContentContainsKeyword.Name = "numNEContentContainsKeyword";
+            this.numNEContentContainsKeyword.Size = new System.Drawing.Size(55, 20);
+            this.numNEContentContainsKeyword.TabIndex = 80;
+            this.numNEContentContainsKeyword.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
+            // numNETitleContainsKeyword
+            // 
+            this.numNETitleContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.numNETitleContainsKeyword.Location = new System.Drawing.Point(186, 525);
+            this.numNETitleContainsKeyword.Name = "numNETitleContainsKeyword";
+            this.numNETitleContainsKeyword.Size = new System.Drawing.Size(55, 20);
+            this.numNETitleContainsKeyword.TabIndex = 79;
+            this.numNETitleContainsKeyword.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(24, 496);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(235, 13);
+            this.label10.TabIndex = 85;
+            this.label10.Text = "______________________________________";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(26, 483);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(147, 13);
+            this.label11.TabIndex = 86;
+            this.label11.Text = "Non-exact Match Scores";
+            // 
             // frmOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(312, 538);
+            this.ClientSize = new System.Drawing.Size(314, 680);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.panel1);
@@ -452,6 +557,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numMerge)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numThumbnailSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxImageDimension)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numNEKeywordContentRatio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numNEContentContainsKeyword)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numNETitleContainsKeyword)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -487,6 +595,14 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown numNEKeywordContentRatio;
+        private System.Windows.Forms.NumericUpDown numNEContentContainsKeyword;
+        private System.Windows.Forms.NumericUpDown numNETitleContainsKeyword;
 
     }
 }
