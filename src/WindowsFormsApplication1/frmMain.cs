@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -43,11 +44,66 @@ namespace WindowsFormsApplication1
             lblDateTime.Text = "";
             FillSites();
 
+            ArrangeTemplateMenu();
+
 #if (DEBUG)
 
             txtPostId.Visible = true;
             btnSetTitle.Visible = true;
 #endif
+
+        }
+
+        private void ArrangeTemplateMenu()
+        {
+            var template = new ToolStripMenuItem("Hellish Simplicity", null, FixTemplate);
+            fixWordpressTemplatesToolStripMenuItem.DropDownItems.Add(template);
+        }
+
+        private void FixTemplate(object sender, EventArgs e)
+        {
+            var menuClicked = sender as ToolStripMenuItem;
+            if (menuClicked == null) return;
+            //MessageBox.Show(menuClicked.Text + " clicked");
+
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+            if (string.IsNullOrEmpty(_options.FtpUrl))
+            {
+                MessageBox.Show("In order to fix templates, please set up FTP account from settings.");
+                return;
+            }
+            var ftp = new Ftp();
+            if (!string.IsNullOrEmpty(ftp.TestConnection(FtpConfiguration)))
+            {
+                MessageBox.Show("Cannot connect to FTP, please check your settings.");
+                return;
+            }
+
+            var ftpDir = "wp-content/themes/hellish-simplicity-child";
+            try
+            {
+                ftp.MakeFtpDir(FtpConfiguration.Url, ftpDir, FtpConfiguration.UserName, FtpConfiguration.Password);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString());
+                return;
+            }
+            var files = Directory.GetFiles("ChildTemplates/hellish-simplicity-child");
+            foreach (var file in files)
+            {
+                try
+                {
+                    ftp.UploadFileFtp(file,
+                        FtpConfiguration.Url + "/" + ftpDir, FtpConfiguration.UserName, FtpConfiguration.Password);
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
+                }
+            }
+            MessageBox.Show("Fixing finished");
 
         }
 
@@ -801,8 +857,10 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private void fixWordpressTemplatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
-
+        }
 
     }
 }

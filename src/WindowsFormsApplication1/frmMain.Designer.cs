@@ -84,6 +84,7 @@
             this.txtFindDuplicatePosts = new System.Windows.Forms.Button();
             this.btnScrumble = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
+            this.fixWordpressTemplatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -473,6 +474,7 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fixWordpressTemplatesToolStripMenuItem,
             this.optionsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -481,7 +483,7 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.optionsToolStripMenuItem.Text = "Options...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
@@ -636,6 +638,13 @@
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
+            // fixWordpressTemplatesToolStripMenuItem
+            // 
+            this.fixWordpressTemplatesToolStripMenuItem.Name = "fixWordpressTemplatesToolStripMenuItem";
+            this.fixWordpressTemplatesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.fixWordpressTemplatesToolStripMenuItem.Text = "Fix Wordpress Templates";
+            this.fixWordpressTemplatesToolStripMenuItem.Click += new System.EventHandler(this.fixWordpressTemplatesToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -714,6 +723,7 @@
         private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Button btnUp;
+        private System.Windows.Forms.ToolStripMenuItem fixWordpressTemplatesToolStripMenuItem;
     }
 }
 
