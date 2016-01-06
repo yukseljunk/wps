@@ -27,6 +27,7 @@ namespace PttLib
                                   FtpUrl = System.Configuration.ConfigurationManager.AppSettings["FtpUrl"],
                                   FtpUser = System.Configuration.ConfigurationManager.AppSettings["FtpUser"],
                                   FtpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"],
+                                  ScrambleLeadPosts = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["ScrambleLeadPosts"]),
 
                                   TitleContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["TitleContainsKeywordScore"]),
                                   TitleStartsWithKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["TitleStartsWithKeywordScore"]),

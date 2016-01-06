@@ -28,15 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.grpFtp = new System.Windows.Forms.GroupBox();
-            this.btnTestFtpConnection = new System.Windows.Forms.Button();
-            this.txtFtpPassword = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtFtpUserName = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.txtFtpUrl = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.grpMysql = new System.Windows.Forms.GroupBox();
             this.btnTestMySqlConnection = new System.Windows.Forms.Button();
             this.txtMySqlDatabase = new System.Windows.Forms.TextBox();
             this.lblDatabase = new System.Windows.Forms.Label();
@@ -46,7 +37,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txtMySqlIp = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.grpBlogProp = new System.Windows.Forms.GroupBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
@@ -55,125 +45,44 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnLoadSettings = new System.Windows.Forms.Button();
             this.openSettingFile = new System.Windows.Forms.OpenFileDialog();
             this.saveSettings = new System.Windows.Forms.SaveFileDialog();
-            this.grpProxy = new System.Windows.Forms.GroupBox();
             this.numProxyPort = new System.Windows.Forms.NumericUpDown();
             this.chkUseProxy = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtProxyIp = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.grpFtp.SuspendLayout();
-            this.grpMysql.SuspendLayout();
-            this.grpBlogProp.SuspendLayout();
-            this.grpProxy.SuspendLayout();
+            this.lstTypes = new System.Windows.Forms.ListBox();
+            this.pnlAll = new System.Windows.Forms.Panel();
+            this.pnlProxy = new System.Windows.Forms.Panel();
+            this.pnlFtp = new System.Windows.Forms.Panel();
+            this.btnTestFtpConnection = new System.Windows.Forms.Button();
+            this.txtFtpPassword = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtFtpUserName = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtFtpUrl = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.pnlBlog = new System.Windows.Forms.Panel();
+            this.pnlMysql = new System.Windows.Forms.Panel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).BeginInit();
+            this.pnlAll.SuspendLayout();
+            this.pnlProxy.SuspendLayout();
+            this.pnlFtp.SuspendLayout();
+            this.pnlBlog.SuspendLayout();
+            this.pnlMysql.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // grpFtp
-            // 
-            this.grpFtp.Controls.Add(this.btnTestFtpConnection);
-            this.grpFtp.Controls.Add(this.txtFtpPassword);
-            this.grpFtp.Controls.Add(this.label9);
-            this.grpFtp.Controls.Add(this.txtFtpUserName);
-            this.grpFtp.Controls.Add(this.label10);
-            this.grpFtp.Controls.Add(this.txtFtpUrl);
-            this.grpFtp.Controls.Add(this.label11);
-            this.grpFtp.Location = new System.Drawing.Point(26, 424);
-            this.grpFtp.Name = "grpFtp";
-            this.grpFtp.Size = new System.Drawing.Size(285, 157);
-            this.grpFtp.TabIndex = 27;
-            this.grpFtp.TabStop = false;
-            this.grpFtp.Text = "FTP to blog root folder";
-            // 
-            // btnTestFtpConnection
-            // 
-            this.btnTestFtpConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestFtpConnection.Location = new System.Drawing.Point(116, 117);
-            this.btnTestFtpConnection.Name = "btnTestFtpConnection";
-            this.btnTestFtpConnection.Size = new System.Drawing.Size(141, 23);
-            this.btnTestFtpConnection.TabIndex = 13;
-            this.btnTestFtpConnection.Text = "Test FTP connection";
-            this.btnTestFtpConnection.UseVisualStyleBackColor = true;
-            this.btnTestFtpConnection.Click += new System.EventHandler(this.btnTestFtpConnection_Click);
-            // 
-            // txtFtpPassword
-            // 
-            this.txtFtpPassword.Location = new System.Drawing.Point(75, 85);
-            this.txtFtpPassword.Name = "txtFtpPassword";
-            this.txtFtpPassword.PasswordChar = '*';
-            this.txtFtpPassword.Size = new System.Drawing.Size(182, 20);
-            this.txtFtpPassword.TabIndex = 6;
-            this.txtFtpPassword.Text = "x6b8a[o!bxFe";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(15, 91);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 13);
-            this.label9.TabIndex = 5;
-            this.label9.Text = "Password";
-            // 
-            // txtFtpUserName
-            // 
-            this.txtFtpUserName.Location = new System.Drawing.Point(75, 55);
-            this.txtFtpUserName.Name = "txtFtpUserName";
-            this.txtFtpUserName.Size = new System.Drawing.Size(182, 20);
-            this.txtFtpUserName.TabIndex = 4;
-            this.txtFtpUserName.Text = "bloggon2@nalgorithm.com";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(15, 55);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(57, 13);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "UserName";
-            // 
-            // txtFtpUrl
-            // 
-            this.txtFtpUrl.Location = new System.Drawing.Point(75, 23);
-            this.txtFtpUrl.Name = "txtFtpUrl";
-            this.txtFtpUrl.Size = new System.Drawing.Size(182, 20);
-            this.txtFtpUrl.TabIndex = 2;
-            this.txtFtpUrl.Text = "ftp.nalgorithm.com";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 26);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(20, 13);
-            this.label11.TabIndex = 1;
-            this.label11.Text = "Url";
-            // 
-            // grpMysql
-            // 
-            this.grpMysql.Controls.Add(this.btnTestMySqlConnection);
-            this.grpMysql.Controls.Add(this.txtMySqlDatabase);
-            this.grpMysql.Controls.Add(this.lblDatabase);
-            this.grpMysql.Controls.Add(this.txtMySqlPass);
-            this.grpMysql.Controls.Add(this.label6);
-            this.grpMysql.Controls.Add(this.txtMysqlUser);
-            this.grpMysql.Controls.Add(this.label7);
-            this.grpMysql.Controls.Add(this.txtMySqlIp);
-            this.grpMysql.Controls.Add(this.label8);
-            this.grpMysql.Location = new System.Drawing.Point(26, 194);
-            this.grpMysql.Name = "grpMysql";
-            this.grpMysql.Size = new System.Drawing.Size(285, 212);
-            this.grpMysql.TabIndex = 26;
-            this.grpMysql.TabStop = false;
-            this.grpMysql.Text = "Target Blog MySql Settings";
-            this.grpMysql.Enter += new System.EventHandler(this.grpMysql_Enter);
             // 
             // btnTestMySqlConnection
             // 
             this.btnTestMySqlConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestMySqlConnection.Location = new System.Drawing.Point(116, 167);
+            this.btnTestMySqlConnection.Location = new System.Drawing.Point(128, 159);
             this.btnTestMySqlConnection.Name = "btnTestMySqlConnection";
             this.btnTestMySqlConnection.Size = new System.Drawing.Size(141, 23);
             this.btnTestMySqlConnection.TabIndex = 12;
@@ -183,7 +92,7 @@
             // 
             // txtMySqlDatabase
             // 
-            this.txtMySqlDatabase.Location = new System.Drawing.Point(75, 89);
+            this.txtMySqlDatabase.Location = new System.Drawing.Point(82, 85);
             this.txtMySqlDatabase.Name = "txtMySqlDatabase";
             this.txtMySqlDatabase.Size = new System.Drawing.Size(182, 20);
             this.txtMySqlDatabase.TabIndex = 8;
@@ -192,7 +101,7 @@
             // lblDatabase
             // 
             this.lblDatabase.AutoSize = true;
-            this.lblDatabase.Location = new System.Drawing.Point(12, 92);
+            this.lblDatabase.Location = new System.Drawing.Point(19, 88);
             this.lblDatabase.Name = "lblDatabase";
             this.lblDatabase.Size = new System.Drawing.Size(53, 13);
             this.lblDatabase.TabIndex = 7;
@@ -200,7 +109,7 @@
             // 
             // txtMySqlPass
             // 
-            this.txtMySqlPass.Location = new System.Drawing.Point(75, 126);
+            this.txtMySqlPass.Location = new System.Drawing.Point(82, 122);
             this.txtMySqlPass.Name = "txtMySqlPass";
             this.txtMySqlPass.PasswordChar = '*';
             this.txtMySqlPass.Size = new System.Drawing.Size(182, 20);
@@ -210,7 +119,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 126);
+            this.label6.Location = new System.Drawing.Point(19, 122);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 13);
             this.label6.TabIndex = 5;
@@ -218,7 +127,7 @@
             // 
             // txtMysqlUser
             // 
-            this.txtMysqlUser.Location = new System.Drawing.Point(75, 54);
+            this.txtMysqlUser.Location = new System.Drawing.Point(82, 50);
             this.txtMysqlUser.Name = "txtMysqlUser";
             this.txtMysqlUser.Size = new System.Drawing.Size(182, 20);
             this.txtMysqlUser.TabIndex = 4;
@@ -227,7 +136,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 61);
+            this.label7.Location = new System.Drawing.Point(19, 57);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(57, 13);
             this.label7.TabIndex = 3;
@@ -235,7 +144,7 @@
             // 
             // txtMySqlIp
             // 
-            this.txtMySqlIp.Location = new System.Drawing.Point(75, 23);
+            this.txtMySqlIp.Location = new System.Drawing.Point(82, 19);
             this.txtMySqlIp.Name = "txtMySqlIp";
             this.txtMySqlIp.Size = new System.Drawing.Size(182, 20);
             this.txtMySqlIp.TabIndex = 2;
@@ -244,30 +153,15 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 26);
+            this.label8.Location = new System.Drawing.Point(19, 22);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(38, 13);
             this.label8.TabIndex = 1;
             this.label8.Text = "Server";
             // 
-            // grpBlogProp
-            // 
-            this.grpBlogProp.Controls.Add(this.txtPassword);
-            this.grpBlogProp.Controls.Add(this.label5);
-            this.grpBlogProp.Controls.Add(this.txtUserName);
-            this.grpBlogProp.Controls.Add(this.label4);
-            this.grpBlogProp.Controls.Add(this.txtBlogUrl);
-            this.grpBlogProp.Controls.Add(this.label3);
-            this.grpBlogProp.Location = new System.Drawing.Point(26, 48);
-            this.grpBlogProp.Name = "grpBlogProp";
-            this.grpBlogProp.Size = new System.Drawing.Size(285, 128);
-            this.grpBlogProp.TabIndex = 25;
-            this.grpBlogProp.TabStop = false;
-            this.grpBlogProp.Text = "Target Blog";
-            // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(75, 85);
+            this.txtPassword.Location = new System.Drawing.Point(87, 87);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(182, 20);
@@ -277,7 +171,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 91);
+            this.label5.Location = new System.Drawing.Point(27, 93);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 13);
             this.label5.TabIndex = 5;
@@ -285,7 +179,7 @@
             // 
             // txtUserName
             // 
-            this.txtUserName.Location = new System.Drawing.Point(75, 55);
+            this.txtUserName.Location = new System.Drawing.Point(87, 57);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(182, 20);
             this.txtUserName.TabIndex = 4;
@@ -294,7 +188,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 55);
+            this.label4.Location = new System.Drawing.Point(27, 57);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(57, 13);
             this.label4.TabIndex = 3;
@@ -302,7 +196,7 @@
             // 
             // txtBlogUrl
             // 
-            this.txtBlogUrl.Location = new System.Drawing.Point(75, 23);
+            this.txtBlogUrl.Location = new System.Drawing.Point(87, 25);
             this.txtBlogUrl.Name = "txtBlogUrl";
             this.txtBlogUrl.Size = new System.Drawing.Size(182, 20);
             this.txtBlogUrl.TabIndex = 2;
@@ -311,7 +205,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 26);
+            this.label3.Location = new System.Drawing.Point(24, 28);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(20, 13);
             this.label3.TabIndex = 1;
@@ -319,8 +213,9 @@
             // 
             // btnOk
             // 
+            this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(142, 726);
+            this.btnOk.Location = new System.Drawing.Point(610, 475);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 58;
@@ -330,8 +225,9 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(223, 726);
+            this.btnCancel.Location = new System.Drawing.Point(704, 475);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 57;
@@ -339,47 +235,13 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // btnSave
-            // 
-            this.btnSave.Location = new System.Drawing.Point(26, 12);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(119, 23);
-            this.btnSave.TabIndex = 60;
-            this.btnSave.Text = "Save Settings...";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnLoadSettings
-            // 
-            this.btnLoadSettings.Location = new System.Drawing.Point(179, 12);
-            this.btnLoadSettings.Name = "btnLoadSettings";
-            this.btnLoadSettings.Size = new System.Drawing.Size(132, 23);
-            this.btnLoadSettings.TabIndex = 59;
-            this.btnLoadSettings.Text = "Load Settings...";
-            this.btnLoadSettings.UseVisualStyleBackColor = true;
-            this.btnLoadSettings.Click += new System.EventHandler(this.btnLoadSettings_Click);
-            // 
             // openSettingFile
             // 
             this.openSettingFile.FileName = "openFileDialog1";
             // 
-            // grpProxy
-            // 
-            this.grpProxy.Controls.Add(this.numProxyPort);
-            this.grpProxy.Controls.Add(this.chkUseProxy);
-            this.grpProxy.Controls.Add(this.label1);
-            this.grpProxy.Controls.Add(this.txtProxyIp);
-            this.grpProxy.Controls.Add(this.label2);
-            this.grpProxy.Location = new System.Drawing.Point(26, 600);
-            this.grpProxy.Name = "grpProxy";
-            this.grpProxy.Size = new System.Drawing.Size(281, 106);
-            this.grpProxy.TabIndex = 61;
-            this.grpProxy.TabStop = false;
-            this.grpProxy.Text = "Proxy Settings";
-            // 
             // numProxyPort
             // 
-            this.numProxyPort.Location = new System.Drawing.Point(75, 78);
+            this.numProxyPort.Location = new System.Drawing.Point(93, 85);
             this.numProxyPort.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -397,7 +259,7 @@
             // chkUseProxy
             // 
             this.chkUseProxy.AutoSize = true;
-            this.chkUseProxy.Location = new System.Drawing.Point(15, 20);
+            this.chkUseProxy.Location = new System.Drawing.Point(33, 27);
             this.chkUseProxy.Name = "chkUseProxy";
             this.chkUseProxy.Size = new System.Drawing.Size(74, 17);
             this.chkUseProxy.TabIndex = 9;
@@ -407,7 +269,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 78);
+            this.label1.Location = new System.Drawing.Point(29, 85);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(26, 13);
             this.label1.TabIndex = 7;
@@ -415,65 +277,255 @@
             // 
             // txtProxyIp
             // 
-            this.txtProxyIp.Location = new System.Drawing.Point(75, 46);
+            this.txtProxyIp.Location = new System.Drawing.Point(93, 53);
             this.txtProxyIp.Name = "txtProxyIp";
-            this.txtProxyIp.Size = new System.Drawing.Size(182, 20);
+            this.txtProxyIp.Size = new System.Drawing.Size(117, 20);
             this.txtProxyIp.TabIndex = 6;
             this.txtProxyIp.Text = "192.3.252.232";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 49);
+            this.label2.Location = new System.Drawing.Point(30, 56);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(17, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "IP";
+            // 
+            // lstTypes
+            // 
+            this.lstTypes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lstTypes.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstTypes.FormattingEnabled = true;
+            this.lstTypes.ItemHeight = 16;
+            this.lstTypes.Items.AddRange(new object[] {
+            "Blog",
+            "MySQL",
+            "Ftp",
+            "Proxy"});
+            this.lstTypes.Location = new System.Drawing.Point(1, 27);
+            this.lstTypes.Name = "lstTypes";
+            this.lstTypes.Size = new System.Drawing.Size(125, 436);
+            this.lstTypes.TabIndex = 62;
+            this.lstTypes.SelectedIndexChanged += new System.EventHandler(this.lstTypes_SelectedIndexChanged);
+            // 
+            // pnlAll
+            // 
+            this.pnlAll.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlAll.BackColor = System.Drawing.SystemColors.Window;
+            this.pnlAll.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlAll.Controls.Add(this.pnlMysql);
+            this.pnlAll.Controls.Add(this.pnlBlog);
+            this.pnlAll.Controls.Add(this.pnlFtp);
+            this.pnlAll.Controls.Add(this.pnlProxy);
+            this.pnlAll.Location = new System.Drawing.Point(132, 27);
+            this.pnlAll.Name = "pnlAll";
+            this.pnlAll.Size = new System.Drawing.Size(647, 438);
+            this.pnlAll.TabIndex = 63;
+            // 
+            // pnlProxy
+            // 
+            this.pnlProxy.Controls.Add(this.numProxyPort);
+            this.pnlProxy.Controls.Add(this.txtProxyIp);
+            this.pnlProxy.Controls.Add(this.chkUseProxy);
+            this.pnlProxy.Controls.Add(this.label2);
+            this.pnlProxy.Controls.Add(this.label1);
+            this.pnlProxy.Location = new System.Drawing.Point(12, 14);
+            this.pnlProxy.Name = "pnlProxy";
+            this.pnlProxy.Size = new System.Drawing.Size(291, 125);
+            this.pnlProxy.TabIndex = 62;
+            this.pnlProxy.Tag = "";
+            // 
+            // pnlFtp
+            // 
+            this.pnlFtp.Controls.Add(this.label12);
+            this.pnlFtp.Controls.Add(this.btnTestFtpConnection);
+            this.pnlFtp.Controls.Add(this.txtFtpPassword);
+            this.pnlFtp.Controls.Add(this.label9);
+            this.pnlFtp.Controls.Add(this.txtFtpUserName);
+            this.pnlFtp.Controls.Add(this.label10);
+            this.pnlFtp.Controls.Add(this.txtFtpUrl);
+            this.pnlFtp.Controls.Add(this.label11);
+            this.pnlFtp.Location = new System.Drawing.Point(12, 145);
+            this.pnlFtp.Name = "pnlFtp";
+            this.pnlFtp.Size = new System.Drawing.Size(291, 172);
+            this.pnlFtp.TabIndex = 63;
+            this.pnlFtp.Tag = "";
+            // 
+            // btnTestFtpConnection
+            // 
+            this.btnTestFtpConnection.Location = new System.Drawing.Point(130, 135);
+            this.btnTestFtpConnection.Name = "btnTestFtpConnection";
+            this.btnTestFtpConnection.Size = new System.Drawing.Size(141, 23);
+            this.btnTestFtpConnection.TabIndex = 20;
+            this.btnTestFtpConnection.Text = "Test FTP connection";
+            this.btnTestFtpConnection.UseVisualStyleBackColor = true;
+            // 
+            // txtFtpPassword
+            // 
+            this.txtFtpPassword.Location = new System.Drawing.Point(89, 95);
+            this.txtFtpPassword.Name = "txtFtpPassword";
+            this.txtFtpPassword.PasswordChar = '*';
+            this.txtFtpPassword.Size = new System.Drawing.Size(182, 20);
+            this.txtFtpPassword.TabIndex = 19;
+            this.txtFtpPassword.Text = "x6b8a[o!bxFe";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(29, 101);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 13);
+            this.label9.TabIndex = 18;
+            this.label9.Text = "Password";
+            // 
+            // txtFtpUserName
+            // 
+            this.txtFtpUserName.Location = new System.Drawing.Point(89, 65);
+            this.txtFtpUserName.Name = "txtFtpUserName";
+            this.txtFtpUserName.Size = new System.Drawing.Size(182, 20);
+            this.txtFtpUserName.TabIndex = 17;
+            this.txtFtpUserName.Text = "bloggon2@nalgorithm.com";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(29, 65);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(57, 13);
+            this.label10.TabIndex = 16;
+            this.label10.Text = "UserName";
+            // 
+            // txtFtpUrl
+            // 
+            this.txtFtpUrl.Location = new System.Drawing.Point(89, 33);
+            this.txtFtpUrl.Name = "txtFtpUrl";
+            this.txtFtpUrl.Size = new System.Drawing.Size(182, 20);
+            this.txtFtpUrl.TabIndex = 15;
+            this.txtFtpUrl.Text = "ftp.nalgorithm.com";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(26, 36);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(20, 13);
+            this.label11.TabIndex = 14;
+            this.label11.Text = "Url";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(29, 10);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(232, 13);
+            this.label12.TabIndex = 21;
+            this.label12.Text = "FTP account should be pointed to root directory";
+            // 
+            // pnlBlog
+            // 
+            this.pnlBlog.Controls.Add(this.txtPassword);
+            this.pnlBlog.Controls.Add(this.txtBlogUrl);
+            this.pnlBlog.Controls.Add(this.label5);
+            this.pnlBlog.Controls.Add(this.label3);
+            this.pnlBlog.Controls.Add(this.txtUserName);
+            this.pnlBlog.Controls.Add(this.label4);
+            this.pnlBlog.Location = new System.Drawing.Point(324, 14);
+            this.pnlBlog.Name = "pnlBlog";
+            this.pnlBlog.Size = new System.Drawing.Size(286, 136);
+            this.pnlBlog.TabIndex = 64;
+            this.pnlBlog.Tag = "";
+            // 
+            // pnlMysql
+            // 
+            this.pnlMysql.Controls.Add(this.btnTestMySqlConnection);
+            this.pnlMysql.Controls.Add(this.txtMySqlIp);
+            this.pnlMysql.Controls.Add(this.txtMySqlDatabase);
+            this.pnlMysql.Controls.Add(this.label8);
+            this.pnlMysql.Controls.Add(this.lblDatabase);
+            this.pnlMysql.Controls.Add(this.label7);
+            this.pnlMysql.Controls.Add(this.txtMySqlPass);
+            this.pnlMysql.Controls.Add(this.txtMysqlUser);
+            this.pnlMysql.Controls.Add(this.label6);
+            this.pnlMysql.Location = new System.Drawing.Point(324, 169);
+            this.pnlMysql.Name = "pnlMysql";
+            this.pnlMysql.Size = new System.Drawing.Size(297, 220);
+            this.pnlMysql.TabIndex = 65;
+            this.pnlMysql.Tag = "";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(791, 24);
+            this.menuStrip1.TabIndex = 64;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveSettingsToolStripMenuItem,
+            this.loadSettingsToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // saveSettingsToolStripMenuItem
+            // 
+            this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
+            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.saveSettingsToolStripMenuItem.Text = "Save Settings...";
+            this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
+            // 
+            // loadSettingsToolStripMenuItem
+            // 
+            this.loadSettingsToolStripMenuItem.Name = "loadSettingsToolStripMenuItem";
+            this.loadSettingsToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.loadSettingsToolStripMenuItem.Text = "Load Settings...";
+            this.loadSettingsToolStripMenuItem.Click += new System.EventHandler(this.loadSettingsToolStripMenuItem_Click);
             // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(330, 770);
-            this.Controls.Add(this.grpProxy);
-            this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnLoadSettings);
+            this.ClientSize = new System.Drawing.Size(791, 510);
+            this.Controls.Add(this.pnlAll);
+            this.Controls.Add(this.lstTypes);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.grpFtp);
-            this.Controls.Add(this.grpMysql);
-            this.Controls.Add(this.grpBlogProp);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmSettings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.frmSettings_Load);
-            this.grpFtp.ResumeLayout(false);
-            this.grpFtp.PerformLayout();
-            this.grpMysql.ResumeLayout(false);
-            this.grpMysql.PerformLayout();
-            this.grpBlogProp.ResumeLayout(false);
-            this.grpBlogProp.PerformLayout();
-            this.grpProxy.ResumeLayout(false);
-            this.grpProxy.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).EndInit();
+            this.pnlAll.ResumeLayout(false);
+            this.pnlProxy.ResumeLayout(false);
+            this.pnlProxy.PerformLayout();
+            this.pnlFtp.ResumeLayout(false);
+            this.pnlFtp.PerformLayout();
+            this.pnlBlog.ResumeLayout(false);
+            this.pnlBlog.PerformLayout();
+            this.pnlMysql.ResumeLayout(false);
+            this.pnlMysql.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox grpFtp;
-        private System.Windows.Forms.Button btnTestFtpConnection;
-        private System.Windows.Forms.TextBox txtFtpPassword;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox txtFtpUserName;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox txtFtpUrl;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.GroupBox grpMysql;
         private System.Windows.Forms.Button btnTestMySqlConnection;
         private System.Windows.Forms.TextBox txtMySqlDatabase;
         private System.Windows.Forms.Label lblDatabase;
@@ -483,7 +535,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtMySqlIp;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.GroupBox grpBlogProp;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtUserName;
@@ -492,15 +543,30 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnLoadSettings;
         private System.Windows.Forms.OpenFileDialog openSettingFile;
         private System.Windows.Forms.SaveFileDialog saveSettings;
-        private System.Windows.Forms.GroupBox grpProxy;
         private System.Windows.Forms.NumericUpDown numProxyPort;
         private System.Windows.Forms.CheckBox chkUseProxy;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtProxyIp;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListBox lstTypes;
+        private System.Windows.Forms.Panel pnlAll;
+        private System.Windows.Forms.Panel pnlProxy;
+        private System.Windows.Forms.Panel pnlMysql;
+        private System.Windows.Forms.Panel pnlBlog;
+        private System.Windows.Forms.Panel pnlFtp;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button btnTestFtpConnection;
+        private System.Windows.Forms.TextBox txtFtpPassword;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox txtFtpUserName;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtFtpUrl;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadSettingsToolStripMenuItem;
     }
 }

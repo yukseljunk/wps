@@ -24,7 +24,8 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("UseFtp", chkNoAPI.Checked.ToString()));
             settings.Add(new Tuple<string, string>("UseCache", chkCache.Checked.ToString()));
             settings.Add(new Tuple<string, string>("ShowMessageBoxes", chkShowMessageBox.Checked.ToString()));
-
+            settings.Add(new Tuple<string, string>("ScrambleLeadPosts", chkScrambleLeadPosts.Checked.ToString()));
+            
             settings.Add(new Tuple<string, string>("TitleContainsKeywordScore", numTitleContainsKeyword.Value.ToString()));
             settings.Add(new Tuple<string, string>("TitleStartsWithKeywordScore", numTitleStartsKeyword.Value.ToString()));
             settings.Add(new Tuple<string, string>("ContentContainsKeywordScore", numContentContainsKeyword.Value.ToString()));
@@ -72,6 +73,7 @@ namespace WordpressScraper
             chkNoAPI.Checked = options.UseFtp;
             chkCache.Checked = options.UseCache;
             chkShowMessageBox.Checked = options.ShowMessageBoxes;
+            chkScrambleLeadPosts.Checked = options.ScrambleLeadPosts;
 
             numTitleContainsKeyword.Value = options.TitleContainsKeywordScore;
             numTitleStartsKeyword.Value = options.TitleStartsWithKeywordScore;

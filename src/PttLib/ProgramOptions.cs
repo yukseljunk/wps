@@ -10,6 +10,7 @@ namespace PttLib
         public bool MakeFirstImageAsFeature { get; set; }
         public bool UseCache { get; set; }
         public bool ShowMessageBoxes { get; set; }
+        public bool ScrambleLeadPosts { get; set; }
 
         public string BlogUrl { get; set; }
         public string BlogUser { get; set; }

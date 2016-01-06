@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using WindowsFormsApplication1;
 using PttLib;
@@ -10,6 +12,8 @@ namespace WordpressScraper
 {
     public partial class frmSettings : Form
     {
+        private List<Panel> _panels = new List<Panel>() { }; 
+        
         public frmSettings()
         {
             InitializeComponent();
@@ -53,6 +57,25 @@ namespace WordpressScraper
             var options = programOptionsFactory.Get();
 
             FillValues(options);
+
+            _panels.Clear();
+            _panels.Add(pnlBlog);
+            _panels.Add(pnlMysql);
+            _panels.Add(pnlFtp);
+            _panels.Add(pnlProxy);
+            var maxHeight = 0;
+            foreach (var panel in _panels)
+            {
+                panel.Visible = false;
+                panel.Location =  new Point(12,12);
+                if (maxHeight < panel.Height)
+                {
+                    maxHeight = panel.Height;
+                }
+            }
+            lstTypes.SelectedIndex = 0;
+            this.Height = maxHeight + 150;
+            this.Width = 550;
         }
 
         private void FillValues(ProgramOptions options)
@@ -166,6 +189,51 @@ namespace WordpressScraper
         private void btnLoadSettings_Click(object sender, EventArgs e)
         {
 
+           
+        }
+
+        private void lstTypes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (var panel in _panels)
+            {
+                panel.Visible = false;
+            }
+            _panels[lstTypes.SelectedIndex].Visible = true;
+        }
+
+        private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveSettings.Filter = "Xml files (*.xml)|*.xml|All files (*.*)|*.*";
+            saveSettings.FilterIndex = 1;
+            saveSettings.RestoreDirectory = true;
+            saveSettings.FileName = "";
+
+            if (saveSettings.ShowDialog() != DialogResult.OK) return;
+            if (string.IsNullOrEmpty(saveSettings.FileName)) return;
+
+            var options = new ProgramOptions()
+            {
+                BlogUrl = txtBlogUrl.Text,
+                BlogUser = txtUserName.Text,
+                BlogPassword = txtPassword.Text,
+                DatabaseUrl = txtMySqlIp.Text,
+                DatabaseName = txtMySqlDatabase.Text,
+                DatabaseUser = txtMysqlUser.Text,
+                DatabasePassword = txtMySqlPass.Text,
+                FtpUrl = txtFtpUrl.Text,
+                FtpUser = txtFtpUserName.Text,
+                FtpPassword = txtFtpPassword.Text,
+                ProxyAddress = txtProxyIp.Text,
+                ProxyPort = (int)numProxyPort.Value,
+                UseProxy = chkUseProxy.Checked
+            };
+
+            var xmlSerializer = new XmlSerializer();
+            xmlSerializer.Serialize(saveSettings.FileName, options);
+        }
+
+        private void loadSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             openSettingFile.Filter = "Xml files (*.xml)|*.xml|All files (*.*)|*.*";
             openSettingFile.FilterIndex = 1;
             openSettingFile.RestoreDirectory = true;

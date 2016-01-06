@@ -88,8 +88,8 @@ namespace WindowsFormsApplication1
             pnlItemOps.Enabled = enabled;
             btnStart.Enabled = enabled;
             btnStopScrape.Enabled = !enabled;
-            
-            
+
+
         }
 
         private void GettingSourceItemsFinished(object sender, EventArgs e)
@@ -187,7 +187,7 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.PageParsed += PageParsed;
             _sourceItemFactory.SourceItemsGot += SourceItemsGot;
             var checkedSites = (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();
-            _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count+1);
+            _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count + 1);
 
         }
 
@@ -507,7 +507,7 @@ namespace WindowsFormsApplication1
                 return string.Format("Server={0};Database={1};Uid={2};Pwd={3}; Allow User Variables=True", _options.DatabaseUrl, _options.DatabaseName, _options.DatabaseUser, _options.DatabasePassword);
             }
         }
-       
+
 
         private void lvItems_ColumnClick(object sender, ColumnClickEventArgs e)
         {
@@ -541,18 +541,30 @@ namespace WindowsFormsApplication1
 
             var itemCount = lvItems.Items.Count;
             if (itemCount == 0) return;
-            for (var i = 0; i < itemCount; i++)
-            {
-                var randomIndex = Helper.GetRandomNumber(0, itemCount);
-                var moveRandomIndex = Helper.GetRandomNumber(0, itemCount);
-                var item = lvItems.Items[randomIndex];
-                lvItems.Items.RemoveAt(randomIndex);
-                lvItems.Items.Insert(moveRandomIndex, item);
 
-            }
+            lvItems.ListViewItemSorter = null;
+            ScrambleBlock(0, itemCount);
             ArrangeOrder();
             lvwColumnSorter = new ListViewColumnSorter();
             lvItems.ListViewItemSorter = lvwColumnSorter;
+
+        }
+
+        /// <summary>
+        /// [startIndex, endIndex)
+        /// </summary>
+        /// <param name="startIndex"></param>
+        /// <param name="endIndex"></param>
+        private void ScrambleBlock(int startIndex, int endIndex)
+        {
+            for (var i = startIndex; i < endIndex; i++)
+            {
+                var randomIndex = Helper.GetRandomNumber(startIndex, endIndex);
+                var moveRandomIndex = Helper.GetRandomNumber(startIndex, endIndex);
+                var item = lvItems.Items[randomIndex];
+                lvItems.Items.RemoveAt(randomIndex);
+                lvItems.Items.Insert(moveRandomIndex, item);
+            }
 
         }
 
@@ -689,16 +701,16 @@ namespace WindowsFormsApplication1
             foreach (ListViewItem item in lvItems.SelectedItems)
             {
                 var index = item.Index;
-                if (index==0) break;
+                if (index == 0) break;
                 lvItems.Items.RemoveAt(index);
-                lvItems.Items.Insert(index-1, item);
+                lvItems.Items.Insert(index - 1, item);
             }
         }
 
 
         private void btnRelevanceScramble_Click(object sender, EventArgs e)
         {
-            var ccea= new ColumnClickEventArgs(12);
+            var ccea = new ColumnClickEventArgs(12);
             if (lvwColumnSorter == null) return;
             lvwColumnSorter.SortColumn = 12;
             lvwColumnSorter.Order = SortOrder.Ascending;
@@ -708,7 +720,7 @@ namespace WindowsFormsApplication1
 
             var programOptionsFactory = new ProgramOptionsFactory();
             var programOptions = programOptionsFactory.Get();
-            var mergeBlockSize = programOptions.MergeBlockSize; 
+            var mergeBlockSize = programOptions.MergeBlockSize;
 
             var zeroRelevanceStartIndex = -1;
             for (int i = 0; i < lvItems.Items.Count; i++)
@@ -728,6 +740,11 @@ namespace WindowsFormsApplication1
                 lvItems.ListViewItemSorter = lvwColumnSorter;
                 return;
             }
+            if (programOptions.ScrambleLeadPosts)
+            {
+                ScrambleBlock(0, zeroRelevanceStartIndex);
+            }
+            ScrambleBlock(zeroRelevanceStartIndex, lvItems.Items.Count);
 
             var primaryPostIndex = 0;
             var cumulativeWordCount = 0;
@@ -741,26 +758,25 @@ namespace WindowsFormsApplication1
                 if (cumulativeWordCount >= mergeBlockSize)
                 {
                     //finish this block, start a new block
-                    primaryPostIndex = i+1;
+                    primaryPostIndex = i + 1;
                     cumulativeWordCount = 0;
                     itemBlockIndex = 0;
                 }
                 else
                 {
-                    if (zeroRelevanceStartIndex < lvItems.Items.Count)
-                    {
-                        //continue to this block
-                        itemBlockIndex++;
-                        var itemToMove = lvItems.Items[zeroRelevanceStartIndex];
-                        lvItems.Items.RemoveAt(zeroRelevanceStartIndex);
-                        lvItems.Items.Insert(primaryPostIndex + itemBlockIndex, itemToMove);
-                        zeroRelevanceStartIndex++;
-                    }
+                    if (zeroRelevanceStartIndex >= lvItems.Items.Count) continue; //can be break?
 
+                    //continue to this block
+                    itemBlockIndex++;
+                    var itemToMove = lvItems.Items[zeroRelevanceStartIndex];
+                    lvItems.Items.RemoveAt(zeroRelevanceStartIndex);
+                    lvItems.Items.Insert(primaryPostIndex + itemBlockIndex, itemToMove);
+                    zeroRelevanceStartIndex++;
                 }
-               
+
             }
 
+            ArrangeOrder();
             lvwColumnSorter = new ListViewColumnSorter();
             lvItems.ListViewItemSorter = lvwColumnSorter;
 
@@ -770,11 +786,11 @@ namespace WindowsFormsApplication1
         private void btnDown_Click(object sender, EventArgs e)
         {
             if (lvItems.SelectedItems.Count == 0) return;
-            for (int i = lvItems.SelectedItems.Count-1; i >= 0; i--)
+            for (int i = lvItems.SelectedItems.Count - 1; i >= 0; i--)
             {
                 var item = lvItems.SelectedItems[i];
                 var index = item.Index;
-                if (index == lvItems.Items.Count-1)
+                if (index == lvItems.Items.Count - 1)
                 {
                     break;
                 }
