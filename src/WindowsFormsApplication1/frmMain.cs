@@ -507,11 +507,7 @@ namespace WindowsFormsApplication1
                 return string.Format("Server={0};Database={1};Uid={2};Pwd={3}; Allow User Variables=True", _options.DatabaseUrl, _options.DatabaseName, _options.DatabaseUser, _options.DatabasePassword);
             }
         }
-        private void lvItems_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+       
 
         private void lvItems_ColumnClick(object sender, ColumnClickEventArgs e)
         {
@@ -708,7 +704,11 @@ namespace WindowsFormsApplication1
             lvwColumnSorter.Order = SortOrder.Ascending;
             lvItems_ColumnClick(null, ccea);
 
-            var mergeBlockSize = 200; //get from programoptions
+            lvItems.ListViewItemSorter = null;
+
+            var programOptionsFactory = new ProgramOptionsFactory();
+            var programOptions = programOptionsFactory.Get();
+            var mergeBlockSize = programOptions.MergeBlockSize; 
 
             var zeroRelevanceStartIndex = -1;
             for (int i = 0; i < lvItems.Items.Count; i++)
@@ -724,12 +724,14 @@ namespace WindowsFormsApplication1
             if (zeroRelevanceStartIndex == -1)
             {
                 MessageBox.Show("No 0 relevance item found, scramble not to be done!");
+                lvwColumnSorter = new ListViewColumnSorter();
+                lvItems.ListViewItemSorter = lvwColumnSorter;
                 return;
             }
 
             var primaryPostIndex = 0;
             var cumulativeWordCount = 0;
-
+            var itemBlockIndex = 0;
             for (int i = 0; i < lvItems.Items.Count; i++)
             {
                 var item = lvItems.Items[i];
@@ -739,26 +741,29 @@ namespace WindowsFormsApplication1
                 if (cumulativeWordCount >= mergeBlockSize)
                 {
                     //finish this block, start a new block
-                    primaryPostIndex = i;
+                    primaryPostIndex = i+1;
                     cumulativeWordCount = 0;
+                    itemBlockIndex = 0;
                 }
                 else
                 {
-                    //continue to this block
-
-                    var itemToMove = lvItems.Items[zeroRelevanceStartIndex];
-                    lvItems.Items.Remove(itemToMove);
-                    lvItems.Items.Insert(primaryPostIndex + 1, itemToMove);
+                    if (zeroRelevanceStartIndex < lvItems.Items.Count)
+                    {
+                        //continue to this block
+                        itemBlockIndex++;
+                        var itemToMove = lvItems.Items[zeroRelevanceStartIndex];
+                        lvItems.Items.RemoveAt(zeroRelevanceStartIndex);
+                        lvItems.Items.Insert(primaryPostIndex + itemBlockIndex, itemToMove);
+                        zeroRelevanceStartIndex++;
+                    }
 
                 }
-                
-                
-                
-                
-                var relevanceScore = int.Parse(item.SubItems[12].Text);
-                MessageBox.Show(wordCount.ToString());
-
+               
             }
+
+            lvwColumnSorter = new ListViewColumnSorter();
+            lvItems.ListViewItemSorter = lvwColumnSorter;
+
 
         }
 
@@ -778,6 +783,9 @@ namespace WindowsFormsApplication1
 
             }
         }
+
+
+
 
     }
 }

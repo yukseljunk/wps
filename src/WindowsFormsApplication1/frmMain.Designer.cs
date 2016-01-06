@@ -211,7 +211,6 @@
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
             this.lvItems.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvItems_ColumnClick);
-            this.lvItems.SelectedIndexChanged += new System.EventHandler(this.lvItems_SelectedIndexChanged);
             // 
             // btnGo
             // 
@@ -566,6 +565,7 @@
             this.btnNavigate.TabIndex = 44;
             this.btnNavigate.Text = "Go to link...";
             this.btnNavigate.UseVisualStyleBackColor = true;
+            this.btnNavigate.Click += new System.EventHandler(this.btnNavigate_Click);
             // 
             // btnUp
             // 
@@ -590,6 +590,7 @@
             this.btnRemoveDuplicates.TabIndex = 43;
             this.btnRemoveDuplicates.Text = "Remove Duplicates";
             this.btnRemoveDuplicates.UseVisualStyleBackColor = true;
+            this.btnRemoveDuplicates.Click += new System.EventHandler(this.btnRemoveDuplicates_Click);
             // 
             // btnRemoveSelected
             // 
@@ -600,6 +601,7 @@
             this.btnRemoveSelected.TabIndex = 42;
             this.btnRemoveSelected.Text = "Remove Selected";
             this.btnRemoveSelected.UseVisualStyleBackColor = true;
+            this.btnRemoveSelected.Click += new System.EventHandler(this.btnRemoveSelected_Click);
             // 
             // txtFindDuplicatePosts
             // 
@@ -610,6 +612,7 @@
             this.txtFindDuplicatePosts.TabIndex = 41;
             this.txtFindDuplicatePosts.Text = "Find Duplicates";
             this.txtFindDuplicatePosts.UseVisualStyleBackColor = true;
+            this.txtFindDuplicatePosts.Click += new System.EventHandler(this.txtFindDuplicatePosts_Click);
             // 
             // btnScrumble
             // 
@@ -631,6 +634,7 @@
             this.btnSelectAll.TabIndex = 39;
             this.btnSelectAll.Text = "Select All";
             this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
             // frmMain
             // 
