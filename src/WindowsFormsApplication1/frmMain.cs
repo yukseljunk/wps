@@ -355,7 +355,8 @@ namespace WindowsFormsApplication1
                 Tags = item.SubItems[8].Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
                 ItemImages = imageUrls.Select(imageUrl => new ItemImage() { OriginalSource = imageUrl, Primary = true }).ToList(),
                 Site = item.SubItems[9].Text,
-                WordCount = int.Parse(item.SubItems[10].Text, new CultureInfo("en-US"))
+                WordCount = int.Parse(item.SubItems[10].Text, new CultureInfo("en-US")),
+                Relevance = int.Parse(item.SubItems[12].Text)
 
             };
             if (postItem.ItemImages != null)

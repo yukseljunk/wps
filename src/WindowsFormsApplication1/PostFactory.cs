@@ -379,8 +379,8 @@ namespace WindowsFormsApplication1
             {
                 return Create(items[0], authorId);
             }
-
-            return Create(new MultiItem(items), authorId);
+            var itemsSortedByRelevance = items.OrderByDescending(i => i.Relevance);
+            return Create(new MultiItem(itemsSortedByRelevance.ToList()), authorId);
         }
 
         /// <summary>

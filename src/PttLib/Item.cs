@@ -24,7 +24,7 @@ namespace PttLib
         public int PostId { get; set; }
         public int Order { get; set; }
         public DateTime Created { get; set; }
-       
+        public int Relevance { get; set; }
         public virtual string ForeignKey
         {
             get { return Site + "_" + Id; }
