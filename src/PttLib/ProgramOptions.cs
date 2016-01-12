@@ -8,6 +8,7 @@ namespace PttLib
         public int ResizeSize { get; set; }
         public bool UseFtp { get; set; }
         public bool MakeFirstImageAsFeature { get; set; }
+        public bool TagsAsText { get; set; }
         public bool UseCache { get; set; }
         public bool ShowMessageBoxes { get; set; }
         public bool ScrambleLeadPosts { get; set; }

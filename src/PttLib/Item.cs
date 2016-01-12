@@ -51,7 +51,7 @@ namespace PttLib
                 Site);
         }
 
-        public virtual string PostBody(int thumbnailSize, bool includePriceAndSource = true)
+        public virtual string PostBody(int thumbnailSize, bool includePriceAndSource = true, bool tagsAsText = true)
         {
             var converterFunctions = new ConverterFunctions();
             var content = new StringBuilder("");
@@ -79,13 +79,19 @@ namespace PttLib
             {
                 content.Append(SourceStatement());
             }
+
+            if (Tags != null && Tags.Count > 0 && tagsAsText && includePriceAndSource)
+            {
+                content.Append("<br/>Tags: ");
+                content.Append(string.Join(", ", Tags));
+            }
             return content.ToString();
 
         }
 
         public string SourceStatement()
         {
-            var content=new StringBuilder();
+            var content = new StringBuilder();
             content.Append("<br><strong>Source:</strong> <a href=\"");
             content.Append(Url);
             content.Append("\" rel=\"nofollow\" target=\"_blank\">");

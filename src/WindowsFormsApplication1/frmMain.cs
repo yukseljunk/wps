@@ -351,13 +351,7 @@ namespace WindowsFormsApplication1
                         new Ftp(FtpConfiguration),
                         _blogCache,
                         dal,
-                        _options.BlogUrl,
-                        _options.UseFtp,
-                        _options.ResizeImages ? _options.ResizeSize : 0,
-                        _options.ThumbnailSize,
-                        _options.UseCache,
-                        _options.MakeFirstImageAsFeature,
-                        _options.MergeBlockSize);
+                        _options);
                 var items = ItemsFromListView(lvItems.SelectedItems);
                 _postFactory.PostCreated += PostCreated;
                 _postFactory.PostBeingCreated += PostBeingCreated;

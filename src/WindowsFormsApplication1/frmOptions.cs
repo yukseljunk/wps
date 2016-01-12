@@ -35,7 +35,8 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("NonExactTitleContainsKeywordScore", numNETitleContainsKeyword.Value.ToString()));
             settings.Add(new Tuple<string, string>("NonExactContentContainsKeywordScore", numNEContentContainsKeyword.Value.ToString()));
             settings.Add(new Tuple<string, string>("NonExactKeywordRatioScore", numNEKeywordContentRatio.Value.ToString()));
-            
+            settings.Add(new Tuple<string, string>("TagsAsText", chkTagsAsText.Checked.ToString()));
+
             ConfigurationHelper.UpdateSettings(settings);
             this.Dispose();
             this.Close();
@@ -66,6 +67,7 @@ namespace WordpressScraper
             FixEmptyNumericUpDown(numNEKeywordContentRatio);
 
             chkFeatureImage.Checked = options.MakeFirstImageAsFeature;
+            chkTagsAsText.Checked = options.TagsAsText;
             numMerge.Value = options.MergeBlockSize;
             numThumbnailSize.Value = options.ThumbnailSize;
             chkResizeImages.Checked = options.ResizeImages;

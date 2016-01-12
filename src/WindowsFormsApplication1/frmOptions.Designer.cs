@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkScrambleLeadPosts = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -66,7 +67,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.chkScrambleLeadPosts = new System.Windows.Forms.CheckBox();
+            this.chkTagsAsText = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNEKeywordContentRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNEContentContainsKeyword)).BeginInit();
@@ -85,6 +86,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.chkTagsAsText);
             this.panel1.Controls.Add(this.chkScrambleLeadPosts);
             this.panel1.Controls.Add(this.label11);
             this.panel1.Controls.Add(this.label10);
@@ -121,14 +123,26 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(533, 400);
+            this.panel1.Size = new System.Drawing.Size(533, 455);
             this.panel1.TabIndex = 54;
+            // 
+            // chkScrambleLeadPosts
+            // 
+            this.chkScrambleLeadPosts.AutoSize = true;
+            this.chkScrambleLeadPosts.Checked = true;
+            this.chkScrambleLeadPosts.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkScrambleLeadPosts.Location = new System.Drawing.Point(292, 145);
+            this.chkScrambleLeadPosts.Name = "chkScrambleLeadPosts";
+            this.chkScrambleLeadPosts.Size = new System.Drawing.Size(227, 17);
+            this.chkScrambleLeadPosts.TabIndex = 87;
+            this.chkScrambleLeadPosts.Text = "Relevance Scramble - scramble lead posts";
+            this.chkScrambleLeadPosts.UseVisualStyleBackColor = true;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(289, 185);
+            this.label11.Location = new System.Drawing.Point(295, 243);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(147, 13);
             this.label11.TabIndex = 86;
@@ -137,7 +151,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(287, 198);
+            this.label10.Location = new System.Drawing.Point(293, 256);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(235, 13);
             this.label10.TabIndex = 85;
@@ -146,7 +160,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(289, 281);
+            this.label7.Location = new System.Drawing.Point(295, 339);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(146, 13);
             this.label7.TabIndex = 84;
@@ -156,7 +170,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(289, 253);
+            this.label8.Location = new System.Drawing.Point(295, 311);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(132, 13);
             this.label8.TabIndex = 83;
@@ -165,7 +179,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(287, 224);
+            this.label9.Location = new System.Drawing.Point(293, 282);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(115, 13);
             this.label9.TabIndex = 82;
@@ -174,7 +188,7 @@
             // numNEKeywordContentRatio
             // 
             this.numNEKeywordContentRatio.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numNEKeywordContentRatio.Location = new System.Drawing.Point(449, 294);
+            this.numNEKeywordContentRatio.Location = new System.Drawing.Point(455, 352);
             this.numNEKeywordContentRatio.Name = "numNEKeywordContentRatio";
             this.numNEKeywordContentRatio.Size = new System.Drawing.Size(55, 20);
             this.numNEKeywordContentRatio.TabIndex = 81;
@@ -187,7 +201,7 @@
             // numNEContentContainsKeyword
             // 
             this.numNEContentContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numNEContentContainsKeyword.Location = new System.Drawing.Point(449, 266);
+            this.numNEContentContainsKeyword.Location = new System.Drawing.Point(455, 324);
             this.numNEContentContainsKeyword.Name = "numNEContentContainsKeyword";
             this.numNEContentContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numNEContentContainsKeyword.TabIndex = 80;
@@ -200,7 +214,7 @@
             // numNETitleContainsKeyword
             // 
             this.numNETitleContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numNETitleContainsKeyword.Location = new System.Drawing.Point(449, 240);
+            this.numNETitleContainsKeyword.Location = new System.Drawing.Point(455, 298);
             this.numNETitleContainsKeyword.Name = "numNETitleContainsKeyword";
             this.numNETitleContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numNETitleContainsKeyword.TabIndex = 79;
@@ -213,7 +227,7 @@
             // lblKeywordContentRatio
             // 
             this.lblKeywordContentRatio.AutoSize = true;
-            this.lblKeywordContentRatio.Location = new System.Drawing.Point(18, 342);
+            this.lblKeywordContentRatio.Location = new System.Drawing.Point(24, 400);
             this.lblKeywordContentRatio.Name = "lblKeywordContentRatio";
             this.lblKeywordContentRatio.Size = new System.Drawing.Size(146, 13);
             this.lblKeywordContentRatio.TabIndex = 78;
@@ -222,7 +236,7 @@
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(20, 302);
+            this.label6.Location = new System.Drawing.Point(26, 360);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(134, 27);
             this.label6.TabIndex = 77;
@@ -231,7 +245,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(20, 276);
+            this.label5.Location = new System.Drawing.Point(26, 334);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(132, 13);
             this.label5.TabIndex = 76;
@@ -240,7 +254,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(20, 250);
+            this.label4.Location = new System.Drawing.Point(26, 308);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(126, 13);
             this.label4.TabIndex = 75;
@@ -250,7 +264,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(18, 185);
+            this.label2.Location = new System.Drawing.Point(24, 243);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(121, 13);
             this.label2.TabIndex = 73;
@@ -259,7 +273,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 224);
+            this.label1.Location = new System.Drawing.Point(24, 282);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(115, 13);
             this.label1.TabIndex = 72;
@@ -268,7 +282,7 @@
             // numKeywordContentRatio
             // 
             this.numKeywordContentRatio.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numKeywordContentRatio.Location = new System.Drawing.Point(180, 335);
+            this.numKeywordContentRatio.Location = new System.Drawing.Point(186, 393);
             this.numKeywordContentRatio.Name = "numKeywordContentRatio";
             this.numKeywordContentRatio.Size = new System.Drawing.Size(55, 20);
             this.numKeywordContentRatio.TabIndex = 71;
@@ -281,7 +295,7 @@
             // numFirst100Content
             // 
             this.numFirst100Content.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numFirst100Content.Location = new System.Drawing.Point(180, 302);
+            this.numFirst100Content.Location = new System.Drawing.Point(186, 360);
             this.numFirst100Content.Name = "numFirst100Content";
             this.numFirst100Content.Size = new System.Drawing.Size(55, 20);
             this.numFirst100Content.TabIndex = 70;
@@ -294,7 +308,7 @@
             // numContentContainsKeyword
             // 
             this.numContentContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numContentContainsKeyword.Location = new System.Drawing.Point(180, 276);
+            this.numContentContainsKeyword.Location = new System.Drawing.Point(186, 334);
             this.numContentContainsKeyword.Name = "numContentContainsKeyword";
             this.numContentContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numContentContainsKeyword.TabIndex = 69;
@@ -307,7 +321,7 @@
             // numTitleStartsKeyword
             // 
             this.numTitleStartsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numTitleStartsKeyword.Location = new System.Drawing.Point(180, 248);
+            this.numTitleStartsKeyword.Location = new System.Drawing.Point(186, 306);
             this.numTitleStartsKeyword.Name = "numTitleStartsKeyword";
             this.numTitleStartsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numTitleStartsKeyword.TabIndex = 68;
@@ -320,7 +334,7 @@
             // numTitleContainsKeyword
             // 
             this.numTitleContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numTitleContainsKeyword.Location = new System.Drawing.Point(180, 224);
+            this.numTitleContainsKeyword.Location = new System.Drawing.Point(186, 282);
             this.numTitleContainsKeyword.Name = "numTitleContainsKeyword";
             this.numTitleContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numTitleContainsKeyword.TabIndex = 67;
@@ -506,7 +520,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(18, 198);
+            this.label3.Location = new System.Drawing.Point(24, 256);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(235, 13);
             this.label3.TabIndex = 74;
@@ -515,7 +529,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(470, 418);
+            this.btnCancel.Location = new System.Drawing.Point(470, 487);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 55;
@@ -526,7 +540,7 @@
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(389, 418);
+            this.btnOk.Location = new System.Drawing.Point(389, 487);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 56;
@@ -534,24 +548,24 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // chkScrambleLeadPosts
+            // chkTagsAsText
             // 
-            this.chkScrambleLeadPosts.AutoSize = true;
-            this.chkScrambleLeadPosts.Checked = true;
-            this.chkScrambleLeadPosts.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkScrambleLeadPosts.Location = new System.Drawing.Point(292, 145);
-            this.chkScrambleLeadPosts.Name = "chkScrambleLeadPosts";
-            this.chkScrambleLeadPosts.Size = new System.Drawing.Size(227, 17);
-            this.chkScrambleLeadPosts.TabIndex = 87;
-            this.chkScrambleLeadPosts.Text = "Relevance Scramble - scramble lead posts";
-            this.chkScrambleLeadPosts.UseVisualStyleBackColor = true;
+            this.chkTagsAsText.AutoSize = true;
+            this.chkTagsAsText.Checked = true;
+            this.chkTagsAsText.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkTagsAsText.Location = new System.Drawing.Point(27, 191);
+            this.chkTagsAsText.Name = "chkTagsAsText";
+            this.chkTagsAsText.Size = new System.Drawing.Size(153, 17);
+            this.chkTagsAsText.TabIndex = 88;
+            this.chkTagsAsText.Text = "Add tags to content as text";
+            this.chkTagsAsText.UseVisualStyleBackColor = true;
             // 
             // frmOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(558, 460);
+            this.ClientSize = new System.Drawing.Size(565, 529);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.panel1);
@@ -618,6 +632,7 @@
         private System.Windows.Forms.NumericUpDown numNEContentContainsKeyword;
         private System.Windows.Forms.NumericUpDown numNETitleContainsKeyword;
         private System.Windows.Forms.CheckBox chkScrambleLeadPosts;
+        private System.Windows.Forms.CheckBox chkTagsAsText;
 
     }
 }

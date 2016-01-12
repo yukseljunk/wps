@@ -26,12 +26,18 @@ namespace WordpressScraper.Dal
 
             }
 
-            var tagsSql = new StringBuilder();
-            foreach (var term in post.Terms)
-            {
-                tagsSql.Append(
-                    string.Format("INSERT INTO wp_term_relationships(object_id, term_taxonomy_id, term_order) VALUES (@l,{0},0);", term.Id));
 
+            var tagsSql = new StringBuilder();
+            if (post.Terms != null)
+            {
+                foreach (var term in post.Terms)
+                {
+                    tagsSql.Append(
+                        string.Format(
+                            "INSERT INTO wp_term_relationships(object_id, term_taxonomy_id, term_order) VALUES (@l,{0},0);",
+                            term.Id));
+
+                }
             }
 
             var imagesSql = new StringBuilder();
@@ -57,7 +63,7 @@ namespace WordpressScraper.Dal
                 post.Author, post.PublishDateTime.ToString("yyyy-MM-dd HH':'mm':'ss"), post.PublishDateTime.ToString("yyyy-MM-dd HH':'mm':'ss"), post.Content.EscapeSql(), post.Title.EscapeSql(), "", post.Status,
                 post.CommentStatus, "open",
                 "", postName.EscapeSql(), "", "", DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss"), "", 0, "", 0,
-                post.PostType, "", 0, post.BlogUrl.EscapeSql(), customFieldSql.ToString(),tagsSql.ToString(),imagesSql.ToString());
+                post.PostType, "", 0, post.BlogUrl.EscapeSql(), customFieldSql.ToString(), tagsSql.ToString(), imagesSql.ToString());
 
             var postInsertDataSet = _dal.GetData(sql);
 

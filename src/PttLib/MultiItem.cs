@@ -125,7 +125,7 @@ namespace PttLib
             }
         }
 
-        public override string PostBody(int thumbnailSize, bool includePriceAndSource = true)
+        public override string PostBody(int thumbnailSize, bool includePriceAndSource = true, bool tagsAsText = true)
         {
             var result = new StringBuilder();
             var itemIndex = 0;
@@ -144,6 +144,13 @@ namespace PttLib
                 itemIndex++;
             }
             result.Append(sourceStatement);
+
+            if (Tags != null && Tags.Count > 0 && tagsAsText)
+            {
+                result.Append("<br/>Tags: ");
+                result.Append(string.Join(", ", Tags));
+            }
+
             return result.ToString();
         }
     }

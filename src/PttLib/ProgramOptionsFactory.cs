@@ -28,6 +28,7 @@ namespace PttLib
                                   FtpUser = System.Configuration.ConfigurationManager.AppSettings["FtpUser"],
                                   FtpPassword = System.Configuration.ConfigurationManager.AppSettings["FtpPassword"],
                                   ScrambleLeadPosts = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["ScrambleLeadPosts"]),
+                                  TagsAsText = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["TagsAsText"]),
 
                                   TitleContainsKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["TitleContainsKeywordScore"]),
                                   TitleStartsWithKeywordScore = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["TitleStartsWithKeywordScore"]),
@@ -42,7 +43,7 @@ namespace PttLib
                                   ProxyPort = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ProxyPort"]),
                                   ProxyAddress = System.Configuration.ConfigurationManager.AppSettings["ProxyAddress"],
                                   UseProxy = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseProxy"])
-                                  
+
                               };
             return options;
 

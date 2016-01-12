@@ -89,34 +89,31 @@ namespace WindowsFormsApplication1
         }
 
         private const string ImagesDir = "temp";
+        private readonly ProgramOptions _options;
 
         public PostFactory(WordPressSiteConfig siteConfig,
             IFtp ftp,
             BlogCache blogCache,
             Dal dal,
-            string blogUrl,
-            bool useMySqlFtpWay = true,
-            int maxImageDimension = 0,
-            int thumbnailSize = 150,
-            bool useCache = true,
-            bool useFeatureImage = false,
-            int mergeSize = 600)
+            ProgramOptions options)
         {
             _siteConfig = siteConfig;
             _ftp = ftp;
             _blogCache = blogCache;
             _dal = dal;
-            _blogUrl = blogUrl;
-            _useMySqlFtpWay = useMySqlFtpWay;
-            _maxImageDimension = maxImageDimension;
-            _thumbnailSize = thumbnailSize;
-            _useCache = useCache;
-            _useFeatureImage = useFeatureImage;
-            _mergeSize = mergeSize;
+            _blogUrl = options.BlogUrl;
+            _useMySqlFtpWay = options.UseFtp;
+            _maxImageDimension = options.ResizeImages ? options.ResizeSize : 0;
+            _thumbnailSize = options.ThumbnailSize;
+            _useCache = options.UseCache;
+            _useFeatureImage = options.MakeFirstImageAsFeature;
+            _mergeSize = options.MergeBlockSize;
+
+            _options = options;
             var userDal = new UserDal(_dal);
             _userIds = userDal.UserIds();
 
-            if (useMySqlFtpWay)
+            if (options.UseFtp)
             {
                 _ftpDir = "wp-content/uploads/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
                 _ftp.MakeFtpDir(_ftpDir);
@@ -412,7 +409,7 @@ namespace WindowsFormsApplication1
                 {
                     PostType = "post",
                     Title = postTitle,
-                    Content = item.PostBody(_thumbnailSize),
+                    Content = item.PostBody(_thumbnailSize, true, _options.TagsAsText),
                     PublishDateTime = DateTime.Now,
                     Author = authorId.ToString(),
                     CommentStatus = "open",
@@ -439,8 +436,10 @@ namespace WindowsFormsApplication1
                     post.ImageIds = imageUploads.Select(i => i.Id).ToList();
                     post.CustomFields[4].Value = imageUploads[0].Id;
                 }
-
-                post.Terms = GetTags(item, client).ToArray();
+                if (!_options.TagsAsText)
+                {
+                    post.Terms = GetTags(item, client).ToArray();
+                }
                 string newPost = "-1";
                 newPost = _useMySqlFtpWay ? postDal.InsertPost(post).ToString() : client.NewPost(post);
                 return Convert.ToInt32(newPost);
@@ -548,6 +547,12 @@ namespace WindowsFormsApplication1
             return imageUploads;
         }
 
+        /// <summary>
+        /// create/get tags on blog, return their ids
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="client"></param>
+        /// <returns></returns>
         private List<Term> GetTags(Item item, WordPressClient client)
         {
             var converterFunctions = new ConverterFunctions();
