@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using WindowsFormsApplication1;
 using PttLib;
 using PttLib.Helpers;
+using WordpressScraper.Ftp;
 using WordpressScraper.Helpers;
 
 namespace WordpressScraper
@@ -145,7 +146,7 @@ namespace WordpressScraper
 
         private void btnTestFtpConnection_Click(object sender, EventArgs e)
         {
-            var ftp = new Ftp(FtpConfiguration);
+            var ftp = new Ftp.Ftp(FtpConfiguration);
             string result = ftp.TestConnection();
             if (string.IsNullOrEmpty(result))
             {

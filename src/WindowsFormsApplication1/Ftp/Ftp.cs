@@ -1,26 +1,12 @@
 using System;
 using System.IO;
 using System.Net;
+using WindowsFormsApplication1;
 using PttLib.Helpers;
 using WordPressSharp.Models;
 
-namespace WindowsFormsApplication1
+namespace WordpressScraper.Ftp
 {
-    public class FtpConfig
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Url { get; set; }
-    }
-
-    public interface IFtp
-    {
-        void UploadFileFtp(Data file, string folder);
-        void UploadFileFtp(string filePath, string folder);
-        void MakeFtpDir(string ftpAddress);
-        string TestConnection();
-    }
-
     public class Ftp : IFtp
     {
         private readonly FtpConfig _ftpConfiguration;

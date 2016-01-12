@@ -78,8 +78,11 @@
     <Compile Include="frmSettings.Designer.cs">
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ftp\FtpConfig.cs" />
+    <Compile Include="Ftp\RemoteFtp.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Helpers\StopwordTool.cs" />
+    <Compile Include="Ftp\IFtp.cs" />
     <Compile Include="PostFactory.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
@@ -88,7 +91,7 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Dal\PostDal.cs" />
-    <Compile Include="Ftp.cs" />
+    <Compile Include="Ftp\Ftp.cs" />
     <Compile Include="Helpers\ListViewColumnSorter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -17,6 +17,7 @@ using PttLib.TourInfo;
 using WordPressSharp;
 using WordPressSharp.Models;
 using WordpressScraper.Dal;
+using WordpressScraper.Ftp;
 using WordpressScraper.Helpers;
 
 namespace WindowsFormsApplication1
