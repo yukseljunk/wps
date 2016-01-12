@@ -145,8 +145,8 @@ namespace WordpressScraper
 
         private void btnTestFtpConnection_Click(object sender, EventArgs e)
         {
-            var ftp = new Ftp();
-            string result = ftp.TestConnection(FtpConfiguration);
+            var ftp = new Ftp(FtpConfiguration);
+            string result = ftp.TestConnection();
             if (string.IsNullOrEmpty(result))
             {
                 MessageBox.Show("Successfull!");
@@ -155,43 +155,7 @@ namespace WordpressScraper
             MessageBox.Show("Failed: " + result);
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            saveSettings.Filter = "Xml files (*.xml)|*.xml|All files (*.*)|*.*";
-            saveSettings.FilterIndex = 1;
-            saveSettings.RestoreDirectory = true;
-            saveSettings.FileName = "";
-
-            if (saveSettings.ShowDialog() != DialogResult.OK) return;
-            if (string.IsNullOrEmpty(saveSettings.FileName)) return;
-
-            var options = new ProgramOptions()
-            {
-                BlogUrl = txtBlogUrl.Text,
-                BlogUser = txtUserName.Text,
-                BlogPassword = txtPassword.Text,
-                DatabaseUrl = txtMySqlIp.Text,
-                DatabaseName = txtMySqlDatabase.Text,
-                DatabaseUser = txtMysqlUser.Text,
-                DatabasePassword = txtMySqlPass.Text,
-                FtpUrl = txtFtpUrl.Text,
-                FtpUser = txtFtpUserName.Text,
-                FtpPassword = txtFtpPassword.Text,
-                ProxyAddress = txtProxyIp.Text,
-                ProxyPort = (int)numProxyPort.Value,
-                UseProxy = chkUseProxy.Checked
-            };
-
-            var xmlSerializer = new XmlSerializer();
-            xmlSerializer.Serialize(saveSettings.FileName, options);
-        }
-
-        private void btnLoadSettings_Click(object sender, EventArgs e)
-        {
-
-           
-        }
-
+       
         private void lstTypes_SelectedIndexChanged(object sender, EventArgs e)
         {
             foreach (var panel in _panels)
@@ -246,5 +210,7 @@ namespace WordpressScraper
             var options = programOptionsFactory.Get(openSettingFile.FileName);
             FillValues(options);
         }
+
+        
     }
 }
