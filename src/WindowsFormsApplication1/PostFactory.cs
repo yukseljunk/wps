@@ -17,6 +17,7 @@ using PttLib.TourInfo;
 using WordPressSharp;
 using WordPressSharp.Models;
 using WordpressScraper.Dal;
+using WordpressScraper.Ftp;
 using WordpressScraper.Helpers;
 
 namespace WindowsFormsApplication1
@@ -39,6 +40,7 @@ namespace WindowsFormsApplication1
         private readonly int _mergeSize;
         private IList<int> _userIds;
         private string _ftpDir;
+        private IFtp _ftp;
 
         #endregion
 
@@ -89,7 +91,7 @@ namespace WindowsFormsApplication1
         private const string ImagesDir = "temp";
 
         public PostFactory(WordPressSiteConfig siteConfig,
-            FtpConfig ftpConfiguration,
+            IFtp ftp,
             BlogCache blogCache,
             Dal dal,
             string blogUrl,
@@ -101,7 +103,7 @@ namespace WindowsFormsApplication1
             int mergeSize = 600)
         {
             _siteConfig = siteConfig;
-            _ftpConfiguration = ftpConfiguration;
+            _ftp = ftp;
             _blogCache = blogCache;
             _dal = dal;
             _blogUrl = blogUrl;
@@ -116,9 +118,8 @@ namespace WindowsFormsApplication1
 
             if (useMySqlFtpWay)
             {
-                var ftp = new Ftp();
                 _ftpDir = "wp-content/uploads/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
-                ftp.MakeFtpDir(_ftpConfiguration.Url, _ftpDir, _ftpConfiguration.UserName, _ftpConfiguration.Password);
+                _ftp.MakeFtpDir(_ftpDir);
             }
             Directory.CreateDirectory(ImagesDir);
 
@@ -230,7 +231,7 @@ namespace WindowsFormsApplication1
             Logger.LogProcess(string.Format("CreatePosts coming minWordCount:{0} for {1} items", minWordCount, items.Count));
             var itemIndex = 0;
             var itemCount = items.Count;
-            
+
             var mainQueue = new Queue<Queue<Item>>();
             var subQueue = new Queue<Item>();
             Queue<Item> lastQueue = null;
@@ -238,7 +239,7 @@ namespace WindowsFormsApplication1
             for (int i = 0; i < items.Count; i++)
             {
                 var item = items[i];
-                Logger.LogProcess(string.Format("Item in the loop '{0}' with {1} words", item.Title , item.WordCount));
+                Logger.LogProcess(string.Format("Item in the loop '{0}' with {1} words", item.Title, item.WordCount));
                 itemIndex++;
                 item.PostId = int.MinValue;
 
@@ -277,14 +278,14 @@ namespace WindowsFormsApplication1
 
                     subQueue.Enqueue(item);
                     Logger.LogProcess(string.Format("Item '{0}' is smaller than wordcount:{1}, adding to mainqueue sub queue, size of {2} with total word count {3}", item.Title, item.WordCount, subQueue.Count, subQueue.Sum(it => it.WordCount)));
-                    
+
                     if (subQueue.Sum(it => it.WordCount) >= minWordCount)
                     {
                         Logger.LogProcess(string.Format("Subqueue word count sum '{0}' is bigger than min wordcount:{1}, adding to mainqueue", subQueue.Sum(it => it.WordCount), minWordCount));
                         var q = CloneQueue(subQueue);
 
                         Logger.LogProcess(string.Format("Cloned the Subqueue, item count {1} and word count sum '{0}' adding to mainqueue", q.Sum(it => it.WordCount), q.Count));
-                        
+
                         mainQueue.Enqueue(q);
                         lastQueue = q;
                         subQueue.Clear();
@@ -321,7 +322,7 @@ namespace WindowsFormsApplication1
             {
                 var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
                 Logger.LogProcess(string.Format("Main queue has {0} items", mainQueue.Count));
-                
+
                 foreach (var qi in mainQueue)
                 {
                     if (qi.Count == 0)
@@ -334,7 +335,7 @@ namespace WindowsFormsApplication1
 
                     var itemsToMerge = qi.Aggregate("", (current, sqi) => current + (sqi.Title + ","));
 
-                    Logger.LogProcess("Merging: "+ itemsToMerge);
+                    Logger.LogProcess("Merging: " + itemsToMerge);
 
                     var postId = CreateMerged(qi.ToList(), authorId);
                     var id = "";
@@ -470,7 +471,6 @@ namespace WindowsFormsApplication1
         {
             var converterFunctions = new ConverterFunctions();
             var imageDal = new ImageDal(_dal);
-            var ftp = new Ftp();
             var imageIndex = 1;
             IList<UploadResult> imageUploads = new List<UploadResult>();
             var imagePosts = new List<ImagePost>();
@@ -504,10 +504,8 @@ namespace WindowsFormsApplication1
                 var thumbnailUrl = String.Empty;
                 if (_useMySqlFtpWay)
                 {
-                    ftp.UploadFileFtp(imageData.Item1, _ftpConfiguration.Url + "/" + _ftpDir,
-                        _ftpConfiguration.UserName, _ftpConfiguration.Password);
-                    ftp.UploadFileFtp(imageData.Item2, _ftpConfiguration.Url + "/" + _ftpDir,
-                        _ftpConfiguration.UserName, _ftpConfiguration.Password);
+                    _ftp.UploadFileFtp(imageData.Item1, _ftpDir);
+                    _ftp.UploadFileFtp(imageData.Item2, _ftpDir);
                     uploaded = new UploadResult()
                     {
                         Url = _blogUrl + "/" + _ftpDir + "/" + imageData.Item1.Name,

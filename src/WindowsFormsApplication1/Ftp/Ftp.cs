@@ -1,30 +1,31 @@
 using System;
 using System.IO;
 using System.Net;
+using WindowsFormsApplication1;
 using PttLib.Helpers;
 using WordPressSharp.Models;
 
-namespace WindowsFormsApplication1
+namespace WordpressScraper.Ftp
 {
-    public class FtpConfig
+    public class Ftp : IFtp
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Url { get; set; }
-    }
-    
-    public class Ftp
-    {
-        public void UploadFileFtp(Data file, string ftpAddress, string username, string password)
+        private readonly FtpConfig _ftpConfiguration;
+
+        public Ftp(FtpConfig ftpConfiguration)
+        {
+            _ftpConfiguration = ftpConfiguration;
+        }
+        
+        public void UploadFileFtp(Data file, string folder)
         {
             var tryAgain = true;
             while (tryAgain)
             {
-                var request = (FtpWebRequest) WebRequest.Create("ftp://"+ftpAddress + "/" + Path.GetFileName(file.Name));
+                var request = (FtpWebRequest)WebRequest.Create("ftp://" + _ftpConfiguration.Url + "/" + folder + "/" + Path.GetFileName(file.Name));
                 try
                 {
                     request.Method = WebRequestMethods.Ftp.UploadFile;
-                    request.Credentials = new NetworkCredential(username, password);
+                    request.Credentials = new NetworkCredential(_ftpConfiguration.UserName, _ftpConfiguration.Password);
                     request.UsePassive = true;
                     request.UseBinary = true;
                     request.KeepAlive = false;
@@ -44,7 +45,7 @@ namespace WindowsFormsApplication1
                 catch (Exception exception)
                 {
                     Logger.LogExceptions(exception);
-                    if(exception.Message.Contains("Not logged in"))
+                    if (exception.Message.Contains("Not logged in"))
                     {
                         break;
                     }
@@ -60,13 +61,13 @@ namespace WindowsFormsApplication1
 
         }
 
-        public void UploadFileFtp(string filePath, string ftpAddress, string username, string password)
+        public void UploadFileFtp(string filePath, string folder)
         {
-            var request = (FtpWebRequest)WebRequest.Create("ftp://" + ftpAddress + "/" + Path.GetFileName(filePath));
+            var request = (FtpWebRequest)WebRequest.Create("ftp://" + _ftpConfiguration.Url + "/" + folder + "/" + Path.GetFileName(filePath));
             try
             {
                 request.Method = WebRequestMethods.Ftp.UploadFile;
-                request.Credentials = new NetworkCredential(username, password);
+                request.Credentials = new NetworkCredential(_ftpConfiguration.UserName, _ftpConfiguration.Password);
                 request.UsePassive = true;
                 request.UseBinary = true;
                 request.KeepAlive = false;
@@ -93,13 +94,13 @@ namespace WindowsFormsApplication1
             }
         }
 
-        public void MakeFtpDir(string ftpAddress, string pathToCreate, string username, string password)
+        public void MakeFtpDir(string pathToCreate)
         {
             FtpWebRequest reqFTP = null;
-            
+
             string[] subDirs = pathToCreate.Split('/');
 
-            string currentDir = string.Format("ftp://{0}", ftpAddress);
+            string currentDir = string.Format("ftp://{0}", _ftpConfiguration.Url);
 
             foreach (string subDir in subDirs)
             {
@@ -112,8 +113,8 @@ namespace WindowsFormsApplication1
                         reqFTP.Method = WebRequestMethods.Ftp.MakeDirectory;
                         reqFTP.UseBinary = true;
                         reqFTP.KeepAlive = false;
-                        reqFTP.Credentials = new NetworkCredential(username, password);
-                        using (FtpWebResponse response = (FtpWebResponse) reqFTP.GetResponse())
+                        reqFTP.Credentials = new NetworkCredential(_ftpConfiguration.UserName, _ftpConfiguration.Password);
+                        using (FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse())
                         {
                             using (Stream ftpStream = response.GetResponseStream())
                             {
@@ -137,10 +138,10 @@ namespace WindowsFormsApplication1
             }
         }
 
-        public string TestConnection(FtpConfig ftpConfiguration)
+        public string TestConnection()
         {
-            var request = (FtpWebRequest)WebRequest.Create("ftp://" + ftpConfiguration.Url + "/");
-            request.Credentials = new NetworkCredential(ftpConfiguration.UserName, ftpConfiguration.Password);
+            var request = (FtpWebRequest)WebRequest.Create("ftp://" + _ftpConfiguration.Url + "/");
+            request.Credentials = new NetworkCredential(_ftpConfiguration.UserName, _ftpConfiguration.Password);
             request.Method = WebRequestMethods.Ftp.ListDirectory;
             try
             {
@@ -150,7 +151,7 @@ namespace WindowsFormsApplication1
                     return "";
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 return exception.ToString();
             }

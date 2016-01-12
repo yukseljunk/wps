@@ -6,7 +6,7 @@
  * @since Hellish Simplicity 1.6
  */
 
-get_header(); ?>
+get_header('noindex'); ?>
 
 <div id="content-area">
 	<div id="site-content" role="main"><?php

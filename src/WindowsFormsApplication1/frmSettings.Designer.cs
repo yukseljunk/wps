@@ -54,8 +54,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lstTypes = new System.Windows.Forms.ListBox();
             this.pnlAll = new System.Windows.Forms.Panel();
-            this.pnlProxy = new System.Windows.Forms.Panel();
+            this.pnlMysql = new System.Windows.Forms.Panel();
+            this.pnlBlog = new System.Windows.Forms.Panel();
             this.pnlFtp = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
             this.btnTestFtpConnection = new System.Windows.Forms.Button();
             this.txtFtpPassword = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -63,19 +65,17 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txtFtpUrl = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.pnlBlog = new System.Windows.Forms.Panel();
-            this.pnlMysql = new System.Windows.Forms.Panel();
+            this.pnlProxy = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).BeginInit();
             this.pnlAll.SuspendLayout();
-            this.pnlProxy.SuspendLayout();
-            this.pnlFtp.SuspendLayout();
-            this.pnlBlog.SuspendLayout();
             this.pnlMysql.SuspendLayout();
+            this.pnlBlog.SuspendLayout();
+            this.pnlFtp.SuspendLayout();
+            this.pnlProxy.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -326,18 +326,36 @@
             this.pnlAll.Size = new System.Drawing.Size(647, 438);
             this.pnlAll.TabIndex = 63;
             // 
-            // pnlProxy
+            // pnlMysql
             // 
-            this.pnlProxy.Controls.Add(this.numProxyPort);
-            this.pnlProxy.Controls.Add(this.txtProxyIp);
-            this.pnlProxy.Controls.Add(this.chkUseProxy);
-            this.pnlProxy.Controls.Add(this.label2);
-            this.pnlProxy.Controls.Add(this.label1);
-            this.pnlProxy.Location = new System.Drawing.Point(12, 14);
-            this.pnlProxy.Name = "pnlProxy";
-            this.pnlProxy.Size = new System.Drawing.Size(291, 125);
-            this.pnlProxy.TabIndex = 62;
-            this.pnlProxy.Tag = "";
+            this.pnlMysql.Controls.Add(this.btnTestMySqlConnection);
+            this.pnlMysql.Controls.Add(this.txtMySqlIp);
+            this.pnlMysql.Controls.Add(this.txtMySqlDatabase);
+            this.pnlMysql.Controls.Add(this.label8);
+            this.pnlMysql.Controls.Add(this.lblDatabase);
+            this.pnlMysql.Controls.Add(this.label7);
+            this.pnlMysql.Controls.Add(this.txtMySqlPass);
+            this.pnlMysql.Controls.Add(this.txtMysqlUser);
+            this.pnlMysql.Controls.Add(this.label6);
+            this.pnlMysql.Location = new System.Drawing.Point(324, 169);
+            this.pnlMysql.Name = "pnlMysql";
+            this.pnlMysql.Size = new System.Drawing.Size(297, 220);
+            this.pnlMysql.TabIndex = 65;
+            this.pnlMysql.Tag = "";
+            // 
+            // pnlBlog
+            // 
+            this.pnlBlog.Controls.Add(this.txtPassword);
+            this.pnlBlog.Controls.Add(this.txtBlogUrl);
+            this.pnlBlog.Controls.Add(this.label5);
+            this.pnlBlog.Controls.Add(this.label3);
+            this.pnlBlog.Controls.Add(this.txtUserName);
+            this.pnlBlog.Controls.Add(this.label4);
+            this.pnlBlog.Location = new System.Drawing.Point(324, 14);
+            this.pnlBlog.Name = "pnlBlog";
+            this.pnlBlog.Size = new System.Drawing.Size(286, 136);
+            this.pnlBlog.TabIndex = 64;
+            this.pnlBlog.Tag = "";
             // 
             // pnlFtp
             // 
@@ -355,6 +373,15 @@
             this.pnlFtp.TabIndex = 63;
             this.pnlFtp.Tag = "";
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(29, 10);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(232, 13);
+            this.label12.TabIndex = 21;
+            this.label12.Text = "FTP account should be pointed to root directory";
+            // 
             // btnTestFtpConnection
             // 
             this.btnTestFtpConnection.Location = new System.Drawing.Point(130, 135);
@@ -363,6 +390,7 @@
             this.btnTestFtpConnection.TabIndex = 20;
             this.btnTestFtpConnection.Text = "Test FTP connection";
             this.btnTestFtpConnection.UseVisualStyleBackColor = true;
+            this.btnTestFtpConnection.Click += new System.EventHandler(this.btnTestFtpConnection_Click);
             // 
             // txtFtpPassword
             // 
@@ -416,45 +444,18 @@
             this.label11.TabIndex = 14;
             this.label11.Text = "Url";
             // 
-            // label12
+            // pnlProxy
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(29, 10);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(232, 13);
-            this.label12.TabIndex = 21;
-            this.label12.Text = "FTP account should be pointed to root directory";
-            // 
-            // pnlBlog
-            // 
-            this.pnlBlog.Controls.Add(this.txtPassword);
-            this.pnlBlog.Controls.Add(this.txtBlogUrl);
-            this.pnlBlog.Controls.Add(this.label5);
-            this.pnlBlog.Controls.Add(this.label3);
-            this.pnlBlog.Controls.Add(this.txtUserName);
-            this.pnlBlog.Controls.Add(this.label4);
-            this.pnlBlog.Location = new System.Drawing.Point(324, 14);
-            this.pnlBlog.Name = "pnlBlog";
-            this.pnlBlog.Size = new System.Drawing.Size(286, 136);
-            this.pnlBlog.TabIndex = 64;
-            this.pnlBlog.Tag = "";
-            // 
-            // pnlMysql
-            // 
-            this.pnlMysql.Controls.Add(this.btnTestMySqlConnection);
-            this.pnlMysql.Controls.Add(this.txtMySqlIp);
-            this.pnlMysql.Controls.Add(this.txtMySqlDatabase);
-            this.pnlMysql.Controls.Add(this.label8);
-            this.pnlMysql.Controls.Add(this.lblDatabase);
-            this.pnlMysql.Controls.Add(this.label7);
-            this.pnlMysql.Controls.Add(this.txtMySqlPass);
-            this.pnlMysql.Controls.Add(this.txtMysqlUser);
-            this.pnlMysql.Controls.Add(this.label6);
-            this.pnlMysql.Location = new System.Drawing.Point(324, 169);
-            this.pnlMysql.Name = "pnlMysql";
-            this.pnlMysql.Size = new System.Drawing.Size(297, 220);
-            this.pnlMysql.TabIndex = 65;
-            this.pnlMysql.Tag = "";
+            this.pnlProxy.Controls.Add(this.numProxyPort);
+            this.pnlProxy.Controls.Add(this.txtProxyIp);
+            this.pnlProxy.Controls.Add(this.chkUseProxy);
+            this.pnlProxy.Controls.Add(this.label2);
+            this.pnlProxy.Controls.Add(this.label1);
+            this.pnlProxy.Location = new System.Drawing.Point(12, 14);
+            this.pnlProxy.Name = "pnlProxy";
+            this.pnlProxy.Size = new System.Drawing.Size(291, 125);
+            this.pnlProxy.TabIndex = 62;
+            this.pnlProxy.Tag = "";
             // 
             // menuStrip1
             // 
@@ -509,14 +510,14 @@
             this.Load += new System.EventHandler(this.frmSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).EndInit();
             this.pnlAll.ResumeLayout(false);
-            this.pnlProxy.ResumeLayout(false);
-            this.pnlProxy.PerformLayout();
-            this.pnlFtp.ResumeLayout(false);
-            this.pnlFtp.PerformLayout();
-            this.pnlBlog.ResumeLayout(false);
-            this.pnlBlog.PerformLayout();
             this.pnlMysql.ResumeLayout(false);
             this.pnlMysql.PerformLayout();
+            this.pnlBlog.ResumeLayout(false);
+            this.pnlBlog.PerformLayout();
+            this.pnlFtp.ResumeLayout(false);
+            this.pnlFtp.PerformLayout();
+            this.pnlProxy.ResumeLayout(false);
+            this.pnlProxy.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

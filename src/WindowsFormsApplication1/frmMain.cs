@@ -12,6 +12,7 @@ using PttLib.Helpers;
 using WordPressSharp;
 using WordpressScraper;
 using WordpressScraper.Dal;
+using WordpressScraper.Ftp;
 using WordpressScraper.Helpers;
 
 namespace WindowsFormsApplication1
@@ -73,8 +74,8 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("In order to fix templates, please set up FTP account from settings.");
                 return;
             }
-            var ftp = new Ftp();
-            if (!string.IsNullOrEmpty(ftp.TestConnection(FtpConfiguration)))
+            var ftp = new Ftp(FtpConfiguration) ;
+            if (!string.IsNullOrEmpty(ftp.TestConnection()))
             {
                 MessageBox.Show("Cannot connect to FTP, please check your settings.");
                 return;
@@ -83,7 +84,7 @@ namespace WindowsFormsApplication1
             var ftpDir = "wp-content/themes/hellish-simplicity-child";
             try
             {
-                ftp.MakeFtpDir(FtpConfiguration.Url, ftpDir, FtpConfiguration.UserName, FtpConfiguration.Password);
+                ftp.MakeFtpDir(ftpDir);
             }
             catch (Exception exception)
             {
@@ -95,8 +96,7 @@ namespace WindowsFormsApplication1
             {
                 try
                 {
-                    ftp.UploadFileFtp(file,
-                        FtpConfiguration.Url + "/" + ftpDir, FtpConfiguration.UserName, FtpConfiguration.Password);
+                    ftp.UploadFileFtp(file, ftpDir);
                 }
                 catch (Exception exception)
                 {
@@ -348,7 +348,7 @@ namespace WindowsFormsApplication1
                 barStatus.Maximum = lvItems.SelectedItems.Count;
                 _postFactory = new PostFactory(
                         SiteConfig,
-                        FtpConfiguration,
+                        new Ftp(FtpConfiguration),
                         _blogCache,
                         dal,
                         _options.BlogUrl,
