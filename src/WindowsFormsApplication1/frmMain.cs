@@ -856,5 +856,37 @@ namespace WindowsFormsApplication1
 
         }
 
+        private void addUpdateExtraFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+            if (string.IsNullOrEmpty(_options.FtpUrl))
+            {
+                MessageBox.Show("In order to update wp files, please set up FTP account from settings.");
+                return;
+            }
+            var ftp = new Ftp(FtpConfiguration);
+            if (!string.IsNullOrEmpty(ftp.TestConnection()))
+            {
+                MessageBox.Show("Cannot connect to FTP, please check your settings.");
+                return;
+            }
+
+            var files = Directory.GetFiles("blog");
+            foreach (var file in files)
+            {
+                try
+                {
+                    ftp.UploadFileFtp(file, "");
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
+                }
+            }
+            MessageBox.Show("Finished");
+
+        }
+
     }
 }

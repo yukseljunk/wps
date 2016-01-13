@@ -127,7 +127,7 @@
     <None Include="ChildTemplates\hellish-simplicity-child\header-noindex.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="ChildTemplates\wp-image.php">
+    <None Include="blog\wp-image.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

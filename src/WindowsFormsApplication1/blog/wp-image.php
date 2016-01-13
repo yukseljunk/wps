@@ -9,6 +9,7 @@ if($thsize==""){
 //echo 'Url: ' . $url . '<br/>';
 //echo 'Filename: ' . $file. '<br/>';
 //echo 'Folder: ' . $folder . '<br/>';
+//test here
 
 if (!file_exists($folder)) {
     mkdir($folder, 0777, true);
