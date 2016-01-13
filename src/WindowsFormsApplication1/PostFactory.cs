@@ -481,7 +481,7 @@ namespace WindowsFormsApplication1
 
                 var extension = Path.GetExtension(imageUrlWithoutQs).ToLower();
                 int imageWidth, imageHeight;
-                var imageData = GetImageData(extension, imageUrl, out imageWidth, out imageHeight);
+
                 var imageName = RefineImageName(postTitle) + " " + itemImage.ContainingItem.Site.Substring(0, 2);
 
                 if (!itemImage.Primary)
@@ -495,19 +495,17 @@ namespace WindowsFormsApplication1
                     }
                 }
                 var imageStart = imageName + "-" + imageIndex;
-                imageData.Item1.Name = imageStart + extension;
-                imageData.Item2.Name = imageStart + "-" + _thumbnailSize + "x" + _thumbnailSize + extension;
+
 
 
                 UploadResult uploaded = null;
-                var thumbnailUrl = String.Empty;
-                if (_useMySqlFtpWay)
+
+                if (_options.UseRemoteDownloading)
                 {
-                    _ftp.UploadFileFtp(imageData.Item1, _ftpDir);
-                    _ftp.UploadFileFtp(imageData.Item2, _ftpDir);
+                    Tuple<int, int> sizes=MakeRemoteImageRequest(imageUrl, imageStart + extension);
                     uploaded = new UploadResult()
                     {
-                        Url = _blogUrl + "/" + _ftpDir + "/" + imageData.Item1.Name,
+                        Url = _blogUrl + "/" + _ftpDir + "/" + imageStart + extension,
                         Id = "1"
                     };
                     imagePosts.Add(new ImagePost()
@@ -518,18 +516,48 @@ namespace WindowsFormsApplication1
                         Alt = item.Title + imageIndex,
                         PublishDateTime = DateTime.Now,
                         Content = item.Title + imageIndex,
-                        Width = imageWidth,
-                        Height = imageHeight,
+                        Width = sizes.Item1,
+                        Height = sizes.Item2,
                         ThumbnailWidth = _thumbnailSize,
                         ThumbnailHeight = _thumbnailSize
                     });
                 }
                 else
                 {
-                    uploaded = client.UploadFile(imageData.Item1);
+                    var imageData = GetImageData(extension, imageUrl, out imageWidth, out imageHeight);
+                    imageData.Item1.Name = imageStart + extension;
+                    imageData.Item2.Name = imageStart + "-" + _thumbnailSize + "x" + _thumbnailSize + extension;
+
+                    if (_useMySqlFtpWay)
+                    {
+                        _ftp.UploadFileFtp(imageData.Item1, _ftpDir);
+                        _ftp.UploadFileFtp(imageData.Item2, _ftpDir);
+                        uploaded = new UploadResult()
+                                       {
+                                           Url = _blogUrl + "/" + _ftpDir + "/" + imageStart + extension,
+                                           Id = "1"
+                                       };
+                        imagePosts.Add(new ImagePost()
+                                           {
+                                               Title = converterFunctions.SeoUrl(imageStart),
+                                               Url = uploaded.Url,
+                                               Author = authorId.ToString(),
+                                               Alt = item.Title + imageIndex,
+                                               PublishDateTime = DateTime.Now,
+                                               Content = item.Title + imageIndex,
+                                               Width = imageWidth,
+                                               Height = imageHeight,
+                                               ThumbnailWidth = _thumbnailSize,
+                                               ThumbnailHeight = _thumbnailSize
+                                           });
+                    }
+                    else
+                    {
+                        uploaded = client.UploadFile(imageData.Item1);
+                    }
                 }
 
-                thumbnailUrl = string.Format("{0}/{1}/{2}-{3}-{4}x{4}{5}", _blogUrl, _ftpDir, imageName,
+                var thumbnailUrl = string.Format("{0}/{1}/{2}-{3}-{4}x{4}{5}", _blogUrl, _ftpDir, imageName,
                     imageIndex, _thumbnailSize, extension);
                 imageUploads.Add(uploaded);
                 itemImage.NewSource = thumbnailUrl;
@@ -545,6 +573,20 @@ namespace WindowsFormsApplication1
                 imageUploads[i].Id = imageIds[i].ToString();
             }
             return imageUploads;
+        }
+
+        private Tuple<int, int> MakeRemoteImageRequest(string imageUrl, string fileName)
+        {
+            var result = "";
+            var url = string.Format("{0}/wp-image.php?url={1}&file={2}&folder={3}&thsize={4}",_options.BlogUrl,imageUrl,fileName,_ftpDir,_thumbnailSize);
+            using (WebClient webClient = new WebClient())
+            {
+                result=webClient.DownloadString(url);
+                result = result.Replace("\n", "").Replace("\r", "");
+            }
+            if (string.IsNullOrEmpty(result)) return null;
+            var parsed = result.Split(new string[] {"x"}, StringSplitOptions.RemoveEmptyEntries);
+            return new Tuple<int, int>(int.Parse(parsed[0]), int.Parse(parsed[1]));
         }
 
         /// <summary>
@@ -631,6 +673,15 @@ namespace WindowsFormsApplication1
             return postTitle;
         }
 
+        /// <summary>
+        /// download image, find original width and height, check _maxImagedimension and resize accordingly
+        /// create thumbnail and return bits of these 2 images
+        /// </summary>
+        /// <param name="extension"></param>
+        /// <param name="imageUrl"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
         private Tuple<Data, Data> GetImageData(string extension, string imageUrl, out int width, out int height)
         {
             var tempImageFileName = ImagesDir + "/" + "temp" + extension;

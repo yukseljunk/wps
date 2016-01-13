@@ -36,6 +36,8 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("NonExactContentContainsKeywordScore", numNEContentContainsKeyword.Value.ToString()));
             settings.Add(new Tuple<string, string>("NonExactKeywordRatioScore", numNEKeywordContentRatio.Value.ToString()));
             settings.Add(new Tuple<string, string>("TagsAsText", chkTagsAsText.Checked.ToString()));
+            settings.Add(new Tuple<string, string>("UseRemoteDownloading", chkUseRemoteDownloading.Checked.ToString()));
+            
 
             ConfigurationHelper.UpdateSettings(settings);
             this.Dispose();
@@ -86,6 +88,7 @@ namespace WordpressScraper
             numNETitleContainsKeyword.Value = options.NonExactTitleContainsKeywordScore;
             numNEContentContainsKeyword.Value = options.NonExactContentContainsKeywordScore;
             numNEKeywordContentRatio.Value = options.NonExactKeywordRatioScore;
+            chkUseRemoteDownloading.Checked = options.UseRemoteDownloading;
 
             toolTip.SetToolTip(lblKeywordContentRatio, "For every percentage, give this much of score");
         }

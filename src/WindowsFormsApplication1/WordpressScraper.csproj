@@ -119,11 +119,15 @@
     </Compile>
     <None Include="ChildTemplates\hellish-simplicity-child\attachment.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="ChildTemplates\hellish-simplicity-child\functions.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="ChildTemplates\hellish-simplicity-child\header-noindex.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ChildTemplates\wp-image.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

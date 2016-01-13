@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkTagsAsText = new System.Windows.Forms.CheckBox();
             this.chkScrambleLeadPosts = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -67,7 +68,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.chkTagsAsText = new System.Windows.Forms.CheckBox();
+            this.chkUseRemoteDownloading = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNEKeywordContentRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNEContentContainsKeyword)).BeginInit();
@@ -86,6 +87,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.chkUseRemoteDownloading);
             this.panel1.Controls.Add(this.chkTagsAsText);
             this.panel1.Controls.Add(this.chkScrambleLeadPosts);
             this.panel1.Controls.Add(this.label11);
@@ -125,6 +127,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(533, 455);
             this.panel1.TabIndex = 54;
+            // 
+            // chkTagsAsText
+            // 
+            this.chkTagsAsText.AutoSize = true;
+            this.chkTagsAsText.Checked = true;
+            this.chkTagsAsText.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkTagsAsText.Location = new System.Drawing.Point(27, 191);
+            this.chkTagsAsText.Name = "chkTagsAsText";
+            this.chkTagsAsText.Size = new System.Drawing.Size(153, 17);
+            this.chkTagsAsText.TabIndex = 88;
+            this.chkTagsAsText.Text = "Add tags to content as text";
+            this.chkTagsAsText.UseVisualStyleBackColor = true;
             // 
             // chkScrambleLeadPosts
             // 
@@ -548,17 +562,16 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // chkTagsAsText
+            // chkUseRemoteDownloading
             // 
-            this.chkTagsAsText.AutoSize = true;
-            this.chkTagsAsText.Checked = true;
-            this.chkTagsAsText.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTagsAsText.Location = new System.Drawing.Point(27, 191);
-            this.chkTagsAsText.Name = "chkTagsAsText";
-            this.chkTagsAsText.Size = new System.Drawing.Size(153, 17);
-            this.chkTagsAsText.TabIndex = 88;
-            this.chkTagsAsText.Text = "Add tags to content as text";
-            this.chkTagsAsText.UseVisualStyleBackColor = true;
+            this.chkUseRemoteDownloading.Checked = true;
+            this.chkUseRemoteDownloading.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkUseRemoteDownloading.Location = new System.Drawing.Point(292, 181);
+            this.chkUseRemoteDownloading.Name = "chkUseRemoteDownloading";
+            this.chkUseRemoteDownloading.Size = new System.Drawing.Size(218, 36);
+            this.chkUseRemoteDownloading.TabIndex = 89;
+            this.chkUseRemoteDownloading.Text = "Do not upload images, download them on server side";
+            this.chkUseRemoteDownloading.UseVisualStyleBackColor = true;
             // 
             // frmOptions
             // 
@@ -633,6 +646,7 @@
         private System.Windows.Forms.NumericUpDown numNETitleContainsKeyword;
         private System.Windows.Forms.CheckBox chkScrambleLeadPosts;
         private System.Windows.Forms.CheckBox chkTagsAsText;
+        private System.Windows.Forms.CheckBox chkUseRemoteDownloading;
 
     }
 }

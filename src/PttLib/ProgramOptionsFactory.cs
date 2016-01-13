@@ -42,7 +42,9 @@ namespace PttLib
 
                                   ProxyPort = Int32.Parse(System.Configuration.ConfigurationManager.AppSettings["ProxyPort"]),
                                   ProxyAddress = System.Configuration.ConfigurationManager.AppSettings["ProxyAddress"],
-                                  UseProxy = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseProxy"])
+                                  UseProxy = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseProxy"]),
+
+                                  UseRemoteDownloading = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseRemoteDownloading"])
 
                               };
             return options;

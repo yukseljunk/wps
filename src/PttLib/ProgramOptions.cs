@@ -26,6 +26,7 @@ namespace PttLib
         public string FtpUser { get; set; }
         public string FtpPassword { get; set; }
 
+        public bool UseRemoteDownloading { get; set; }
 
         public int TitleContainsKeywordScore { get; set; }
         public int TitleStartsWithKeywordScore { get; set; }
