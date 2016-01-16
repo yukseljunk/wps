@@ -27,7 +27,7 @@ namespace WordpressScraper.Dal
             return result;
         }
 
-        public int InsertUser(string displayname, string userName = "", string email = "", string userUrl = "", string passEncoded = "$P$BYvykzVw6vXRlA4jyW85HZxrCoJoE40")
+        public int InsertUser(string displayname, string blogName="mysite.com", string userName = "", string email = "", string userUrl = "", string passEncoded = "$P$BYvykzVw6vXRlA4jyW85HZxrCoJoE40")
         {
             if (string.IsNullOrEmpty(userName))
             {
@@ -36,7 +36,7 @@ namespace WordpressScraper.Dal
             }
             if (string.IsNullOrEmpty(email))
             {
-                email = userName + "@mysite.com";
+                email = userName + "@" + blogName;
             }
             if (string.IsNullOrEmpty(userUrl))
             {

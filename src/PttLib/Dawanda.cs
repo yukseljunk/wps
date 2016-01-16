@@ -38,8 +38,9 @@ namespace PttLib
             totalItemCount = 0;
 
             if (contentNode == null) return;
-
-            totalItemCount = Int32.Parse(contentNode.Attributes["data-count"].Value, NumberStyles.AllowThousands, new CultureInfo("en-US"));
+            var itemCountValue = contentNode.Attributes["data-count"].Value;
+            itemCountValue = itemCountValue.Replace(".", "").Replace(",", "");
+            totalItemCount = Int32.Parse(itemCountValue);
 
         }
 

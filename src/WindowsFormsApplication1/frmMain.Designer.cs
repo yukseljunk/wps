@@ -69,7 +69,10 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createAuthorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.fixWordpressTemplatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addUpdateExtraFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,7 +88,6 @@
             this.txtFindDuplicatePosts = new System.Windows.Forms.Button();
             this.btnScrumble = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
-            this.addUpdateExtraFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -344,6 +346,7 @@
             this.chkSites.Name = "chkSites";
             this.chkSites.Size = new System.Drawing.Size(300, 34);
             this.chkSites.TabIndex = 33;
+            this.chkSites.SelectedIndexChanged += new System.EventHandler(this.chkSites_SelectedIndexChanged);
             // 
             // chkAllPages
             // 
@@ -475,6 +478,8 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createAuthorsToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.fixWordpressTemplatesToolStripMenuItem,
             this.addUpdateExtraFilesToolStripMenuItem,
             this.optionsToolStripMenuItem});
@@ -482,12 +487,31 @@
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
+            // createAuthorsToolStripMenuItem
+            // 
+            this.createAuthorsToolStripMenuItem.Name = "createAuthorsToolStripMenuItem";
+            this.createAuthorsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.createAuthorsToolStripMenuItem.Text = "Edit Authors";
+            this.createAuthorsToolStripMenuItem.Click += new System.EventHandler(this.createAuthorsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(202, 6);
+            // 
             // fixWordpressTemplatesToolStripMenuItem
             // 
             this.fixWordpressTemplatesToolStripMenuItem.Name = "fixWordpressTemplatesToolStripMenuItem";
             this.fixWordpressTemplatesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.fixWordpressTemplatesToolStripMenuItem.Text = "Fix Wordpress Templates";
             this.fixWordpressTemplatesToolStripMenuItem.Click += new System.EventHandler(this.fixWordpressTemplatesToolStripMenuItem_Click);
+            // 
+            // addUpdateExtraFilesToolStripMenuItem
+            // 
+            this.addUpdateExtraFilesToolStripMenuItem.Name = "addUpdateExtraFilesToolStripMenuItem";
+            this.addUpdateExtraFilesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.addUpdateExtraFilesToolStripMenuItem.Text = "Add/Update Extra Files";
+            this.addUpdateExtraFilesToolStripMenuItem.Click += new System.EventHandler(this.addUpdateExtraFilesToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
@@ -647,13 +671,6 @@
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
-            // addUpdateExtraFilesToolStripMenuItem
-            // 
-            this.addUpdateExtraFilesToolStripMenuItem.Name = "addUpdateExtraFilesToolStripMenuItem";
-            this.addUpdateExtraFilesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.addUpdateExtraFilesToolStripMenuItem.Text = "Add/Update Extra Files";
-            this.addUpdateExtraFilesToolStripMenuItem.Click += new System.EventHandler(this.addUpdateExtraFilesToolStripMenuItem_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -734,6 +751,8 @@
         private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.ToolStripMenuItem fixWordpressTemplatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addUpdateExtraFilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createAuthorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 

@@ -66,6 +66,12 @@
     <Compile Include="Dal\Dal.cs" />
     <Compile Include="Dal\ImageDal.cs" />
     <Compile Include="Dal\TagDal.cs" />
+    <Compile Include="frmAuthors.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAuthors.Designer.cs">
+      <DependentUpon>frmAuthors.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmOptions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,9 @@
     <Compile Include="Dal\UserDal.cs" />
     <Compile Include="RelevanceCalculator.cs" />
     <Compile Include="SourceItemFactory.cs" />
+    <EmbeddedResource Include="frmAuthors.resx">
+      <DependentUpon>frmAuthors.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>

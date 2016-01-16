@@ -326,7 +326,6 @@ namespace WindowsFormsApplication1
 
             _stopWatch = new Stopwatch();
             _stopWatch.Start();
-            //CreateAuthors();
 
             EnDisItems(false);
 
@@ -361,28 +360,6 @@ namespace WindowsFormsApplication1
             }
 
         }
-
-        /*
-        private void CreateAuthors()
-        {
-            if (string.IsNullOrEmpty(txtAuthors.Text))
-            {
-                return;
-            }
-            var authors = txtAuthors.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            using (var dal = new Dal(MySqlConnectionString))
-            {
-                var userDal = new UserDal(dal);
-                foreach (var author in authors)
-                {
-                    if (string.IsNullOrEmpty(author.Trim()))
-                    {
-                        continue;
-                    }
-                    userDal.InsertUser(author);
-                }
-            }
-        }*/
 
         private IList<Item> ItemsFromListView(ListView.SelectedListViewItemCollection items)
         {
@@ -885,6 +862,17 @@ namespace WindowsFormsApplication1
                 }
             }
             MessageBox.Show("Finished");
+
+        }
+
+        private void createAuthorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frmAuthors = new frmAuthors();
+            frmAuthors.ShowDialog();
+        }
+
+        private void chkSites_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
 

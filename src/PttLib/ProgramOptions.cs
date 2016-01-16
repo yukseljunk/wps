@@ -1,3 +1,5 @@
+using System;
+
 namespace PttLib
 {
     public class ProgramOptions
@@ -14,6 +16,17 @@ namespace PttLib
         public bool ScrambleLeadPosts { get; set; }
 
         public string BlogUrl { get; set; }
+        public string BlogHost { get
+        {
+            var uri = new Uri(BlogUrl);
+            var result = uri.Host;
+            if(result.ToLower().StartsWith("www."))
+            {
+                result = result.Replace("www.", "");
+            }
+            return result;
+
+        }}
         public string BlogUser { get; set; }
         public string BlogPassword { get; set; }
 
