@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkUseRemoteDownloading = new System.Windows.Forms.CheckBox();
             this.chkTagsAsText = new System.Windows.Forms.CheckBox();
             this.chkScrambleLeadPosts = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -68,7 +69,6 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.chkUseRemoteDownloading = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNEKeywordContentRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNEContentContainsKeyword)).BeginInit();
@@ -127,6 +127,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(533, 455);
             this.panel1.TabIndex = 54;
+            // 
+            // chkUseRemoteDownloading
+            // 
+            this.chkUseRemoteDownloading.Checked = true;
+            this.chkUseRemoteDownloading.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkUseRemoteDownloading.Location = new System.Drawing.Point(292, 181);
+            this.chkUseRemoteDownloading.Name = "chkUseRemoteDownloading";
+            this.chkUseRemoteDownloading.Size = new System.Drawing.Size(218, 36);
+            this.chkUseRemoteDownloading.TabIndex = 89;
+            this.chkUseRemoteDownloading.Text = "Do not upload images, download them on server side";
+            this.chkUseRemoteDownloading.UseVisualStyleBackColor = true;
             // 
             // chkTagsAsText
             // 
@@ -402,7 +413,7 @@
             0,
             0});
             this.numMerge.Minimum = new decimal(new int[] {
-            100,
+            1,
             0,
             0,
             0});
@@ -414,6 +425,7 @@
             0,
             0,
             0});
+            this.numMerge.ValueChanged += new System.EventHandler(this.numMerge_ValueChanged);
             // 
             // label14
             // 
@@ -561,17 +573,6 @@
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-            // 
-            // chkUseRemoteDownloading
-            // 
-            this.chkUseRemoteDownloading.Checked = true;
-            this.chkUseRemoteDownloading.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseRemoteDownloading.Location = new System.Drawing.Point(292, 181);
-            this.chkUseRemoteDownloading.Name = "chkUseRemoteDownloading";
-            this.chkUseRemoteDownloading.Size = new System.Drawing.Size(218, 36);
-            this.chkUseRemoteDownloading.TabIndex = 89;
-            this.chkUseRemoteDownloading.Text = "Do not upload images, download them on server side";
-            this.chkUseRemoteDownloading.UseVisualStyleBackColor = true;
             // 
             // frmOptions
             // 

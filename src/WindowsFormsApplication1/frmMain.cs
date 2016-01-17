@@ -876,5 +876,31 @@ namespace WindowsFormsApplication1
 
         }
 
+        private void btnMultiplyPrice_Click(object sender, EventArgs e)
+        {
+            if(lvItems.SelectedItems.Count==0)
+            {
+                MessageBox.Show("Please select items to multiply the price!");
+                return;
+            }
+            double coeff;
+            if(!double.TryParse(txtPriceCoeff.Text,NumberStyles.AllowDecimalPoint,new CultureInfo("en-US"),  out coeff))
+            {
+                MessageBox.Show("Invalid coefficient!");
+                return;
+                
+            }
+
+
+            foreach (ListViewItem selectedItem in lvItems.SelectedItems)
+            {
+                var price = string.IsNullOrEmpty(selectedItem.SubItems[6].Text)
+                                ? 0
+                                : double.Parse(selectedItem.SubItems[6].Text, CultureInfo.InvariantCulture);
+
+                selectedItem.SubItems[6].Text = Math.Round(price * coeff, 2).ToString(new CultureInfo("en-US"));
+            }
+        }
+
     }
 }

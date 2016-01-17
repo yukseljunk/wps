@@ -317,16 +317,17 @@ namespace WindowsFormsApplication1
 
             if (mainQueue.Count > 0)
             {
-                var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
                 Logger.LogProcess(string.Format("Main queue has {0} items", mainQueue.Count));
 
                 foreach (var qi in mainQueue)
                 {
+
                     if (qi.Count == 0)
                     {
                         Logger.LogProcess("Main queue iterating, queue has 0 items");
                         continue;
                     }
+                    var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
 
                     _bw.ReportProgress(itemIndex / itemCount * 100, qi.First());
 
@@ -342,6 +343,12 @@ namespace WindowsFormsApplication1
                         _bw.ReportProgress(itemIndex / itemCount * 100, sqi);
                         if (id != "") id = "," + id;
                         id += sqi.Site + "_" + sqi.Id;
+                    }
+
+                    if (_bw.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        break;
                     }
 
                     if (_useCache)

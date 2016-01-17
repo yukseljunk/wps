@@ -100,5 +100,10 @@ namespace WordpressScraper
                 control.Text = "0";
             }
         }
+
+        private void numMerge_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

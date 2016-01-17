@@ -34,6 +34,7 @@ namespace PttLib
         {
             var item=base.GetItem(title, url, extraInfo);
             if (item == null || item.Tags == null) return item;
+
             if (item.Tags.Contains("All Products"))
             {
                 item.Tags.Remove("All Products");

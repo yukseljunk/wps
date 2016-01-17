@@ -162,6 +162,10 @@ namespace PttLib
         {
             get { return "data-full-image-href"; }
         }
+        public virtual string AlternativeImagesAttribute
+        {
+            get { return "src"; }
+        }
 
         public virtual string PriceXPath
         {
@@ -237,6 +241,14 @@ namespace PttLib
                 foreach (var image in images)
                 {
                     var imageUrl = image.Attributes[ImagesAttribute].Value;
+                    if(string.IsNullOrEmpty(imageUrl))
+                    {
+                        imageUrl = image.Attributes[AlternativeImagesAttribute].Value;
+                        if (string.IsNullOrEmpty(imageUrl))
+                        {
+                            continue;
+                        }
+                    }
                     if (!imageUrl.StartsWith("http://") && !imageUrl.StartsWith("https://"))
                     {
                         imageUrl = "http:" + (imageUrl.StartsWith("//") ? "" : "//") + imageUrl;
