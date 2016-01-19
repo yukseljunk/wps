@@ -79,6 +79,8 @@
             this.lblTotalResults = new System.Windows.Forms.Label();
             this.totalCountTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.pnlItemOps = new System.Windows.Forms.Panel();
+            this.btnMultiplyPrice = new System.Windows.Forms.Button();
+            this.txtPriceCoeff = new System.Windows.Forms.TextBox();
             this.btnDown = new System.Windows.Forms.Button();
             this.btnRelevanceScramble = new System.Windows.Forms.Button();
             this.btnNavigate = new System.Windows.Forms.Button();
@@ -88,8 +90,8 @@
             this.txtFindDuplicatePosts = new System.Windows.Forms.Button();
             this.btnScrumble = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
-            this.txtPriceCoeff = new System.Windows.Forms.TextBox();
-            this.btnMultiplyPrice = new System.Windows.Forms.Button();
+            this.publishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -481,6 +483,8 @@
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createAuthorsToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.publishToolStripMenuItem,
             this.toolStripMenuItem1,
             this.fixWordpressTemplatesToolStripMenuItem,
             this.addUpdateExtraFilesToolStripMenuItem,
@@ -570,6 +574,26 @@
             this.pnlItemOps.Name = "pnlItemOps";
             this.pnlItemOps.Size = new System.Drawing.Size(1464, 40);
             this.pnlItemOps.TabIndex = 39;
+            // 
+            // btnMultiplyPrice
+            // 
+            this.btnMultiplyPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnMultiplyPrice.Location = new System.Drawing.Point(1029, 7);
+            this.btnMultiplyPrice.Name = "btnMultiplyPrice";
+            this.btnMultiplyPrice.Size = new System.Drawing.Size(126, 23);
+            this.btnMultiplyPrice.TabIndex = 48;
+            this.btnMultiplyPrice.Text = "Multiply Price By:";
+            this.btnMultiplyPrice.UseVisualStyleBackColor = true;
+            this.btnMultiplyPrice.Click += new System.EventHandler(this.btnMultiplyPrice_Click);
+            // 
+            // txtPriceCoeff
+            // 
+            this.txtPriceCoeff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPriceCoeff.Location = new System.Drawing.Point(1161, 9);
+            this.txtPriceCoeff.Name = "txtPriceCoeff";
+            this.txtPriceCoeff.Size = new System.Drawing.Size(56, 20);
+            this.txtPriceCoeff.TabIndex = 40;
+            this.txtPriceCoeff.Text = "0.04";
             // 
             // btnDown
             // 
@@ -675,25 +699,17 @@
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
-            // txtPriceCoeff
+            // publishToolStripMenuItem
             // 
-            this.txtPriceCoeff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPriceCoeff.Location = new System.Drawing.Point(1161, 9);
-            this.txtPriceCoeff.Name = "txtPriceCoeff";
-            this.txtPriceCoeff.Size = new System.Drawing.Size(56, 20);
-            this.txtPriceCoeff.TabIndex = 40;
-            this.txtPriceCoeff.Text = "0.04";
+            this.publishToolStripMenuItem.Name = "publishToolStripMenuItem";
+            this.publishToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.publishToolStripMenuItem.Text = "Publish";
+            this.publishToolStripMenuItem.Click += new System.EventHandler(this.publishToolStripMenuItem_Click_1);
             // 
-            // btnMultiplyPrice
+            // toolStripMenuItem2
             // 
-            this.btnMultiplyPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnMultiplyPrice.Location = new System.Drawing.Point(1029, 7);
-            this.btnMultiplyPrice.Name = "btnMultiplyPrice";
-            this.btnMultiplyPrice.Size = new System.Drawing.Size(126, 23);
-            this.btnMultiplyPrice.TabIndex = 48;
-            this.btnMultiplyPrice.Text = "Multiply Price By:";
-            this.btnMultiplyPrice.UseVisualStyleBackColor = true;
-            this.btnMultiplyPrice.Click += new System.EventHandler(this.btnMultiplyPrice_Click);
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(202, 6);
             // 
             // frmMain
             // 
@@ -780,6 +796,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.Button btnMultiplyPrice;
         private System.Windows.Forms.TextBox txtPriceCoeff;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem publishToolStripMenuItem;
     }
 }
 

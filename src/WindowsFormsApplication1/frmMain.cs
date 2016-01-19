@@ -902,5 +902,13 @@ namespace WindowsFormsApplication1
             }
         }
 
+  
+
+        private void publishToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            var frmPublish = new frmPublish();
+            frmPublish.ShowDialog();
+        }
+
     }
 }
