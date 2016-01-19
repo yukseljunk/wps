@@ -78,6 +78,12 @@
     <Compile Include="frmOptions.Designer.cs">
       <DependentUpon>frmOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmPublish.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPublish.Designer.cs">
+      <DependentUpon>frmPublish.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,14 +110,14 @@
     <Compile Include="Dal\UserDal.cs" />
     <Compile Include="RelevanceCalculator.cs" />
     <Compile Include="SourceItemFactory.cs" />
-    <EmbeddedResource Include="frmAuthors.resx">
-      <DependentUpon>frmAuthors.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmOptions.resx">
       <DependentUpon>frmOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPublish.resx">
+      <DependentUpon>frmPublish.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettings.resx">
       <DependentUpon>frmSettings.cs</DependentUpon>
