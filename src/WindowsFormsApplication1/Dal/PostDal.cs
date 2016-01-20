@@ -18,7 +18,33 @@ namespace WordpressScraper.Dal
             _dal = dal;
         }
 
-        public IList<Post> GetPosts(PostOrder order = PostOrder.NewestFirst, int limit=100, bool onlyDraft = true)
+        public Post GetPost(int id)
+        {
+            var sql = "SELECT P.*,U.display_name FROM wp_posts P INNER JOIN wp_users U ON P.post_author = U.ID where P.ID= " + id;
+            var data = _dal.GetData(sql);
+            if (data.Tables.Count == 0) { return null; }
+            if (data.Tables[0].Rows.Count == 0) { return null; }
+            return GetPostFromDataRow(data.Tables[0].Rows[0]);
+        }
+
+        public IList<Post> GetPosts(IList<int> ids)
+        {
+            var sql = "SELECT P.*,U.display_name FROM wp_posts P INNER JOIN wp_users U ON P.post_author = U.ID where P.ID in(" + string.Join(",", ids) + ")";
+            var data = _dal.GetData(sql);
+            if (data.Tables.Count == 0) { return null; }
+            if (data.Tables[0].Rows.Count == 0) { return null; }
+            var result = new List<Post>();
+            foreach (DataRow row in data.Tables[0].Rows)
+            {
+                result.Add(
+                    GetPostFromDataRow(row)
+                );
+            }
+            return result;
+        }
+
+
+        public IList<Post> GetPosts(PostOrder order = PostOrder.NewestFirst, int limit = 100, bool onlyDraft = true)
         {
             var sql = "SELECT P.*,U.display_name FROM wp_posts P INNER JOIN wp_users U ON P.post_author = U.ID ";
             if (onlyDraft)
@@ -38,7 +64,7 @@ namespace WordpressScraper.Dal
                     break;
 
             }
-            sql += " LIMIT 0,"+limit;
+            sql += " LIMIT 0," + limit;
 
             var data = _dal.GetData(sql);
             if (data.Tables.Count == 0) { return null; }
@@ -47,27 +73,40 @@ namespace WordpressScraper.Dal
             foreach (DataRow row in data.Tables[0].Rows)
             {
                 result.Add(
-                    new Post()
-                    {
-                        Id = row["ID"].ToString(),
-                        Title = row["post_title"].ToString(),
-                        PublishDateTime = DateTime.Parse(row["post_date"].ToString(), new CultureInfo("en-US")),
-                        Content = row["post_content"].ToString(),
-                        Status = row["post_status"].ToString(),
-                        Name = row["post_name"].ToString(),
-                        Url = row["guid"].ToString(),
-                        PostType = row["post_type"].ToString(),
-                        Author = row["display_name"].ToString()
-                    }
+                    GetPostFromDataRow(row)
                 );
             }
             return result;
         }
 
+        private static Post GetPostFromDataRow(DataRow row)
+        {
+            return new Post()
+            {
+                Id = row["ID"].ToString(),
+                Title = row["post_title"].ToString(),
+                PublishDateTime = DateTime.Parse(row["post_date"].ToString(), new CultureInfo("en-US")),
+                Content = row["post_content"].ToString(),
+                Status = row["post_status"].ToString(),
+                Name = row["post_name"].ToString(),
+                Url = row["guid"].ToString(),
+                PostType = row["post_type"].ToString(),
+                Author = row["display_name"].ToString()
+            };
+        }
+
         public void PublishPost(Post post)
         {
-            var sql = string.Format("Update wp_posts set post_status='publish',post_date=NOW() where ID={0}", post.Id);
+            var converterFunctions = new ConverterFunctions();
+            var postName = converterFunctions.SeoUrl(post.Title.Replace("-", " "));
+            var sql = string.Format(
+                "Update wp_posts set post_status='publish',post_date=NOW(),post_date_gmt=NOW(),post_modified=NOW(),post_modified_gmt=NOW(),post_name='{1}' where ID={0};" +
+                "Insert into wp_term_relationships(object_id,term_taxonomy_id,term_order) values({0}, 1,0)",
+                post.Id,
+                postName.EscapeSql()
+                );
             _dal.ExecuteNonQuery(sql);
+
         }
 
         public int InsertPost(Post post)

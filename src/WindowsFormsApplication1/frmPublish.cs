@@ -49,7 +49,12 @@ namespace WordpressScraper
             var posts = _posts;
             if (_posts == null)
             {
-                posts = postDal.GetPosts((PostOrder)cbCriteria.SelectedIndex, (int)numNumberOfPosts.Value);
+                posts = postDal.GetPosts((PostOrder) cbCriteria.SelectedIndex, (int) numNumberOfPosts.Value);
+            }
+            else
+            {
+                posts = postDal.GetPosts(_posts.Select(p => int.Parse(p.Id)).ToList());
+
             }
             if (posts == null)
             {
