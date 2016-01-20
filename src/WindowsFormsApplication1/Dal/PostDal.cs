@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Text;
 using PttLib.Helpers;
 using PttLib.TourInfo;
@@ -15,6 +17,59 @@ namespace WordpressScraper.Dal
         {
             _dal = dal;
         }
+
+        public IList<Post> GetPosts(PostOrder order = PostOrder.NewestFirst, int limit=100, bool onlyDraft = true)
+        {
+            var sql = "SELECT P.*,U.display_name FROM wp_posts P INNER JOIN wp_users U ON P.post_author = U.ID ";
+            if (onlyDraft)
+            {
+                sql += " where P.post_status='draft' ";
+            }
+            switch (order)
+            {
+                case PostOrder.Random:
+                    sql += " order by RAND()";
+                    break;
+                case PostOrder.NewestFirst:
+                    sql += " order by post_date DESC";
+                    break;
+                case PostOrder.OldestFirst:
+                    sql += " order by post_date ASC";
+                    break;
+
+            }
+            sql += " LIMIT 0,"+limit;
+
+            var data = _dal.GetData(sql);
+            if (data.Tables.Count == 0) { return null; }
+            if (data.Tables[0].Rows.Count == 0) { return null; }
+            var result = new List<Post>();
+            foreach (DataRow row in data.Tables[0].Rows)
+            {
+                result.Add(
+                    new Post()
+                    {
+                        Id = row["ID"].ToString(),
+                        Title = row["post_title"].ToString(),
+                        PublishDateTime = DateTime.Parse(row["post_date"].ToString(), new CultureInfo("en-US")),
+                        Content = row["post_content"].ToString(),
+                        Status = row["post_status"].ToString(),
+                        Name = row["post_name"].ToString(),
+                        Url = row["guid"].ToString(),
+                        PostType = row["post_type"].ToString(),
+                        Author = row["display_name"].ToString()
+                    }
+                );
+            }
+            return result;
+        }
+
+        public void PublishPost(Post post)
+        {
+            var sql = string.Format("Update wp_posts set post_status='publish',post_date=NOW() where ID={0}", post.Id);
+            _dal.ExecuteNonQuery(sql);
+        }
+
         public int InsertPost(Post post)
         {
             var customFieldSql = new StringBuilder();

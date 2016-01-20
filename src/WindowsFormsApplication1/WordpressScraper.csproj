@@ -65,6 +65,7 @@
     <Compile Include="BlogCache.cs" />
     <Compile Include="Dal\Dal.cs" />
     <Compile Include="Dal\ImageDal.cs" />
+    <Compile Include="Dal\PostOrder.cs" />
     <Compile Include="Dal\TagDal.cs" />
     <Compile Include="frmAuthors.cs">
       <SubType>Form</SubType>

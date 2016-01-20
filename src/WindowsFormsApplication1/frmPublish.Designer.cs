@@ -35,33 +35,34 @@
             this.label2 = new System.Windows.Forms.Label();
             this.chkCreateSlide = new System.Windows.Forms.CheckBox();
             this.pnlSlideShow = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numVideoPerPost = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numDurationForEachImage = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.numVideoWidth = new System.Windows.Forms.NumericUpDown();
-            this.numVideoHeight = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.numImagePerPost = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.numVideoHeight = new System.Windows.Forms.NumericUpDown();
+            this.numVideoWidth = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numDurationForEachImage = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numVideoPerPost = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberOfPosts)).BeginInit();
             this.pnlSlideShow.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numVideoPerPost)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numDurationForEachImage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numVideoWidth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numVideoHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numImagePerPost)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVideoHeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVideoWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDurationForEachImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVideoPerPost)).BeginInit();
             this.SuspendLayout();
             // 
             // btnPublish
             // 
-            this.btnPublish.Location = new System.Drawing.Point(253, 270);
+            this.btnPublish.Location = new System.Drawing.Point(252, 314);
             this.btnPublish.Name = "btnPublish";
             this.btnPublish.Size = new System.Drawing.Size(75, 23);
             this.btnPublish.TabIndex = 0;
@@ -106,8 +107,8 @@
             this.cbCriteria.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCriteria.FormattingEnabled = true;
             this.cbCriteria.Items.AddRange(new object[] {
-            "First",
-            "Last",
+            "Newest",
+            "Oldest",
             "Random"});
             this.cbCriteria.Location = new System.Drawing.Point(80, 30);
             this.cbCriteria.Name = "cbCriteria";
@@ -159,161 +160,6 @@
             this.pnlSlideShow.Size = new System.Drawing.Size(302, 160);
             this.pnlSlideShow.TabIndex = 6;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 15);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "1 video from each ";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(253, 15);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "posts";
-            // 
-            // numVideoPerPost
-            // 
-            this.numVideoPerPost.Location = new System.Drawing.Point(179, 13);
-            this.numVideoPerPost.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numVideoPerPost.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numVideoPerPost.Name = "numVideoPerPost";
-            this.numVideoPerPost.Size = new System.Drawing.Size(68, 20);
-            this.numVideoPerPost.TabIndex = 6;
-            this.numVideoPerPost.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(15, 69);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(132, 13);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Duration for a single image";
-            // 
-            // numDurationForEachImage
-            // 
-            this.numDurationForEachImage.Location = new System.Drawing.Point(179, 67);
-            this.numDurationForEachImage.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numDurationForEachImage.Name = "numDurationForEachImage";
-            this.numDurationForEachImage.Size = new System.Drawing.Size(68, 20);
-            this.numDurationForEachImage.TabIndex = 8;
-            this.numDurationForEachImage.Value = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(253, 69);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(24, 13);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "sec";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(15, 95);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(65, 13);
-            this.label7.TabIndex = 10;
-            this.label7.Text = "Video Width";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(15, 124);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(68, 13);
-            this.label8.TabIndex = 11;
-            this.label8.Text = "Video Height";
-            // 
-            // numVideoWidth
-            // 
-            this.numVideoWidth.Location = new System.Drawing.Point(179, 93);
-            this.numVideoWidth.Maximum = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
-            this.numVideoWidth.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.numVideoWidth.Name = "numVideoWidth";
-            this.numVideoWidth.Size = new System.Drawing.Size(68, 20);
-            this.numVideoWidth.TabIndex = 12;
-            this.numVideoWidth.Value = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            // 
-            // numVideoHeight
-            // 
-            this.numVideoHeight.Location = new System.Drawing.Point(179, 119);
-            this.numVideoHeight.Maximum = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
-            this.numVideoHeight.Minimum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.numVideoHeight.Name = "numVideoHeight";
-            this.numVideoHeight.Size = new System.Drawing.Size(68, 20);
-            this.numVideoHeight.TabIndex = 13;
-            this.numVideoHeight.Value = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(253, 100);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(18, 13);
-            this.label9.TabIndex = 14;
-            this.label9.Text = "px";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(253, 126);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(18, 13);
-            this.label10.TabIndex = 15;
-            this.label10.Text = "px";
-            // 
             // numImagePerPost
             // 
             this.numImagePerPost.Location = new System.Drawing.Point(180, 40);
@@ -354,11 +200,175 @@
             this.label12.TabIndex = 16;
             this.label12.Text = "# of images From each post";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(253, 126);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(18, 13);
+            this.label10.TabIndex = 15;
+            this.label10.Text = "px";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(253, 100);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(18, 13);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "px";
+            // 
+            // numVideoHeight
+            // 
+            this.numVideoHeight.Location = new System.Drawing.Point(179, 119);
+            this.numVideoHeight.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.numVideoHeight.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numVideoHeight.Name = "numVideoHeight";
+            this.numVideoHeight.Size = new System.Drawing.Size(68, 20);
+            this.numVideoHeight.TabIndex = 13;
+            this.numVideoHeight.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            // 
+            // numVideoWidth
+            // 
+            this.numVideoWidth.Location = new System.Drawing.Point(179, 93);
+            this.numVideoWidth.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.numVideoWidth.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numVideoWidth.Name = "numVideoWidth";
+            this.numVideoWidth.Size = new System.Drawing.Size(68, 20);
+            this.numVideoWidth.TabIndex = 12;
+            this.numVideoWidth.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(15, 124);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(68, 13);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "Video Height";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 95);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(65, 13);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "Video Width";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(253, 69);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(24, 13);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "sec";
+            // 
+            // numDurationForEachImage
+            // 
+            this.numDurationForEachImage.Location = new System.Drawing.Point(179, 67);
+            this.numDurationForEachImage.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numDurationForEachImage.Name = "numDurationForEachImage";
+            this.numDurationForEachImage.Size = new System.Drawing.Size(68, 20);
+            this.numDurationForEachImage.TabIndex = 8;
+            this.numDurationForEachImage.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(15, 69);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(132, 13);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "Duration for a single image";
+            // 
+            // numVideoPerPost
+            // 
+            this.numVideoPerPost.Location = new System.Drawing.Point(179, 13);
+            this.numVideoPerPost.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numVideoPerPost.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numVideoPerPost.Name = "numVideoPerPost";
+            this.numVideoPerPost.Size = new System.Drawing.Size(68, 20);
+            this.numVideoPerPost.TabIndex = 6;
+            this.numVideoPerPost.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(253, 15);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(32, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "posts";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(15, 15);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "1 video from each ";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Location = new System.Drawing.Point(26, 272);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(303, 39);
+            this.lblStatus.TabIndex = 7;
+            this.lblStatus.Text = "Status:";
+            // 
             // frmPublish
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(340, 318);
+            this.ClientSize = new System.Drawing.Size(341, 349);
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pnlSlideShow);
             this.Controls.Add(this.chkCreateSlide);
             this.Controls.Add(this.label2);
@@ -375,11 +385,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numNumberOfPosts)).EndInit();
             this.pnlSlideShow.ResumeLayout(false);
             this.pnlSlideShow.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numVideoPerPost)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numDurationForEachImage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numVideoWidth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numVideoHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numImagePerPost)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVideoHeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVideoWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numDurationForEachImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numVideoPerPost)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -409,5 +419,6 @@
         private System.Windows.Forms.NumericUpDown numImagePerPost;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblStatus;
     }
 }
