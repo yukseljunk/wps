@@ -14,6 +14,7 @@ using WordpressScraper;
 using WordpressScraper.Dal;
 using WordpressScraper.Ftp;
 using WordpressScraper.Helpers;
+using WordPressSharp.Models;
 
 namespace WindowsFormsApplication1
 {
@@ -74,7 +75,7 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("In order to fix templates, please set up FTP account from settings.");
                 return;
             }
-            var ftp = new Ftp(FtpConfiguration) ;
+            var ftp = new Ftp(FtpConfiguration);
             if (!string.IsNullOrEmpty(ftp.TestConnection()))
             {
                 MessageBox.Show("Cannot connect to FTP, please check your settings.");
@@ -878,17 +879,17 @@ namespace WindowsFormsApplication1
 
         private void btnMultiplyPrice_Click(object sender, EventArgs e)
         {
-            if(lvItems.SelectedItems.Count==0)
+            if (lvItems.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Please select items to multiply the price!");
                 return;
             }
             double coeff;
-            if(!double.TryParse(txtPriceCoeff.Text,NumberStyles.AllowDecimalPoint,new CultureInfo("en-US"),  out coeff))
+            if (!double.TryParse(txtPriceCoeff.Text, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out coeff))
             {
                 MessageBox.Show("Invalid coefficient!");
                 return;
-                
+
             }
 
 
@@ -902,11 +903,38 @@ namespace WindowsFormsApplication1
             }
         }
 
-  
+
 
         private void publishToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             var frmPublish = new frmPublish();
+            frmPublish.ShowDialog();
+        }
+
+
+        private void btnPublish_Click(object sender, EventArgs e)
+        {
+            var posts = new List<Post>();
+            foreach (ListViewItem selectedItem in lvItems.SelectedItems)
+            {
+                var postId = selectedItem.SubItems[PostIdColumnIndex].Text;
+                if (!string.IsNullOrEmpty(postId))
+                {
+                    posts.Add(new Post()
+                    {
+                        Id = postId,
+                        Title = selectedItem.SubItems[3].Text
+                    });
+                }
+            }
+            if (posts.Count == 0)
+            {
+                MessageBox.Show("Select the items already inserted as draft, to publish them");
+                return;
+            }
+
+            var frmPublish = new frmPublish();
+            frmPublish.Posts = posts;
             frmPublish.ShowDialog();
         }
 

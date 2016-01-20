@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PttLib;
 using WordpressScraper.Dal;
+using WordPressSharp.Models;
 
 namespace WordpressScraper
 {
     public partial class frmPublish : Form
     {
         private ProgramOptions _options;
+        private IList<Post> _posts;
 
         public frmPublish()
         {
@@ -29,19 +31,38 @@ namespace WordpressScraper
             }
         }
 
+        public IList<Post> Posts
+        {
+            get { return _posts; }
+            set
+            {
+                _posts = value;
+            }
+        }
+
         private void btnPublish_Click(object sender, EventArgs e)
         {
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
 
             var postDal = new PostDal(new Dal.Dal(MySqlConnectionString));
-            var posts = postDal.GetPosts((PostOrder)cbCriteria.SelectedIndex, (int)numNumberOfPosts.Value);
+            var posts = _posts;
+            if (_posts == null)
+            {
+                posts = postDal.GetPosts((PostOrder)cbCriteria.SelectedIndex, (int)numNumberOfPosts.Value);
+            }
+            if (posts == null)
+            {
+                return;
+            }
+
             foreach (var post in posts)
             {
                 lblStatus.Text = string.Format("Publishing '{0}'", post.Title);
                 Application.DoEvents();
                 postDal.PublishPost(post);
             }
+
             lblStatus.Text = "Done";
         }
 
@@ -52,13 +73,36 @@ namespace WordpressScraper
 
         private void frmPublish_Load(object sender, EventArgs e)
         {
+            cbCriteria.Items.Clear();           
+            cbCriteria.Items.AddRange(new object[] { "Newest", "Oldest", "Random"});
             cbCriteria.SelectedIndex = 0;
             lblStatus.Text = "";
+            if (_posts != null)
+            {
+                cbCriteria.Items.Add("Selected Items");
+                cbCriteria.Enabled = false;
+                cbCriteria.SelectedIndex = 3;
+                numNumberOfPosts.Enabled = false;
+                numNumberOfPosts.Value = _posts.Count;
+            }
         }
 
         private void numNumberOfPosts_ValueChanged(object sender, EventArgs e)
         {
             numVideoPerPost.Maximum = numNumberOfPosts.Value;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.Close();
+                this.Dispose();
+            }
+            catch
+            {
+                
+            }
         }
     }
 }

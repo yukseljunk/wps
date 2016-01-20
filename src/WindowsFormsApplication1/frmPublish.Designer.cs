@@ -51,6 +51,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
+            this.btnClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberOfPosts)).BeginInit();
             this.pnlSlideShow.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numImagePerPost)).BeginInit();
@@ -62,7 +63,7 @@
             // 
             // btnPublish
             // 
-            this.btnPublish.Location = new System.Drawing.Point(252, 314);
+            this.btnPublish.Location = new System.Drawing.Point(162, 314);
             this.btnPublish.Name = "btnPublish";
             this.btnPublish.Size = new System.Drawing.Size(75, 23);
             this.btnPublish.TabIndex = 0;
@@ -109,7 +110,8 @@
             this.cbCriteria.Items.AddRange(new object[] {
             "Newest",
             "Oldest",
-            "Random"});
+            "Random",
+            "Selected Items"});
             this.cbCriteria.Location = new System.Drawing.Point(80, 30);
             this.cbCriteria.Name = "cbCriteria";
             this.cbCriteria.Size = new System.Drawing.Size(121, 21);
@@ -363,11 +365,24 @@
             this.lblStatus.TabIndex = 7;
             this.lblStatus.Text = "Status:";
             // 
+            // btnClose
+            // 
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(244, 315);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 8;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // frmPublish
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(341, 349);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pnlSlideShow);
             this.Controls.Add(this.chkCreateSlide);
@@ -420,5 +435,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Button btnClose;
     }
 }

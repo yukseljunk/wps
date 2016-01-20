@@ -70,6 +70,8 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createAuthorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.publishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.fixWordpressTemplatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addUpdateExtraFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,6 +81,7 @@
             this.lblTotalResults = new System.Windows.Forms.Label();
             this.totalCountTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.pnlItemOps = new System.Windows.Forms.Panel();
+            this.btnPublish = new System.Windows.Forms.Button();
             this.btnMultiplyPrice = new System.Windows.Forms.Button();
             this.txtPriceCoeff = new System.Windows.Forms.TextBox();
             this.btnDown = new System.Windows.Forms.Button();
@@ -90,8 +93,6 @@
             this.txtFindDuplicatePosts = new System.Windows.Forms.Button();
             this.btnScrumble = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
-            this.publishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -181,7 +182,7 @@
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(1168, 54);
+            this.btnStart.Location = new System.Drawing.Point(1299, 54);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(83, 23);
             this.btnStart.TabIndex = 4;
@@ -214,7 +215,7 @@
             this.lvItems.HideSelection = false;
             this.lvItems.Location = new System.Drawing.Point(14, 112);
             this.lvItems.Name = "lvItems";
-            this.lvItems.Size = new System.Drawing.Size(1296, 383);
+            this.lvItems.Size = new System.Drawing.Size(1427, 401);
             this.lvItems.TabIndex = 5;
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
@@ -223,7 +224,7 @@
             // btnGo
             // 
             this.btnGo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGo.Location = new System.Drawing.Point(1042, 559);
+            this.btnGo.Location = new System.Drawing.Point(1173, 577);
             this.btnGo.Name = "btnGo";
             this.btnGo.Size = new System.Drawing.Size(190, 23);
             this.btnGo.TabIndex = 8;
@@ -234,7 +235,7 @@
             // btnStop
             // 
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStop.Location = new System.Drawing.Point(1237, 559);
+            this.btnStop.Location = new System.Drawing.Point(1368, 577);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(97, 23);
             this.btnStop.TabIndex = 9;
@@ -245,7 +246,7 @@
             // btnStopScrape
             // 
             this.btnStopScrape.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStopScrape.Location = new System.Drawing.Point(1259, 55);
+            this.btnStopScrape.Location = new System.Drawing.Point(1390, 55);
             this.btnStopScrape.Name = "btnStopScrape";
             this.btnStopScrape.Size = new System.Drawing.Size(75, 23);
             this.btnStopScrape.TabIndex = 10;
@@ -256,7 +257,7 @@
             // btnGetPost
             // 
             this.btnGetPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetPost.Location = new System.Drawing.Point(273, 554);
+            this.btnGetPost.Location = new System.Drawing.Point(404, 572);
             this.btnGetPost.Name = "btnGetPost";
             this.btnGetPost.Size = new System.Drawing.Size(124, 23);
             this.btnGetPost.TabIndex = 11;
@@ -268,7 +269,7 @@
             // txtPostId
             // 
             this.txtPostId.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPostId.Location = new System.Drawing.Point(419, 556);
+            this.txtPostId.Location = new System.Drawing.Point(550, 574);
             this.txtPostId.Name = "txtPostId";
             this.txtPostId.Size = new System.Drawing.Size(118, 20);
             this.txtPostId.TabIndex = 12;
@@ -280,9 +281,9 @@
             this.lblStatus,
             this.barStatus,
             this.lblDateTime});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 588);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 606);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1367, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1498, 22);
             this.statusStrip1.TabIndex = 18;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -309,7 +310,7 @@
             // btnSetTitle
             // 
             this.btnSetTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSetTitle.Location = new System.Drawing.Point(552, 553);
+            this.btnSetTitle.Location = new System.Drawing.Point(683, 571);
             this.btnSetTitle.Name = "btnSetTitle";
             this.btnSetTitle.Size = new System.Drawing.Size(132, 23);
             this.btnSetTitle.TabIndex = 22;
@@ -333,7 +334,7 @@
             this.grpTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.grpTop.Location = new System.Drawing.Point(12, 27);
             this.grpTop.Name = "grpTop";
-            this.grpTop.Size = new System.Drawing.Size(1003, 66);
+            this.grpTop.Size = new System.Drawing.Size(1134, 66);
             this.grpTop.TabIndex = 30;
             this.grpTop.TabStop = false;
             // 
@@ -345,7 +346,7 @@
             this.chkSites.FormattingEnabled = true;
             this.chkSites.Items.AddRange(new object[] {
             "Etsy"});
-            this.chkSites.Location = new System.Drawing.Point(395, 24);
+            this.chkSites.Location = new System.Drawing.Point(526, 24);
             this.chkSites.MultiColumn = true;
             this.chkSites.Name = "chkSites";
             this.chkSites.Size = new System.Drawing.Size(300, 34);
@@ -356,7 +357,7 @@
             // 
             this.chkAllPages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAllPages.AutoSize = true;
-            this.chkAllPages.Location = new System.Drawing.Point(917, 31);
+            this.chkAllPages.Location = new System.Drawing.Point(1048, 31);
             this.chkAllPages.Name = "chkAllPages";
             this.chkAllPages.Size = new System.Drawing.Size(70, 17);
             this.chkAllPages.TabIndex = 32;
@@ -368,7 +369,7 @@
             // 
             this.lblPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPageTo.AutoSize = true;
-            this.lblPageTo.Location = new System.Drawing.Point(816, 32);
+            this.lblPageTo.Location = new System.Drawing.Point(947, 32);
             this.lblPageTo.Name = "lblPageTo";
             this.lblPageTo.Size = new System.Drawing.Size(20, 13);
             this.lblPageTo.TabIndex = 31;
@@ -378,7 +379,7 @@
             // 
             this.numPageTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPageTo.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numPageTo.Location = new System.Drawing.Point(844, 28);
+            this.numPageTo.Location = new System.Drawing.Point(975, 28);
             this.numPageTo.Maximum = new decimal(new int[] {
             500,
             0,
@@ -403,7 +404,7 @@
             // 
             this.numPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numPage.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numPage.Location = new System.Drawing.Point(743, 27);
+            this.numPage.Location = new System.Drawing.Point(874, 27);
             this.numPage.Maximum = new decimal(new int[] {
             500,
             0,
@@ -428,7 +429,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(705, 30);
+            this.label2.Location = new System.Drawing.Point(836, 30);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 28;
@@ -440,7 +441,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUrl.Location = new System.Drawing.Point(17, 31);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(368, 20);
+            this.txtUrl.Size = new System.Drawing.Size(499, 20);
             this.txtUrl.TabIndex = 27;
             // 
             // label1
@@ -460,7 +461,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1367, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1498, 24);
             this.menuStrip1.TabIndex = 36;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -499,6 +500,18 @@
             this.createAuthorsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.createAuthorsToolStripMenuItem.Text = "Edit Authors";
             this.createAuthorsToolStripMenuItem.Click += new System.EventHandler(this.createAuthorsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(202, 6);
+            // 
+            // publishToolStripMenuItem
+            // 
+            this.publishToolStripMenuItem.Name = "publishToolStripMenuItem";
+            this.publishToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.publishToolStripMenuItem.Text = "Publish";
+            this.publishToolStripMenuItem.Click += new System.EventHandler(this.publishToolStripMenuItem_Click_1);
             // 
             // toolStripMenuItem1
             // 
@@ -545,7 +558,7 @@
             // 
             this.lblTotalResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTotalResults.AutoSize = true;
-            this.lblTotalResults.Location = new System.Drawing.Point(12, 559);
+            this.lblTotalResults.Location = new System.Drawing.Point(12, 577);
             this.lblTotalResults.Name = "lblTotalResults";
             this.lblTotalResults.Size = new System.Drawing.Size(13, 13);
             this.lblTotalResults.TabIndex = 37;
@@ -559,6 +572,7 @@
             // pnlItemOps
             // 
             this.pnlItemOps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pnlItemOps.Controls.Add(this.btnPublish);
             this.pnlItemOps.Controls.Add(this.btnMultiplyPrice);
             this.pnlItemOps.Controls.Add(this.txtPriceCoeff);
             this.pnlItemOps.Controls.Add(this.btnDown);
@@ -570,15 +584,26 @@
             this.pnlItemOps.Controls.Add(this.txtFindDuplicatePosts);
             this.pnlItemOps.Controls.Add(this.btnScrumble);
             this.pnlItemOps.Controls.Add(this.btnSelectAll);
-            this.pnlItemOps.Location = new System.Drawing.Point(15, 501);
+            this.pnlItemOps.Location = new System.Drawing.Point(15, 519);
             this.pnlItemOps.Name = "pnlItemOps";
-            this.pnlItemOps.Size = new System.Drawing.Size(1464, 40);
+            this.pnlItemOps.Size = new System.Drawing.Size(1426, 46);
             this.pnlItemOps.TabIndex = 39;
+            // 
+            // btnPublish
+            // 
+            this.btnPublish.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPublish.Location = new System.Drawing.Point(1018, 13);
+            this.btnPublish.Name = "btnPublish";
+            this.btnPublish.Size = new System.Drawing.Size(126, 23);
+            this.btnPublish.TabIndex = 49;
+            this.btnPublish.Text = "Publish Selected...";
+            this.btnPublish.UseVisualStyleBackColor = true;
+            this.btnPublish.Click += new System.EventHandler(this.btnPublish_Click);
             // 
             // btnMultiplyPrice
             // 
             this.btnMultiplyPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnMultiplyPrice.Location = new System.Drawing.Point(1029, 7);
+            this.btnMultiplyPrice.Location = new System.Drawing.Point(1158, 13);
             this.btnMultiplyPrice.Name = "btnMultiplyPrice";
             this.btnMultiplyPrice.Size = new System.Drawing.Size(126, 23);
             this.btnMultiplyPrice.TabIndex = 48;
@@ -589,7 +614,7 @@
             // txtPriceCoeff
             // 
             this.txtPriceCoeff.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPriceCoeff.Location = new System.Drawing.Point(1161, 9);
+            this.txtPriceCoeff.Location = new System.Drawing.Point(1292, 14);
             this.txtPriceCoeff.Name = "txtPriceCoeff";
             this.txtPriceCoeff.Size = new System.Drawing.Size(56, 20);
             this.txtPriceCoeff.TabIndex = 40;
@@ -600,7 +625,7 @@
             this.btnDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDown.Image = ((System.Drawing.Image)(resources.GetObject("btnDown.Image")));
             this.btnDown.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.btnDown.Location = new System.Drawing.Point(304, 4);
+            this.btnDown.Location = new System.Drawing.Point(304, 10);
             this.btnDown.Name = "btnDown";
             this.btnDown.Size = new System.Drawing.Size(74, 24);
             this.btnDown.TabIndex = 47;
@@ -611,7 +636,7 @@
             // btnRelevanceScramble
             // 
             this.btnRelevanceScramble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRelevanceScramble.Location = new System.Drawing.Point(91, 3);
+            this.btnRelevanceScramble.Location = new System.Drawing.Point(91, 9);
             this.btnRelevanceScramble.Name = "btnRelevanceScramble";
             this.btnRelevanceScramble.Size = new System.Drawing.Size(129, 23);
             this.btnRelevanceScramble.TabIndex = 45;
@@ -622,7 +647,7 @@
             // btnNavigate
             // 
             this.btnNavigate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnNavigate.Location = new System.Drawing.Point(886, 7);
+            this.btnNavigate.Location = new System.Drawing.Point(886, 13);
             this.btnNavigate.Name = "btnNavigate";
             this.btnNavigate.Size = new System.Drawing.Size(126, 23);
             this.btnNavigate.TabIndex = 44;
@@ -635,7 +660,7 @@
             this.btnUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnUp.Image = ((System.Drawing.Image)(resources.GetObject("btnUp.Image")));
             this.btnUp.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.btnUp.Location = new System.Drawing.Point(226, 5);
+            this.btnUp.Location = new System.Drawing.Point(226, 11);
             this.btnUp.Name = "btnUp";
             this.btnUp.Size = new System.Drawing.Size(72, 23);
             this.btnUp.TabIndex = 46;
@@ -647,7 +672,7 @@
             // btnRemoveDuplicates
             // 
             this.btnRemoveDuplicates.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveDuplicates.Location = new System.Drawing.Point(753, 5);
+            this.btnRemoveDuplicates.Location = new System.Drawing.Point(753, 11);
             this.btnRemoveDuplicates.Name = "btnRemoveDuplicates";
             this.btnRemoveDuplicates.Size = new System.Drawing.Size(126, 23);
             this.btnRemoveDuplicates.TabIndex = 43;
@@ -658,7 +683,7 @@
             // btnRemoveSelected
             // 
             this.btnRemoveSelected.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveSelected.Location = new System.Drawing.Point(475, 5);
+            this.btnRemoveSelected.Location = new System.Drawing.Point(475, 11);
             this.btnRemoveSelected.Name = "btnRemoveSelected";
             this.btnRemoveSelected.Size = new System.Drawing.Size(126, 23);
             this.btnRemoveSelected.TabIndex = 42;
@@ -669,7 +694,7 @@
             // txtFindDuplicatePosts
             // 
             this.txtFindDuplicatePosts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtFindDuplicatePosts.Location = new System.Drawing.Point(615, 5);
+            this.txtFindDuplicatePosts.Location = new System.Drawing.Point(615, 11);
             this.txtFindDuplicatePosts.Name = "txtFindDuplicatePosts";
             this.txtFindDuplicatePosts.Size = new System.Drawing.Size(132, 23);
             this.txtFindDuplicatePosts.TabIndex = 41;
@@ -680,7 +705,7 @@
             // btnScrumble
             // 
             this.btnScrumble.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnScrumble.Location = new System.Drawing.Point(0, 3);
+            this.btnScrumble.Location = new System.Drawing.Point(0, 9);
             this.btnScrumble.Name = "btnScrumble";
             this.btnScrumble.Size = new System.Drawing.Size(85, 23);
             this.btnScrumble.TabIndex = 40;
@@ -691,7 +716,7 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSelectAll.Location = new System.Drawing.Point(384, 5);
+            this.btnSelectAll.Location = new System.Drawing.Point(384, 11);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(85, 23);
             this.btnSelectAll.TabIndex = 39;
@@ -699,23 +724,11 @@
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
-            // publishToolStripMenuItem
-            // 
-            this.publishToolStripMenuItem.Name = "publishToolStripMenuItem";
-            this.publishToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.publishToolStripMenuItem.Text = "Publish";
-            this.publishToolStripMenuItem.Click += new System.EventHandler(this.publishToolStripMenuItem_Click_1);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(202, 6);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1367, 610);
+            this.ClientSize = new System.Drawing.Size(1498, 628);
             this.Controls.Add(this.pnlItemOps);
             this.Controls.Add(this.lblTotalResults);
             this.Controls.Add(this.grpTop);
@@ -798,6 +811,7 @@
         private System.Windows.Forms.TextBox txtPriceCoeff;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem publishToolStripMenuItem;
+        private System.Windows.Forms.Button btnPublish;
     }
 }
 
