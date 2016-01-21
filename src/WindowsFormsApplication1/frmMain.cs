@@ -918,6 +918,11 @@ namespace WindowsFormsApplication1
             foreach (ListViewItem selectedItem in lvItems.SelectedItems)
             {
                 var postId = selectedItem.SubItems[PostIdColumnIndex].Text;
+                int postIdNumeric;
+                if (!Int32.TryParse(postId, out postIdNumeric))
+                {
+                    continue;
+                }
                 if (!string.IsNullOrEmpty(postId))
                 {
                     posts.Add(new Post()

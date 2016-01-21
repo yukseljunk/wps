@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PttLib;
 using WordpressScraper.Dal;
@@ -13,6 +8,9 @@ using WordPressSharp.Models;
 
 namespace WordpressScraper
 {
+    //TODO: kategori bos geliyor
+    //TODO: 3 kelimede relevancy patliyor diyor atik
+
     public partial class frmPublish : Form
     {
         private ProgramOptions _options;
