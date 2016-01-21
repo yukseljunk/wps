@@ -96,6 +96,19 @@ namespace PttLib.TourInfo
             return result.ToLower().Replace(" ", "-");
         }
 
+        public string SeoPostUrl(string input)
+        {
+            var result = input.Replace("-", " ").Replace("    ", " ").Replace("   ", " ").Replace("  ", " ");
+            result = result.Replace("ö", "o").Replace("ş", "s").Replace("ı", "i").Replace("ü", "u").Replace("ğ", "g")
+                .Replace("ç", "c").Replace("İ", "I").Replace("Ş", "S").Replace("Ğ", "G")
+                .Replace("Ü", "U").Replace("Ö", "O").Replace("Ç", "C").Replace("&", "").Replace("<", "").Replace(">", "")
+                .Replace("+", "");
+            result = Regex.Replace(result, @"[^a-z 0-9]+", "", RegexOptions.IgnoreCase);
+            result = RemoveDiacritics(result);
+            result = result.Replace("    ", " ").Replace("   ", " ").Replace("  ", " ");
+            return result.ToLower().Trim().Replace(" ", "-");
+        }
+
         public string SeoUrl(string input, int maxLength)
         {
             var seoUrl = SeoUrl(input);

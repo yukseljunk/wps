@@ -98,7 +98,7 @@ namespace WordpressScraper.Dal
         public void PublishPost(Post post)
         {
             var converterFunctions = new ConverterFunctions();
-            var postName = converterFunctions.SeoUrl(post.Title.Replace("-", " "));
+            var postName = converterFunctions.SeoPostUrl(post.Title);
             var sql = string.Format(
                 "Update wp_posts set post_status='publish',post_date=NOW(),post_date_gmt=NOW(),post_modified=NOW(),post_modified_gmt=NOW(),post_name='{1}' where ID={0};" +
                 "Insert into wp_term_relationships(object_id,term_taxonomy_id,term_order) values({0}, 1,0)",

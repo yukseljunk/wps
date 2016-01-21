@@ -10,6 +10,8 @@ namespace WordpressScraper
 {
     //TODO: kategori bos geliyor
     //TODO: 3 kelimede relevancy patliyor diyor atik
+    //TODO: title indeksleme hatali
+
 
     public partial class frmPublish : Form
     {
