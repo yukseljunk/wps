@@ -503,8 +503,6 @@ namespace WindowsFormsApplication1
                 }
                 var imageStart = imageName + "-" + imageIndex;
 
-
-
                 UploadResult uploaded = null;
 
                 if (_options.UseRemoteDownloading)
@@ -664,6 +662,7 @@ namespace WindowsFormsApplication1
         {
             var converterFunctions = new ConverterFunctions();
             var postTitle = converterFunctions.FirstNWords(item.Title, 65, true);
+            postTitle = RefineImageName(postTitle);
             if (!_blogCache.TitlesPresent(_blogUrl).Contains(postTitle)) return postTitle;
 
             var initialPostTitle = postTitle;
@@ -772,12 +771,12 @@ namespace WindowsFormsApplication1
         {
             var result = imageName;
             var invalidChars = Path.GetInvalidFileNameChars().ToList();
-            invalidChars.Add('\'');
             foreach (var invalidChar in invalidChars)
             {
                 result = result.Replace(invalidChar.ToString(), "");
                 result = result.Replace("&#" + ((int)invalidChar) + ";", "");
             }
+            result = result.Replace("&#39;", " ");
             result = result.Replace("&quot;", "");
             var rgx = new Regex("[^a-zA-Z0-9 ]");
             result = rgx.Replace(result, " ").Trim();
