@@ -769,40 +769,48 @@ namespace WindowsFormsApplication1
                 lvItems.ListViewItemSorter = lvwColumnSorter;
                 return;
             }
-            if (programOptions.ScrambleLeadPosts)
+            try
             {
-                ScrambleBlock(0, zeroRelevanceStartIndex);
+                if (programOptions.ScrambleLeadPosts)
+                {
+                    ScrambleBlock(0, zeroRelevanceStartIndex);
+                }
+                ScrambleBlock(zeroRelevanceStartIndex, lvItems.Items.Count);
+
+                var primaryPostIndex = 0;
+                var cumulativeWordCount = 0;
+                var itemBlockIndex = 0;
+                for (int i = 0; i < lvItems.Items.Count; i++)
+                {
+                    var item = lvItems.Items[i];
+                    var wordCount = int.Parse(item.SubItems[10].Text);
+                    cumulativeWordCount += wordCount;
+
+                    if (cumulativeWordCount >= mergeBlockSize)
+                    {
+                        //finish this block, start a new block
+                        primaryPostIndex = i + 1;
+                        cumulativeWordCount = 0;
+                        itemBlockIndex = 0;
+                    }
+                    else
+                    {
+                        if (zeroRelevanceStartIndex >= lvItems.Items.Count) continue; //can be break?
+
+                        //continue to this block
+                        itemBlockIndex++;
+                        var itemToMove = lvItems.Items[zeroRelevanceStartIndex];
+                        lvItems.Items.RemoveAt(zeroRelevanceStartIndex);
+                        lvItems.Items.Insert(primaryPostIndex + itemBlockIndex, itemToMove);
+                        zeroRelevanceStartIndex++;
+                    }
+
+                }
             }
-            ScrambleBlock(zeroRelevanceStartIndex, lvItems.Items.Count);
-
-            var primaryPostIndex = 0;
-            var cumulativeWordCount = 0;
-            var itemBlockIndex = 0;
-            for (int i = 0; i < lvItems.Items.Count; i++)
+            catch(Exception exception)
             {
-                var item = lvItems.Items[i];
-                var wordCount = int.Parse(item.SubItems[10].Text);
-                cumulativeWordCount += wordCount;
-
-                if (cumulativeWordCount >= mergeBlockSize)
-                {
-                    //finish this block, start a new block
-                    primaryPostIndex = i + 1;
-                    cumulativeWordCount = 0;
-                    itemBlockIndex = 0;
-                }
-                else
-                {
-                    if (zeroRelevanceStartIndex >= lvItems.Items.Count) continue; //can be break?
-
-                    //continue to this block
-                    itemBlockIndex++;
-                    var itemToMove = lvItems.Items[zeroRelevanceStartIndex];
-                    lvItems.Items.RemoveAt(zeroRelevanceStartIndex);
-                    lvItems.Items.Insert(primaryPostIndex + itemBlockIndex, itemToMove);
-                    zeroRelevanceStartIndex++;
-                }
-
+                MessageBox.Show(exception.ToString());
+                Logger.LogExceptions(exception);
             }
 
             ArrangeOrder();
