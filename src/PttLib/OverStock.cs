@@ -11,6 +11,13 @@ namespace PttLib
 {
     public class OverStock : Site
     {
+        public override int BlockSize
+        {
+            get
+            {
+                return 3;
+            }
+        }
         public override string UrlKeywordFormat
         {
             get { return "http://www.overstock.com/search?keywords={0}&searchtype=Header&resultIndex={{0}}&resultsPerPage=50&sort=Relevance&infinite=true"; }

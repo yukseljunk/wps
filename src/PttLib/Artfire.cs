@@ -12,6 +12,13 @@ namespace PttLib
             get { return "https://www.artfire.com/ext/discover/?search_term={0}&sort_by=newest&json=yup"; }
         }
 
+        public override int BlockSize
+        {
+            get
+            {
+                return 4;
+            }
+        }
         public override string Name
         {
             get

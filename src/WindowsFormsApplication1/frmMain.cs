@@ -119,12 +119,6 @@ namespace WindowsFormsApplication1
             chkSites.SetItemChecked(0, true);
         }
 
-        private void PageParsed(object sender, int e)
-        {
-            ResetBarStatus(true);
-            barStatus.Maximum = e;
-        }
-
         private static object _lock = new Object();
         private void SourceItemsGot(object sender, IList<ListViewItem> e)
         {
@@ -186,7 +180,6 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.GettingSourceItemsStopped -= GettingSourceItemsStopped;
             _sourceItemFactory.ProcessFinished -= GettingSourceItemsFinished;
             _sourceItemFactory.SourceItemGot -= SourceItemGot;
-            _sourceItemFactory.PageParsed -= PageParsed;
             _sourceItemFactory.TotalResultsFound -= TotalResultsFound;
             _sourceItemFactory.SourceItemsGot -= SourceItemsGot;
 
@@ -194,16 +187,6 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void TotalResultsFound(object sender, string e)
-        {
-            if (lblTotalResults.Text != "")
-            {
-                lblTotalResults.Text += ", ";
-            }
-            lblTotalResults.Text += e;
-            totalCountTooltip.SetToolTip(lblTotalResults, lblTotalResults.Text);
-
-        }
 
         private void GettingSourceItemsStopped(object sender, EventArgs e)
         {
@@ -248,7 +231,8 @@ namespace WindowsFormsApplication1
 
             var pageStart = (int)numPage.Value;
             var pageEnd = chkAllPages.Checked ? (int)numPageTo.Maximum : (int)numPageTo.Value;
-            barStatus.Maximum = pageEnd - pageStart;
+            ///barStatus.Maximum = pageEnd - pageStart;
+            barStatus.Maximum = 0;
             lblDateTime.Text = "";
             _stopWatch = new Stopwatch();
             _stopWatch.Start();
@@ -259,11 +243,21 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.ProcessFinished += GettingSourceItemsFinished;
             _sourceItemFactory.SourceItemGot += SourceItemGot;
             _sourceItemFactory.TotalResultsFound += TotalResultsFound;
-            _sourceItemFactory.PageParsed += PageParsed;
             _sourceItemFactory.SourceItemsGot += SourceItemsGot;
             var checkedSites = (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();
             _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count + 1);
 
+        }
+
+        private void TotalResultsFound(object sender, TotalResultsFoundEventArgs e)
+        {
+            if (lblTotalResults.Text != "")
+            {
+                lblTotalResults.Text += ", ";
+            }
+            barStatus.Maximum += e.TotalPageInRange;
+            lblTotalResults.Text += string.Format("{0}:{1}/{2}", e.Site, e.TotalPageInRange, e.TotalForKeyword);
+            totalCountTooltip.SetToolTip(lblTotalResults, lblTotalResults.Text);
         }
 
         private void ResetBarStatus(bool visible = false)

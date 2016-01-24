@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using HtmlAgilityPack;
 using PttLib.Helpers;
@@ -12,6 +13,8 @@ namespace PttLib
 {
     public class Site
     {
+        public virtual int BlockSize { get { return 5; } }
+
         protected ProgramOptions _options = null;
 
         public Site()
@@ -205,17 +208,28 @@ namespace PttLib
                            };
 
             string itemHtml = "";
-            if (_options.UseProxy)
+            var maxTry = 3;
+            var tryCount = 0;
+            while (tryCount < maxTry)
             {
-                itemHtml = WebHelper.CurlSimple(url, "text/html",
-                    new WebProxy(_options.ProxyAddress + ":" + _options.ProxyPort));
+                if (_options.UseProxy)
+                {
+                    itemHtml = WebHelper.CurlSimple(url, "text/html",
+                        new WebProxy(_options.ProxyAddress + ":" + _options.ProxyPort));
+                }
+                else
+                {
+                    itemHtml = WebHelper.CurlSimple(url);
+                }
+                if (!string.IsNullOrEmpty(itemHtml))
+                {
+                    break;
+                }
+                Thread.Sleep(TimeSpan.FromSeconds(3));
+                tryCount++;
             }
-            else
-            {
-                itemHtml = WebHelper.CurlSimple(url);
-            }
-            if (itemHtml == null) return null;
 
+            if (itemHtml == null) return null;
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(itemHtml);
 
