@@ -98,6 +98,8 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.openSettingFile = new System.Windows.Forms.OpenFileDialog();
             this.saveSettings = new System.Windows.Forms.SaveFileDialog();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.cleanupBlogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -497,6 +499,8 @@
             this.toolStripMenuItem1,
             this.fixWordpressTemplatesToolStripMenuItem,
             this.addUpdateExtraFilesToolStripMenuItem,
+            this.cleanupBlogToolStripMenuItem,
+            this.toolStripMenuItem4,
             this.optionsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -755,6 +759,18 @@
             // 
             this.openSettingFile.FileName = "openFileDialog1";
             // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(202, 6);
+            // 
+            // cleanupBlogToolStripMenuItem
+            // 
+            this.cleanupBlogToolStripMenuItem.Name = "cleanupBlogToolStripMenuItem";
+            this.cleanupBlogToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.cleanupBlogToolStripMenuItem.Text = "Cleanup Blog";
+            this.cleanupBlogToolStripMenuItem.Click += new System.EventHandler(this.cleanupBlogToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -848,6 +864,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.OpenFileDialog openSettingFile;
         private System.Windows.Forms.SaveFileDialog saveSettings;
+        private System.Windows.Forms.ToolStripMenuItem cleanupBlogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
     }
 }
 

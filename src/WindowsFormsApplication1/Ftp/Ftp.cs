@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using WindowsFormsApplication1;
 using PttLib.Helpers;
 using WordPressSharp.Models;
 
@@ -15,7 +15,93 @@ namespace WordpressScraper.Ftp
         {
             _ftpConfiguration = ftpConfiguration;
         }
-        
+
+        public string DeleteDirectory(string path)
+        {
+            var clsRequest = (FtpWebRequest)WebRequest.Create("ftp://" + _ftpConfiguration.Url + "/" + path);
+            clsRequest.Credentials = new NetworkCredential(_ftpConfiguration.UserName, _ftpConfiguration.Password);
+
+            var filesList = DirectoryListing(path);
+
+            foreach (string file in filesList)
+            {
+                if(file=="." || file==".."){continue;}
+                DeleteFile(path + file);
+            }
+
+            clsRequest.Method = WebRequestMethods.Ftp.RemoveDirectory;
+
+            string result = string.Empty;
+            using (FtpWebResponse response = (FtpWebResponse)clsRequest.GetResponse())
+            {
+                long size = response.ContentLength;
+                using (Stream datastream = response.GetResponseStream())
+                {
+                    using (StreamReader sr = new StreamReader(datastream))
+                    {
+                        result = sr.ReadToEnd();
+                        sr.Close();
+                        datastream.Close();
+                        response.Close();
+                    }
+                }
+            }
+            return result;
+        }
+
+        public List<string> DirectoryListing(string path)
+        {
+            var request = (FtpWebRequest)WebRequest.Create("ftp://" + _ftpConfiguration.Url + "/" + path);
+            request.Credentials = new NetworkCredential(_ftpConfiguration.UserName, _ftpConfiguration.Password);
+
+            request.Method = WebRequestMethods.Ftp.ListDirectory;
+            List<string> result = new List<string>();
+
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    using (StreamReader reader = new StreamReader(responseStream))
+                    {
+                        while (!reader.EndOfStream)
+                        {
+                            result.Add(reader.ReadLine());
+                        }
+
+                        reader.Close();
+                        response.Close();
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public string DeleteFile(string path)
+        {
+            FtpWebRequest clsRequest = (FtpWebRequest)WebRequest.Create("ftp://" + _ftpConfiguration.Url + "/" + path);
+            clsRequest.Credentials = new NetworkCredential(_ftpConfiguration.UserName, _ftpConfiguration.Password);
+
+            clsRequest.Method = WebRequestMethods.Ftp.DeleteFile;
+
+            string result = string.Empty;
+            using (FtpWebResponse response = (FtpWebResponse)clsRequest.GetResponse())
+            {
+                long size = response.ContentLength;
+                using (Stream datastream = response.GetResponseStream())
+                {
+                    using (StreamReader sr = new StreamReader(datastream))
+                    {
+                        result = sr.ReadToEnd();
+                        sr.Close();
+                        datastream.Close();
+                        response.Close();
+                    }
+                }
+            }
+            return result;
+        }
+
         public void UploadFileFtp(Data file, string folder)
         {
             var tryAgain = true;

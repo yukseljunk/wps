@@ -18,6 +18,14 @@ namespace WordpressScraper.Dal
             _dal = dal;
         }
 
+        public void DeleteAll()
+        {
+            var sql = "DELETE FROM wp_posts";
+            _dal.ExecuteNonQuery(sql);
+            
+
+        }
+
         public Post GetPost(int id)
         {
             var sql = "SELECT P.*,U.display_name FROM wp_posts P INNER JOIN wp_users U ON P.post_author = U.ID where P.ID= " + id;

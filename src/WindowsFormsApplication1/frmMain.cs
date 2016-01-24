@@ -1013,5 +1013,37 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private void cleanupBlogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Are you sure to want to delete ALL POSTS and IMAGES from the blog?",
+                                     "Confirm Delete!!",
+                                     MessageBoxButtons.YesNo);
+            if (confirmResult != DialogResult.Yes) return;
+
+
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+            if (string.IsNullOrEmpty(_options.FtpUrl))
+            {
+                MessageBox.Show("In order to delete images, please set up FTP account from settings.");
+                return;
+            }
+            var ftp = new Ftp(FtpConfiguration);
+            if (!string.IsNullOrEmpty(ftp.TestConnection()))
+            {
+                MessageBox.Show("Cannot connect to FTP, please check your settings.");
+                return;
+            }
+            ftp.DeleteDirectory("wp-content/uploads/2016/1/");
+
+            MessageBox.Show("Finished!");
+            return;
+            using (var dal = new Dal(MySqlConnectionString))
+            {
+                var postDal = new PostDal(dal);
+                postDal.DeleteAll();
+            }
+        }
+
     }
 }
