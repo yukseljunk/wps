@@ -125,12 +125,24 @@ namespace WindowsFormsApplication1
             barStatus.Maximum = e;
         }
 
+        private static object _lock = new Object();
         private void SourceItemsGot(object sender, IList<ListViewItem> e)
         {
-            lvItems.ListViewItemSorter = null;
-            lvItems.BeginUpdate();
-            lvItems.Items.AddRange(e.ToArray());
-            lvItems.EndUpdate();
+            lock (_lock)
+            {
+                lvItems.ListViewItemSorter = null;
+                lvItems.BeginUpdate();
+                var itemCountFirst = lvItems.Items.Count;
+                lvItems.Items.AddRange(e.ToArray());
+
+                var itemCount = lvItems.Items.Count;
+                for (var i = itemCountFirst; i < itemCount; i++)
+                {
+                    lvItems.Items[i].Text = (i + 1).ToString();
+                }
+
+                lvItems.EndUpdate();
+            }
         }
 
         private void SourceItemGot(object sender, ListViewItem e)
@@ -166,7 +178,10 @@ namespace WindowsFormsApplication1
             {
                 MessageBox.Show("Getting source items finished");
             }
-
+            _stopWatch.Stop();
+            var timeTook = _stopWatch.Elapsed.TotalMinutes.ToString("0.00");
+            lblDateTime.Text = string.Format("Took {0} mins", timeTook);
+            
             _sourceItemFactory.NoSourceFound -= NoSourceFound;
             _sourceItemFactory.GettingSourceItemsStopped -= GettingSourceItemsStopped;
             _sourceItemFactory.ProcessFinished -= GettingSourceItemsFinished;
@@ -234,6 +249,9 @@ namespace WindowsFormsApplication1
             var pageStart = (int)numPage.Value;
             var pageEnd = chkAllPages.Checked ? (int)numPageTo.Maximum : (int)numPageTo.Value;
             barStatus.Maximum = pageEnd - pageStart;
+            lblDateTime.Text = "";
+            _stopWatch = new Stopwatch();
+            _stopWatch.Start();
 
             _sourceItemFactory = new SourceItemFactory();
             _sourceItemFactory.NoSourceFound += NoSourceFound;
