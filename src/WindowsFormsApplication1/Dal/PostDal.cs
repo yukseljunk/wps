@@ -20,7 +20,13 @@ namespace WordpressScraper.Dal
 
         public void DeleteAll()
         {
-            var sql = "DELETE FROM wp_posts";
+            var sql = "DELETE FROM wp_postmeta";
+            _dal.ExecuteNonQuery(sql);
+
+            sql = "DELETE FROM wp_term_relationships";
+            _dal.ExecuteNonQuery(sql);
+
+            sql = "DELETE FROM wp_posts";
             _dal.ExecuteNonQuery(sql);
             
 

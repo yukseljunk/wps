@@ -67,6 +67,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ımportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createAuthorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,6 +78,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.fixWordpressTemplatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addUpdateExtraFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanupBlogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,13 +98,8 @@
             this.txtFindDuplicatePosts = new System.Windows.Forms.Button();
             this.btnScrumble = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ımportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.openSettingFile = new System.Windows.Forms.OpenFileDialog();
             this.saveSettings = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.cleanupBlogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -483,10 +483,29 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.exportToolStripMenuItem.Text = "Export to Excel...";
+            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            // 
+            // ımportToolStripMenuItem
+            // 
+            this.ımportToolStripMenuItem.Name = "ımportToolStripMenuItem";
+            this.ımportToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.ımportToolStripMenuItem.Text = "Import from Excel...";
+            this.ımportToolStripMenuItem.Click += new System.EventHandler(this.ımportToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(174, 6);
+            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.settingsToolStripMenuItem.Text = "Settings...";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
@@ -543,6 +562,18 @@
             this.addUpdateExtraFilesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.addUpdateExtraFilesToolStripMenuItem.Text = "Add/Update Extra Files";
             this.addUpdateExtraFilesToolStripMenuItem.Click += new System.EventHandler(this.addUpdateExtraFilesToolStripMenuItem_Click);
+            // 
+            // cleanupBlogToolStripMenuItem
+            // 
+            this.cleanupBlogToolStripMenuItem.Name = "cleanupBlogToolStripMenuItem";
+            this.cleanupBlogToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.cleanupBlogToolStripMenuItem.Text = "Cleanup Blog...";
+            this.cleanupBlogToolStripMenuItem.Click += new System.EventHandler(this.cleanupBlogToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(202, 6);
             // 
             // optionsToolStripMenuItem
             // 
@@ -736,40 +767,9 @@
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
-            // exportToolStripMenuItem
-            // 
-            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.exportToolStripMenuItem.Text = "Export to Excel...";
-            this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
-            // 
-            // ımportToolStripMenuItem
-            // 
-            this.ımportToolStripMenuItem.Name = "ımportToolStripMenuItem";
-            this.ımportToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.ımportToolStripMenuItem.Text = "Import from Excel...";
-            this.ımportToolStripMenuItem.Click += new System.EventHandler(this.ımportToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
-            // 
             // openSettingFile
             // 
             this.openSettingFile.FileName = "openFileDialog1";
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(202, 6);
-            // 
-            // cleanupBlogToolStripMenuItem
-            // 
-            this.cleanupBlogToolStripMenuItem.Name = "cleanupBlogToolStripMenuItem";
-            this.cleanupBlogToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.cleanupBlogToolStripMenuItem.Text = "Cleanup Blog";
-            this.cleanupBlogToolStripMenuItem.Click += new System.EventHandler(this.cleanupBlogToolStripMenuItem_Click);
             // 
             // frmMain
             // 

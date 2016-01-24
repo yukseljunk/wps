@@ -77,6 +77,12 @@
     <Compile Include="frmAuthors.Designer.cs">
       <DependentUpon>frmAuthors.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCleanup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCleanup.Designer.cs">
+      <DependentUpon>frmCleanup.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmOptions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +102,8 @@
       <DependentUpon>frmSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Ftp\FtpConfig.cs" />
+    <Compile Include="Ftp\FtpDirectory.cs" />
+    <Compile Include="Ftp\FtpFile.cs" />
     <Compile Include="Ftp\RemoteFtp.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Helpers\StopwordTool.cs" />
@@ -115,6 +123,9 @@
     <Compile Include="Dal\UserDal.cs" />
     <Compile Include="RelevanceCalculator.cs" />
     <Compile Include="SourceItemFactory.cs" />
+    <EmbeddedResource Include="frmCleanup.resx">
+      <DependentUpon>frmCleanup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>

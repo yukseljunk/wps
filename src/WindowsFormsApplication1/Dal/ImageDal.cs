@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using PttLib.Helpers;
-using PttLib.TourInfo;
 using WordPressSharp.Models;
 using System.IO;
 using System.Linq;
