@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using PttLib.Tours;
@@ -11,16 +12,49 @@ namespace PttLib.Helpers
 {
     public class ExcelReport
     {
-        private const string REPORT_FILE_FORMAT2 =@"..\..\reports\FiyatAnaliz_{0}.xlsx";
+        private const string REPORT_FILE_FORMAT2 = @"..\..\reports\FiyatAnaliz_{0}.xlsx";
 
         private static void CreateReportsFolder()
         {
-            var path = Path.GetFullPath(Path.Combine(Helper.AssemblyDirectory ,@"..\..\reports"));
+            var path = Path.GetFullPath(Path.Combine(Helper.AssemblyDirectory, @"..\..\reports"));
             if (Directory.Exists(path)) return;
             Directory.CreateDirectory(path);
 
         }
-     
+
+        public static void ExportFromListView(ListView listView, string path)
+        {
+            if (listView.Items.Count == 0) return;
+            var newFile = new FileInfo(path);
+
+            using (ExcelPackage package = new ExcelPackage(newFile))
+            {
+                // add a new worksheet to the empty workbook
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("DATA");
+
+                var indexor = 1;
+                foreach (ColumnHeader colHeader in listView.Columns)
+                {
+                    //Add the header
+                    worksheet.Cells[1, indexor].Value = colHeader.Text;
+                    indexor++;
+                }
+                var cursor = 2;
+                foreach (ListViewItem item in listView.Items)
+                {
+                    for (int i = 0; i < item.SubItems.Count; i++)
+                    {
+                        worksheet.Cells[cursor, i + 1].Value = item.SubItems[i].Text;
+
+                    }
+                    cursor++;
+                }
+
+                package.Save();
+
+            }
+        }
+
         public static void BuildExcelFile(List<Tour> tourList, string destination)
         {
             CreateReportsFolder();
@@ -54,10 +88,10 @@ namespace PttLib.Helpers
                 worksheet.Cells[1, 5].Value = "MEAL";
                 worksheet.Cells[1, 6].Value = "ACC";
                 worksheet.Cells[1, 7].Value = "PRICE";
-                worksheet.Cells[1, 8 ].Value = "T.O.";
-                worksheet.Cells[1, 9 ].Value = "CITY";
-                worksheet.Cells[1, 10 ].Value = "DESTINATION";
-                worksheet.Cells[1, 11 ].Value = "ISSUE DATE";
+                worksheet.Cells[1, 8].Value = "T.O.";
+                worksheet.Cells[1, 9].Value = "CITY";
+                worksheet.Cells[1, 10].Value = "DESTINATION";
+                worksheet.Cells[1, 11].Value = "ISSUE DATE";
 
                 worksheet.Cells["A1:K1"].Style.Font.Bold = true;
                 worksheet.Cells["A1:K1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -65,7 +99,7 @@ namespace PttLib.Helpers
                 worksheet.Cells["A1:K1"].Style.Fill.BackgroundColor.SetColor(Color.Gray);
 
                 var issueDate = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
-                
+
                 var fgColor = Color.Black;
                 var bgColor = Color.LightBlue;
 
@@ -82,7 +116,7 @@ namespace PttLib.Helpers
                 {
                     if (lastHotelName != item.HotelCommonName)
                     {
-                        if(curfgColor==fgColor && curbgColor==bgColor)
+                        if (curfgColor == fgColor && curbgColor == bgColor)
                         {
                             curfgColor = altfgColor;
                             curbgColor = altbgColor;
@@ -90,9 +124,9 @@ namespace PttLib.Helpers
                         else
                         {
                             curfgColor = fgColor;
-                            curbgColor = bgColor;                            
+                            curbgColor = bgColor;
                         }
-                        lastHotelName = item.HotelCommonName;                        
+                        lastHotelName = item.HotelCommonName;
                     }
 
                     worksheet.Cells[cursor, 1].Value = item.Date.ToString("dd.MM.yyyy");
@@ -105,12 +139,12 @@ namespace PttLib.Helpers
                     worksheet.Cells[cursor, 5].Value = item.Meal;
                     worksheet.Cells[cursor, 6].Value = item.ACC;
                     worksheet.Cells[cursor, 7].Value = item.Price;
-                    worksheet.Cells[cursor, 8 ].Value = item.TO;
-                    worksheet.Cells[cursor, 9 ].Value = item.City;
-                    worksheet.Cells[cursor, 10 ].Value = destination.Split(new string[] { "_" }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    worksheet.Cells[cursor, 11 ].Value = issueDate; //item.IssueDate.ToString("dd.MM.yyyy HH:mm");
+                    worksheet.Cells[cursor, 8].Value = item.TO;
+                    worksheet.Cells[cursor, 9].Value = item.City;
+                    worksheet.Cells[cursor, 10].Value = destination.Split(new string[] { "_" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    worksheet.Cells[cursor, 11].Value = issueDate; //item.IssueDate.ToString("dd.MM.yyyy HH:mm");
 
-                    worksheet.Cells["A"+cursor.ToString()+":K"+cursor.ToString()].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells["A" + cursor.ToString() + ":K" + cursor.ToString()].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     worksheet.Cells["A" + cursor.ToString() + ":K" + cursor.ToString()].Style.Font.Color.SetColor(curfgColor);
                     worksheet.Cells["A" + cursor.ToString() + ":K" + cursor.ToString()].Style.Fill.BackgroundColor.SetColor(curbgColor);
 

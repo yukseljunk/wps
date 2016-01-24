@@ -4,11 +4,36 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace PttLib.Helpers
 {
     public static class ExcelImportHelper
     {
+        public static int ImportToListView(string path, ListView listView)
+        {
+            using (var pck = new OfficeOpenXml.ExcelPackage())
+            {
+                using (var stream = File.OpenRead(path))
+                {
+                    pck.Load(stream);
+                }
+                var ws = pck.Workbook.Worksheets[1];
+                if (ws.Dimension == null) return -1;
+                for (var rowNum = 2; rowNum <= ws.Dimension.End.Row; rowNum++)
+                {
+                    var newItem=listView.Items.Add(ws.Cells[rowNum, 1].Text);
+                    for (int col = 2; col <= listView.Columns.Count; col++)
+                    {
+                        newItem.SubItems.Add(ws.Cells[rowNum, col].Text);
+                        
+                    }
+                }
+
+            }
+            return 0;
+        }
+
         public static DataTable GetDataTableFromExcel(string path, IList<string> columnsToTake, bool hasHeader = true, int sheetNumber = 0)
         {
             using (var pck = new OfficeOpenXml.ExcelPackage())
@@ -57,14 +82,14 @@ namespace PttLib.Helpers
             if (parsedCategoryNumber == null)
             {
                 var categoryName = ParsedCategoryName(hotelName);
-                if(String.IsNullOrEmpty(categoryName)) return 0;
+                if (String.IsNullOrEmpty(categoryName)) return 0;
 
-                if(!Dictionnaries.HotelCategories.ContainsValue(categoryName)) return 0;
+                if (!Dictionnaries.HotelCategories.ContainsValue(categoryName)) return 0;
                 return Dictionnaries.HotelCategories.FirstOrDefault(x => x.Value == categoryName).Key;
-                 
+
             }
 
-            return (Int32.Parse(parsedCategoryNumber.Item1)*2-3 + (parsedCategoryNumber.Item2?1:0));
+            return (Int32.Parse(parsedCategoryNumber.Item1) * 2 - 3 + (parsedCategoryNumber.Item2 ? 1 : 0));
         }
 
         private static string ParsedCategoryName(string hotelName)
@@ -86,12 +111,12 @@ namespace PttLib.Helpers
         private static Tuple<string, bool> ParsedCategoryNumber(string hotelName)
         {
             //gelen: ADORA GOLF RESORT HOTEL (5*), BELEK
-            
+
             //ilk once x*+
             var match = Regex.Match(hotelName, @"(\d)\s*\*\s*\+", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                return new Tuple<string, bool>( match.Groups[1].Value, true);
+                return new Tuple<string, bool>(match.Groups[1].Value, true);
             }
             //sonra x+*
             match = Regex.Match(hotelName, @"(\d)\s*\+\s*\*", RegexOptions.IgnoreCase);
@@ -105,8 +130,8 @@ namespace PttLib.Helpers
             {
                 return new Tuple<string, bool>(match.Groups[1].Value, false);
             }
-            
-            
+
+
             return null;
         }
     }
