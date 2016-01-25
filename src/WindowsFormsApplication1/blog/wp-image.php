@@ -2,11 +2,6 @@
 $url=htmlspecialchars($_GET["url"]);
 $file=htmlspecialchars($_GET["file"]);
 $folder=htmlspecialchars($_GET["folder"]);
-$removeImageSizeFile=$_GET["risf"];
-
-if($removeImageSizeFile=="1"){
-  unlink("image_sizes.txt");
-}
 $thsize=$_GET["thsize"];
 if($thsize==""){
  $thsize=200;
@@ -21,15 +16,12 @@ if (!file_exists($folder)) {
 }
 $finalFile=$folder.'/'.$file;
 file_put_contents($finalFile, file_get_contents($url));
-createThumbnail($finalFile,$thsize,$thsize,$file);
+createThumbnail($finalFile,$thsize,$thsize);
 
-function createThumbnail($filepath, $thumbnail_width, $thumbnail_height,$file) {
+function createThumbnail($filepath, $thumbnail_width, $thumbnail_height) {
     list($original_width, $original_height, $original_type) = getimagesize($filepath);
     echo $original_width .'x'. $original_height;
-    $txt = $file."\t".$original_width .'x'. $original_height;
-    $myfile = file_put_contents('image_sizes.txt', $txt.PHP_EOL , FILE_APPEND);
-
-   if ($original_width > $original_height) {
+    if ($original_width > $original_height) {
         $new_width = $thumbnail_width;
         $new_height = intval($original_height * $new_width / $original_width);
     } else {
