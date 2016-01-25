@@ -285,7 +285,7 @@ namespace WindowsFormsApplication1
 
         private void PostitemsQueued(DoWorkEventArgs e, Queue<Queue<Item>> mainQueue, int itemIndex, int itemCount)
         {
-            var blockSize = 3;
+            var blockSize = 1;
             while (mainQueue.Count > 0)
             {
                 Queue<Item> qi = null;
