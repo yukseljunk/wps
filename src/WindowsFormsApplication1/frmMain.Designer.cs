@@ -68,7 +68,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ımportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -476,7 +476,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exportToolStripMenuItem,
-            this.ımportToolStripMenuItem,
+            this.ImportToolStripMenuItem,
             this.toolStripMenuItem3,
             this.settingsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -490,12 +490,12 @@
             this.exportToolStripMenuItem.Text = "Export to Excel...";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
-            // ımportToolStripMenuItem
+            // ImportToolStripMenuItem
             // 
-            this.ımportToolStripMenuItem.Name = "ımportToolStripMenuItem";
-            this.ımportToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.ımportToolStripMenuItem.Text = "Import from Excel...";
-            this.ımportToolStripMenuItem.Click += new System.EventHandler(this.ımportToolStripMenuItem_Click);
+            this.ImportToolStripMenuItem.Name = "ImportToolStripMenuItem";
+            this.ImportToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.ImportToolStripMenuItem.Text = "Import from Excel...";
+            this.ImportToolStripMenuItem.Click += new System.EventHandler(this.ImportToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -593,7 +593,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -860,7 +860,7 @@
         private System.Windows.Forms.ToolStripMenuItem publishToolStripMenuItem;
         private System.Windows.Forms.Button btnPublish;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ımportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ImportToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.OpenFileDialog openSettingFile;
         private System.Windows.Forms.SaveFileDialog saveSettings;

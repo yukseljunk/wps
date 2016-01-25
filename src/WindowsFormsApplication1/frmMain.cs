@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using PttLib;
 using PttLib.Helpers;
@@ -552,6 +553,7 @@ namespace WindowsFormsApplication1
 
         private void lvItems_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            if (lvwColumnSorter == null) return;
             if (e.Column == lvwColumnSorter.SortColumn)
             {
                 // Reverse the current sort direction for this column.
@@ -990,7 +992,7 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void ımportToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ImportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openSettingFile.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
             openSettingFile.FilterIndex = 1;
@@ -1001,6 +1003,8 @@ namespace WindowsFormsApplication1
             if (string.IsNullOrEmpty(openSettingFile.FileName)) return;
             try
             {
+                lvwColumnSorter = null;
+                lvItems.ListViewItemSorter = null;
                 var result=ExcelImportHelper.ImportToListView(openSettingFile.FileName, lvItems);
                 if(result==-1)
                 {
@@ -1011,6 +1015,11 @@ namespace WindowsFormsApplication1
             {
                 MessageBox.Show(exception.ToString());
             }
+            ArrangeOrder();
+            lvwColumnSorter = new ListViewColumnSorter();
+            lvItems.ListViewItemSorter = lvwColumnSorter;
+            btnGo.Enabled = true;
+
         }
 
         private void cleanupBlogToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1019,6 +1028,7 @@ namespace WindowsFormsApplication1
             frmCleanUp.ShowDialog();
 
         }
+
 
      
     }
