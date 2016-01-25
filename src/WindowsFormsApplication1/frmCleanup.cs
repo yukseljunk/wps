@@ -93,6 +93,7 @@ namespace WordpressScraper
         private void FtpDirectoryDeletionFinished(object sender, EventArgs e)
         {
            
+
           if(btnCleanup.Enabled)//file deletion canceled, don't continue to mysql part before cleaning up files
           {
               return;

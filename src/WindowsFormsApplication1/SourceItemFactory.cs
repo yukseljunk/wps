@@ -17,6 +17,7 @@ namespace WindowsFormsApplication1
         private readonly string _site;
         private readonly int _totalInPageRange;
         private readonly int _totalForKeyword;
+        
 
         public TotalResultsFoundEventArgs(string site, int totalInPageRange, int totalForKeyword)
         {
@@ -35,6 +36,7 @@ namespace WindowsFormsApplication1
         #region BackgroundWorker
         static List<BackgroundWorker> _bws;
         private static object _lock;
+        private int _workersCount;
 
         #endregion
         #region Events
@@ -90,7 +92,6 @@ namespace WindowsFormsApplication1
         }
         #endregion
 
-        private int _workersCount;
         public void GetSourceItems(IList<string> siteNames, string keyword, int pageStart, int pageEnd, int startingOrder)
         {
             _lock = new Object();

@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
@@ -28,7 +27,6 @@ namespace WindowsFormsApplication1
         #region Private Fields
 
         private readonly WordPressSiteConfig _siteConfig;
-        private readonly FtpConfig _ftpConfiguration;
         private readonly BlogCache _blogCache;
         private readonly Dal _dal;
         private readonly string _blogUrl;
@@ -46,6 +44,7 @@ namespace WindowsFormsApplication1
 
         #region BackgroundWorker
         static BackgroundWorker _bw;
+
 
         #endregion
         #region Event Handlers
@@ -124,6 +123,7 @@ namespace WindowsFormsApplication1
 
         public void Create(IList<Item> items)
         {
+            
             _bw = new BackgroundWorker
             {
                 WorkerReportsProgress = true,
@@ -172,56 +172,6 @@ namespace WindowsFormsApplication1
                 }
             }
         }
-
-        private void CreatePosts(IList<Item> items, DoWorkEventArgs e)
-        {
-            var itemIndex = 0;
-            var itemCount = items.Count;
-            foreach (var item in items)
-            {
-                itemIndex++;
-                item.PostId = int.MinValue;
-                _bw.ReportProgress(itemIndex / itemCount * 100, item);
-                Thread.Sleep(TimeSpan.FromSeconds(1));
-
-                var itemPresent = false;
-
-                if (_useCache)
-                {
-                    if (_blogCache.IdsPresent(_blogUrl).Contains(item.ForeignKey))
-                    {
-                        item.PostId = 0;
-                        itemPresent = true;
-                    }
-                }
-                if (item.IsInvalid)
-                {
-                    item.PostId = -2;
-                }
-                var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
-
-                if (!itemPresent && !item.IsInvalid)
-                {
-                    var itemPostId = Create(item, authorId);
-
-                    item.PostId = itemPostId;
-
-                    if (_useCache)
-                    {
-                        _blogCache.InsertId(_blogUrl, item.ForeignKey);
-                    }
-                }
-
-                _bw.ReportProgress(itemIndex / itemCount * 100, item);
-                if (_bw.CancellationPending)
-                {
-                    e.Cancel = true;
-                    break;
-                }
-            }
-            e.Result = items;
-        }
-
 
         private void CreatePosts(IList<Item> items, DoWorkEventArgs e, int minWordCount)
         {
@@ -319,8 +269,10 @@ namespace WindowsFormsApplication1
             {
                 Logger.LogProcess(string.Format("Main queue has {0} items", mainQueue.Count));
 
-                foreach (var qi in mainQueue)
+
+                while(mainQueue.Count>0)
                 {
+                    var qi = mainQueue.Dequeue();
 
                     if (qi.Count == 0)
                     {
@@ -349,11 +301,6 @@ namespace WindowsFormsApplication1
                     {
                         e.Cancel = true;
                         break;
-                    }
-
-                    if (_useCache)
-                    {
-                        _blogCache.InsertId(_blogUrl, id);
                     }
 
                 }

@@ -20,6 +20,7 @@ namespace WordpressScraper.Ftp
         }
 
         private BackgroundWorker _bw;
+        private string _path;
         public string DeleteDirectory(string path)
         {
             _bw = new BackgroundWorker
@@ -27,7 +28,7 @@ namespace WordpressScraper.Ftp
                 WorkerReportsProgress = true,
                 WorkerSupportsCancellation = true
             };
-
+            _path = path;
             _bw.DoWork += (obj, e) => GetDirectoryListing(path, e);
             _bw.ProgressChanged += DirectoryListingProgress;
             _bw.RunWorkerCompleted += GotDirectoryListing;
@@ -85,13 +86,20 @@ namespace WordpressScraper.Ftp
             {
                 return;
             }
+
+            var directoryRes = (FtpDirectory) e.Result;
+            if (directoryRes.Files == null && directoryRes.Folders==null)
+            {
+                OnDirectoryDeletionFinished(null);
+                return;
+            }
             _bw = new BackgroundWorker
             {
                 WorkerReportsProgress = true,
                 WorkerSupportsCancellation = true
             };
 
-            _bw.DoWork += (obj, e2) => DeleteDirectory((FtpDirectory)e.Result, e2);
+            _bw.DoWork += (obj, e2) => DeleteDirectory(directoryRes, e2);
             _bw.ProgressChanged += DirectoryDeletionProgress;
             _bw.RunWorkerCompleted += FinishedDirectoryDeletion;
             _bw.RunWorkerAsync();
@@ -101,8 +109,13 @@ namespace WordpressScraper.Ftp
 
         private void FinishedDirectoryDeletion(object sender, RunWorkerCompletedEventArgs e)
         {
-            OnDirectoryDeletionFinished(null);
+            if(e.Cancelled)
+            {
+                OnDirectoryDeletionFinished(null);
+                return;
 
+            }
+            DeleteDirectory(_path);
         }
 
         private void DirectoryDeletionProgress(object sender, ProgressChangedEventArgs e)
