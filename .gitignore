@@ -194,3 +194,5 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+src/WindowsFormsApplication1/client_secret.json
+src/WindowsFormsApplication1/erdincnar.mp4

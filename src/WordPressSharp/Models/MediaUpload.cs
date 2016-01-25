@@ -20,6 +20,12 @@ namespace WordPressSharp.Models
 		[XmlRpcMember("type")]
 		public string Type { get; set; }
 
+        public string OriginalUrl { get; set; }
+
+        public string FileName { get; set; }
+
+        public ImagePost ImagePost { get; set; }
+
 		#region obsoletes
 
 		[Obsolete("Please use Id")]

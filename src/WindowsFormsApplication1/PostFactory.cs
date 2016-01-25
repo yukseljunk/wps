@@ -281,8 +281,8 @@ namespace WindowsFormsApplication1
             }
             e.Result = items;
         }
-        
-        
+
+
         private void PostitemsQueued(DoWorkEventArgs e, Queue<Queue<Item>> mainQueue, int itemIndex, int itemCount)
         {
             var blockSize = 3;
@@ -292,7 +292,7 @@ namespace WindowsFormsApplication1
                 var tasks = new List<Task<int>>();
                 for (int i = 0; i < blockSize; i++)
                 {
-                    if(mainQueue.Count==0)
+                    if (mainQueue.Count == 0)
                     {
                         break;
                     }
@@ -347,7 +347,7 @@ namespace WindowsFormsApplication1
                 {
                     Task.WaitAll(tasks.ToArray());
                 }
-                catch(AggregateException exception)
+                catch (AggregateException exception)
                 {
                     Logger.LogExceptions(exception.Flatten());
                 }
@@ -503,25 +503,28 @@ namespace WindowsFormsApplication1
 
                 if (_options.UseRemoteDownloading)
                 {
-                    Tuple<int, int> sizes = MakeRemoteImageRequest(imageUrl, imageStart + extension);
                     uploaded = new UploadResult()
                     {
                         Url = _blogUrl + "/" + _ftpDir + "/" + imageStart + extension,
-                        Id = "1"
+                        Id = "1",
+                        OriginalUrl = itemImage.OriginalSource,
+                        FileName = imageStart + extension
                     };
-                    imagePosts.Add(new ImagePost()
-                    {
-                        Title = converterFunctions.SeoUrl(imageStart),
-                        Url = uploaded.Url,
-                        Author = authorId.ToString(),
-                        Alt = item.Title + imageIndex,
-                        PublishDateTime = DateTime.Now,
-                        Content = item.Title + imageIndex,
-                        Width = sizes.Item1,
-                        Height = sizes.Item2,
-                        ThumbnailWidth = _thumbnailSize,
-                        ThumbnailHeight = _thumbnailSize
-                    });
+                    var imgPost = new ImagePost()
+                                      {
+                                          Title = converterFunctions.SeoUrl(imageStart),
+                                          Url = uploaded.Url,
+                                          Author = authorId.ToString(),
+                                          Alt = item.Title + imageIndex,
+                                          PublishDateTime = DateTime.Now,
+                                          Content = item.Title + imageIndex,
+                                          Width = 100,
+                                          Height = 100,
+                                          ThumbnailWidth = _thumbnailSize,
+                                          ThumbnailHeight = _thumbnailSize
+                                      };
+                    uploaded.ImagePost = imgPost;
+                    imagePosts.Add(imgPost);
                 }
                 else
                 {
@@ -573,8 +576,45 @@ namespace WindowsFormsApplication1
             {
                 imageUploads[i].Id = imageIds[i].ToString();
             }
+            if (_options.UseRemoteDownloading)
+            {
+                MakeRemoteImageRequest(imageUploads);
+            }
             return imageUploads;
         }
+        private void MakeRemoteImageRequest(IList<UploadResult> uploadResults)
+        {
+            foreach (var uploadResult in uploadResults)
+            {
+                var url = string.Format("{0}/wp-image.php?url={1}&file={2}&folder={3}&thsize={4}", _options.BlogUrl, uploadResult.OriginalUrl, uploadResult.FileName, _ftpDir, _thumbnailSize);
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.DownloadStringCompleted += ImageDownloaded;
+                    webClient.DownloadStringAsync(new Uri(url), uploadResult);
+                }
+
+            }
+        }
+
+        private void ImageDownloaded(object sender, DownloadStringCompletedEventArgs e)
+        {
+            Size size= new Size(100,100);
+            if (!string.IsNullOrEmpty(e.Result))
+            {
+                var result = e.Result.Replace("\n", "").Replace("\r", "");
+                var parsed = result.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
+                size = new Size(int.Parse(parsed[0]), int.Parse(parsed[1]));
+
+            }
+            var uploadResult = e.UserState as UploadResult;
+            if (uploadResult == null) return;
+
+            var imageDal = new ImageDal(new Dal(MySqlConnectionString));
+            uploadResult.ImagePost.Width = size.Width;
+            uploadResult.ImagePost.Height = size.Height;
+            imageDal.InsertAttachmentMetaData(int.Parse(uploadResult.Id), uploadResult.ImagePost, _ftpDir);
+        }
+
 
         private Tuple<int, int> MakeRemoteImageRequest(string imageUrl, string fileName)
         {
