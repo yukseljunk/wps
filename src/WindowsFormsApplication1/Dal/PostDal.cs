@@ -99,7 +99,7 @@ namespace WordpressScraper.Dal
             {
                 Id = row["ID"].ToString(),
                 Title = row["post_title"].ToString(),
-                PublishDateTime = DateTime.Parse(row["post_date"].ToString(), new CultureInfo("en-US")),
+                PublishDateTime = (DateTime)row["post_date"],
                 Content = row["post_content"].ToString(),
                 Status = row["post_status"].ToString(),
                 Name = row["post_name"].ToString(),

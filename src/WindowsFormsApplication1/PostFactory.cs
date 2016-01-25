@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using ImageProcessor;
 using MimeTypes;
@@ -39,6 +40,7 @@ namespace WindowsFormsApplication1
         private IList<int> _userIds;
         private string _ftpDir;
         private IFtp _ftp;
+        private static object _lock = new object();
 
         #endregion
 
@@ -109,7 +111,7 @@ namespace WindowsFormsApplication1
             _mergeSize = options.MergeBlockSize;
 
             _options = options;
-            var userDal = new UserDal(_dal);
+            var userDal = new UserDal(new Dal(MySqlConnectionString));
             _userIds = userDal.UserIds();
 
             if (options.UseFtp)
@@ -120,10 +122,17 @@ namespace WindowsFormsApplication1
             Directory.CreateDirectory(ImagesDir);
 
         }
+        private string MySqlConnectionString
+        {
+            get
+            {
+                return string.Format("Server={0};Database={1};Uid={2};Pwd={3}; Allow User Variables=True", _options.DatabaseUrl, _options.DatabaseName, _options.DatabaseUser, _options.DatabasePassword);
+            }
+        }
 
         public void Create(IList<Item> items)
         {
-            
+
             _bw = new BackgroundWorker
             {
                 WorkerReportsProgress = true,
@@ -268,34 +277,52 @@ namespace WindowsFormsApplication1
             if (mainQueue.Count > 0)
             {
                 Logger.LogProcess(string.Format("Main queue has {0} items", mainQueue.Count));
-
-
-                while(mainQueue.Count>0)
+                PostitemsQueued(e, mainQueue, itemIndex, itemCount);
+            }
+            e.Result = items;
+        }
+        
+        
+        private void PostitemsQueued(DoWorkEventArgs e, Queue<Queue<Item>> mainQueue, int itemIndex, int itemCount)
+        {
+            var blockSize = 3;
+            while (mainQueue.Count > 0)
+            {
+                Queue<Item> qi = null;
+                var tasks = new List<Task<int>>();
+                for (int i = 0; i < blockSize; i++)
                 {
-                    var qi = mainQueue.Dequeue();
-
+                    if(mainQueue.Count==0)
+                    {
+                        break;
+                    }
+                    qi = mainQueue.Dequeue();
                     if (qi.Count == 0)
                     {
                         Logger.LogProcess("Main queue iterating, queue has 0 items");
                         continue;
                     }
-                    var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
-
-                    _bw.ReportProgress(itemIndex / itemCount * 100, qi.First());
-
-                    var itemsToMerge = qi.Aggregate("", (current, sqi) => current + (sqi.Title + ","));
-
-                    Logger.LogProcess("Merging: " + itemsToMerge);
-
-                    var postId = CreateMerged(qi.ToList(), authorId);
-                    var id = "";
-                    foreach (var sqi in qi)
+                    Queue<Item> qi1 = CloneQueue(qi);
+                    tasks.Add(new Task<int>(() =>
                     {
-                        sqi.PostId = postId;
-                        _bw.ReportProgress(itemIndex / itemCount * 100, sqi);
-                        if (id != "") id = "," + id;
-                        id += sqi.Site + "_" + sqi.Id;
-                    }
+
+                        var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
+
+                        _bw.ReportProgress(itemIndex / itemCount * 100, qi1.First());
+
+                        var itemsToMerge = qi1.Aggregate("", (current, sqi) => current + (sqi.Title + ","));
+
+                        Logger.LogProcess("Merging: " + itemsToMerge);
+
+                        var postId = CreateMerged(qi1.ToList(), authorId);
+                        foreach (var sqi in qi1)
+                        {
+                            sqi.PostId = postId;
+                            _bw.ReportProgress(itemIndex / itemCount * 100, sqi);
+                        }
+
+                        return 1;
+                    }));
 
                     if (_bw.CancellationPending)
                     {
@@ -303,11 +330,29 @@ namespace WindowsFormsApplication1
                         break;
                     }
 
+
+                }
+
+                if (_bw.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+                foreach (var task in tasks)
+                {
+                    task.Start();
+                }
+
+                try
+                {
+                    Task.WaitAll(tasks.ToArray());
+                }
+                catch(AggregateException exception)
+                {
+                    Logger.LogExceptions(exception.Flatten());
                 }
             }
-            e.Result = items;
         }
-
 
         private static Queue<T> CloneQueue<T>(Queue<T> queue)
         {
@@ -344,7 +389,7 @@ namespace WindowsFormsApplication1
         /// <returns>id crated, -1 if error</returns>
         private int Create(Item item, int authorId)
         {
-            var postDal = new PostDal(_dal);
+            var postDal = new PostDal(new Dal(MySqlConnectionString));
             WordPressClient client = null;
 
             if (!_useMySqlFtpWay)
@@ -354,8 +399,12 @@ namespace WindowsFormsApplication1
 
             try
             {
-                var postTitle = GetPostTitle(item);
-                _blogCache.InsertTitle(_blogUrl, postTitle);
+                var postTitle = "";
+                lock (_lock)
+                {
+                    postTitle = GetPostTitle(item);
+                    _blogCache.InsertTitle(_blogUrl, postTitle);
+                }
 
                 var imageUploads = GetImageUploads(item, postTitle, authorId, client);
                 var yoastFocusKey = StopwordTool.RemoveStopwords(postTitle, true);
@@ -423,7 +472,7 @@ namespace WindowsFormsApplication1
             WordPressClient client)
         {
             var converterFunctions = new ConverterFunctions();
-            var imageDal = new ImageDal(_dal);
+            var imageDal = new ImageDal(new Dal(MySqlConnectionString));
             var imageIndex = 1;
             IList<UploadResult> imageUploads = new List<UploadResult>();
             var imagePosts = new List<ImagePost>();
@@ -454,7 +503,7 @@ namespace WindowsFormsApplication1
 
                 if (_options.UseRemoteDownloading)
                 {
-                    Tuple<int, int> sizes=MakeRemoteImageRequest(imageUrl, imageStart + extension);
+                    Tuple<int, int> sizes = MakeRemoteImageRequest(imageUrl, imageStart + extension);
                     uploaded = new UploadResult()
                     {
                         Url = _blogUrl + "/" + _ftpDir + "/" + imageStart + extension,
@@ -530,14 +579,14 @@ namespace WindowsFormsApplication1
         private Tuple<int, int> MakeRemoteImageRequest(string imageUrl, string fileName)
         {
             var result = "";
-            var url = string.Format("{0}/wp-image.php?url={1}&file={2}&folder={3}&thsize={4}",_options.BlogUrl,imageUrl,fileName,_ftpDir,_thumbnailSize);
+            var url = string.Format("{0}/wp-image.php?url={1}&file={2}&folder={3}&thsize={4}", _options.BlogUrl, imageUrl, fileName, _ftpDir, _thumbnailSize);
             using (WebClient webClient = new WebClient())
             {
-                result=webClient.DownloadString(url);
+                result = webClient.DownloadString(url);
                 result = result.Replace("\n", "").Replace("\r", "");
             }
             if (string.IsNullOrEmpty(result)) return null;
-            var parsed = result.Split(new string[] {"x"}, StringSplitOptions.RemoveEmptyEntries);
+            var parsed = result.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
             return new Tuple<int, int>(int.Parse(parsed[0]), int.Parse(parsed[1]));
         }
 
@@ -551,53 +600,57 @@ namespace WindowsFormsApplication1
         {
             var converterFunctions = new ConverterFunctions();
             var terms = new List<Term>();
-            var tagDal = new TagDal(_dal);
+            var tagDal = new TagDal(new Dal(MySqlConnectionString));
             foreach (var tag in item.Tags)
             {
                 if (_useCache)
                 {
-                    var tagOnBlog =
-                        _blogCache.TagsPresent(_blogUrl).FirstOrDefault(
-                            t =>
+                    lock (_lock)
+                    {
+
+                        var tagOnBlog =
+                            _blogCache.TagsPresent(_blogUrl).FirstOrDefault(
+                                t =>
                                 HttpUtility.HtmlDecode(t.Name).Trim().ToLowerInvariant() ==
                                 HttpUtility.HtmlDecode(converterFunctions.RemoveDiacritics(tag)).Trim().ToLowerInvariant
                                     ());
-                    if (tagOnBlog == null)
-                    {
-                        var t = new Term
+                        if (tagOnBlog == null)
                         {
-                            Name = converterFunctions.RemoveDiacritics(tag),
-                            Description = tag,
-                            Slug = tag.Replace(" ", "_"),
-                            Taxonomy = "post_tag"
-                        };
+                            var t = new Term
+                                        {
+                                            Name = converterFunctions.RemoveDiacritics(tag),
+                                            Description = tag,
+                                            Slug = tag.Replace(" ", "_"),
+                                            Taxonomy = "post_tag"
+                                        };
 
-                        if (_useMySqlFtpWay)
-                        {
-                            var tId = tagDal.InsertTag(t);
-                            t.Id = tId.ToString();
+                            if (_useMySqlFtpWay)
+                            {
+                                var tId = tagDal.InsertTag(t);
+                                t.Id = tId.ToString();
+                            }
+                            else
+                            {
+                                var termId = client.NewTerm(t);
+                                t.Id = termId;
+                            }
+
+                            if (_useCache)
+                            {
+                                _blogCache.InsertTag(_blogUrl, t);
+                            }
+
+                            if (!terms.Select(term => term.Id).Contains(t.Id))
+                            {
+                                terms.Add(t);
+                            }
                         }
                         else
                         {
-                            var termId = client.NewTerm(t);
-                            t.Id = termId;
-                        }
-
-                        if (_useCache)
-                        {
-                            _blogCache.InsertTag(_blogUrl, t);
-                        }
-
-                        if (!terms.Select(term => term.Id).Contains(t.Id))
-                        {
-                            terms.Add(t);
-                        }
-                    }
-                    else
-                    {
-                        if (!terms.Select(term => term.Id).Contains(tagOnBlog.Id))
-                        {
-                            terms.Add(tagOnBlog);
+                            if (!terms.Select(term => term.Id).Contains(tagOnBlog.Id))
+                            {
+                                terms.Add(tagOnBlog);
+                            }
                         }
                     }
                 }
@@ -723,7 +776,7 @@ namespace WindowsFormsApplication1
                 result = result.Replace(invalidChar.ToString(), "");
                 result = result.Replace("&#" + ((int)invalidChar) + ";", "");
             }
-            result = result.Replace("&#39;", " ");
+            result = result.Replace("&#39;", "");
             result = result.Replace("&quot;", "");
             var rgx = new Regex("[^a-zA-Z0-9 ]");
             result = rgx.Replace(result, " ").Trim();
