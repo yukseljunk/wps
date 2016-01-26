@@ -68,6 +68,12 @@ namespace WordpressScraper
                 postDal.PublishPost(post);
             }
 
+            if (chkCreateSlide.Checked)
+            {
+                
+
+            }
+
             lblStatus.Text = "Done";
         }
 

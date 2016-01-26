@@ -129,8 +129,7 @@
             // chkCreateSlide
             // 
             this.chkCreateSlide.AutoSize = true;
-            this.chkCreateSlide.Checked = true;
-            this.chkCreateSlide.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkCreateSlide.Enabled = false;
             this.chkCreateSlide.Location = new System.Drawing.Point(26, 71);
             this.chkCreateSlide.Name = "chkCreateSlide";
             this.chkCreateSlide.Size = new System.Drawing.Size(113, 17);
@@ -157,6 +156,7 @@
             this.pnlSlideShow.Controls.Add(this.numVideoPerPost);
             this.pnlSlideShow.Controls.Add(this.label4);
             this.pnlSlideShow.Controls.Add(this.label3);
+            this.pnlSlideShow.Enabled = false;
             this.pnlSlideShow.Location = new System.Drawing.Point(26, 95);
             this.pnlSlideShow.Name = "pnlSlideShow";
             this.pnlSlideShow.Size = new System.Drawing.Size(302, 160);
