@@ -149,6 +149,14 @@ namespace WindowsFormsApplication1
         {
             if (e.Cancelled)
             {
+                while (true)
+                {
+                    if (Interlocked.CompareExchange(ref _imageRequestCounter, -1000, 0) == -1000)
+                    {
+                        break;
+                    }
+                    Thread.Sleep(1000);
+                }
                 OnPostsCreated(null);
                 OnPostCreationStopped(null);
             }
@@ -160,6 +168,14 @@ namespace WindowsFormsApplication1
             {
                 if (e.Result != null)
                 {
+                    while (true)
+                    {
+                        if (Interlocked.CompareExchange(ref _imageRequestCounter, -1000, 0) == -1000)
+                        {
+                            break;
+                        }
+                        Thread.Sleep(1000);
+                    }
                     OnPostsCreated((List<Item>)e.Result);
                 }
 
@@ -582,30 +598,39 @@ namespace WindowsFormsApplication1
             }
             return imageUploads;
         }
+
+        private int _imageRequestCounter = 0;
         private void MakeRemoteImageRequest(IList<UploadResult> uploadResults)
         {
             foreach (var uploadResult in uploadResults)
             {
                 var url = string.Format("{0}/wp-image.php?url={1}&file={2}&folder={3}&thsize={4}", _options.BlogUrl, uploadResult.OriginalUrl, uploadResult.FileName, _ftpDir, _thumbnailSize);
+                Interlocked.Increment(ref _imageRequestCounter);
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.DownloadStringCompleted += ImageDownloaded;
                     webClient.DownloadStringAsync(new Uri(url), uploadResult);
                 }
-
+                Thread.Sleep(250);
             }
         }
 
         private void ImageDownloaded(object sender, DownloadStringCompletedEventArgs e)
         {
+            Interlocked.Decrement(ref _imageRequestCounter);
             Size size= new Size(100,100);
-            if (!string.IsNullOrEmpty(e.Result))
+            
+            if (e.Error==null && !string.IsNullOrEmpty(e.Result))
             {
                 var result = e.Result.Replace("\n", "").Replace("\r", "");
                 var parsed = result.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
                 size = new Size(int.Parse(parsed[0]), int.Parse(parsed[1]));
-
             }
+            if (e.Error != null)
+            {
+                Logger.LogExceptions(e.Error);
+            }
+            
             var uploadResult = e.UserState as UploadResult;
             if (uploadResult == null) return;
 
@@ -613,21 +638,6 @@ namespace WindowsFormsApplication1
             uploadResult.ImagePost.Width = size.Width;
             uploadResult.ImagePost.Height = size.Height;
             imageDal.InsertAttachmentMetaData(int.Parse(uploadResult.Id), uploadResult.ImagePost, _ftpDir);
-        }
-
-
-        private Tuple<int, int> MakeRemoteImageRequest(string imageUrl, string fileName)
-        {
-            var result = "";
-            var url = string.Format("{0}/wp-image.php?url={1}&file={2}&folder={3}&thsize={4}", _options.BlogUrl, imageUrl, fileName, _ftpDir, _thumbnailSize);
-            using (WebClient webClient = new WebClient())
-            {
-                result = webClient.DownloadString(url);
-                result = result.Replace("\n", "").Replace("\r", "");
-            }
-            if (string.IsNullOrEmpty(result)) return null;
-            var parsed = result.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
-            return new Tuple<int, int>(int.Parse(parsed[0]), int.Parse(parsed[1]));
         }
 
         /// <summary>
