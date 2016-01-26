@@ -37,6 +37,7 @@ namespace WindowsFormsApplication1
         private readonly bool _useCache;
         private readonly bool _useFeatureImage;
         private readonly int _mergeSize;
+        private readonly int _defaultCategoryId;
         private IList<int> _userIds;
         private string _ftpDir;
         private IFtp _ftp;
@@ -120,6 +121,9 @@ namespace WindowsFormsApplication1
                 _ftp.MakeFtpDir(_ftpDir);
             }
             Directory.CreateDirectory(ImagesDir);
+
+            var categoryDal = new CategoryDal(_dal);
+            _defaultCategoryId = categoryDal.GetInsertDefaultCategoryId();
 
         }
         private string MySqlConnectionString
@@ -455,10 +459,14 @@ namespace WindowsFormsApplication1
                     post.ImageIds = imageUploads.Select(i => i.Id).ToList();
                     post.CustomFields[4].Value = imageUploads[0].Id;
                 }
+                List<Term> terms = new List<Term>();
                 if (!_options.TagsAsText)
                 {
-                    post.Terms = GetTags(item, client).ToArray();
+                    terms = GetTags(item, client);
                 }
+                terms.Add(new Term() { Id = _defaultCategoryId.ToString() });
+                post.Terms = terms.ToArray();
+
                 string newPost = "-1";
                 newPost = _useMySqlFtpWay ? postDal.InsertPost(post).ToString() : client.NewPost(post);
                 return Convert.ToInt32(newPost);
@@ -618,9 +626,9 @@ namespace WindowsFormsApplication1
         private void ImageDownloaded(object sender, DownloadStringCompletedEventArgs e)
         {
             Interlocked.Decrement(ref _imageRequestCounter);
-            Size size= new Size(100,100);
-            
-            if (e.Error==null && !string.IsNullOrEmpty(e.Result))
+            Size size = new Size(100, 100);
+
+            if (e.Error == null && !string.IsNullOrEmpty(e.Result))
             {
                 var result = e.Result.Replace("\n", "").Replace("\r", "");
                 var parsed = result.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
@@ -630,7 +638,7 @@ namespace WindowsFormsApplication1
             {
                 Logger.LogExceptions(e.Error);
             }
-            
+
             var uploadResult = e.UserState as UploadResult;
             if (uploadResult == null) return;
 
