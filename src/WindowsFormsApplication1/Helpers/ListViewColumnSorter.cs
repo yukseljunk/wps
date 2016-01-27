@@ -5,6 +5,15 @@ using System.Windows.Forms;
 
 namespace WordpressScraper.Helpers
 {
+    public enum SortType
+    {
+        NotKnown = 0,
+        String = 1,
+        Numeric = 2,
+        Double = 3,
+        Date = 4
+    }
+
     /// <summary>
     /// This class is an implementation of the 'IComparer' interface.
     /// </summary>
@@ -46,41 +55,13 @@ namespace WordpressScraper.Helpers
         /// <returns>The result of the comparison. "0" if equal, negative if 'x' is less than 'y' and positive if 'x' is greater than 'y'</returns>
         public int Compare(object x, object y)
         {
-            int compareResult;
             ListViewItem listviewX, listviewY;
 
             // Cast the objects to be compared to ListViewItem objects
             listviewX = (ListViewItem)x;
             listviewY = (ListViewItem)y;
 
-            int xInt,yInt;
-            bool isNumeric = int.TryParse(listviewX.SubItems[ColumnToSort].Text, out xInt);
-            isNumeric &= int.TryParse(listviewY.SubItems[ColumnToSort].Text, out yInt);
-
-            // Compare the two items
-            compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
-            if (isNumeric)
-            {
-                compareResult = Math.Sign(xInt.CompareTo(yInt));
-            }
-
-            double xDbl, yDbl;
-            bool isDouble = double.TryParse(listviewX.SubItems[ColumnToSort].Text, out xDbl);
-            isDouble &= double.TryParse(listviewY.SubItems[ColumnToSort].Text, out yDbl);
-            if (isDouble)
-            {
-                compareResult = Math.Sign(xDbl.CompareTo(yDbl));
-            }
-
-            DateTime xDate, yDate;
-            bool isDate = DateTime.TryParse(listviewX.SubItems[ColumnToSort].Text, new CultureInfo("en-US"), DateTimeStyles.None, out xDate);
-            isDate &= DateTime.TryParse(listviewY.SubItems[ColumnToSort].Text, new CultureInfo("en-US"), DateTimeStyles.None, out yDate);
-            if (isDate)
-            {
-                compareResult = xDate.CompareTo(yDate);
-            }
-
-
+            var compareResult = CompareResult(listviewX, listviewY);
 
             // Calculate correct return value based on object comparison
             if (OrderOfSort == SortOrder.Ascending)
@@ -88,17 +69,54 @@ namespace WordpressScraper.Helpers
                 // Ascending sort is selected, return normal result of compare operation
                 return compareResult;
             }
-            else if (OrderOfSort == SortOrder.Descending)
+            if (OrderOfSort == SortOrder.Descending)
             {
                 // Descending sort is selected, return negative result of compare operation
                 return (-compareResult);
             }
-            else
-            {
-                // Return '0' to indicate they are equal
-                return 0;
-            }
+            // Return '0' to indicate they are equal
+            return 0;
         }
+
+        private int CompareResult(ListViewItem listviewX, ListViewItem listviewY)
+        {
+            switch (SortType)
+            {
+                case SortType.Numeric:
+                    int xInt, yInt;
+                    bool isNumeric = int.TryParse(listviewX.SubItems[ColumnToSort].Text, out xInt);
+                    isNumeric &= int.TryParse(listviewY.SubItems[ColumnToSort].Text, out yInt);
+                    if (isNumeric)
+                    {
+                        return Math.Sign(xInt.CompareTo(yInt));
+                    }
+                    break;
+                case SortType.Double:
+                    double xDbl, yDbl;
+                    bool isDouble = double.TryParse(listviewX.SubItems[ColumnToSort].Text, out xDbl);
+                    isDouble &= double.TryParse(listviewY.SubItems[ColumnToSort].Text, out yDbl);
+                    if (isDouble)
+                    {
+                        return Math.Sign(xDbl.CompareTo(yDbl));
+
+                    }
+                    break;
+                case SortType.Date:
+                    DateTime xDate, yDate;
+                    bool isDate = DateTime.TryParse(listviewX.SubItems[ColumnToSort].Text, new CultureInfo("en-US"),
+                        DateTimeStyles.None, out xDate);
+                    isDate &= DateTime.TryParse(listviewY.SubItems[ColumnToSort].Text, new CultureInfo("en-US"),
+                        DateTimeStyles.None, out yDate);
+                    if (isDate)
+                    {
+                        return xDate.CompareTo(yDate);
+                    }
+                    break;
+            }
+            return ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+
+        }
+
 
         /// <summary>
         /// Gets or sets the number of the column to which to apply the sorting operation (Defaults to '0').
@@ -114,7 +132,7 @@ namespace WordpressScraper.Helpers
                 return ColumnToSort;
             }
         }
-
+        public SortType SortType { get; set; }
         /// <summary>
         /// Gets or sets the order of sorting to apply (for example, 'Ascending' or 'Descending').
         /// </summary>

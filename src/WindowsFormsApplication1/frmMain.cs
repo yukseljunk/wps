@@ -162,8 +162,6 @@ namespace WindowsFormsApplication1
             EnDis(true);
             btnGo.Enabled = lvItems.Items.Count > 0;
             Cursor.Current = Cursors.Default;
-            lvwColumnSorter = new ListViewColumnSorter();
-            lvItems.ListViewItemSorter = lvwColumnSorter;
             SetStatus("Getting source items finished");
 
             var programOptionsFactory = new ProgramOptionsFactory();
@@ -176,7 +174,7 @@ namespace WindowsFormsApplication1
             _stopWatch.Stop();
             var timeTook = _stopWatch.Elapsed.TotalMinutes.ToString("0.00");
             lblDateTime.Text = string.Format("Took {0} mins", timeTook);
-            
+
             _sourceItemFactory.NoSourceFound -= NoSourceFound;
             _sourceItemFactory.GettingSourceItemsStopped -= GettingSourceItemsStopped;
             _sourceItemFactory.ProcessFinished -= GettingSourceItemsFinished;
@@ -334,7 +332,6 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Select items to transfer!");
                 return;
             }
-
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
 
@@ -553,7 +550,38 @@ namespace WindowsFormsApplication1
 
         private void lvItems_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            if (lvwColumnSorter == null) return;
+            var sortType= SortType.NotKnown;
+            switch (e.Column)
+            {
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 7:
+                case 8:
+                case 9:
+                case 13:
+                    sortType = SortType.String;
+                    break;
+                case 0:
+                case 1:
+                case 10:
+                case 12:
+                    sortType = SortType.Numeric;
+                    break;
+                case 11:
+                    sortType = SortType.Date;
+                    break;
+            }
+
+            if (lvwColumnSorter == null || lvItems.ListViewItemSorter==null)
+            {
+                
+                lvwColumnSorter = new ListViewColumnSorter();
+                lvItems.ListViewItemSorter = lvwColumnSorter;   
+            }
+            lvwColumnSorter.SortType = sortType;
+
             if (e.Column == lvwColumnSorter.SortColumn)
             {
                 // Reverse the current sort direction for this column.
@@ -588,8 +616,6 @@ namespace WindowsFormsApplication1
             lvItems.ListViewItemSorter = null;
             ScrambleBlock(0, itemCount);
             ArrangeOrder();
-            lvwColumnSorter = new ListViewColumnSorter();
-            lvItems.ListViewItemSorter = lvwColumnSorter;
 
         }
 
@@ -779,8 +805,6 @@ namespace WindowsFormsApplication1
             if (zeroRelevanceStartIndex == -1)
             {
                 MessageBox.Show("No 0 relevance item found, scramble not to be done!");
-                lvwColumnSorter = new ListViewColumnSorter();
-                lvItems.ListViewItemSorter = lvwColumnSorter;
                 return;
             }
             try
@@ -821,17 +845,13 @@ namespace WindowsFormsApplication1
 
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 MessageBox.Show(exception.ToString());
                 Logger.LogExceptions(exception);
             }
 
             ArrangeOrder();
-            lvwColumnSorter = new ListViewColumnSorter();
-            lvItems.ListViewItemSorter = lvwColumnSorter;
-
-
         }
 
         private void btnDown_Click(object sender, EventArgs e)
@@ -967,7 +987,7 @@ namespace WindowsFormsApplication1
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(lvItems.Items.Count==0)
+            if (lvItems.Items.Count == 0)
             {
                 MessageBox.Show("Nothing to export!");
                 return;
@@ -985,7 +1005,7 @@ namespace WindowsFormsApplication1
             {
                 ExcelReport.ExportFromListView(lvItems, saveSettings.FileName);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 MessageBox.Show(exception.ToString());
             }
@@ -1005,19 +1025,18 @@ namespace WindowsFormsApplication1
             {
                 lvwColumnSorter = null;
                 lvItems.ListViewItemSorter = null;
-                var result=ExcelImportHelper.ImportToListView(openSettingFile.FileName, lvItems);
-                if(result==-1)
+                var result = ExcelImportHelper.ImportToListView(openSettingFile.FileName, lvItems);
+                if (result == -1)
                 {
                     MessageBox.Show("Empty sheet!");
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 MessageBox.Show(exception.ToString());
             }
             ArrangeOrder();
-            lvwColumnSorter = new ListViewColumnSorter();
-            lvItems.ListViewItemSorter = lvwColumnSorter;
+
             btnGo.Enabled = true;
 
         }
@@ -1029,7 +1048,12 @@ namespace WindowsFormsApplication1
 
         }
 
+        private void lvItems_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
-     
+        }
+
+
+
     }
 }
