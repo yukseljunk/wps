@@ -800,10 +800,12 @@
             this.Controls.Add(this.btnGo);
             this.Controls.Add(this.lvItems);
             this.Controls.Add(this.btnStart);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
             this.Text = "Wordpress Scraper";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.grpTop.ResumeLayout(false);

@@ -1073,6 +1073,19 @@ namespace WindowsFormsApplication1
             lblSelection.Text = string.Format( "Selected {0} items, total {1} words",lvItems.SelectedItems.Count, totalWordCount);
         }
 
+        private void frmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (ActiveControl.GetType() == typeof(TextBox) || ActiveControl.GetType() == typeof(NumericUpDown))
+            {
+                return;
+            }
+
+            if (e.KeyCode == Keys.A && e.Control)
+            {
+                btnSelectAll_Click(null, null);
+            }
+        }
+
 
 
     }
