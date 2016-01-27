@@ -551,7 +551,7 @@ namespace WindowsFormsApplication1
 
         private void lvItems_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            var sortType= SortType.NotKnown;
+            var sortType = SortType.NotKnown;
             switch (e.Column)
             {
                 case 2:
@@ -575,11 +575,11 @@ namespace WindowsFormsApplication1
                     break;
             }
 
-            if (lvwColumnSorter == null || lvItems.ListViewItemSorter==null)
+            if (lvwColumnSorter == null || lvItems.ListViewItemSorter == null)
             {
-                
+
                 lvwColumnSorter = new ListViewColumnSorter();
-                lvItems.ListViewItemSorter = lvwColumnSorter;   
+                lvItems.ListViewItemSorter = lvwColumnSorter;
             }
             lvwColumnSorter.SortType = sortType;
 
@@ -780,18 +780,20 @@ namespace WindowsFormsApplication1
 
         private void btnRelevanceScramble_Click(object sender, EventArgs e)
         {
-            var ccea = new ColumnClickEventArgs(12);
-            if (lvwColumnSorter == null) return;
-            lvwColumnSorter.SortColumn = 12;
-            lvwColumnSorter.Order = SortOrder.Ascending;
+            //relevance e gore sirala
+            var ccea = new ColumnClickEventArgs(2);
+           
             lvItems_ColumnClick(null, ccea);
-
+            ccea = new ColumnClickEventArgs(12);
+            lvItems_ColumnClick(null, ccea);
+            lvItems_ColumnClick(null, ccea);
             lvItems.ListViewItemSorter = null;
 
             var programOptionsFactory = new ProgramOptionsFactory();
             var programOptions = programOptionsFactory.Get();
             var mergeBlockSize = programOptions.MergeBlockSize;
 
+            //zero relevance baslayan yeri bul
             var zeroRelevanceStartIndex = -1;
             for (int i = 0; i < lvItems.Items.Count; i++)
             {
@@ -808,6 +810,8 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("No 0 relevance item found, scramble not to be done!");
                 return;
             }
+
+            // mergeBlockSize indan buyuk olan herhangi bir eleman her zaman tek basina gidecek.... bunu unuttun...
             try
             {
                 if (programOptions.ScrambleLeadPosts)
@@ -838,10 +842,21 @@ namespace WindowsFormsApplication1
 
                         //continue to this block
                         itemBlockIndex++;
-                        var itemToMove = lvItems.Items[zeroRelevanceStartIndex];
-                        lvItems.Items.RemoveAt(zeroRelevanceStartIndex);
-                        lvItems.Items.Insert(primaryPostIndex + itemBlockIndex, itemToMove);
-                        zeroRelevanceStartIndex++;
+
+                        while (true)
+                        {
+                            if (zeroRelevanceStartIndex >= lvItems.Items.Count) break;
+                            var itemToMove = lvItems.Items[zeroRelevanceStartIndex];
+                            var zeroRelWordCount = int.Parse(itemToMove.SubItems[10].Text);
+                            if (zeroRelWordCount < mergeBlockSize)
+                            {
+                                lvItems.Items.RemoveAt(zeroRelevanceStartIndex);
+                                lvItems.Items.Insert(primaryPostIndex + itemBlockIndex, itemToMove);
+                                zeroRelevanceStartIndex++;
+                                break;
+                            }
+                            zeroRelevanceStartIndex++;
+                        }
                     }
 
                 }
@@ -1070,7 +1085,7 @@ namespace WindowsFormsApplication1
                     totalWordCount += Int32.Parse(wc);
                 }
             }
-            lblSelection.Text = string.Format( "Selected {0} items, total {1} words",lvItems.SelectedItems.Count, totalWordCount);
+            lblSelection.Text = string.Format("Selected {0} items, total {1} words", lvItems.SelectedItems.Count, totalWordCount);
         }
 
         private void frmMain_KeyDown(object sender, KeyEventArgs e)
