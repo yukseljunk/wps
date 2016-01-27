@@ -1076,6 +1076,11 @@ namespace WindowsFormsApplication1
                 lblSelection.Text = "";
                 return;
             }
+            if (lvItems.SelectedItems.Count > 50)
+            {
+                lblSelection.Text = string.Format("Selected {0} items", lvItems.SelectedItems.Count); ;
+                return;
+            }
             var totalWordCount = 0;
             foreach (ListViewItem selectedItem in lvItems.SelectedItems)
             {

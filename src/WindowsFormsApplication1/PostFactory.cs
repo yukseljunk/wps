@@ -632,7 +632,14 @@ namespace WindowsFormsApplication1
             {
                 var result = e.Result.Replace("\n", "").Replace("\r", "");
                 var parsed = result.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
-                size = new Size(int.Parse(parsed[0]), int.Parse(parsed[1]));
+                if (parsed.Length > 1)
+                {
+                    size = new Size(int.Parse(parsed[0]), int.Parse(parsed[1]));
+                }
+                else
+                {
+                    Logger.LogExceptions(new Exception(result));
+                }
             }
             if (e.Error != null)
             {
