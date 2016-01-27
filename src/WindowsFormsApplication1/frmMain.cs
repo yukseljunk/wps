@@ -42,9 +42,10 @@ namespace WindowsFormsApplication1
             btnGo.Enabled = false;
             btnStop.Enabled = false;
             btnStopScrape.Enabled = false;
-            System.IO.Directory.CreateDirectory("Logs");
+            Directory.CreateDirectory("Logs");
             this.Text += " v" + Assembly.GetExecutingAssembly().GetName().Version;
             lblDateTime.Text = "";
+            lblSelection.Text = "";
             FillSites();
 
             ArrangeTemplateMenu();
@@ -1051,6 +1052,25 @@ namespace WindowsFormsApplication1
         private void lvItems_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void lvItems_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (lvItems.SelectedItems.Count == 0)
+            {
+                lblSelection.Text = "";
+                return;
+            }
+            var totalWordCount = 0;
+            foreach (ListViewItem selectedItem in lvItems.SelectedItems)
+            {
+                var wc = selectedItem.SubItems[10].Text;
+                if (!string.IsNullOrEmpty(wc))
+                {
+                    totalWordCount += Int32.Parse(wc);
+                }
+            }
+            lblSelection.Text = string.Format( "Selected {0} items, total {1} words",lvItems.SelectedItems.Count, totalWordCount);
         }
 
 

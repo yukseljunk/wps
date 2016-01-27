@@ -100,6 +100,7 @@
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.openSettingFile = new System.Windows.Forms.OpenFileDialog();
             this.saveSettings = new System.Windows.Forms.SaveFileDialog();
+            this.lblSelection = new System.Windows.Forms.ToolStripStatusLabel();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -227,6 +228,7 @@
             this.lvItems.UseCompatibleStateImageBehavior = false;
             this.lvItems.View = System.Windows.Forms.View.Details;
             this.lvItems.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvItems_ColumnClick);
+            this.lvItems.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvItems_ItemSelectionChanged);
             this.lvItems.SelectedIndexChanged += new System.EventHandler(this.lvItems_SelectedIndexChanged);
             // 
             // btnGo
@@ -288,7 +290,8 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.barStatus,
-            this.lblDateTime});
+            this.lblDateTime,
+            this.lblSelection});
             this.statusStrip1.Location = new System.Drawing.Point(0, 606);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1498, 22);
@@ -772,6 +775,13 @@
             // 
             this.openSettingFile.FileName = "openFileDialog1";
             // 
+            // lblSelection
+            // 
+            this.lblSelection.Margin = new System.Windows.Forms.Padding(5, 3, 0, 2);
+            this.lblSelection.Name = "lblSelection";
+            this.lblSelection.Size = new System.Drawing.Size(68, 17);
+            this.lblSelection.Text = "lblSelection";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -867,6 +877,7 @@
         private System.Windows.Forms.SaveFileDialog saveSettings;
         private System.Windows.Forms.ToolStripMenuItem cleanupBlogToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripStatusLabel lblSelection;
     }
 }
 
