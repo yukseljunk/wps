@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using ImageProcessor;
 using PttLib;
+using PttLib.Helpers;
 using WordpressScraper.Dal;
 using WordPressSharp.Models;
 
@@ -33,10 +34,7 @@ namespace WordpressScraper
             "http://www.bensound.com/royalty-free-music?download=jazzyfrenchy",
         };
         private static string ListFile = "list.txt";
-        private static int SecondsPerImage = 3;
         private static int FadePercentage = 100; //for fps=30, 30*thisvalue/100 frames to fadein/out
-        private static int VideoWidth = 600;
-        private static int VideoHeight = 600;
         private static string TempFolder = "temp";
         private static string InputFolder = "input";
 
@@ -67,6 +65,7 @@ namespace WordpressScraper
 
         private void btnPublish_Click(object sender, EventArgs e)
         {
+            EnDis(false);
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
 
@@ -84,6 +83,7 @@ namespace WordpressScraper
             if (posts == null)
             {
                 MessageBox.Show("No posts found to publish!");
+                EnDis();
                 return;
             }
 
@@ -101,11 +101,23 @@ namespace WordpressScraper
             }
 
             lblStatus.Text = "Done";
+            EnDis();
+
+        }
+
+        private void EnDis(bool enable = true)
+        {
+            btnPublish.Enabled = enable;
         }
 
         private void CreateVideo(IList<Post> posts)
         {
+            var secondsPerImage = (int)numDurationForEachImage.Value;
             var postDal = new PostDal(new Dal.Dal(MySqlConnectionString));
+            Application.DoEvents();
+            lblStatus.Text = "Creating temp directories...";
+            Application.DoEvents();
+            
             if (Directory.Exists(TempFolder))
             {
                 Directory.Delete(TempFolder, true);
@@ -121,6 +133,10 @@ namespace WordpressScraper
             var listFile = AssemblyDirectory + "/" + ListFile;
             File.WriteAllText(listFile, string.Empty);
 
+            Application.DoEvents();
+            lblStatus.Text = "Getting post images...";
+            Application.DoEvents();
+            
             var images = postDal.GetImagePostsForPosts(posts.Select(p => Int32.Parse(p.Id)).ToList());
             var counter = 1;
             foreach (var image in images)
@@ -130,6 +146,10 @@ namespace WordpressScraper
                 {
                     continue;
                 }
+                Application.DoEvents();
+                lblStatus.Text = "Downloading " + url;
+                Application.DoEvents();
+
                 var extension = Path.GetExtension(url);
                 using (WebClient webClient = new WebClient())
                 {
@@ -138,10 +158,13 @@ namespace WordpressScraper
                 counter++;
             }
 
-            var rand = new Random(DateTime.Now.Millisecond);
+            Application.DoEvents();
+            lblStatus.Text = "Downloading music...";
+            Application.DoEvents();
+            
             // Create a new WebClient instance.
             var myWebClient = new WebClient();
-            myWebClient.DownloadFile(MusicUrls[rand.Next(0, MusicUrls.Count)],
+            myWebClient.DownloadFile(MusicUrls[Helper.GetRandomNumber(0, MusicUrls.Count)],
                 AssemblyDirectory + "/" + TempFolder + "/music.mp3");
 
             for (int i = 0; i < 6; i++)
@@ -150,6 +173,10 @@ namespace WordpressScraper
             }
             var combineMusicParams = string.Format("-y -f concat -i \"{0}\" -c copy \"{1}/musicShuffled.mp3\"", listFile,
                 TempFolder);
+            Application.DoEvents();
+            lblStatus.Text = "Creating shuffled music...";
+            Application.DoEvents();
+
             StartFfmpeg(combineMusicParams, 20);
 
             File.WriteAllText(listFile, string.Empty);
@@ -157,39 +184,56 @@ namespace WordpressScraper
             //first resize images
             var imgFactory = new ImageFactory();
 
+            Application.DoEvents();
+            lblStatus.Text = "Creating individual clip from each picture...";
+            Application.DoEvents();
+
             var index = 1;
             foreach (var file in files)
             {
-                imgFactory.Load(file).Resize(new Size(VideoWidth, VideoHeight)).Save(file);
+                imgFactory.Load(file).Resize(new Size((int)numVideoWidth.Value, (int)numVideoHeight.Value)).Save(file);
 
                 //Console.WriteLine(file);
                 var firstArgs =
                     string.Format("-y -framerate 1/{2} -i \"{0}\" -c:v libx264 -r 30 -pix_fmt yuv420p \"{3}/out{1}.mp4\"", file,
-                        index, SecondsPerImage, TempFolder);
+                        index, secondsPerImage, TempFolder);
                 var secondArgs = string.Format("-y -i \"{3}/out{0}.mp4\" -y -vf fade=in:0:{2} \"{3}/out{1}.mp4\"", index,
-                    index + 1, 30*FadePercentage/100, TempFolder);
+                    index + 1, 30 * FadePercentage / 100, TempFolder);
                 var thirdArgs = string.Format("-y -i \"{4}/out{0}.mp4\" -y -vf fade=out:{3}:{2} \"{4}/out{1}.mp4\"", index + 1,
-                    index + 2, 30*FadePercentage/100, SecondsPerImage*30 - 30*FadePercentage/100, TempFolder);
+                    index + 2, 30 * FadePercentage / 100, secondsPerImage * 30 - 30 * FadePercentage / 100, TempFolder);
                 StartFfmpeg(firstArgs);
                 StartFfmpeg(secondArgs);
                 StartFfmpeg(thirdArgs);
                 File.AppendAllText(listFile, string.Format("file '{1}/out{0}.mp4'\r\n", index + 2, TempFolder));
                 index += 3;
             }
+
+            Application.DoEvents();
+            lblStatus.Text = "Combining individual clips...";
+            Application.DoEvents();
+
             //ffmpeg -f concat -i mylist.txt -c copy output.mp4
             var combineParams = string.Format("-y -f concat -i \"{0}\" -c copy \"{1}/output.mp4\"", listFile, TempFolder);
             StartFfmpeg(combineParams, 5);
 
+            Application.DoEvents();
+            lblStatus.Text = "Arranging audio fade in and out...";
+            Application.DoEvents();
+
             //index*SecondsPerImage/3 secs SecondsPerImage secs;
-            var videoSeconds = index*SecondsPerImage/3;
+            var videoSeconds = index * secondsPerImage / 3;
             var audioFadeOutParams =
                 string.Format("-y -i \"{2}/musicShuffled.mp3\" -af afade=t=out:st={0}:d={1} \"{2}/audio.mp3\"",
-                    videoSeconds - SecondsPerImage*2, SecondsPerImage*2 - 1, TempFolder);
+                    videoSeconds - secondsPerImage * 2, secondsPerImage * 2 - 1, TempFolder);
             StartFfmpeg(audioFadeOutParams, 15);
 
+            Application.DoEvents();
+            lblStatus.Text = "Combining audio and video...";
+            Application.DoEvents();
             var audioParams = string.Format("-y -i \"{0}/output.mp4\" -i \"{0}/audio.mp3\" -shortest outputwaudio.mp4",
                 TempFolder);
             StartFfmpeg(audioParams, 15);
+
             Directory.Delete(TempFolder, true);
         }
 
