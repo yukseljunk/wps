@@ -11,7 +11,7 @@ namespace PttLib
 {
     public class Item
     {
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
         public virtual string Title { get; set; }
         public virtual string MetaDescription { get; set; }
         public virtual string Content { get; set; }
@@ -22,7 +22,7 @@ namespace PttLib
         public virtual string Url { get; set; }
         public int WordCount { get; set; }
         public int PostId { get; set; }
-        public int Order { get; set; }
+        public virtual int Order { get; set; }
         public DateTime Created { get; set; }
         public int Relevance { get; set; }
         public virtual string ForeignKey

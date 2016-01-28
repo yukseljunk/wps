@@ -26,6 +26,8 @@ namespace WordPressSharp.Models
 
         public ImagePost ImagePost { get; set; }
 
+        public int ItemOrder { get; set; }
+
 		#region obsoletes
 
 		[Obsolete("Please use Id")]

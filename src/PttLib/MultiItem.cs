@@ -6,7 +6,25 @@ namespace PttLib
 {
     public class MultiItem : Item
     {
+        public override int Id
+        {
+            get
+            {
+                return Items[0].Id;
+
+            }
+            set { _id = value; }
+        }
+
+        public override int Order
+        {
+            get { return Items[0].Order; }
+            set { _order = value; }
+        }
+
         private readonly IList<Item> _items;
+        private int _id;
+        private int _order;
 
         public MultiItem(IList<Item> items)
         {

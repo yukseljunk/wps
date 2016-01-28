@@ -307,6 +307,9 @@ namespace WindowsFormsApplication1
             var status = "";
             switch (e.PostId)
             {
+                case -3:
+                    status = "Image error";
+                    break;
                 case -1:
                     status = "Error";
                     break;
@@ -456,6 +459,7 @@ namespace WindowsFormsApplication1
 
         private void btnStopScrape_Click(object sender, EventArgs e)
         {
+            if (_sourceItemFactory == null) return;
             _sourceItemFactory.CancelGettingSource();
             btnStopScrape.Enabled = false;
         }

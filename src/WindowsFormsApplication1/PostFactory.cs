@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using ImageProcessor;
+using ImageProcessor.Common.Exceptions;
 using MimeTypes;
 using PttLib;
 using PttLib.Helpers;
@@ -42,6 +43,8 @@ namespace WindowsFormsApplication1
         private string _ftpDir;
         private IFtp _ftp;
         private static object _lock = new object();
+        private Dictionary<int, bool> _imageExceptions = new Dictionary<int, bool>();
+        private int _imageRequestCounter = 0;
 
         #endregion
 
@@ -250,7 +253,7 @@ namespace WindowsFormsApplication1
                     }
 
                     subQueue.Enqueue(item);
-                    
+
                     if (subQueue.Sum(it => it.WordCount) >= minWordCount)
                     {
                         var q = CloneQueue(subQueue);
@@ -294,6 +297,7 @@ namespace WindowsFormsApplication1
 
         private void PostitemsQueued(DoWorkEventArgs e, Queue<Queue<Item>> mainQueue, int itemIndex, int itemCount)
         {
+            _imageExceptions = new Dictionary<int, bool>();
             var blockSize = 1;
             while (mainQueue.Count > 0)
             {
@@ -320,7 +324,7 @@ namespace WindowsFormsApplication1
 
                         var itemsToMerge = qi1.Aggregate("", (current, sqi) => current + (sqi.Title + ","));
 
-                        
+
                         var postId = CreateMerged(qi1.ToList(), authorId);
                         foreach (var sqi in qi1)
                         {
@@ -391,9 +395,8 @@ namespace WindowsFormsApplication1
         /// create item
         /// </summary>
         /// <param name="item"></param>
-        /// <param name="foreignKey"> </param>
         /// <param name="authorId"> </param>
-        /// <returns>id crated, -1 if error</returns>
+        /// <returns>id crated, -1 if error,-3 if image error</returns>
         private int Create(Item item, int authorId)
         {
             var postDal = new PostDal(new Dal(MySqlConnectionString));
@@ -429,10 +432,10 @@ namespace WindowsFormsApplication1
                     {
                         new CustomField() {Key = "foreignkey", Value = item.ForeignKey},
                         new CustomField() {Key = "_aioseop_title", Value = item.Title},
-                        new CustomField(){Key = "_aioseop_description",Value = item.MetaDescription},
-                        new CustomField(){Key = "_aioseop_keywords",Value = string.Join(",", item.Tags)},
-                        new CustomField(){Key = "_yoast_wpseo_focuskw_text_input",Value = yoastFocusKey},
-                        new CustomField(){Key = "_yoast_wpseo_focuskw",Value = yoastFocusKey},
+                        new CustomField() {Key = "_aioseop_description", Value = item.MetaDescription},
+                        new CustomField() {Key = "_aioseop_keywords", Value = string.Join(",", item.Tags)},
+                        new CustomField() {Key = "_yoast_wpseo_focuskw_text_input", Value = yoastFocusKey},
+                        new CustomField() {Key = "_yoast_wpseo_focuskw", Value = yoastFocusKey},
                         new CustomField() {Key = "_thumbnail_id", Value = ""},
                     }
                 };
@@ -451,12 +454,22 @@ namespace WindowsFormsApplication1
                 {
                     terms = GetTags(item, client);
                 }
-                terms.Add(new Term() { Id = _defaultCategoryId.ToString() });
+                terms.Add(new Term() {Id = _defaultCategoryId.ToString()});
                 post.Terms = terms.ToArray();
 
                 string newPost = "-1";
                 newPost = _useMySqlFtpWay ? postDal.InsertPost(post).ToString() : client.NewPost(post);
                 return Convert.ToInt32(newPost);
+            }
+            catch (ImageProcessingException exc)
+            {
+                if (item != null)
+                {
+                    Logger.LogProcess(item.ToString());
+                }
+                Logger.LogProcess("Author:" + authorId);
+                Logger.LogExceptions(exc);
+                return -3;
             }
             catch (Exception exception)
             {
@@ -514,12 +527,15 @@ namespace WindowsFormsApplication1
 
                 if (_options.UseRemoteDownloading)
                 {
+
                     uploaded = new UploadResult()
                     {
                         Url = _blogUrl + "/" + _ftpDir + "/" + imageStart + extension,
                         Id = "1",
                         OriginalUrl = itemImage.OriginalSource,
-                        FileName = imageStart + extension
+                        FileName = imageStart + extension,
+                        ItemOrder = item.Order
+
                     };
                     var imgPost = new ImagePost()
                                       {
@@ -591,10 +607,26 @@ namespace WindowsFormsApplication1
             {
                 MakeRemoteImageRequest(imageUploads);
             }
+
+            while (true)
+            {
+                if (Interlocked.CompareExchange(ref _imageRequestCounter, -1000, 0) == -1000)
+                {
+                    break;
+                }
+                Thread.Sleep(1000);
+            }
+            lock (_lock)
+            {
+                if (_imageExceptions[item.Order])
+                {
+                    throw new ImageProcessingException("Image donwload or metadata insertion failed, check for previous errors.");
+                }
+            }
             return imageUploads;
         }
 
-        private int _imageRequestCounter = 0;
+
         private void MakeRemoteImageRequest(IList<UploadResult> uploadResults)
         {
             foreach (var uploadResult in uploadResults)
@@ -613,6 +645,17 @@ namespace WindowsFormsApplication1
         private void ImageDownloaded(object sender, DownloadStringCompletedEventArgs e)
         {
             Interlocked.Decrement(ref _imageRequestCounter);
+            var uploadResult = e.UserState as UploadResult;
+            if (uploadResult == null) return;
+
+            lock (_lock)
+            {
+                if (!_imageExceptions.ContainsKey(uploadResult.ItemOrder))
+                {
+                    _imageExceptions.Add(uploadResult.ItemOrder, false);
+                }
+            }
+
             Size size = new Size(100, 100);
 
             if (e.Error == null && !string.IsNullOrEmpty(e.Result))
@@ -629,18 +672,23 @@ namespace WindowsFormsApplication1
                 }
                 else
                 {
+                    lock (_lock)
+                    {
+                        _imageExceptions[uploadResult.ItemOrder] = true;
+                    }
                     Logger.LogExceptions(new Exception(result));
                     return;
                 }
             }
             if (e.Error != null)
             {
+                lock (_lock)
+                {
+                    _imageExceptions[uploadResult.ItemOrder] = true;
+                }
                 Logger.LogExceptions(e.Error);
                 return;
             }
-
-            var uploadResult = e.UserState as UploadResult;
-            if (uploadResult == null) return;
 
             try
             {
@@ -651,6 +699,11 @@ namespace WindowsFormsApplication1
             }
             catch (Exception exception)
             {
+                lock (_lock)
+                {
+                    _imageExceptions[uploadResult.ItemOrder] = true;
+                }
+
                 Logger.LogExceptions(exception);
             }
         }
