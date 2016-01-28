@@ -129,7 +129,6 @@
             // chkCreateSlide
             // 
             this.chkCreateSlide.AutoSize = true;
-            this.chkCreateSlide.Enabled = false;
             this.chkCreateSlide.Location = new System.Drawing.Point(26, 71);
             this.chkCreateSlide.Name = "chkCreateSlide";
             this.chkCreateSlide.Size = new System.Drawing.Size(113, 17);

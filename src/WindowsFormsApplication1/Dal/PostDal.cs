@@ -57,6 +57,21 @@ namespace WordpressScraper.Dal
             return result;
         }
 
+        public IList<Post> GetImagePostsForPosts(IList<int> ids)
+        {
+            var sql = "SELECT P.*, 1 as display_name FROM wp_posts P where P.post_parent in(" + string.Join(",", ids) + ")";
+            var data = _dal.GetData(sql);
+            if (data.Tables.Count == 0) { return null; }
+            if (data.Tables[0].Rows.Count == 0) { return null; }
+            var result = new List<Post>();
+            foreach (DataRow row in data.Tables[0].Rows)
+            {
+                result.Add(
+                    GetPostFromDataRow(row)
+                );
+            }
+            return result;
+        }
 
         public IList<Post> GetPosts(PostOrder order = PostOrder.NewestFirst, int limit = 100, bool onlyDraft = true)
         {
