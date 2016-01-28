@@ -314,6 +314,10 @@ namespace WindowsFormsApplication1
                     {
                         continue;
                     }
+                    lock (_lock)
+                    {
+                        _imageRequestCounter = 0;
+                    }
                     Queue<Item> qi1 = CloneQueue(qi);
                     tasks.Add(new Task<int>(() =>
                     {
@@ -608,6 +612,8 @@ namespace WindowsFormsApplication1
                 MakeRemoteImageRequest(imageUploads);
             }
 
+            int maxSecondstoWait = 60;
+            int secondsSpent = 0;
             while (true)
             {
                 if (Interlocked.CompareExchange(ref _imageRequestCounter, -1000, 0) == -1000)
@@ -615,6 +621,11 @@ namespace WindowsFormsApplication1
                     break;
                 }
                 Thread.Sleep(1000);
+                secondsSpent++;
+                if (secondsSpent > maxSecondstoWait)
+                {
+                    throw new ImageProcessingException("Image donwload or metadata insertion failed, check for previous errors.");
+                }
             }
             lock (_lock)
             {
