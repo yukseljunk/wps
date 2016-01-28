@@ -142,9 +142,14 @@ namespace WordpressScraper.Dal
             {
                 foreach (var sql in sqls)
                 {
+                    if (!_connection.Ping())
+                    {
+                        _connection.Open();
+                    }
                     var cmd = _connection.CreateCommand();
                     cmd.CommandText = sql;
                     cmd.ExecuteNonQuery();
+                   
                 }
             }
             finally

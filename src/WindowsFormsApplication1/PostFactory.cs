@@ -204,7 +204,6 @@ namespace WindowsFormsApplication1
 
         private void CreatePosts(IList<Item> items, DoWorkEventArgs e, int minWordCount)
         {
-            Logger.LogProcess(string.Format("CreatePosts coming minWordCount:{0} for {1} items", minWordCount, items.Count));
             var itemIndex = 0;
             var itemCount = items.Count;
 
@@ -215,7 +214,6 @@ namespace WindowsFormsApplication1
             for (int i = 0; i < items.Count; i++)
             {
                 var item = items[i];
-                Logger.LogProcess(string.Format("Item in the loop '{0}' with {1} words", item.Title, item.WordCount));
                 itemIndex++;
                 item.PostId = int.MinValue;
 
@@ -244,7 +242,6 @@ namespace WindowsFormsApplication1
                 {
                     if (item.WordCount >= minWordCount)
                     {
-                        Logger.LogProcess(string.Format("Item '{0}' is bigger than wordcount:{1}, adding to mainqueue a single itemed queue", item.Title, item.WordCount));
                         var q = new Queue<Item>();
                         q.Enqueue(item);
                         mainQueue.Enqueue(q);
@@ -253,15 +250,10 @@ namespace WindowsFormsApplication1
                     }
 
                     subQueue.Enqueue(item);
-                    Logger.LogProcess(string.Format("Item '{0}' is smaller than wordcount:{1}, adding to mainqueue sub queue, size of {2} with total word count {3}", item.Title, item.WordCount, subQueue.Count, subQueue.Sum(it => it.WordCount)));
-
+                    
                     if (subQueue.Sum(it => it.WordCount) >= minWordCount)
                     {
-                        Logger.LogProcess(string.Format("Subqueue word count sum '{0}' is bigger than min wordcount:{1}, adding to mainqueue", subQueue.Sum(it => it.WordCount), minWordCount));
                         var q = CloneQueue(subQueue);
-
-                        Logger.LogProcess(string.Format("Cloned the Subqueue, item count {1} and word count sum '{0}' adding to mainqueue", q.Sum(it => it.WordCount), q.Count));
-
                         mainQueue.Enqueue(q);
                         lastQueue = q;
                         subQueue.Clear();
@@ -284,19 +276,16 @@ namespace WindowsFormsApplication1
             {
                 while (subQueue.Count > 0)
                 {
-                    Logger.LogProcess(string.Format("Subqueue item '{0}' moved to lastQueue", subQueue.Peek().Title));
                     lastQueue.Enqueue(subQueue.Dequeue());
                 }
             }
             else//nothing on main queue
             {
-                Logger.LogProcess(string.Format("Subqueue queued to main queue for {0} items", subQueue.Count));
                 mainQueue.Enqueue(subQueue);
             }
 
             if (mainQueue.Count > 0)
             {
-                Logger.LogProcess(string.Format("Main queue has {0} items", mainQueue.Count));
                 PostitemsQueued(e, mainQueue, itemIndex, itemCount);
             }
             e.Result = items;
@@ -319,7 +308,6 @@ namespace WindowsFormsApplication1
                     qi = mainQueue.Dequeue();
                     if (qi.Count == 0)
                     {
-                        Logger.LogProcess("Main queue iterating, queue has 0 items");
                         continue;
                     }
                     Queue<Item> qi1 = CloneQueue(qi);
@@ -332,8 +320,7 @@ namespace WindowsFormsApplication1
 
                         var itemsToMerge = qi1.Aggregate("", (current, sqi) => current + (sqi.Title + ","));
 
-                        Logger.LogProcess("Merging: " + itemsToMerge);
-
+                        
                         var postId = CreateMerged(qi1.ToList(), authorId);
                         foreach (var sqi in qi1)
                         {
@@ -634,25 +621,38 @@ namespace WindowsFormsApplication1
                 var parsed = result.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
                 if (parsed.Length > 1)
                 {
-                    size = new Size(int.Parse(parsed[0]), int.Parse(parsed[1]));
+                    int w, h;
+                    if (Int32.TryParse(parsed[0], out w) && Int32.TryParse(parsed[1], out h))
+                    {
+                        size = new Size(w, h);
+                    }
                 }
                 else
                 {
                     Logger.LogExceptions(new Exception(result));
+                    return;
                 }
             }
             if (e.Error != null)
             {
                 Logger.LogExceptions(e.Error);
+                return;
             }
 
             var uploadResult = e.UserState as UploadResult;
             if (uploadResult == null) return;
 
-            var imageDal = new ImageDal(new Dal(MySqlConnectionString));
-            uploadResult.ImagePost.Width = size.Width;
-            uploadResult.ImagePost.Height = size.Height;
-            imageDal.InsertAttachmentMetaData(int.Parse(uploadResult.Id), uploadResult.ImagePost, _ftpDir);
+            try
+            {
+                var imageDal = new ImageDal(new Dal(MySqlConnectionString));
+                uploadResult.ImagePost.Width = size.Width;
+                uploadResult.ImagePost.Height = size.Height;
+                imageDal.InsertAttachmentMetaData(int.Parse(uploadResult.Id), uploadResult.ImagePost, _ftpDir);
+            }
+            catch (Exception exception)
+            {
+                Logger.LogExceptions(exception);
+            }
         }
 
         /// <summary>
