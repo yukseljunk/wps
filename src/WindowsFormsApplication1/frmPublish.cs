@@ -37,6 +37,7 @@ namespace WordpressScraper
         private static int FadePercentage = 100; //for fps=30, 30*thisvalue/100 frames to fadein/out
         private static string TempFolder = "temp";
         private static string InputFolder = "input";
+        private static string OutputFolder = "output";
 
         private ProgramOptions _options;
         private IList<Post> _posts;
@@ -97,7 +98,7 @@ namespace WordpressScraper
 
             if (chkCreateSlide.Checked)
             {
-                CreateVideo(posts);
+                CreateVideos(posts);
             }
 
             lblStatus.Text = "Done";
@@ -112,58 +113,86 @@ namespace WordpressScraper
             pnlSlideShow.Enabled = chkCreateSlide.Checked && enable;
         }
 
-        private void CreateVideo(IList<Post> posts)
+        private void CreateVideos(IList<Post> posts)
         {
-            var secondsPerImage = (int)numDurationForEachImage.Value;
+
             var postDal = new PostDal(new Dal.Dal(MySqlConnectionString));
             Application.DoEvents();
             lblStatus.Text = "Creating temp directories...";
             Application.DoEvents();
-            
+
             if (Directory.Exists(TempFolder))
             {
                 Directory.Delete(TempFolder, true);
             }
             Directory.CreateDirectory(TempFolder);
+            Directory.CreateDirectory(OutputFolder);
+            
 
-            if (Directory.Exists(InputFolder))
-            {
-                Directory.Delete(InputFolder, true);
-            }
-            Directory.CreateDirectory(InputFolder);
-
-            var listFile = AssemblyDirectory + "/" + ListFile;
-            File.WriteAllText(listFile, string.Empty);
 
             Application.DoEvents();
             lblStatus.Text = "Getting post images...";
             Application.DoEvents();
-            
-            var images = postDal.GetImagePostsForPosts(posts.Select(p => Int32.Parse(p.Id)).ToList());
-            var counter = 1;
-            foreach (var image in images)
-            {
-                var url = image.Url;
-                if (string.IsNullOrEmpty(url))
-                {
-                    continue;
-                }
-                Application.DoEvents();
-                lblStatus.Text = "Downloading " + url;
-                Application.DoEvents();
 
-                var extension = Path.GetExtension(url);
-                using (WebClient webClient = new WebClient())
+            var videoPerPost = (int)numVideoPerPost.Value;
+            var imagePerPost = (int) numImagePerPost.Value;
+            var pageCount = (int)Math.Ceiling((double)posts.Count / videoPerPost);
+            for (int pageNo = 0; pageNo < pageCount; pageNo++)
+            {
+
+                if (Directory.Exists(InputFolder))
                 {
-                    webClient.DownloadFile(url, AssemblyDirectory + "/" + InputFolder + "\\img" + counter + "." + extension);
+                    Directory.Delete(InputFolder, true);
                 }
-                counter++;
+                Directory.CreateDirectory(InputFolder);
+                var postsToTake = posts.Skip(pageNo * videoPerPost).Take((pageNo + 1) * videoPerPost - 1);
+                if (postsToTake.Count() == 0) break;
+                var images = postDal.GetImagePostsForPosts(postsToTake.Select(p => Int32.Parse(p.Id)).ToList());
+
+                var imagesToTake = new List<Post>();
+                
+                foreach (var imageGroup in images.GroupBy(i => i.ParentId))
+                {
+                    imagesToTake.AddRange(imageGroup.Take(imagePerPost));
+                }
+          
+                var counter = 1;
+                foreach (var image in imagesToTake)
+                {
+                    var url = image.Url;
+                    if (string.IsNullOrEmpty(url))
+                    {
+                        continue;
+                    }
+                    Application.DoEvents();
+                    lblStatus.Text = "Downloading " + url;
+                    Application.DoEvents();
+
+                    var extension = Path.GetExtension(url);
+                    using (WebClient webClient = new WebClient())
+                    {
+                        webClient.DownloadFile(url,
+                            AssemblyDirectory + "/" + InputFolder + "\\img" + counter + "." + extension);
+                    }
+                    counter++;
+                }
+
+                CreateVideo(OutputFolder+"/outputwaudio" + pageNo + ".mp4");
             }
+            Directory.Delete(InputFolder, true);
+            Directory.Delete(TempFolder, true);
+        }
+
+        private void CreateVideo(string outputFileName)
+        {
+            var secondsPerImage = (int)numDurationForEachImage.Value;
+            var listFile = AssemblyDirectory + "/" + ListFile;
+            File.WriteAllText(listFile, string.Empty);
 
             Application.DoEvents();
             lblStatus.Text = "Downloading music...";
             Application.DoEvents();
-            
+
             // Create a new WebClient instance.
             var myWebClient = new WebClient();
             myWebClient.DownloadFile(MusicUrls[Helper.GetRandomNumber(0, MusicUrls.Count)],
@@ -232,11 +261,11 @@ namespace WordpressScraper
             Application.DoEvents();
             lblStatus.Text = "Combining audio and video...";
             Application.DoEvents();
-            var audioParams = string.Format("-y -i \"{0}/output.mp4\" -i \"{0}/audio.mp3\" -shortest outputwaudio.mp4",
-                TempFolder);
+            var audioParams = string.Format("-y -i \"{0}/output.mp4\" -i \"{0}/audio.mp3\" -shortest {1}",
+                TempFolder, outputFileName);
             StartFfmpeg(audioParams, 15);
 
-            Directory.Delete(TempFolder, true);
+
         }
 
         private static void StartFfmpeg(string firstArgs, int timeout = 2)

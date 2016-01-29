@@ -59,7 +59,7 @@ namespace WordpressScraper.Dal
 
         public IList<Post> GetImagePostsForPosts(IList<int> ids)
         {
-            var sql = "SELECT P.*, 1 as display_name FROM wp_posts P where P.post_parent in(" + string.Join(",", ids) + ")";
+            var sql = "SELECT P.*, 1 as display_name FROM wp_posts P where P.post_type='attachment' and P.post_parent in(" + string.Join(",", ids) + ") order by post_date Asc";
             var data = _dal.GetData(sql);
             if (data.Tables.Count == 0) { return null; }
             if (data.Tables[0].Rows.Count == 0) { return null; }
@@ -120,11 +120,11 @@ namespace WordpressScraper.Dal
                 Name = row["post_name"].ToString(),
                 Url = row["guid"].ToString(),
                 PostType = row["post_type"].ToString(),
-                Author = row["display_name"].ToString()
+                Author = row["display_name"].ToString(),
+                ParentId = row["post_parent"] == null ? "" : row["post_parent"].ToString()
             };
         }
-        //Update wp_posts set post_status='publish',post_date=NOW(),post_date_gmt=NOW(),post_modified=NOW(),post_modified_gmt=NOW(),post_name='personalized-baby-fork-spoon-keepsake-baby-shower-gift-christening' where ID=3991;
-        //Insert into wp_term_relationships(object_id,term_taxonomy_id,term_order) values(3991, 1,0)
+
 
         public void PublishPost(Post post)
         {
@@ -144,7 +144,7 @@ namespace WordpressScraper.Dal
 
             if (!uncategorizedSet)
             {
-                sql += string.Format("Insert into wp_term_relationships(object_id,term_taxonomy_id,term_order) values({0}, {1},0);", post.Id, 1);                
+                sql += string.Format("Insert into wp_term_relationships(object_id,term_taxonomy_id,term_order) values({0}, {1},0);", post.Id, 1);
             }
             if (!categorySet)
             {
