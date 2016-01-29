@@ -596,7 +596,12 @@ namespace WindowsFormsApplication1
                     imageIndex, _thumbnailSize, extension);
                 imageUploads.Add(uploaded);
                 itemImage.NewSource = thumbnailUrl;
-                itemImage.Link = _blogUrl + converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageStart);
+                itemImage.Link = _blogUrl;
+                if (!_blogUrl.EndsWith("/"))
+                {
+                    itemImage.Link += "/";
+                }
+                itemImage.Link += converterFunctions.SeoUrl(postTitle) + "/" + converterFunctions.SeoUrl(imageStart);
                 imageIndex++;
             }
 
