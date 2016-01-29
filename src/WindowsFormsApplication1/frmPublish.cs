@@ -108,6 +108,8 @@ namespace WordpressScraper
         private void EnDis(bool enable = true)
         {
             btnPublish.Enabled = enable;
+            chkCreateSlide.Enabled = enable;
+            pnlSlideShow.Enabled = chkCreateSlide.Checked && enable;
         }
 
         private void CreateVideo(IList<Post> posts)

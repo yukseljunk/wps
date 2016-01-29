@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Data;
+using System.Xml.XPath;
 using PttLib.Helpers;
 using PttLib.TourInfo;
 using WordPressSharp.Models;
@@ -19,7 +22,7 @@ namespace WordpressScraper.Dal
             var defaultCategoryId = GetDefaultCategoryId();
             if (defaultCategoryId > 0) return defaultCategoryId;
 
-            return InsertCategory(new Term(){Name = "Default Category", Description = DEFAULT_CATEGORY});
+            return InsertCategory(new Term() { Name = "Default Category", Description = DEFAULT_CATEGORY });
         }
 
         public int GetDefaultCategoryId()
@@ -56,6 +59,20 @@ namespace WordpressScraper.Dal
                 term.Name.EscapeSql(),
                 converterFunctions.SeoUrl(term.Name).EscapeSql(),
                 term.Description.EscapeSql());
+        }
+
+        public IList<int> GetCategories(string id)
+        {
+            var sql = string.Format("SELECT term_taxonomy_id FROM wp_term_relationships where object_id={0}", id);
+            var data = _dal.GetData(sql);
+            if (data.Tables.Count == 0) { return null; }
+            if (data.Tables[0].Rows.Count == 0) { return null; }
+            var result = new List<int>();
+            foreach (DataRow row in data.Tables[0].Rows)
+            {
+                result.Add(int.Parse(row["term_taxonomy_id"].ToString()));
+            }
+            return result;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace WordpressScraper.Dal
 
             sql = "DELETE FROM wp_posts";
             _dal.ExecuteNonQuery(sql);
-            
+
 
         }
 
@@ -123,17 +123,33 @@ namespace WordpressScraper.Dal
                 Author = row["display_name"].ToString()
             };
         }
+        //Update wp_posts set post_status='publish',post_date=NOW(),post_date_gmt=NOW(),post_modified=NOW(),post_modified_gmt=NOW(),post_name='personalized-baby-fork-spoon-keepsake-baby-shower-gift-christening' where ID=3991;
+        //Insert into wp_term_relationships(object_id,term_taxonomy_id,term_order) values(3991, 1,0)
 
         public void PublishPost(Post post)
         {
+            var catDal = new CategoryDal(_dal);
+            var postCategories = catDal.GetCategories(post.Id);
+            var defaultCategoryId = catDal.GetInsertDefaultCategoryId();
+            var categorySet = postCategories.Contains(defaultCategoryId);
+            var uncategorizedSet = postCategories.Contains(1);
+
             var converterFunctions = new ConverterFunctions();
             var postName = converterFunctions.SeoPostUrl(post.Title);
             var sql = string.Format(
-                "Update wp_posts set post_status='publish',post_date=NOW(),post_date_gmt=NOW(),post_modified=NOW(),post_modified_gmt=NOW(),post_name='{1}' where ID={0};" +
-                "Insert into wp_term_relationships(object_id,term_taxonomy_id,term_order) values({0}, 1,0)",
+                "Update wp_posts set post_status='publish',post_date=NOW(),post_date_gmt=NOW(),post_modified=NOW(),post_modified_gmt=NOW(),post_name='{1}' where ID={0};",
                 post.Id,
                 postName.EscapeSql()
                 );
+
+            if (!uncategorizedSet)
+            {
+                sql += string.Format("Insert into wp_term_relationships(object_id,term_taxonomy_id,term_order) values({0}, {1},0);", post.Id, 1);                
+            }
+            if (!categorySet)
+            {
+                sql += string.Format("Insert into wp_term_relationships(object_id,term_taxonomy_id,term_order) values({0}, {1},0);", post.Id, defaultCategoryId);
+            }
             _dal.ExecuteNonQuery(sql);
 
         }
