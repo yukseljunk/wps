@@ -44,7 +44,10 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("ProxyPort", numProxyPort.Value.ToString()));
             settings.Add(new Tuple<string, string>("UseProxy", chkUseProxy.Checked.ToString()));
 
-
+            settings.Add(new Tuple<string, string>("YoutubeClient", txtYoutubeClientId.Text));
+            settings.Add(new Tuple<string, string>("YoutubeProject", txtYoutubeProjectId.Text));
+            settings.Add(new Tuple<string, string>("YoutubeClientSecret", txtYoutubeClientSecret.Text));
+            
             ConfigurationHelper.UpdateSettings(settings);
 
             this.Dispose();
@@ -63,6 +66,7 @@ namespace WordpressScraper
             _panels.Add(pnlBlog);
             _panels.Add(pnlMysql);
             _panels.Add(pnlFtp);
+            _panels.Add(pnlYoutube);
             _panels.Add(pnlProxy);
             var maxHeight = 0;
             foreach (var panel in _panels)
@@ -77,6 +81,10 @@ namespace WordpressScraper
             lstTypes.SelectedIndex = 0;
             this.Height = maxHeight + 150;
             this.Width = 550;
+#if DEBUG
+            txtYoutubeClientSecret.Text = "pobSaKuo_5-xDDryquzDYKjS";
+#endif
+
         }
 
         private void FillValues(ProgramOptions options)
@@ -95,6 +103,10 @@ namespace WordpressScraper
             FixEmptyNumericUpDown(numProxyPort);
             numProxyPort.Value = options.ProxyPort;
             chkUseProxy.Checked = options.UseProxy;
+
+            txtYoutubeClientId.Text = options.YoutubeClient;
+            txtYoutubeProjectId.Text = options.YoutubeProject;
+            txtYoutubeClientSecret.Text = options.YoutubeClientSecret;
         }
 
         private void FixEmptyNumericUpDown(NumericUpDown control)
@@ -190,7 +202,10 @@ namespace WordpressScraper
                 FtpPassword = txtFtpPassword.Text,
                 ProxyAddress = txtProxyIp.Text,
                 ProxyPort = (int)numProxyPort.Value,
-                UseProxy = chkUseProxy.Checked
+                UseProxy = chkUseProxy.Checked,
+                YoutubeClient = txtYoutubeClientId.Text,
+                YoutubeProject = txtYoutubeProjectId.Text,
+                YoutubeClientSecret = txtYoutubeClientSecret.Text
             };
 
             var xmlSerializer = new XmlSerializer();

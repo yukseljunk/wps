@@ -54,5 +54,10 @@ namespace PttLib
         public string ProxyAddress { get; set; }
         public int ProxyPort { get; set; }
         public bool UseProxy { get; set; }
+
+        public string YoutubeClient { get; set; }
+        public string YoutubeProject { get; set; }
+        public string YoutubeClientSecret { get; set; }
+
     }
 }

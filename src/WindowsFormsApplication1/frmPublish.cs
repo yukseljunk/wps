@@ -67,8 +67,6 @@ namespace WordpressScraper
         private void btnPublish_Click(object sender, EventArgs e)
         {
             EnDis(false);
-            var programOptionsFactory = new ProgramOptionsFactory();
-            _options = programOptionsFactory.Get();
 
             var postDal = new PostDal(new Dal.Dal(MySqlConnectionString));
             var posts = _posts;
@@ -99,10 +97,30 @@ namespace WordpressScraper
             if (chkCreateSlide.Checked)
             {
                 CreateVideos(posts);
+                UploadToYoutube();
             }
 
             lblStatus.Text = "Done";
             EnDis();
+
+        }
+
+        private void UploadToYoutube()
+        {
+            if (_videosCreated.Count == 0)
+            {
+                MessageBox.Show("No videos to publish!")
+                return;
+            }
+            //todo:arrange youtubeupload.exe.config for proxy
+
+
+            //run youtubeupload.exe
+
+            foreach (var videoCreated in _videosCreated)
+            {
+              StartYoutubeUpload(string.Format("-i {0}",videoCreated.Key));  
+            }
 
         }
 
@@ -111,11 +129,16 @@ namespace WordpressScraper
             btnPublish.Enabled = enable;
             chkCreateSlide.Enabled = enable;
             pnlSlideShow.Enabled = chkCreateSlide.Checked && enable;
+            pnlYoutube.Enabled = chkYoutube.Checked && enable;
+            chkYoutube.Enabled = chkCreateSlide.Checked;
+
         }
+
+        Dictionary<string, List<Post>> _videosCreated = new Dictionary<string, List<Post>>();
 
         private void CreateVideos(IList<Post> posts)
         {
-
+            _videosCreated = new Dictionary<string, List<Post>>();
             var postDal = new PostDal(new Dal.Dal(MySqlConnectionString));
             Application.DoEvents();
             lblStatus.Text = "Creating temp directories...";
@@ -125,21 +148,23 @@ namespace WordpressScraper
             {
                 Directory.Delete(TempFolder, true);
             }
+            if (Directory.Exists(OutputFolder))
+            {
+                Directory.Delete(OutputFolder, true);
+            }
+
             Directory.CreateDirectory(TempFolder);
             Directory.CreateDirectory(OutputFolder);
-            
-
 
             Application.DoEvents();
             lblStatus.Text = "Getting post images...";
             Application.DoEvents();
 
             var videoPerPost = (int)numVideoPerPost.Value;
-            var imagePerPost = (int) numImagePerPost.Value;
+            var imagePerPost = (int)numImagePerPost.Value;
             var pageCount = (int)Math.Ceiling((double)posts.Count / videoPerPost);
             for (int pageNo = 0; pageNo < pageCount; pageNo++)
             {
-
                 if (Directory.Exists(InputFolder))
                 {
                     Directory.Delete(InputFolder, true);
@@ -150,12 +175,12 @@ namespace WordpressScraper
                 var images = postDal.GetImagePostsForPosts(postsToTake.Select(p => Int32.Parse(p.Id)).ToList());
 
                 var imagesToTake = new List<Post>();
-                
+
                 foreach (var imageGroup in images.GroupBy(i => i.ParentId))
                 {
                     imagesToTake.AddRange(imageGroup.Take(imagePerPost));
                 }
-          
+
                 var counter = 1;
                 foreach (var image in imagesToTake)
                 {
@@ -176,8 +201,9 @@ namespace WordpressScraper
                     }
                     counter++;
                 }
-
-                CreateVideo(OutputFolder+"/outputwaudio" + pageNo + ".mp4");
+                var videoFileName = OutputFolder + "/outputwaudio" + pageNo + ".mp4";
+                CreateVideo(videoFileName);
+                _videosCreated.Add(videoFileName, postsToTake.ToList());
             }
             Directory.Delete(InputFolder, true);
             Directory.Delete(TempFolder, true);
@@ -268,7 +294,7 @@ namespace WordpressScraper
 
         }
 
-        private static void StartFfmpeg(string firstArgs, int timeout = 2)
+        private static void StartFfmpeg(string firstArgs, int timeout = 20)
         {
             var proc = new Process
             {
@@ -293,11 +319,36 @@ namespace WordpressScraper
 
             proc.WaitForExit(timeout * 1000);
         }
+        private static void StartYoutubeUpload(string firstArgs, int timeout = 40)
+        {
+            var proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = AssemblyDirectory + "/YoutubeUpload/YoutubeUpload.exe",
+                    Arguments = firstArgs,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                }
+            };
 
+            proc.Start();
+
+            while (!proc.StandardError.EndOfStream)
+            {
+                string line = proc.StandardError.ReadLine();
+                Console.WriteLine(line);
+            }
+
+            proc.WaitForExit(timeout * 1000);
+        }
 
         private void chkCreateSlide_CheckedChanged(object sender, EventArgs e)
         {
             pnlSlideShow.Enabled = chkCreateSlide.Checked;
+            chkYoutube.Enabled = chkCreateSlide.Checked;
         }
 
         private void frmPublish_Load(object sender, EventArgs e)
@@ -314,6 +365,8 @@ namespace WordpressScraper
                 numNumberOfPosts.Enabled = false;
                 numNumberOfPosts.Value = _posts.Count;
             }
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
         }
 
         private void numNumberOfPosts_ValueChanged(object sender, EventArgs e)
@@ -342,6 +395,17 @@ namespace WordpressScraper
                 string path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);
             }
+        }
+
+        private void chkYoutube_CheckedChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_options.YoutubeClientSecret) || string.IsNullOrEmpty(_options.YoutubeClient) ||
+                string.IsNullOrEmpty(_options.YoutubeProject))
+            {
+                MessageBox.Show("Please set up youtube settings in settings dialog!");
+                return;
+            }
+            pnlYoutube.Enabled = chkCreateSlide.Checked;
         }
     }
 }

@@ -44,7 +44,12 @@ namespace PttLib
                                   ProxyAddress = System.Configuration.ConfigurationManager.AppSettings["ProxyAddress"],
                                   UseProxy = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseProxy"]),
 
-                                  UseRemoteDownloading = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseRemoteDownloading"])
+                                  UseRemoteDownloading = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseRemoteDownloading"]),
+
+                                  YoutubeClient = System.Configuration.ConfigurationManager.AppSettings["YoutubeClient"],
+                                  YoutubeProject = System.Configuration.ConfigurationManager.AppSettings["YoutubeProject"],
+                                  YoutubeClientSecret = System.Configuration.ConfigurationManager.AppSettings["YoutubeClientSecret"]
+
 
                               };
             return options;
@@ -73,6 +78,10 @@ namespace PttLib
             options.ProxyPort = XmlParse.GetIntegerNodeValue(html.DocumentNode, "/programoptions/proxyport", 0);
             options.UseProxy = XmlParse.GetBooleanNodeValue(html.DocumentNode, "/programoptions/useproxy", false);
 
+            options.YoutubeClient = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/youtubeclient", "", true);
+            options.YoutubeProject = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/youtubeproject", "", true);
+            options.YoutubeClientSecret = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/youtubeclientsecret", "", true);
+            
             return options;
         }
     }
