@@ -109,18 +109,27 @@ namespace WordpressScraper
         {
             if (_videosCreated.Count == 0)
             {
-                MessageBox.Show("No videos to publish!")
+                MessageBox.Show("No videos to publish!");
                 return;
             }
             //todo:arrange youtubeupload.exe.config for proxy
 
-
             //run youtubeupload.exe
-
+            PrepareClientSecretJson();
             foreach (var videoCreated in _videosCreated)
             {
               StartYoutubeUpload(string.Format("-i {0}",videoCreated.Key));  
             }
+
+        }
+
+        private void PrepareClientSecretJson()
+        {
+            var contentFormat =
+                "{\"web\":{\"client_id\":\"{0}.apps.googleusercontent.com\",\"project_id\":\"{1}\",\"auth_uri\":\"https://accounts.google.com/o/oauth2/auth\",\"token_uri\":\"https://accounts.google.com/o/oauth2/token\",\"auth_provider_x509_cert_url\":\"https://www.googleapis.com/oauth2/v1/certs\",\"client_secret\":\"{2}\"}}";
+            var content = string.Format(contentFormat, _options.YoutubeClient, _options.YoutubeProject, _options.YoutubeClientSecret);
+
+            File.WriteAllText("YoutubeUpload/client_secret.json",content);
 
         }
 
