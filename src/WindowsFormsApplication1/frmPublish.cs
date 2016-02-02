@@ -15,8 +15,23 @@ using WordPressSharp.Models;
 
 namespace WordpressScraper
 {
+    /*
+     firt browser:
+     https://accounts.google.com/o/oauth2/auth?client_id=977332511117-f9186rd31c1d82vhsbshon1clkbn4a86.apps.googleusercontent.com&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=https://gdata.youtube.com&response_type=code&access_type=offline&approval_prompt=force
+ get code> 4/R0dU217RbGSdbA058xAhVsYVnE7lqO6xr_q8618r5Bg
+ * 
+  curl https://accounts.google.com/o/oauth2/token -k -d "code=4/R0dU217RbGSdbA058xAhVsYVnE7lqO6xr_q8618r5Bg&client_id=977332511117-f9186rd31c1d82vhsbshon1clkbn4a86.apps.googleusercontent.com&client_secret=KFAzDtqMgzjoZ7uo6RR6qEvN&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code"
 
-
+     * response:
+{
+  "access_token" : "ya29.fALbgrqC7rYxoxeXs-C1PZAa18rbEbSGvXKPatHOsz8RU81E0_xMf_6
+QS4zJkQaxQt6s",
+  "token_type" : "Bearer",
+  "expires_in" : 3600,
+  "refresh_token" : "1/VbDkMYMh9qvSlzLxzFH02-zmsYvOWy35SDrh2cgt8_ZIgOrJDtdun6zK6XiATCKT"
+}
+     * get refresh token from here
+     */
     public partial class frmPublish : Form
     {
         private static List<string> MusicUrls = new List<string>()
@@ -67,6 +82,7 @@ namespace WordpressScraper
         private void btnPublish_Click(object sender, EventArgs e)
         {
             EnDis(false);
+            txtStatus.Text = "";
 
             var postDal = new PostDal(new Dal.Dal(MySqlConnectionString));
             var posts = _posts;
@@ -88,7 +104,7 @@ namespace WordpressScraper
 
             foreach (var post in posts)
             {
-                lblStatus.Text = string.Format("Publishing '{0}'", post.Title);
+                AddStatus(string.Format("Publishing '{0}'", post.Title));
                 Application.DoEvents();
                 postDal.PublishPost(post);
             }
@@ -97,12 +113,23 @@ namespace WordpressScraper
             if (chkCreateSlide.Checked)
             {
                 CreateVideos(posts);
-                UploadToYoutube();
+                if (chkYoutube.Checked)
+                {
+                    UploadToYoutube();
+                }
             }
 
-            lblStatus.Text = "Done";
+            AddStatus("Done");
             EnDis();
 
+        }
+
+        private void AddStatus(string input)
+        {
+            txtStatus.Text += Environment.NewLine + input;
+            if (txtStatus.Text.Length == 0) return;
+            txtStatus.SelectionStart = txtStatus.Text.Length - 1; // add some logic if length is 0
+            txtStatus.SelectionLength = 0;
         }
 
         private void UploadToYoutube()
@@ -115,21 +142,11 @@ namespace WordpressScraper
             //todo:arrange youtubeupload.exe.config for proxy
 
             //run youtubeupload.exe
-            PrepareClientSecretJson();
+
             foreach (var videoCreated in _videosCreated)
             {
-              StartYoutubeUpload(string.Format("-i \"{0}\"",videoCreated.Key));  
+                StartYoutubeUpload(string.Format("-f \"{0}\" -r \"{1}\" -s \"{2}\" -i \"{3}\"", videoCreated.Key, txtRefreshToken.Text, _options.YoutubeClientSecret, _options.YoutubeClient));
             }
-
-        }
-
-        private void PrepareClientSecretJson()
-        {
-            var contentFormat =
-                "{{\"installed\":{{\"client_id\":\"{0}.apps.googleusercontent.com\",\"project_id\":\"{1}\",\"auth_uri\":\"https://accounts.google.com/o/oauth2/auth\",\"token_uri\":\"https://accounts.google.com/o/oauth2/token\",\"auth_provider_x509_cert_url\":\"https://www.googleapis.com/oauth2/v1/certs\",\"client_secret\":\"{2}\"}}}}";
-            var content = string.Format(contentFormat, _options.YoutubeClient, _options.YoutubeProject, _options.YoutubeClientSecret);
-
-            File.WriteAllText("client_secret.json",content);
 
         }
 
@@ -150,7 +167,7 @@ namespace WordpressScraper
             _videosCreated = new Dictionary<string, List<Post>>();
             var postDal = new PostDal(new Dal.Dal(MySqlConnectionString));
             Application.DoEvents();
-            lblStatus.Text = "Creating temp directories...";
+            AddStatus("Creating temp directories...");
             Application.DoEvents();
 
             if (Directory.Exists(TempFolder))
@@ -166,7 +183,7 @@ namespace WordpressScraper
             Directory.CreateDirectory(OutputFolder);
 
             Application.DoEvents();
-            lblStatus.Text = "Getting post images...";
+            AddStatus("Getting post images...");
             Application.DoEvents();
 
             var videoPerPost = (int)numVideoPerPost.Value;
@@ -199,7 +216,7 @@ namespace WordpressScraper
                         continue;
                     }
                     Application.DoEvents();
-                    lblStatus.Text = "Downloading " + url;
+                    AddStatus("Downloading " + url);
                     Application.DoEvents();
 
                     var extension = Path.GetExtension(url);
@@ -212,7 +229,7 @@ namespace WordpressScraper
                 }
                 var videoFileName = OutputFolder + "/outputwaudio" + pageNo + ".mp4";
                 CreateVideo(videoFileName);
-                _videosCreated.Add(videoFileName, postsToTake.ToList());
+                _videosCreated.Add(AssemblyDirectory + "/" + videoFileName, postsToTake.ToList());
             }
             Directory.Delete(InputFolder, true);
             Directory.Delete(TempFolder, true);
@@ -225,7 +242,7 @@ namespace WordpressScraper
             File.WriteAllText(listFile, string.Empty);
 
             Application.DoEvents();
-            lblStatus.Text = "Downloading music...";
+            AddStatus("Downloading music...");
             Application.DoEvents();
 
             // Create a new WebClient instance.
@@ -240,7 +257,7 @@ namespace WordpressScraper
             var combineMusicParams = string.Format("-y -f concat -i \"{0}\" -c copy \"{1}/musicShuffled.mp3\"", listFile,
                 TempFolder);
             Application.DoEvents();
-            lblStatus.Text = "Creating shuffled music...";
+            AddStatus("Creating shuffled music...");
             Application.DoEvents();
 
             StartFfmpeg(combineMusicParams, 20);
@@ -251,7 +268,7 @@ namespace WordpressScraper
             var imgFactory = new ImageFactory();
 
             Application.DoEvents();
-            lblStatus.Text = "Creating individual clip from each picture...";
+            AddStatus("Creating individual clip from each picture...");
             Application.DoEvents();
 
             var index = 1;
@@ -275,7 +292,7 @@ namespace WordpressScraper
             }
 
             Application.DoEvents();
-            lblStatus.Text = "Combining individual clips...";
+            AddStatus("Combining individual clips...");
             Application.DoEvents();
 
             //ffmpeg -f concat -i mylist.txt -c copy output.mp4
@@ -283,7 +300,7 @@ namespace WordpressScraper
             StartFfmpeg(combineParams, 5);
 
             Application.DoEvents();
-            lblStatus.Text = "Arranging audio fade in and out...";
+            AddStatus("Arranging audio fade in and out...");
             Application.DoEvents();
 
             //index*SecondsPerImage/3 secs SecondsPerImage secs;
@@ -294,7 +311,7 @@ namespace WordpressScraper
             StartFfmpeg(audioFadeOutParams, 15);
 
             Application.DoEvents();
-            lblStatus.Text = "Combining audio and video...";
+            AddStatus("Combining audio and video...");
             Application.DoEvents();
             var audioParams = string.Format("-y -i \"{0}/output.mp4\" -i \"{0}/audio.mp3\" -shortest {1}",
                 TempFolder, outputFileName);
@@ -328,13 +345,13 @@ namespace WordpressScraper
 
             proc.WaitForExit(timeout * 1000);
         }
-        private static void StartYoutubeUpload(string firstArgs, int timeout = 40)
+        private void StartYoutubeUpload(string firstArgs, int timeout = 40)
         {
             var proc = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = AssemblyDirectory + "/YoutubeUpload/YoutubeUpload.exe",
+                    FileName = AssemblyDirectory + "/YoutubeUtilities/YoutubeUtilities.exe",
                     Arguments = firstArgs,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -348,10 +365,14 @@ namespace WordpressScraper
             while (!proc.StandardError.EndOfStream)
             {
                 string line = proc.StandardError.ReadLine();
-                var x = line;
-                //Console.WriteLine(line);
+                AddStatus(line);
             }
-            proc.StandardInput.Close();
+            while (!proc.StandardOutput.EndOfStream)
+            {
+                string line = proc.StandardOutput.ReadLine();
+                AddStatus(line);
+            }
+
             proc.WaitForExit(timeout * 1000);
         }
 
@@ -366,7 +387,7 @@ namespace WordpressScraper
             cbCriteria.Items.Clear();
             cbCriteria.Items.AddRange(new object[] { "Newest", "Oldest", "Random" });
             cbCriteria.SelectedIndex = 0;
-            lblStatus.Text = "";
+            txtStatus.Text = "";
             if (_posts != null)
             {
                 cbCriteria.Items.Add("Selected Items");
@@ -416,6 +437,11 @@ namespace WordpressScraper
                 return;
             }
             pnlYoutube.Enabled = chkCreateSlide.Checked;
+        }
+
+        private void txtStatus_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

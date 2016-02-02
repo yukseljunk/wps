@@ -30,9 +30,9 @@ namespace YoutubeUtilities
         [Option('d', "desc", DefaultValue = "My video description",
             HelpText = "Description of the video")]
         public string Description { get; set; }
-
+        /*
         [OptionList('a', "tags", HelpText = "Tags for the video")]
-        public IList<string> Tags { get; set; }
+        public IList<string> Tags { get; set; }*/
 
         [Option('c', "cat", DefaultValue = "22",
             HelpText = "Category of the video")]

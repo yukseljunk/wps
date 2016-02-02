@@ -50,16 +50,17 @@
             this.numVideoPerPost = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.lblStatus = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.pnlYoutube = new System.Windows.Forms.Panel();
-            this.chkYoutube = new System.Windows.Forms.CheckBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txtYoutubeTitle = new System.Windows.Forms.TextBox();
-            this.txtYoutubeDescription = new System.Windows.Forms.TextBox();
             this.txtYoutubeTags = new System.Windows.Forms.TextBox();
+            this.txtYoutubeDescription = new System.Windows.Forms.TextBox();
+            this.txtYoutubeTitle = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.chkYoutube = new System.Windows.Forms.CheckBox();
+            this.txtRefreshToken = new System.Windows.Forms.TextBox();
+            this.txtStatus = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberOfPosts)).BeginInit();
             this.pnlSlideShow.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numImagePerPost)).BeginInit();
@@ -72,7 +73,7 @@
             // 
             // btnPublish
             // 
-            this.btnPublish.Location = new System.Drawing.Point(229, 513);
+            this.btnPublish.Location = new System.Drawing.Point(244, 552);
             this.btnPublish.Name = "btnPublish";
             this.btnPublish.Size = new System.Drawing.Size(75, 23);
             this.btnPublish.TabIndex = 0;
@@ -365,18 +366,10 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "1 video from each ";
             // 
-            // lblStatus
-            // 
-            this.lblStatus.Location = new System.Drawing.Point(26, 447);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(374, 61);
-            this.lblStatus.TabIndex = 7;
-            this.lblStatus.Text = "Status:";
-            // 
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(325, 513);
+            this.btnClose.Location = new System.Drawing.Point(325, 552);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 8;
@@ -399,6 +392,56 @@
             this.pnlYoutube.Size = new System.Drawing.Size(374, 140);
             this.pnlYoutube.TabIndex = 9;
             // 
+            // txtYoutubeTags
+            // 
+            this.txtYoutubeTags.Location = new System.Drawing.Point(97, 104);
+            this.txtYoutubeTags.Name = "txtYoutubeTags";
+            this.txtYoutubeTags.Size = new System.Drawing.Size(263, 20);
+            this.txtYoutubeTags.TabIndex = 8;
+            // 
+            // txtYoutubeDescription
+            // 
+            this.txtYoutubeDescription.Location = new System.Drawing.Point(97, 43);
+            this.txtYoutubeDescription.Multiline = true;
+            this.txtYoutubeDescription.Name = "txtYoutubeDescription";
+            this.txtYoutubeDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtYoutubeDescription.Size = new System.Drawing.Size(263, 55);
+            this.txtYoutubeDescription.TabIndex = 7;
+            // 
+            // txtYoutubeTitle
+            // 
+            this.txtYoutubeTitle.Location = new System.Drawing.Point(97, 10);
+            this.txtYoutubeTitle.Name = "txtYoutubeTitle";
+            this.txtYoutubeTitle.Size = new System.Drawing.Size(263, 20);
+            this.txtYoutubeTitle.TabIndex = 6;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(18, 104);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(31, 13);
+            this.label15.TabIndex = 5;
+            this.label15.Text = "Tags";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(20, 43);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(60, 13);
+            this.label14.TabIndex = 4;
+            this.label14.Text = "Description";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(19, 17);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(27, 13);
+            this.label13.TabIndex = 3;
+            this.label13.Text = "Title";
+            // 
             // chkYoutube
             // 
             this.chkYoutube.AutoSize = true;
@@ -410,66 +453,37 @@
             this.chkYoutube.UseVisualStyleBackColor = true;
             this.chkYoutube.CheckedChanged += new System.EventHandler(this.chkYoutube_CheckedChanged);
             // 
-            // label13
+            // txtRefreshToken
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(19, 17);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(27, 13);
-            this.label13.TabIndex = 3;
-            this.label13.Text = "Title";
+            this.txtRefreshToken.Font = new System.Drawing.Font("Tahoma", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtRefreshToken.Location = new System.Drawing.Point(169, 261);
+            this.txtRefreshToken.Multiline = true;
+            this.txtRefreshToken.Name = "txtRefreshToken";
+            this.txtRefreshToken.Size = new System.Drawing.Size(231, 27);
+            this.txtRefreshToken.TabIndex = 11;
+            this.txtRefreshToken.Text = "1/VucS1d90PKiyPqDQOantnd9kj9tkG1ibJGXGJJr3tWZIgOrJDtdun6zK6XiATCKT";
             // 
-            // label14
+            // txtStatus
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(20, 43);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(60, 13);
-            this.label14.TabIndex = 4;
-            this.label14.Text = "Description";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(18, 104);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(31, 13);
-            this.label15.TabIndex = 5;
-            this.label15.Text = "Tags";
-            // 
-            // txtYoutubeTitle
-            // 
-            this.txtYoutubeTitle.Location = new System.Drawing.Point(97, 10);
-            this.txtYoutubeTitle.Name = "txtYoutubeTitle";
-            this.txtYoutubeTitle.Size = new System.Drawing.Size(263, 20);
-            this.txtYoutubeTitle.TabIndex = 6;
-            // 
-            // txtYoutubeDescription
-            // 
-            this.txtYoutubeDescription.Location = new System.Drawing.Point(97, 43);
-            this.txtYoutubeDescription.Multiline = true;
-            this.txtYoutubeDescription.Name = "txtYoutubeDescription";
-            this.txtYoutubeDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtYoutubeDescription.Size = new System.Drawing.Size(263, 55);
-            this.txtYoutubeDescription.TabIndex = 7;
-            // 
-            // txtYoutubeTags
-            // 
-            this.txtYoutubeTags.Location = new System.Drawing.Point(97, 104);
-            this.txtYoutubeTags.Name = "txtYoutubeTags";
-            this.txtYoutubeTags.Size = new System.Drawing.Size(263, 20);
-            this.txtYoutubeTags.TabIndex = 8;
+            this.txtStatus.Location = new System.Drawing.Point(26, 452);
+            this.txtStatus.Multiline = true;
+            this.txtStatus.Name = "txtStatus";
+            this.txtStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtStatus.Size = new System.Drawing.Size(374, 82);
+            this.txtStatus.TabIndex = 12;
+            this.txtStatus.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtStatus_KeyPress);
             // 
             // frmPublish
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(416, 549);
+            this.ClientSize = new System.Drawing.Size(416, 587);
+            this.Controls.Add(this.txtStatus);
+            this.Controls.Add(this.txtRefreshToken);
             this.Controls.Add(this.chkYoutube);
             this.Controls.Add(this.pnlYoutube);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pnlSlideShow);
             this.Controls.Add(this.chkCreateSlide);
             this.Controls.Add(this.label2);
@@ -522,7 +536,6 @@
         private System.Windows.Forms.NumericUpDown numImagePerPost;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Panel pnlYoutube;
         private System.Windows.Forms.CheckBox chkYoutube;
@@ -532,5 +545,7 @@
         private System.Windows.Forms.TextBox txtYoutubeTags;
         private System.Windows.Forms.TextBox txtYoutubeDescription;
         private System.Windows.Forms.TextBox txtYoutubeTitle;
+        private System.Windows.Forms.TextBox txtRefreshToken;
+        private System.Windows.Forms.TextBox txtStatus;
     }
 }

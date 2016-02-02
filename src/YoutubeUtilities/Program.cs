@@ -14,7 +14,7 @@ namespace YoutubeUtilities
                 var ytUtilities = new YouTubeUtilities(options.RefreshToken, options.ClientSecret, options.ClientId);
                 using (var fileStream = new FileStream(options.InputFile, FileMode.Open))
                 {
-                    Console.WriteLine(ytUtilities.UploadVideo(fileStream, options.Title,options.Description,options.Tags.ToArray(),options.Category,options.Public));
+                    Console.WriteLine(ytUtilities.UploadVideo(fileStream, options.Title, options.Description, new []{""}, options.Category, options.Public));
                 }
             }
         }
