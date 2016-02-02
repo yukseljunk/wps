@@ -185,6 +185,10 @@
       <Project>{7a938355-0b6b-48b7-97fb-c0c09015307b}</Project>
       <Name>WordPressSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\YoutubeUtilities\YoutubeUtilities.csproj">
+      <Project>{ebb237b8-6640-48b4-b76e-75647163cb8c}</Project>
+      <Name>YoutubeUtilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

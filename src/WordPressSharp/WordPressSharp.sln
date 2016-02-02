@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordpressScraper", "..\Wind
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ffmpegpictureslide", "..\ffmpegpictureslide\ffmpegpictureslide\ffmpegpictureslide.csproj", "{5B038DA3-8A32-42A7-9F49-A66B93F63599}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeUtilities", "..\YoutubeUtilities\YoutubeUtilities.csproj", "{EBB237B8-6640-48B4-B76E-75647163CB8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{5B038DA3-8A32-42A7-9F49-A66B93F63599}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B038DA3-8A32-42A7-9F49-A66B93F63599}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B038DA3-8A32-42A7-9F49-A66B93F63599}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBB237B8-6640-48B4-B76E-75647163CB8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBB237B8-6640-48B4-B76E-75647163CB8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBB237B8-6640-48B4-B76E-75647163CB8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBB237B8-6640-48B4-B76E-75647163CB8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
