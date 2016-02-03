@@ -458,12 +458,13 @@
             // txtRefreshToken
             // 
             this.txtRefreshToken.Font = new System.Drawing.Font("Tahoma", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRefreshToken.Location = new System.Drawing.Point(169, 261);
+            this.txtRefreshToken.Location = new System.Drawing.Point(27, 540);
             this.txtRefreshToken.Multiline = true;
             this.txtRefreshToken.Name = "txtRefreshToken";
-            this.txtRefreshToken.Size = new System.Drawing.Size(231, 27);
+            this.txtRefreshToken.Size = new System.Drawing.Size(373, 19);
             this.txtRefreshToken.TabIndex = 11;
             this.txtRefreshToken.Text = "1/VucS1d90PKiyPqDQOantnd9kj9tkG1ibJGXGJJr3tWZIgOrJDtdun6zK6XiATCKT";
+            this.txtRefreshToken.Visible = false;
             // 
             // txtStatus
             // 
@@ -492,19 +493,19 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(416, 587);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnPublish);
             this.Controls.Add(this.btnGetGoogleToken);
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.txtRefreshToken);
             this.Controls.Add(this.chkYoutube);
             this.Controls.Add(this.pnlYoutube);
-            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.pnlSlideShow);
             this.Controls.Add(this.chkCreateSlide);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cbCriteria);
             this.Controls.Add(this.numNumberOfPosts);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnPublish);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmPublish";

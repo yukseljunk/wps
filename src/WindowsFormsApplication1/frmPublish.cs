@@ -111,7 +111,7 @@ namespace WordpressScraper
 
         private void AddStatus(string input)
         {
-            txtStatus.Text += Environment.NewLine + input;
+            txtStatus.AppendText(Environment.NewLine + input);
             if (txtStatus.Text.Length == 0) return;
             txtStatus.SelectionStart = txtStatus.Text.Length - 1; // add some logic if length is 0
             txtStatus.SelectionLength = 0;
@@ -133,7 +133,8 @@ namespace WordpressScraper
             //run youtubeupload.exe
             foreach (var videoCreated in _videosCreated)
             {
-                StartYoutubeUpload(string.Format("-f \"{0}\" -r \"{1}\" -s \"{2}\" -i \"{3}\"", videoCreated.Key, txtRefreshToken.Text, _options.YoutubeClientSecret, _options.YoutubeClient));
+                StartYoutubeUpload(string.Format("-f \"{0}\" -r \"{1}\" -s \"{2}\" -i \"{3}\" -t \"{4}\" -d \"{5}\"",
+                    videoCreated.Key, txtRefreshToken.Text, _options.YoutubeClientSecret, _options.YoutubeClient, txtYoutubeTitle.Text, txtYoutubeDescription.Text));
             }
 
         }
@@ -154,13 +155,13 @@ namespace WordpressScraper
             }
             //1!ZTQgm8smy2:joelmatthewgr@gmail.com
             if (string.IsNullOrEmpty(tokenCode)) return;
-            var json=WebHelper.CurlSimplePost("https://accounts.google.com/o/oauth2/token",
+            var json = WebHelper.CurlSimplePost("https://accounts.google.com/o/oauth2/token",
                 string.Format("code={0}&client_id={1}&client_secret={2}&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code", tokenCode, _options.YoutubeClient, _options.YoutubeClientSecret),
                 "accounts.google.com");
             if (string.IsNullOrEmpty(json)) return;
             dynamic d = JObject.Parse(json);
             if (d.refresh_token == null) return;
-            txtRefreshToken.Text= d.refresh_token;
+            txtRefreshToken.Text = d.refresh_token;
         }
 
         private void EnDis(bool enable = true)
@@ -209,7 +210,7 @@ namespace WordpressScraper
                     Directory.Delete(InputFolder, true);
                 }
                 Directory.CreateDirectory(InputFolder);
-                var postsToTake = posts.Skip(pageNo * videoPerPost).Take((pageNo + 1) * videoPerPost - 1);
+                var postsToTake = posts.Skip(pageNo * videoPerPost).Take(videoPerPost);
                 if (postsToTake.Count() == 0) break;
                 var images = postDal.GetImagePostsForPosts(postsToTake.Select(p => Int32.Parse(p.Id)).ToList());
 
