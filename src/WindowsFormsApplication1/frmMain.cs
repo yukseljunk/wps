@@ -236,7 +236,24 @@ namespace WindowsFormsApplication1
             lblDateTime.Text = "";
             _stopWatch = new Stopwatch();
             _stopWatch.Start();
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+            HashSet<string> existingIds=null;
+            if (_options.SkipSearchingPosted)
+            {
+                using (var dal = new Dal(MySqlConnectionString))
+                {
+                    _blogCache = new BlogCache(dal);
+                    if (_options.UseCache)
+                    {
+                        SetStatus("Loading present posts and tags in the blog(this may take some time)...");
+                        Application.DoEvents();
+                        existingIds=_blogCache.IdsPresent(_options.BlogUrl);
+                        Application.DoEvents();
+                    }
+                }
 
+            }
             _sourceItemFactory = new SourceItemFactory();
             _sourceItemFactory.NoSourceFound += NoSourceFound;
             _sourceItemFactory.GettingSourceItemsStopped += GettingSourceItemsStopped;
@@ -245,7 +262,7 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.TotalResultsFound += TotalResultsFound;
             _sourceItemFactory.SourceItemsGot += SourceItemsGot;
             var checkedSites = (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();
-            _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count + 1);
+            _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count + 1, existingIds);
 
         }
 

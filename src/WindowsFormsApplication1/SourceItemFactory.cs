@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1
         private readonly string _site;
         private readonly int _totalInPageRange;
         private readonly int _totalForKeyword;
-        
+
 
         public TotalResultsFoundEventArgs(string site, int totalInPageRange, int totalForKeyword)
         {
@@ -92,12 +92,13 @@ namespace WindowsFormsApplication1
         }
         #endregion
 
-        public void GetSourceItems(IList<string> siteNames, string keyword, int pageStart, int pageEnd, int startingOrder)
+        public void GetSourceItems(IList<string> siteNames, string keyword, int pageStart, int pageEnd, int startingOrder, HashSet<string> existingIds)
         {
             _lock = new Object();
             _bws = new List<BackgroundWorker>();
             _workersCount = siteNames.Count;
             _itemIndex = startingOrder;
+
             foreach (var siteName in siteNames)
             {
                 var bw = new BackgroundWorker
@@ -107,7 +108,7 @@ namespace WindowsFormsApplication1
                 };
                 string name = siteName;
 
-                bw.DoWork += (obj, e) => GetSourceItemsOnWorker(bw, name, keyword, pageStart, pageEnd, e);
+                bw.DoWork += (obj, e) => GetSourceItemsOnWorker(bw, name, keyword, pageStart, pageEnd, e, existingIds);
                 bw.ProgressChanged += SingleSourceItemGot;
                 bw.RunWorkerCompleted += GettingSourceItemsFinished;
                 _bws.Add(bw);
@@ -181,7 +182,7 @@ namespace WindowsFormsApplication1
         }
 
         private int _itemIndex = 0;
-        private void GetSourceItemsOnWorker(BackgroundWorker bw, string siteName, string keyword, int pageStart, int pageEnd, DoWorkEventArgs e)
+        private void GetSourceItemsOnWorker(BackgroundWorker bw, string siteName, string keyword, int pageStart, int pageEnd, DoWorkEventArgs e, HashSet<string> existingIds)
         {
             var siteFactory = new SiteFactory();
             var relevanceCalculater = new RelevanceCalculator();
@@ -235,6 +236,15 @@ namespace WindowsFormsApplication1
 
                 foreach (var result in subResults)
                 {
+                    var fk = site.Name +"_"+site.GetId(result.Item2);
+                    if (existingIds != null)
+                    {
+                        if (existingIds.Contains(fk))
+                        {
+                            continue;
+                        }
+                    }
+
                     tasks.Add(new Task<int>(() =>
                                                 {
 
@@ -274,8 +284,8 @@ namespace WindowsFormsApplication1
                                                     return 1;
 
                                                 }));
-                    
-                 
+
+
                     if (bw.CancellationPending)
                     {
                         e.Cancel = true;

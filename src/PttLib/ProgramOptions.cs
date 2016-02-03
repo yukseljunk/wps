@@ -58,5 +58,7 @@ namespace PttLib
         public string YoutubeClient { get; set; }
         public string YoutubeClientSecret { get; set; }
 
+        public bool SkipSearchingPosted { get; set; }
+
     }
 }

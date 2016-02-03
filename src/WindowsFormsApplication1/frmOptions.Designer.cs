@@ -69,6 +69,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.chkSkipSearchingPosted = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNEKeywordContentRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNEContentContainsKeyword)).BeginInit();
@@ -87,6 +88,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.chkSkipSearchingPosted);
             this.panel1.Controls.Add(this.chkUseRemoteDownloading);
             this.panel1.Controls.Add(this.chkTagsAsText);
             this.panel1.Controls.Add(this.chkScrambleLeadPosts);
@@ -144,7 +146,7 @@
             this.chkTagsAsText.AutoSize = true;
             this.chkTagsAsText.Checked = true;
             this.chkTagsAsText.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTagsAsText.Location = new System.Drawing.Point(27, 191);
+            this.chkTagsAsText.Location = new System.Drawing.Point(27, 170);
             this.chkTagsAsText.Name = "chkTagsAsText";
             this.chkTagsAsText.Size = new System.Drawing.Size(153, 17);
             this.chkTagsAsText.TabIndex = 88;
@@ -526,7 +528,7 @@
             this.chkNoAPI.AutoSize = true;
             this.chkNoAPI.Checked = true;
             this.chkNoAPI.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkNoAPI.Location = new System.Drawing.Point(27, 145);
+            this.chkNoAPI.Location = new System.Drawing.Point(27, 134);
             this.chkNoAPI.Name = "chkNoAPI";
             this.chkNoAPI.Size = new System.Drawing.Size(181, 17);
             this.chkNoAPI.TabIndex = 55;
@@ -573,6 +575,16 @@
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
+            // chkSkipSearchingPosted
+            // 
+            this.chkSkipSearchingPosted.AutoSize = true;
+            this.chkSkipSearchingPosted.Location = new System.Drawing.Point(27, 209);
+            this.chkSkipSearchingPosted.Name = "chkSkipSearchingPosted";
+            this.chkSkipSearchingPosted.Size = new System.Drawing.Size(222, 17);
+            this.chkSkipSearchingPosted.TabIndex = 90;
+            this.chkSkipSearchingPosted.Text = "Skip items already posted while searching";
+            this.chkSkipSearchingPosted.UseVisualStyleBackColor = true;
             // 
             // frmOptions
             // 
@@ -648,6 +660,7 @@
         private System.Windows.Forms.CheckBox chkScrambleLeadPosts;
         private System.Windows.Forms.CheckBox chkTagsAsText;
         private System.Windows.Forms.CheckBox chkUseRemoteDownloading;
+        private System.Windows.Forms.CheckBox chkSkipSearchingPosted;
 
     }
 }

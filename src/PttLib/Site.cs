@@ -195,6 +195,16 @@ namespace PttLib
             get { return @"Listed on (.*)"; }
         }
 
+        public int GetId(string url)
+        {
+            var regex = new Regex(IdRegex);
+            var match = regex.Match(url);
+            if (match.Success)
+            {
+                return Int32.Parse(match.Groups[1].Value);
+            }
+            return 0;
+        }
 
 
         public virtual Item GetItem(string title, string url, string extraInfo)
