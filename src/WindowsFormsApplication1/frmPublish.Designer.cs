@@ -62,6 +62,7 @@
             this.txtRefreshToken = new System.Windows.Forms.TextBox();
             this.txtStatus = new System.Windows.Forms.TextBox();
             this.btnGetGoogleToken = new System.Windows.Forms.Button();
+            this.chkInheritTitle = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberOfPosts)).BeginInit();
             this.pnlSlideShow.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numImagePerPost)).BeginInit();
@@ -74,7 +75,7 @@
             // 
             // btnPublish
             // 
-            this.btnPublish.Location = new System.Drawing.Point(244, 552);
+            this.btnPublish.Location = new System.Drawing.Point(244, 581);
             this.btnPublish.Name = "btnPublish";
             this.btnPublish.Size = new System.Drawing.Size(75, 23);
             this.btnPublish.TabIndex = 0;
@@ -370,7 +371,7 @@
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(325, 552);
+            this.btnClose.Location = new System.Drawing.Point(325, 581);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 8;
@@ -381,6 +382,7 @@
             // pnlYoutube
             // 
             this.pnlYoutube.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlYoutube.Controls.Add(this.chkInheritTitle);
             this.pnlYoutube.Controls.Add(this.txtYoutubeTags);
             this.pnlYoutube.Controls.Add(this.txtYoutubeDescription);
             this.pnlYoutube.Controls.Add(this.txtYoutubeTitle);
@@ -390,19 +392,19 @@
             this.pnlYoutube.Enabled = false;
             this.pnlYoutube.Location = new System.Drawing.Point(26, 294);
             this.pnlYoutube.Name = "pnlYoutube";
-            this.pnlYoutube.Size = new System.Drawing.Size(374, 140);
+            this.pnlYoutube.Size = new System.Drawing.Size(374, 162);
             this.pnlYoutube.TabIndex = 9;
             // 
             // txtYoutubeTags
             // 
-            this.txtYoutubeTags.Location = new System.Drawing.Point(97, 104);
+            this.txtYoutubeTags.Location = new System.Drawing.Point(97, 125);
             this.txtYoutubeTags.Name = "txtYoutubeTags";
             this.txtYoutubeTags.Size = new System.Drawing.Size(263, 20);
             this.txtYoutubeTags.TabIndex = 8;
             // 
             // txtYoutubeDescription
             // 
-            this.txtYoutubeDescription.Location = new System.Drawing.Point(97, 43);
+            this.txtYoutubeDescription.Location = new System.Drawing.Point(97, 64);
             this.txtYoutubeDescription.Multiline = true;
             this.txtYoutubeDescription.Name = "txtYoutubeDescription";
             this.txtYoutubeDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -411,7 +413,7 @@
             // 
             // txtYoutubeTitle
             // 
-            this.txtYoutubeTitle.Location = new System.Drawing.Point(97, 10);
+            this.txtYoutubeTitle.Location = new System.Drawing.Point(97, 29);
             this.txtYoutubeTitle.Name = "txtYoutubeTitle";
             this.txtYoutubeTitle.Size = new System.Drawing.Size(263, 20);
             this.txtYoutubeTitle.TabIndex = 6;
@@ -419,7 +421,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(18, 104);
+            this.label15.Location = new System.Drawing.Point(19, 125);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(31, 13);
             this.label15.TabIndex = 5;
@@ -428,7 +430,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(20, 43);
+            this.label14.Location = new System.Drawing.Point(20, 64);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(60, 13);
             this.label14.TabIndex = 4;
@@ -437,7 +439,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(19, 17);
+            this.label13.Location = new System.Drawing.Point(20, 32);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(27, 13);
             this.label13.TabIndex = 3;
@@ -458,7 +460,7 @@
             // txtRefreshToken
             // 
             this.txtRefreshToken.Font = new System.Drawing.Font("Tahoma", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRefreshToken.Location = new System.Drawing.Point(27, 540);
+            this.txtRefreshToken.Location = new System.Drawing.Point(27, 569);
             this.txtRefreshToken.Multiline = true;
             this.txtRefreshToken.Name = "txtRefreshToken";
             this.txtRefreshToken.Size = new System.Drawing.Size(373, 19);
@@ -468,7 +470,7 @@
             // 
             // txtStatus
             // 
-            this.txtStatus.Location = new System.Drawing.Point(26, 452);
+            this.txtStatus.Location = new System.Drawing.Point(26, 481);
             this.txtStatus.Multiline = true;
             this.txtStatus.Name = "txtStatus";
             this.txtStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -478,7 +480,7 @@
             // 
             // btnGetGoogleToken
             // 
-            this.btnGetGoogleToken.Location = new System.Drawing.Point(63, 552);
+            this.btnGetGoogleToken.Location = new System.Drawing.Point(63, 581);
             this.btnGetGoogleToken.Name = "btnGetGoogleToken";
             this.btnGetGoogleToken.Size = new System.Drawing.Size(118, 23);
             this.btnGetGoogleToken.TabIndex = 13;
@@ -487,12 +489,23 @@
             this.btnGetGoogleToken.Visible = false;
             this.btnGetGoogleToken.Click += new System.EventHandler(this.btnGetGoogleToken_Click);
             // 
+            // chkInheritTitle
+            // 
+            this.chkInheritTitle.AutoSize = true;
+            this.chkInheritTitle.Location = new System.Drawing.Point(23, 6);
+            this.chkInheritTitle.Name = "chkInheritTitle";
+            this.chkInheritTitle.Size = new System.Drawing.Size(146, 17);
+            this.chkInheritTitle.TabIndex = 9;
+            this.chkInheritTitle.Text = "Take Title From First Post";
+            this.chkInheritTitle.UseVisualStyleBackColor = true;
+            this.chkInheritTitle.CheckedChanged += new System.EventHandler(this.chkInheritTitle_CheckedChanged);
+            // 
             // frmPublish
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(416, 587);
+            this.ClientSize = new System.Drawing.Size(425, 620);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnPublish);
             this.Controls.Add(this.btnGetGoogleToken);
@@ -563,5 +576,6 @@
         private System.Windows.Forms.TextBox txtRefreshToken;
         private System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.Button btnGetGoogleToken;
+        private System.Windows.Forms.CheckBox chkInheritTitle;
     }
 }

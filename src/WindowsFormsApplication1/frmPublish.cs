@@ -133,8 +133,17 @@ namespace WordpressScraper
             //run youtubeupload.exe
             foreach (var videoCreated in _videosCreated)
             {
+                var title = txtYoutubeTitle.Text;
+                if (chkInheritTitle.Checked)
+                {
+                    if (videoCreated.Value.Count > 0)
+                    {
+                        title = videoCreated.Value[0].Title;
+                    }
+                }
+
                 StartYoutubeUpload(string.Format("-f \"{0}\" -r \"{1}\" -s \"{2}\" -i \"{3}\" -t \"{4}\" -d \"{5}\" -a \"{6}\"",
-                    videoCreated.Key, txtRefreshToken.Text, _options.YoutubeClientSecret, _options.YoutubeClient, txtYoutubeTitle.Text, txtYoutubeDescription.Text,txtYoutubeTags.Text));
+                    videoCreated.Key, txtRefreshToken.Text, _options.YoutubeClientSecret, _options.YoutubeClient, title, txtYoutubeDescription.Text, txtYoutubeTags.Text));
             }
 
         }
@@ -464,6 +473,11 @@ namespace WordpressScraper
         private void btnGetGoogleToken_Click(object sender, EventArgs e)
         {
             GetGoogleToken();
+        }
+
+        private void chkInheritTitle_CheckedChanged(object sender, EventArgs e)
+        {
+            txtYoutubeTitle.Enabled = !chkInheritTitle.Checked;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 
@@ -19,7 +20,17 @@ namespace YoutubeUtilities
                 var ytUtilities = new YouTubeUtilities(options.RefreshToken, options.ClientSecret, options.ClientId);
                 using (var fileStream = new FileStream(options.InputFile, FileMode.Open))
                 {
-                    Console.WriteLine(ytUtilities.UploadVideo(fileStream, options.Title, options.Description, tags, options.Category, options.Public));
+                    var videoId = ytUtilities.UploadVideo(fileStream, options.Title, options.Description, tags,
+                        options.Category, options.Public);
+                    if (videoId == "FAILED")
+                    {
+                        Console.WriteLine("Video upload failed!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Video uploaded with Id: " + videoId);
+
+                    }
                 }
             }
         }
