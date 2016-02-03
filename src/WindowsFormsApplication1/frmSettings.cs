@@ -80,7 +80,7 @@ namespace WordpressScraper
             }
             lstTypes.SelectedIndex = 0;
             this.Height = maxHeight + 150;
-            this.Width = 550;
+            this.Width = 850;
 #if DEBUG
            //txtYoutubeClientSecret.Text = "pobSaKuo_5-xDDryquzDYKjS";
 #endif

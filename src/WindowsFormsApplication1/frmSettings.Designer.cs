@@ -54,6 +54,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lstTypes = new System.Windows.Forms.ListBox();
             this.pnlAll = new System.Windows.Forms.Panel();
+            this.pnlYoutube = new System.Windows.Forms.Panel();
+            this.txtYoutubeClientSecret = new System.Windows.Forms.TextBox();
+            this.txtYoutubeClientId = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtYoutubeProjectId = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.pnlMysql = new System.Windows.Forms.Panel();
             this.pnlBlog = new System.Windows.Forms.Panel();
             this.pnlFtp = new System.Windows.Forms.Panel();
@@ -70,21 +77,14 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pnlYoutube = new System.Windows.Forms.Panel();
-            this.txtYoutubeClientSecret = new System.Windows.Forms.TextBox();
-            this.txtYoutubeClientId = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtYoutubeProjectId = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).BeginInit();
             this.pnlAll.SuspendLayout();
+            this.pnlYoutube.SuspendLayout();
             this.pnlMysql.SuspendLayout();
             this.pnlBlog.SuspendLayout();
             this.pnlFtp.SuspendLayout();
             this.pnlProxy.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.pnlYoutube.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTestMySqlConnection
@@ -223,7 +223,7 @@
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(629, 503);
+            this.btnOk.Location = new System.Drawing.Point(645, 604);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 58;
@@ -235,7 +235,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(723, 503);
+            this.btnCancel.Location = new System.Drawing.Point(739, 604);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 57;
@@ -315,7 +315,7 @@
             "Proxy"});
             this.lstTypes.Location = new System.Drawing.Point(1, 27);
             this.lstTypes.Name = "lstTypes";
-            this.lstTypes.Size = new System.Drawing.Size(125, 452);
+            this.lstTypes.Size = new System.Drawing.Size(125, 548);
             this.lstTypes.TabIndex = 62;
             this.lstTypes.SelectedIndexChanged += new System.EventHandler(this.lstTypes_SelectedIndexChanged);
             // 
@@ -333,8 +333,72 @@
             this.pnlAll.Controls.Add(this.pnlProxy);
             this.pnlAll.Location = new System.Drawing.Point(132, 27);
             this.pnlAll.Name = "pnlAll";
-            this.pnlAll.Size = new System.Drawing.Size(666, 466);
+            this.pnlAll.Size = new System.Drawing.Size(682, 567);
             this.pnlAll.TabIndex = 63;
+            // 
+            // pnlYoutube
+            // 
+            this.pnlYoutube.Controls.Add(this.txtYoutubeClientSecret);
+            this.pnlYoutube.Controls.Add(this.txtYoutubeClientId);
+            this.pnlYoutube.Controls.Add(this.label13);
+            this.pnlYoutube.Controls.Add(this.label14);
+            this.pnlYoutube.Controls.Add(this.txtYoutubeProjectId);
+            this.pnlYoutube.Controls.Add(this.label15);
+            this.pnlYoutube.Location = new System.Drawing.Point(17, 395);
+            this.pnlYoutube.Name = "pnlYoutube";
+            this.pnlYoutube.Size = new System.Drawing.Size(660, 123);
+            this.pnlYoutube.TabIndex = 66;
+            this.pnlYoutube.Tag = "";
+            // 
+            // txtYoutubeClientSecret
+            // 
+            this.txtYoutubeClientSecret.Location = new System.Drawing.Point(87, 87);
+            this.txtYoutubeClientSecret.Name = "txtYoutubeClientSecret";
+            this.txtYoutubeClientSecret.Size = new System.Drawing.Size(182, 20);
+            this.txtYoutubeClientSecret.TabIndex = 6;
+            // 
+            // txtYoutubeClientId
+            // 
+            this.txtYoutubeClientId.Location = new System.Drawing.Point(87, 25);
+            this.txtYoutubeClientId.Name = "txtYoutubeClientId";
+            this.txtYoutubeClientId.Size = new System.Drawing.Size(560, 20);
+            this.txtYoutubeClientId.TabIndex = 2;
+            this.txtYoutubeClientId.Text = "977332511117-fem10do6477tnclko771q553u31kt0s3";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(21, 90);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(67, 13);
+            this.label13.TabIndex = 5;
+            this.label13.Text = "Client Secret";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(19, 25);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(47, 13);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Client ID";
+            // 
+            // txtYoutubeProjectId
+            // 
+            this.txtYoutubeProjectId.Location = new System.Drawing.Point(87, 57);
+            this.txtYoutubeProjectId.Name = "txtYoutubeProjectId";
+            this.txtYoutubeProjectId.Size = new System.Drawing.Size(182, 20);
+            this.txtYoutubeProjectId.TabIndex = 4;
+            this.txtYoutubeProjectId.Text = "focal-pager-120810";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(19, 57);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(52, 13);
+            this.label15.TabIndex = 3;
+            this.label15.Text = "Project Id";
             // 
             // pnlMysql
             // 
@@ -473,7 +537,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(810, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(826, 24);
             this.menuStrip1.TabIndex = 64;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -501,76 +565,12 @@
             this.loadSettingsToolStripMenuItem.Text = "Load Settings...";
             this.loadSettingsToolStripMenuItem.Click += new System.EventHandler(this.loadSettingsToolStripMenuItem_Click);
             // 
-            // pnlYoutube
-            // 
-            this.pnlYoutube.Controls.Add(this.txtYoutubeClientSecret);
-            this.pnlYoutube.Controls.Add(this.txtYoutubeClientId);
-            this.pnlYoutube.Controls.Add(this.label13);
-            this.pnlYoutube.Controls.Add(this.label14);
-            this.pnlYoutube.Controls.Add(this.txtYoutubeProjectId);
-            this.pnlYoutube.Controls.Add(this.label15);
-            this.pnlYoutube.Location = new System.Drawing.Point(17, 328);
-            this.pnlYoutube.Name = "pnlYoutube";
-            this.pnlYoutube.Size = new System.Drawing.Size(391, 123);
-            this.pnlYoutube.TabIndex = 66;
-            this.pnlYoutube.Tag = "";
-            // 
-            // txtYoutubeClientSecret
-            // 
-            this.txtYoutubeClientSecret.Location = new System.Drawing.Point(87, 87);
-            this.txtYoutubeClientSecret.Name = "txtYoutubeClientSecret";
-            this.txtYoutubeClientSecret.Size = new System.Drawing.Size(182, 20);
-            this.txtYoutubeClientSecret.TabIndex = 6;
-            // 
-            // txtYoutubeClientId
-            // 
-            this.txtYoutubeClientId.Location = new System.Drawing.Point(87, 25);
-            this.txtYoutubeClientId.Name = "txtYoutubeClientId";
-            this.txtYoutubeClientId.Size = new System.Drawing.Size(264, 20);
-            this.txtYoutubeClientId.TabIndex = 2;
-            this.txtYoutubeClientId.Text = "977332511117-fem10do6477tnclko771q553u31kt0s3";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(21, 90);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(67, 13);
-            this.label13.TabIndex = 5;
-            this.label13.Text = "Client Secret";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(19, 25);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(47, 13);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "Client ID";
-            // 
-            // txtYoutubeProjectId
-            // 
-            this.txtYoutubeProjectId.Location = new System.Drawing.Point(87, 57);
-            this.txtYoutubeProjectId.Name = "txtYoutubeProjectId";
-            this.txtYoutubeProjectId.Size = new System.Drawing.Size(182, 20);
-            this.txtYoutubeProjectId.TabIndex = 4;
-            this.txtYoutubeProjectId.Text = "focal-pager-120810";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(19, 57);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(52, 13);
-            this.label15.TabIndex = 3;
-            this.label15.Text = "Project Id";
-            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(810, 538);
+            this.ClientSize = new System.Drawing.Size(826, 639);
             this.Controls.Add(this.pnlAll);
             this.Controls.Add(this.lstTypes);
             this.Controls.Add(this.btnOk);
@@ -585,6 +585,8 @@
             this.Load += new System.EventHandler(this.frmSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).EndInit();
             this.pnlAll.ResumeLayout(false);
+            this.pnlYoutube.ResumeLayout(false);
+            this.pnlYoutube.PerformLayout();
             this.pnlMysql.ResumeLayout(false);
             this.pnlMysql.PerformLayout();
             this.pnlBlog.ResumeLayout(false);
@@ -595,8 +597,6 @@
             this.pnlProxy.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.pnlYoutube.ResumeLayout(false);
-            this.pnlYoutube.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

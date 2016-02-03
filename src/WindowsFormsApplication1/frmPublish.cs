@@ -8,6 +8,7 @@ using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
 using ImageProcessor;
+using Newtonsoft.Json.Linq;
 using PttLib;
 using PttLib.Helpers;
 using WordpressScraper.Dal;
@@ -15,23 +16,7 @@ using WordPressSharp.Models;
 
 namespace WordpressScraper
 {
-    /*
-     firt browser:
-     https://accounts.google.com/o/oauth2/auth?client_id=977332511117-f9186rd31c1d82vhsbshon1clkbn4a86.apps.googleusercontent.com&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=https://gdata.youtube.com&response_type=code&access_type=offline&approval_prompt=force
- get code> 4/R0dU217RbGSdbA058xAhVsYVnE7lqO6xr_q8618r5Bg
- * 
-  curl https://accounts.google.com/o/oauth2/token -k -d "code=4/R0dU217RbGSdbA058xAhVsYVnE7lqO6xr_q8618r5Bg&client_id=977332511117-f9186rd31c1d82vhsbshon1clkbn4a86.apps.googleusercontent.com&client_secret=KFAzDtqMgzjoZ7uo6RR6qEvN&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code"
 
-     * response:
-{
-  "access_token" : "ya29.fALbgrqC7rYxoxeXs-C1PZAa18rbEbSGvXKPatHOsz8RU81E0_xMf_6
-QS4zJkQaxQt6s",
-  "token_type" : "Bearer",
-  "expires_in" : 3600,
-  "refresh_token" : "1/VbDkMYMh9qvSlzLxzFH02-zmsYvOWy35SDrh2cgt8_ZIgOrJDtdun6zK6XiATCKT"
-}
-     * get refresh token from here
-     */
     public partial class frmPublish : Form
     {
         private static List<string> MusicUrls = new List<string>()
@@ -139,15 +124,43 @@ QS4zJkQaxQt6s",
                 MessageBox.Show("No videos to publish!");
                 return;
             }
+
+            //get google token
+            GetGoogleToken();
+
             //todo:arrange youtubeupload.exe.config for proxy
 
             //run youtubeupload.exe
-
             foreach (var videoCreated in _videosCreated)
             {
                 StartYoutubeUpload(string.Format("-f \"{0}\" -r \"{1}\" -s \"{2}\" -i \"{3}\"", videoCreated.Key, txtRefreshToken.Text, _options.YoutubeClientSecret, _options.YoutubeClient));
             }
 
+        }
+
+        private void GetGoogleToken()
+        {
+            //get token
+            var googleTokenForm = new frmGoogleToken();
+            googleTokenForm.Url =
+                string.Format(
+                    "https://accounts.google.com/o/oauth2/auth?client_id={0}&redirect_uri=urn:ietf:wg:oauth:2.0:oob&scope=https://gdata.youtube.com&response_type=code&access_type=offline&approval_prompt=force",
+                    _options.YoutubeClient);
+            googleTokenForm.ShowDialog();
+            var tokenCode = "";
+            if (googleTokenForm.DialogResult == DialogResult.OK)
+            {
+                tokenCode = googleTokenForm.Code;
+            }
+            //1!ZTQgm8smy2:joelmatthewgr@gmail.com
+            if (string.IsNullOrEmpty(tokenCode)) return;
+            var json=WebHelper.CurlSimplePost("https://accounts.google.com/o/oauth2/token",
+                string.Format("code={0}&client_id={1}&client_secret={2}&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code", tokenCode, _options.YoutubeClient, _options.YoutubeClientSecret),
+                "accounts.google.com");
+            if (string.IsNullOrEmpty(json)) return;
+            dynamic d = JObject.Parse(json);
+            if (d.refresh_token == null) return;
+            txtRefreshToken.Text= d.refresh_token;
         }
 
         private void EnDis(bool enable = true)
@@ -156,7 +169,7 @@ QS4zJkQaxQt6s",
             chkCreateSlide.Enabled = enable;
             pnlSlideShow.Enabled = chkCreateSlide.Checked && enable;
             pnlYoutube.Enabled = chkYoutube.Checked && enable;
-            chkYoutube.Enabled = chkCreateSlide.Checked;
+            chkYoutube.Enabled = chkCreateSlide.Checked && enable;
 
         }
 
@@ -398,6 +411,10 @@ QS4zJkQaxQt6s",
             }
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
+#if DEBUG
+            btnGetGoogleToken.Visible = true;
+            txtRefreshToken.Visible = true;
+#endif
         }
 
         private void numNumberOfPosts_ValueChanged(object sender, EventArgs e)
@@ -442,6 +459,11 @@ QS4zJkQaxQt6s",
         private void txtStatus_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void btnGetGoogleToken_Click(object sender, EventArgs e)
+        {
+            GetGoogleToken();
         }
     }
 }

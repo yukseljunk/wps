@@ -61,6 +61,7 @@
             this.chkYoutube = new System.Windows.Forms.CheckBox();
             this.txtRefreshToken = new System.Windows.Forms.TextBox();
             this.txtStatus = new System.Windows.Forms.TextBox();
+            this.btnGetGoogleToken = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numNumberOfPosts)).BeginInit();
             this.pnlSlideShow.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numImagePerPost)).BeginInit();
@@ -445,6 +446,7 @@
             // chkYoutube
             // 
             this.chkYoutube.AutoSize = true;
+            this.chkYoutube.Enabled = false;
             this.chkYoutube.Location = new System.Drawing.Point(27, 271);
             this.chkYoutube.Name = "chkYoutube";
             this.chkYoutube.Size = new System.Drawing.Size(113, 17);
@@ -473,12 +475,24 @@
             this.txtStatus.TabIndex = 12;
             this.txtStatus.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtStatus_KeyPress);
             // 
+            // btnGetGoogleToken
+            // 
+            this.btnGetGoogleToken.Location = new System.Drawing.Point(63, 552);
+            this.btnGetGoogleToken.Name = "btnGetGoogleToken";
+            this.btnGetGoogleToken.Size = new System.Drawing.Size(118, 23);
+            this.btnGetGoogleToken.TabIndex = 13;
+            this.btnGetGoogleToken.Text = "Get Google Token";
+            this.btnGetGoogleToken.UseVisualStyleBackColor = true;
+            this.btnGetGoogleToken.Visible = false;
+            this.btnGetGoogleToken.Click += new System.EventHandler(this.btnGetGoogleToken_Click);
+            // 
             // frmPublish
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(416, 587);
+            this.Controls.Add(this.btnGetGoogleToken);
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.txtRefreshToken);
             this.Controls.Add(this.chkYoutube);
@@ -547,5 +561,6 @@
         private System.Windows.Forms.TextBox txtYoutubeTitle;
         private System.Windows.Forms.TextBox txtRefreshToken;
         private System.Windows.Forms.TextBox txtStatus;
+        private System.Windows.Forms.Button btnGetGoogleToken;
     }
 }
