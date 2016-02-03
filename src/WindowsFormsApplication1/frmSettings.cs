@@ -45,7 +45,6 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("UseProxy", chkUseProxy.Checked.ToString()));
 
             settings.Add(new Tuple<string, string>("YoutubeClient", txtYoutubeClientId.Text));
-            settings.Add(new Tuple<string, string>("YoutubeProject", txtYoutubeProjectId.Text));
             settings.Add(new Tuple<string, string>("YoutubeClientSecret", txtYoutubeClientSecret.Text));
             
             ConfigurationHelper.UpdateSettings(settings);
@@ -105,7 +104,6 @@ namespace WordpressScraper
             chkUseProxy.Checked = options.UseProxy;
 
             txtYoutubeClientId.Text = options.YoutubeClient;
-            txtYoutubeProjectId.Text = options.YoutubeProject;
             txtYoutubeClientSecret.Text = options.YoutubeClientSecret;
         }
 
@@ -204,7 +202,6 @@ namespace WordpressScraper
                 ProxyPort = (int)numProxyPort.Value,
                 UseProxy = chkUseProxy.Checked,
                 YoutubeClient = txtYoutubeClientId.Text,
-                YoutubeProject = txtYoutubeProjectId.Text,
                 YoutubeClientSecret = txtYoutubeClientSecret.Text
             };
 

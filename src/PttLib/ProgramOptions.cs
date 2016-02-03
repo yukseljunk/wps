@@ -56,7 +56,6 @@ namespace PttLib
         public bool UseProxy { get; set; }
 
         public string YoutubeClient { get; set; }
-        public string YoutubeProject { get; set; }
         public string YoutubeClientSecret { get; set; }
 
     }

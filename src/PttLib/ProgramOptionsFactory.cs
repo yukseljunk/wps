@@ -47,7 +47,6 @@ namespace PttLib
                                   UseRemoteDownloading = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseRemoteDownloading"]),
 
                                   YoutubeClient = System.Configuration.ConfigurationManager.AppSettings["YoutubeClient"],
-                                  YoutubeProject = System.Configuration.ConfigurationManager.AppSettings["YoutubeProject"],
                                   YoutubeClientSecret = System.Configuration.ConfigurationManager.AppSettings["YoutubeClientSecret"]
 
 
@@ -79,7 +78,6 @@ namespace PttLib
             options.UseProxy = XmlParse.GetBooleanNodeValue(html.DocumentNode, "/programoptions/useproxy", false);
 
             options.YoutubeClient = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/youtubeclient", "", true);
-            options.YoutubeProject = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/youtubeproject", "", true);
             options.YoutubeClientSecret = XmlParse.GetStringNodeValue(html.DocumentNode, "/programoptions/youtubeclientsecret", "", true);
             
             return options;

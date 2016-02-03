@@ -447,8 +447,7 @@ namespace WordpressScraper
 
         private void chkYoutube_CheckedChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_options.YoutubeClientSecret) || string.IsNullOrEmpty(_options.YoutubeClient) ||
-                string.IsNullOrEmpty(_options.YoutubeProject))
+            if (string.IsNullOrEmpty(_options.YoutubeClientSecret) || string.IsNullOrEmpty(_options.YoutubeClient))
             {
                 MessageBox.Show("Please set up youtube settings in settings dialog!");
                 return;
