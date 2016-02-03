@@ -11,10 +11,15 @@ namespace YoutubeUtilities
             var options = new CommandLineOptions();
             if (CommandLine.Parser.Default.ParseArguments(args, options))
             {
+                string[] tags = new[] { "" };
+                if (options.Tags != null)
+                {
+                    tags = options.Tags.ToArray();
+                }
                 var ytUtilities = new YouTubeUtilities(options.RefreshToken, options.ClientSecret, options.ClientId);
                 using (var fileStream = new FileStream(options.InputFile, FileMode.Open))
                 {
-                    Console.WriteLine(ytUtilities.UploadVideo(fileStream, options.Title, options.Description, new []{""}, options.Category, options.Public));
+                    Console.WriteLine(ytUtilities.UploadVideo(fileStream, options.Title, options.Description, tags, options.Category, options.Public));
                 }
             }
         }

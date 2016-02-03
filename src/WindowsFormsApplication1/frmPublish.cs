@@ -133,8 +133,8 @@ namespace WordpressScraper
             //run youtubeupload.exe
             foreach (var videoCreated in _videosCreated)
             {
-                StartYoutubeUpload(string.Format("-f \"{0}\" -r \"{1}\" -s \"{2}\" -i \"{3}\" -t \"{4}\" -d \"{5}\"",
-                    videoCreated.Key, txtRefreshToken.Text, _options.YoutubeClientSecret, _options.YoutubeClient, txtYoutubeTitle.Text, txtYoutubeDescription.Text));
+                StartYoutubeUpload(string.Format("-f \"{0}\" -r \"{1}\" -s \"{2}\" -i \"{3}\" -t \"{4}\" -d \"{5}\" -a \"{6}\"",
+                    videoCreated.Key, txtRefreshToken.Text, _options.YoutubeClientSecret, _options.YoutubeClient, txtYoutubeTitle.Text, txtYoutubeDescription.Text,txtYoutubeTags.Text));
             }
 
         }
@@ -453,7 +453,7 @@ namespace WordpressScraper
                 MessageBox.Show("Please set up youtube settings in settings dialog!");
                 return;
             }
-            pnlYoutube.Enabled = chkCreateSlide.Checked;
+            pnlYoutube.Enabled = chkYoutube.Checked;
         }
 
         private void txtStatus_KeyPress(object sender, KeyPressEventArgs e)

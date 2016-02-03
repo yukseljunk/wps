@@ -190,6 +190,7 @@
     <None Include="YoutubeUtilities\YoutubeUtilities.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="YoutubeUtilities\YoutubeUtilities.vshost.exe.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -326,6 +327,7 @@
     <Content Include="YoutubeUtilities\YoutubeUtilities.pdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="YoutubeUtilities\YoutubeUtilities.vshost.exe" />
     <Content Include="YoutubeUtilities\Zlib.Portable.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

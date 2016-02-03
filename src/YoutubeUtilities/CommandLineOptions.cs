@@ -4,13 +4,13 @@ using CommandLine.Text;
 
 namespace YoutubeUtilities
 {
-    
+
     class CommandLineOptions
     {
         [Option('f', "file", Required = true,
             HelpText = "Input file to be processed.")]
         public string InputFile { get; set; }
-        
+
         [Option('r', "rtoken", Required = true,
             HelpText = "Youtube API Refresh token")]
         public string RefreshToken { get; set; }
@@ -30,9 +30,9 @@ namespace YoutubeUtilities
         [Option('d', "desc", DefaultValue = "My video description",
             HelpText = "Description of the video")]
         public string Description { get; set; }
-        /*
-        [OptionList('a', "tags", HelpText = "Tags for the video")]
-        public IList<string> Tags { get; set; }*/
+
+        [OptionList('a', "tags", HelpText = "Tags for the video", Separator = ',')]
+        public IList<string> Tags { get; set; }
 
         [Option('c', "cat", DefaultValue = "22",
             HelpText = "Category of the video")]
