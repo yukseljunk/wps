@@ -111,7 +111,11 @@ namespace WordpressScraper
 
         private void AddStatus(string input)
         {
-            txtStatus.AppendText(Environment.NewLine + input);
+            if (txtStatus.Text.Length > 0)
+            {
+                txtStatus.AppendText(Environment.NewLine);               
+            }
+            txtStatus.AppendText(input);
             if (txtStatus.Text.Length == 0) return;
             txtStatus.SelectionStart = txtStatus.Text.Length - 1; // add some logic if length is 0
             txtStatus.SelectionLength = 0;
