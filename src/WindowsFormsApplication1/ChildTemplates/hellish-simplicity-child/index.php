@@ -36,10 +36,11 @@ if ( have_posts() ) {
 					if ( is_singular() ) {
             $this_page_id = get_the_ID(); 
             $fk=get_post_meta($this_page_id,'_aioseop_title',true);
-            echo mb_substr($fk,0,65);          
+			$spacePos=strpos($fk, ' ', 60);
+            echo mb_substr($fk,0,$spacePos);          
 					} else {
 						?>
-						<a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'hellish-simplicity' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php $this_page_id = get_the_ID(); $fk=get_post_meta($this_page_id,'_aioseop_title',true);echo mb_substr($fk,0,65); ?></a><?php
+						<a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'hellish-simplicity' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php $this_page_id = get_the_ID(); $fk=get_post_meta($this_page_id,'_aioseop_title',true);$spacePos=strpos($fk, ' ', 60);echo mb_substr($fk,0,$spacePos); ?></a><?php
 					}
 
 					?></h1>
