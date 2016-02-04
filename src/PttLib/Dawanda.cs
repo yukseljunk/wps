@@ -32,7 +32,7 @@ namespace PttLib
             return itemNode.PreviousSibling.PreviousSibling.SelectSingleNode("img").Attributes["src"].Value;
         }
 
-        protected override void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc)
+        protected override void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc, string keyword)
         {
             var contentNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@id='category_tree']/ul/li[1]/a");
             totalItemCount = 0;
@@ -77,7 +77,7 @@ namespace PttLib
             return item;
         }
 
-        public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
+        public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc, string keyword)
         {
             pageCount = 0;
             var pageNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='pagination-container']/div/a");

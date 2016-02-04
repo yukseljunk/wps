@@ -27,7 +27,7 @@ namespace PttLib
             }
         }
 
-        protected override void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc)
+        protected override void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc, string keyword)
         {
             totalItemCount = 0;
             var totalFoundNode = htmlDoc.DocumentNode.SelectSingleNode("//input[@name='total_found']");
@@ -39,7 +39,7 @@ namespace PttLib
 
         public override Item GetItem(string title, string url, string extraInfo)
         {
-            var item=base.GetItem(title, url, extraInfo);
+            var item = base.GetItem(title, url, extraInfo);
             if (item == null || item.Tags == null) return item;
 
             if (item.Tags.Contains("All Products"))
@@ -59,17 +59,17 @@ namespace PttLib
             return itemNode.SelectSingleNode("img").Attributes["title"].Value;
         }
 
-        public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
+        public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc, string keyword)
         {
             int totalItemCount;
-            GetItemCount(out totalItemCount, htmlDoc);
+            GetItemCount(out totalItemCount, htmlDoc, keyword);
 
             pageCount = totalItemCount / 24 + 1;
         }
 
         protected override double GetPriceValue(HtmlNode metaPrice)
         {
-            return double.Parse(metaPrice.InnerText.Replace("$","").Trim(),NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture);
+            return double.Parse(metaPrice.InnerText.Replace("$", "").Trim(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture);
         }
 
         public override string TagsXPath

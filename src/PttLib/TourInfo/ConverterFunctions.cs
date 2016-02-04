@@ -206,7 +206,7 @@ namespace PttLib.TourInfo
         public string ArrangeContent(string input)
         {
             input = RemoveTags(input, new List<string>() { "a" });
-            input = StripTags(input, new List<string>() {"table", "th", "tr", "td", "ul", "li", "p", "br", "strong"});
+            input = StripTags(input, new List<string>() {"table", "th", "tr", "td", "ul", "li", "p", "br", "strong","img"});
             input = input.Replace("{", "{{").Replace("}", "}}");
             return input;
         }

@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using PttLib;
 using PttLib.Helpers;
+using PttLib.TourInfo;
 
 namespace WordpressScraper
 {
@@ -47,6 +49,17 @@ namespace WordpressScraper
             }
 
             score += GetRelevanceForNonExactMatch(item, keyword);
+
+            if (item.Site == "Bonanza")
+            {
+                var imageCount = item.Content.ToLower()
+                    .Split(new string[] {"<img "}, StringSplitOptions.RemoveEmptyEntries);
+                var cf = new ConverterFunctions();
+                var stripped = cf.StripTags(item.Content, new List<string>() { "font", "p", "span", "div", "h2", "h3", "h4", "tr", "td" });
+                int rate = (int)((stripped.Length / (double)item.Content.Length) * 100);
+                rate -= imageCount.Length * 5;
+                if (rate < 10) score = -1;
+            }
 
             return score;
         }

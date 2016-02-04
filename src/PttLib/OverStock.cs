@@ -73,7 +73,7 @@ namespace PttLib
             get { return "//ul[@id='result-products']//a[@class='pro-thumb']"; }
         }
 
-        public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
+        public override void GetPageCount(out int pageCount, HtmlDocument htmlDoc, string keyword)
         {
             pageCount = 0;
             var pageNode = htmlDoc.DocumentNode.SelectSingleNode("//ul[@class='pagination']//div[@class='pagination-page-text']");
@@ -89,7 +89,7 @@ namespace PttLib
             }
         }
 
-        protected override void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc)
+        protected override void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc, string keyword)
         {
             totalItemCount = 0;
             var countNode = htmlDoc.DocumentNode.SelectSingleNode("//span[@class='results-count']/span");

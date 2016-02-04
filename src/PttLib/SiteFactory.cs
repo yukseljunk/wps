@@ -10,7 +10,8 @@ namespace PttLib
                                            new Etsy(),
                                            new Dawanda(),
                                            new Artfire(),
-                                           new OverStock()
+                                           new OverStock(),
+                                           new Bonanza()
                                        };
         public List<Site> GetAll
         {

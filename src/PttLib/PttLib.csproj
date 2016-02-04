@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Artfire.cs" />
+    <Compile Include="Bonanza.cs" />
     <Compile Include="CaptchaBreaker\CaptchaBreakerFactory.cs" />
     <Compile Include="CaptchaBreaker\Coral\CoralBreaker.cs" />
     <Compile Include="CaptchaBreaker\Coral\Guesser\CaptchaGuess.cs" />

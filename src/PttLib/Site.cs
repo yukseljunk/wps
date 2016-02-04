@@ -91,8 +91,8 @@ namespace PttLib
 
             if (htmlDoc.DocumentNode != null)
             {
-                GetPageCount(out pageCount, htmlDoc);
-                GetItemCount(out totalItemCount, htmlDoc);
+                GetPageCount(out pageCount, htmlDoc, keyword);
+                GetItemCount(out totalItemCount, htmlDoc, keyword);
                 var itemNodes = htmlDoc.DocumentNode.SelectNodes(ItemsXPath);
 
                 if (itemNodes != null)
@@ -120,7 +120,7 @@ namespace PttLib
             return itemNode.Attributes["title"].Value;
         }
 
-        protected virtual void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc)
+        protected virtual void GetItemCount(out int totalItemCount, HtmlDocument htmlDoc, string keyword)
         {
             var contentNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@id='content']");
             totalItemCount = 0;
@@ -141,7 +141,7 @@ namespace PttLib
             return null;
         }
 
-        public virtual void GetPageCount(out int pageCount, HtmlDocument htmlDoc)
+        public virtual void GetPageCount(out int pageCount, HtmlDocument htmlDoc, string keyword)
         {
             pageCount = 0;
             var pageNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='pagination btn-group clearfix mt-xs-3']/a");
@@ -179,7 +179,10 @@ namespace PttLib
         {
             get { return "//div[@id='description-text']"; }
         }
-
+        public virtual string MetaDescriptionXPath
+        {
+            get { return "//meta[@name='description']"; }
+        }
         public virtual string IdRegex
         {
             get { return @"/listing/(.*?)/"; }
@@ -243,7 +246,7 @@ namespace PttLib
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(itemHtml);
 
-            var metaDescription = htmlDoc.DocumentNode.SelectSingleNode("//meta[@name='description']");
+            var metaDescription = htmlDoc.DocumentNode.SelectSingleNode(MetaDescriptionXPath);
             if (metaDescription != null)
             {
                 item.MetaDescription = metaDescription.Attributes["content"].Value;
@@ -291,6 +294,7 @@ namespace PttLib
             if (content != null)
             {
                 item.Content = Regex.Replace(content.InnerHtml, "<a.*>.*</a>", "");
+                item.Content = RefineContent(item.Content);
                 var converterFunctions = new ConverterFunctions();
                 item.WordCount = converterFunctions.StripTags(content.InnerHtml, new List<string>()).WordCount();
 
@@ -302,9 +306,14 @@ namespace PttLib
             {
                 item.Id = Int32.Parse(match.Groups[1].Value);
             }
-
+            item.Site = Name;
             SetCreatedDate(htmlDoc, item);
             return item;
+        }
+
+        protected virtual string RefineContent(string content)
+        {
+            return content;
         }
 
         protected virtual void SetCreatedDate(HtmlDocument htmlDoc, Item item)
