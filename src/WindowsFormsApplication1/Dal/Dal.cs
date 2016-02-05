@@ -86,6 +86,7 @@ namespace WordpressScraper.Dal
                 {
                     var cmd = _connection.CreateCommand();
                     cmd.CommandText = sql;
+                    cmd.CommandTimeout = 0;
                     var adapter = new MySqlDataAdapter(cmd);
                     var dataset = new DataSet();
                     adapter.Fill(dataset);
