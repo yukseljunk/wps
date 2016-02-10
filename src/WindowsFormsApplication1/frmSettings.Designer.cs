@@ -56,6 +56,8 @@
             this.lstTypes = new System.Windows.Forms.ListBox();
             this.pnlAll = new System.Windows.Forms.Panel();
             this.pnlYoutube = new System.Windows.Forms.Panel();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             this.txtYoutubeClientSecret = new System.Windows.Forms.TextBox();
             this.txtYoutubeClientId = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -76,8 +78,11 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
+            this.pnlZeroBounce = new System.Windows.Forms.Panel();
+            this.txtZeroBounceUrl = new System.Windows.Forms.TextBox();
+            this.chkEnableZeroBounce = new System.Windows.Forms.CheckBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).BeginInit();
             this.pnlAll.SuspendLayout();
             this.pnlYoutube.SuspendLayout();
@@ -86,6 +91,7 @@
             this.pnlFtp.SuspendLayout();
             this.pnlProxy.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.pnlZeroBounce.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTestMySqlConnection
@@ -224,7 +230,7 @@
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(645, 604);
+            this.btnOk.Location = new System.Drawing.Point(1258, 803);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 58;
@@ -236,7 +242,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(739, 604);
+            this.btnCancel.Location = new System.Drawing.Point(1352, 803);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 57;
@@ -313,10 +319,11 @@
             "MySQL",
             "Ftp",
             "Youtube",
-            "Proxy"});
+            "Proxy",
+            "ZeroBounce"});
             this.lstTypes.Location = new System.Drawing.Point(1, 27);
             this.lstTypes.Name = "lstTypes";
-            this.lstTypes.Size = new System.Drawing.Size(125, 548);
+            this.lstTypes.Size = new System.Drawing.Size(125, 740);
             this.lstTypes.TabIndex = 62;
             this.lstTypes.SelectedIndexChanged += new System.EventHandler(this.lstTypes_SelectedIndexChanged);
             // 
@@ -327,6 +334,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlAll.BackColor = System.Drawing.SystemColors.Window;
             this.pnlAll.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlAll.Controls.Add(this.pnlZeroBounce);
             this.pnlAll.Controls.Add(this.pnlYoutube);
             this.pnlAll.Controls.Add(this.pnlMysql);
             this.pnlAll.Controls.Add(this.pnlBlog);
@@ -334,7 +342,7 @@
             this.pnlAll.Controls.Add(this.pnlProxy);
             this.pnlAll.Location = new System.Drawing.Point(132, 27);
             this.pnlAll.Name = "pnlAll";
-            this.pnlAll.Size = new System.Drawing.Size(682, 567);
+            this.pnlAll.Size = new System.Drawing.Size(1295, 766);
             this.pnlAll.TabIndex = 63;
             // 
             // pnlYoutube
@@ -345,11 +353,29 @@
             this.pnlYoutube.Controls.Add(this.txtYoutubeClientId);
             this.pnlYoutube.Controls.Add(this.label13);
             this.pnlYoutube.Controls.Add(this.label14);
-            this.pnlYoutube.Location = new System.Drawing.Point(12, 328);
+            this.pnlYoutube.Location = new System.Drawing.Point(309, 14);
             this.pnlYoutube.Name = "pnlYoutube";
             this.pnlYoutube.Size = new System.Drawing.Size(665, 192);
             this.pnlYoutube.TabIndex = 66;
             this.pnlYoutube.Tag = "";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(19, 101);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(153, 13);
+            this.label16.TabIndex = 8;
+            this.label16.Text = "How to get these codes? ";
+            // 
+            // label15
+            // 
+            this.label15.Location = new System.Drawing.Point(19, 125);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(616, 59);
+            this.label15.TabIndex = 7;
+            this.label15.Text = resources.GetString("label15.Text");
             // 
             // txtYoutubeClientSecret
             // 
@@ -395,7 +421,7 @@
             this.pnlMysql.Controls.Add(this.txtMySqlPass);
             this.pnlMysql.Controls.Add(this.txtMysqlUser);
             this.pnlMysql.Controls.Add(this.label6);
-            this.pnlMysql.Location = new System.Drawing.Point(324, 169);
+            this.pnlMysql.Location = new System.Drawing.Point(12, 323);
             this.pnlMysql.Name = "pnlMysql";
             this.pnlMysql.Size = new System.Drawing.Size(297, 220);
             this.pnlMysql.TabIndex = 65;
@@ -409,7 +435,7 @@
             this.pnlBlog.Controls.Add(this.label3);
             this.pnlBlog.Controls.Add(this.txtUserName);
             this.pnlBlog.Controls.Add(this.label4);
-            this.pnlBlog.Location = new System.Drawing.Point(324, 14);
+            this.pnlBlog.Location = new System.Drawing.Point(17, 549);
             this.pnlBlog.Name = "pnlBlog";
             this.pnlBlog.Size = new System.Drawing.Size(286, 136);
             this.pnlBlog.TabIndex = 64;
@@ -521,7 +547,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(826, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1439, 24);
             this.menuStrip1.TabIndex = 64;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -549,30 +575,62 @@
             this.loadSettingsToolStripMenuItem.Text = "Load Settings...";
             this.loadSettingsToolStripMenuItem.Click += new System.EventHandler(this.loadSettingsToolStripMenuItem_Click);
             // 
-            // label15
+            // pnlZeroBounce
             // 
-            this.label15.Location = new System.Drawing.Point(19, 125);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(616, 59);
-            this.label15.TabIndex = 7;
-            this.label15.Text = resources.GetString("label15.Text");
+            this.pnlZeroBounce.Controls.Add(this.label19);
+            this.pnlZeroBounce.Controls.Add(this.txtZeroBounceUrl);
+            this.pnlZeroBounce.Controls.Add(this.chkEnableZeroBounce);
+            this.pnlZeroBounce.Controls.Add(this.label17);
+            this.pnlZeroBounce.Location = new System.Drawing.Point(315, 212);
+            this.pnlZeroBounce.Name = "pnlZeroBounce";
+            this.pnlZeroBounce.Size = new System.Drawing.Size(598, 114);
+            this.pnlZeroBounce.TabIndex = 67;
+            this.pnlZeroBounce.Tag = "";
             // 
-            // label16
+            // txtZeroBounceUrl
             // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(19, 101);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(153, 13);
-            this.label16.TabIndex = 8;
-            this.label16.Text = "How to get these codes? ";
+            this.txtZeroBounceUrl.Enabled = false;
+            this.txtZeroBounceUrl.Location = new System.Drawing.Point(161, 70);
+            this.txtZeroBounceUrl.Name = "txtZeroBounceUrl";
+            this.txtZeroBounceUrl.Size = new System.Drawing.Size(305, 20);
+            this.txtZeroBounceUrl.TabIndex = 6;
+            this.txtZeroBounceUrl.Text = "http://blog.guessornot.com/offers";
+            // 
+            // chkEnableZeroBounce
+            // 
+            this.chkEnableZeroBounce.AutoSize = true;
+            this.chkEnableZeroBounce.Location = new System.Drawing.Point(25, 39);
+            this.chkEnableZeroBounce.Name = "chkEnableZeroBounce";
+            this.chkEnableZeroBounce.Size = new System.Drawing.Size(121, 17);
+            this.chkEnableZeroBounce.TabIndex = 9;
+            this.chkEnableZeroBounce.Text = "Enable ZeroBounce";
+            this.chkEnableZeroBounce.UseVisualStyleBackColor = true;
+            this.chkEnableZeroBounce.CheckedChanged += new System.EventHandler(this.chkEnableZeroBounce_CheckedChanged);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(22, 73);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(112, 13);
+            this.label17.TabIndex = 5;
+            this.label17.Text = "Url To Show In Popup";
+            // 
+            // label19
+            // 
+            this.label19.Location = new System.Drawing.Point(14, 11);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(566, 25);
+            this.label19.TabIndex = 11;
+            this.label19.Text = "This will enable you to add a popup when user leaves the site by pressing backspa" +
+    "ce or browser back button";
             // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(826, 639);
+            this.ClientSize = new System.Drawing.Size(1439, 838);
             this.Controls.Add(this.pnlAll);
             this.Controls.Add(this.lstTypes);
             this.Controls.Add(this.btnOk);
@@ -599,6 +657,8 @@
             this.pnlProxy.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.pnlZeroBounce.ResumeLayout(false);
+            this.pnlZeroBounce.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -655,5 +715,10 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Panel pnlZeroBounce;
+        private System.Windows.Forms.TextBox txtZeroBounceUrl;
+        private System.Windows.Forms.CheckBox chkEnableZeroBounce;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label19;
     }
 }
