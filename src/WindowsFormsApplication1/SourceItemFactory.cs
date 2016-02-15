@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PttLib;
+using PttLib.Helpers;
 using WordpressScraper;
 
 namespace WindowsFormsApplication1
@@ -47,6 +48,7 @@ namespace WindowsFormsApplication1
         public event EventHandler ProcessFinished;
         public event EventHandler<string> NoSourceFound;
         public event EventHandler<int> PageParsed;
+        public event EventHandler<Exception> ExceptionOccured;
         public event EventHandler<TotalResultsFoundEventArgs> TotalResultsFound;
 
         public void OnTotalResultsFound(TotalResultsFoundEventArgs e)
@@ -73,7 +75,11 @@ namespace WindowsFormsApplication1
             var handler = SourceItemGot;
             if (handler != null) handler(this, e);
         }
-
+        protected virtual void OnExceptionOccured(Exception e)
+        {
+            var handler = ExceptionOccured;
+            if (handler != null) handler(this, e);
+        }
         protected virtual void OnGettingSourceItemsStopped()
         {
             var handler = GettingSourceItemsStopped;
@@ -120,6 +126,11 @@ namespace WindowsFormsApplication1
 
         private void GettingSourceItemsFinished(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (e.Error!=null)
+            {
+                OnExceptionOccured(e.Error);
+            }
+
             if (e.Cancelled)
             {
                 OnGettingSourceItemsStopped();
@@ -315,5 +326,6 @@ namespace WindowsFormsApplication1
         }
 
 
+       
     }
 }

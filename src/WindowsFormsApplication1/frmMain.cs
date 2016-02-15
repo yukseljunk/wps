@@ -113,7 +113,7 @@ namespace WindowsFormsApplication1
 
         private void ArrangeZeroBounce()
         {
-           //Add these lines to index.php:
+            //Add these lines to index.php:
             /*
              
              
@@ -218,6 +218,7 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.TotalResultsFound -= TotalResultsFound;
             _sourceItemFactory.SourceItemsGot -= SourceItemsGot;
 
+
             _sourceItemFactory = null;
 
         }
@@ -273,7 +274,7 @@ namespace WindowsFormsApplication1
             _stopWatch.Start();
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
-            HashSet<string> existingIds=null;
+            HashSet<string> existingIds = null;
             if (_options.SkipSearchingPosted)
             {
                 using (var dal = new Dal(MySqlConnectionString))
@@ -283,7 +284,7 @@ namespace WindowsFormsApplication1
                     {
                         SetStatus("Loading present posts and tags in the blog(this may take some time)...");
                         Application.DoEvents();
-                        existingIds=_blogCache.IdsPresent(_options.BlogUrl);
+                        existingIds = _blogCache.IdsPresent(_options.BlogUrl);
                         Application.DoEvents();
                     }
                 }
@@ -296,9 +297,16 @@ namespace WindowsFormsApplication1
             _sourceItemFactory.SourceItemGot += SourceItemGot;
             _sourceItemFactory.TotalResultsFound += TotalResultsFound;
             _sourceItemFactory.SourceItemsGot += SourceItemsGot;
+            _sourceItemFactory.ExceptionOccured += ExceptionOccuredWhileGettingItems;
             var checkedSites = (from object checkedItem in chkSites.CheckedItems select checkedItem.ToString()).ToList();
             _sourceItemFactory.GetSourceItems(checkedSites, txtUrl.Text, pageStart, pageEnd, lvItems.Items.Count + 1, existingIds);
 
+        }
+
+        private void ExceptionOccuredWhileGettingItems(object sender, Exception e)
+        {
+            MessageBox.Show("Exception: " + e.ToString());
+            Logger.LogExceptions(e);
         }
 
         private void TotalResultsFound(object sender, TotalResultsFoundEventArgs e)
@@ -838,7 +846,7 @@ namespace WindowsFormsApplication1
         {
             //relevance e gore sirala
             var ccea = new ColumnClickEventArgs(2);
-           
+
             lvItems_ColumnClick(null, ccea);
             ccea = new ColumnClickEventArgs(12);
             lvItems_ColumnClick(null, ccea);
