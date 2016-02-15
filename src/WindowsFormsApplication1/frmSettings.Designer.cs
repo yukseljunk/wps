@@ -78,11 +78,6 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pnlZeroBounce = new System.Windows.Forms.Panel();
-            this.txtZeroBounceUrl = new System.Windows.Forms.TextBox();
-            this.chkEnableZeroBounce = new System.Windows.Forms.CheckBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numProxyPort)).BeginInit();
             this.pnlAll.SuspendLayout();
             this.pnlYoutube.SuspendLayout();
@@ -91,7 +86,6 @@
             this.pnlFtp.SuspendLayout();
             this.pnlProxy.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.pnlZeroBounce.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnTestMySqlConnection
@@ -319,8 +313,7 @@
             "MySQL",
             "Ftp",
             "Youtube",
-            "Proxy",
-            "ZeroBounce"});
+            "Proxy"});
             this.lstTypes.Location = new System.Drawing.Point(1, 27);
             this.lstTypes.Name = "lstTypes";
             this.lstTypes.Size = new System.Drawing.Size(125, 740);
@@ -334,7 +327,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlAll.BackColor = System.Drawing.SystemColors.Window;
             this.pnlAll.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlAll.Controls.Add(this.pnlZeroBounce);
             this.pnlAll.Controls.Add(this.pnlYoutube);
             this.pnlAll.Controls.Add(this.pnlMysql);
             this.pnlAll.Controls.Add(this.pnlBlog);
@@ -575,56 +567,6 @@
             this.loadSettingsToolStripMenuItem.Text = "Load Settings...";
             this.loadSettingsToolStripMenuItem.Click += new System.EventHandler(this.loadSettingsToolStripMenuItem_Click);
             // 
-            // pnlZeroBounce
-            // 
-            this.pnlZeroBounce.Controls.Add(this.label19);
-            this.pnlZeroBounce.Controls.Add(this.txtZeroBounceUrl);
-            this.pnlZeroBounce.Controls.Add(this.chkEnableZeroBounce);
-            this.pnlZeroBounce.Controls.Add(this.label17);
-            this.pnlZeroBounce.Location = new System.Drawing.Point(315, 212);
-            this.pnlZeroBounce.Name = "pnlZeroBounce";
-            this.pnlZeroBounce.Size = new System.Drawing.Size(598, 114);
-            this.pnlZeroBounce.TabIndex = 67;
-            this.pnlZeroBounce.Tag = "";
-            // 
-            // txtZeroBounceUrl
-            // 
-            this.txtZeroBounceUrl.Enabled = false;
-            this.txtZeroBounceUrl.Location = new System.Drawing.Point(161, 70);
-            this.txtZeroBounceUrl.Name = "txtZeroBounceUrl";
-            this.txtZeroBounceUrl.Size = new System.Drawing.Size(305, 20);
-            this.txtZeroBounceUrl.TabIndex = 6;
-            this.txtZeroBounceUrl.Text = "http://blog.guessornot.com/offers";
-            // 
-            // chkEnableZeroBounce
-            // 
-            this.chkEnableZeroBounce.AutoSize = true;
-            this.chkEnableZeroBounce.Location = new System.Drawing.Point(25, 39);
-            this.chkEnableZeroBounce.Name = "chkEnableZeroBounce";
-            this.chkEnableZeroBounce.Size = new System.Drawing.Size(121, 17);
-            this.chkEnableZeroBounce.TabIndex = 9;
-            this.chkEnableZeroBounce.Text = "Enable ZeroBounce";
-            this.chkEnableZeroBounce.UseVisualStyleBackColor = true;
-            this.chkEnableZeroBounce.CheckedChanged += new System.EventHandler(this.chkEnableZeroBounce_CheckedChanged);
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(22, 73);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(112, 13);
-            this.label17.TabIndex = 5;
-            this.label17.Text = "Url To Show In Popup";
-            // 
-            // label19
-            // 
-            this.label19.Location = new System.Drawing.Point(14, 11);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(566, 25);
-            this.label19.TabIndex = 11;
-            this.label19.Text = "This will enable you to add a popup when user leaves the site by pressing backspa" +
-    "ce or browser back button";
-            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -657,8 +599,6 @@
             this.pnlProxy.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.pnlZeroBounce.ResumeLayout(false);
-            this.pnlZeroBounce.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -715,10 +655,5 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Panel pnlZeroBounce;
-        private System.Windows.Forms.TextBox txtZeroBounceUrl;
-        private System.Windows.Forms.CheckBox chkEnableZeroBounce;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label19;
     }
 }

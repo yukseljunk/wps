@@ -67,7 +67,6 @@ namespace WordpressScraper
             _panels.Add(pnlFtp);
             _panels.Add(pnlYoutube);
             _panels.Add(pnlProxy);
-            _panels.Add(pnlZeroBounce);
             var maxHeight = 0;
             foreach (var panel in _panels)
             {
@@ -228,11 +227,6 @@ namespace WordpressScraper
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void chkEnableZeroBounce_CheckedChanged(object sender, EventArgs e)
-        {
-            txtZeroBounceUrl.Enabled = chkEnableZeroBounce.Checked;
         }
 
         

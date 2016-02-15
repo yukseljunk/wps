@@ -162,21 +162,22 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="ChildTemplates\hellish-simplicity-child\attachment.php">
+    <None Include="blog\wp-content\plugins\BouncePopup\BouncePopup.php" />
+    <None Include="blog\wp-content\themes\hellish-simplicity-child\attachment.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="ChildTemplates\hellish-simplicity-child\functions.php">
+    <None Include="blog\wp-content\themes\hellish-simplicity-child\functions.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="ChildTemplates\hellish-simplicity-child\header-noindex.php">
+    <None Include="blog\wp-content\themes\hellish-simplicity-child\header-noindex.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-image.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="ChildTemplates\hellish-simplicity-child\index.php">
+    <None Include="blog\wp-content\themes\hellish-simplicity-child\index.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -204,9 +205,26 @@
       <Name>WordPressSharp</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="ChildTemplates\hellish-simplicity-child\style.css">
+    <Folder Include="ChildTemplates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\blank.gif" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_loading%402x.gif" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_loading.gif" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_overlay.png" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_sprite%402x.png" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_sprite.png" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\fancybox_buttons.png" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-buttons.css" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-buttons.js" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-media.js" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-thumbs.css" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-thumbs.js" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\jquery.fancybox.css" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\jquery.fancybox.js" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\jquery.fancybox.pack.js" />
+    <Content Include="blog\wp-content\themes\hellish-simplicity-child\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ffmpeg\ffmpeg.exe">

@@ -94,7 +94,6 @@ namespace WindowsFormsApplication1
                 MessageBox.Show(exception.ToString());
                 return;
             }
-            ArrangeZeroBounce();
             var files = Directory.GetFiles("ChildTemplates/hellish-simplicity-child");
             foreach (var file in files)
             {
@@ -109,40 +108,6 @@ namespace WindowsFormsApplication1
             }
             MessageBox.Show("Fixing finished");
 
-        }
-
-        private void ArrangeZeroBounce()
-        {
-            //Add these lines to index.php:
-            /*
-             
-             
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-	<script type="text/javascript">
-		jQuery(document).ready(function($) {
-
-  if (window.history && window.history.pushState) {
-
-    window.history.pushState('forward', null, './#forward');
-
-     $(window).on('popstate', function() {
-		 if(!document.referrer){
-			 alert('No referer, back button was pressed');
-		 }
-		 else{
-			 if(window.location.host==document.referrer.split('/')[2]){
-				alert("Still on this site, no need to show popup!");
-			 }
-			 else{
-				alert(window.location.host + ':'+document.referrer.split('/')[2]+' Back button was pressed.');
-
-			 }
-		 }
-    });
-  }
-});
-	</script>
-             */
         }
 
         private void FillSites()
