@@ -113,7 +113,7 @@ namespace WordpressScraper
         {
             if (txtStatus.Text.Length > 0)
             {
-                txtStatus.AppendText(Environment.NewLine);               
+                txtStatus.AppendText(Environment.NewLine);
             }
             txtStatus.AppendText(input);
             if (txtStatus.Text.Length == 0) return;
@@ -429,6 +429,7 @@ namespace WordpressScraper
             btnGetGoogleToken.Visible = true;
             txtRefreshToken.Visible = true;
 #endif
+            txtYoutubeDescription.Text = string.Format("See more on {0}\nMusic by http://www.bensound.com/ royalty free license", _options.BlogUrl);
         }
 
         private void numNumberOfPosts_ValueChanged(object sender, EventArgs e)
