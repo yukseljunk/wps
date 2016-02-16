@@ -48,7 +48,9 @@ namespace PttLib
 
                                   YoutubeClient = System.Configuration.ConfigurationManager.AppSettings["YoutubeClient"],
                                   YoutubeClientSecret = System.Configuration.ConfigurationManager.AppSettings["YoutubeClientSecret"],
-                                  SkipSearchingPosted = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["SkipSearchingPosted"])
+                                  SkipSearchingPosted = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["SkipSearchingPosted"]),
+
+                                  PriceSign = System.Configuration.ConfigurationManager.AppSettings["PriceSign"]
 
 
                               };

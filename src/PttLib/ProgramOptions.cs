@@ -60,5 +60,7 @@ namespace PttLib
 
         public bool SkipSearchingPosted { get; set; }
 
+        public string PriceSign { get; set; }
+
     }
 }

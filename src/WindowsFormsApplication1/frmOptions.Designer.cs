@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkSkipSearchingPosted = new System.Windows.Forms.CheckBox();
             this.chkUseRemoteDownloading = new System.Windows.Forms.CheckBox();
             this.chkTagsAsText = new System.Windows.Forms.CheckBox();
             this.chkScrambleLeadPosts = new System.Windows.Forms.CheckBox();
@@ -69,7 +70,8 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.chkSkipSearchingPosted = new System.Windows.Forms.CheckBox();
+            this.lblPriceSign = new System.Windows.Forms.Label();
+            this.txtPriceSign = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNEKeywordContentRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNEContentContainsKeyword)).BeginInit();
@@ -88,6 +90,8 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.txtPriceSign);
+            this.panel1.Controls.Add(this.lblPriceSign);
             this.panel1.Controls.Add(this.chkSkipSearchingPosted);
             this.panel1.Controls.Add(this.chkUseRemoteDownloading);
             this.panel1.Controls.Add(this.chkTagsAsText);
@@ -127,8 +131,18 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(533, 455);
+            this.panel1.Size = new System.Drawing.Size(533, 492);
             this.panel1.TabIndex = 54;
+            // 
+            // chkSkipSearchingPosted
+            // 
+            this.chkSkipSearchingPosted.AutoSize = true;
+            this.chkSkipSearchingPosted.Location = new System.Drawing.Point(27, 209);
+            this.chkSkipSearchingPosted.Name = "chkSkipSearchingPosted";
+            this.chkSkipSearchingPosted.Size = new System.Drawing.Size(222, 17);
+            this.chkSkipSearchingPosted.TabIndex = 90;
+            this.chkSkipSearchingPosted.Text = "Skip items already posted while searching";
+            this.chkSkipSearchingPosted.UseVisualStyleBackColor = true;
             // 
             // chkUseRemoteDownloading
             // 
@@ -169,7 +183,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(295, 243);
+            this.label11.Location = new System.Drawing.Point(289, 275);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(147, 13);
             this.label11.TabIndex = 86;
@@ -178,7 +192,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(293, 256);
+            this.label10.Location = new System.Drawing.Point(287, 288);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(235, 13);
             this.label10.TabIndex = 85;
@@ -187,7 +201,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(295, 339);
+            this.label7.Location = new System.Drawing.Point(289, 371);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(146, 13);
             this.label7.TabIndex = 84;
@@ -197,7 +211,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(295, 311);
+            this.label8.Location = new System.Drawing.Point(289, 343);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(132, 13);
             this.label8.TabIndex = 83;
@@ -206,7 +220,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(293, 282);
+            this.label9.Location = new System.Drawing.Point(287, 314);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(115, 13);
             this.label9.TabIndex = 82;
@@ -215,7 +229,7 @@
             // numNEKeywordContentRatio
             // 
             this.numNEKeywordContentRatio.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numNEKeywordContentRatio.Location = new System.Drawing.Point(455, 352);
+            this.numNEKeywordContentRatio.Location = new System.Drawing.Point(449, 384);
             this.numNEKeywordContentRatio.Name = "numNEKeywordContentRatio";
             this.numNEKeywordContentRatio.Size = new System.Drawing.Size(55, 20);
             this.numNEKeywordContentRatio.TabIndex = 81;
@@ -228,7 +242,7 @@
             // numNEContentContainsKeyword
             // 
             this.numNEContentContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numNEContentContainsKeyword.Location = new System.Drawing.Point(455, 324);
+            this.numNEContentContainsKeyword.Location = new System.Drawing.Point(449, 356);
             this.numNEContentContainsKeyword.Name = "numNEContentContainsKeyword";
             this.numNEContentContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numNEContentContainsKeyword.TabIndex = 80;
@@ -241,7 +255,7 @@
             // numNETitleContainsKeyword
             // 
             this.numNETitleContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numNETitleContainsKeyword.Location = new System.Drawing.Point(455, 298);
+            this.numNETitleContainsKeyword.Location = new System.Drawing.Point(449, 330);
             this.numNETitleContainsKeyword.Name = "numNETitleContainsKeyword";
             this.numNETitleContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numNETitleContainsKeyword.TabIndex = 79;
@@ -254,7 +268,7 @@
             // lblKeywordContentRatio
             // 
             this.lblKeywordContentRatio.AutoSize = true;
-            this.lblKeywordContentRatio.Location = new System.Drawing.Point(24, 400);
+            this.lblKeywordContentRatio.Location = new System.Drawing.Point(18, 432);
             this.lblKeywordContentRatio.Name = "lblKeywordContentRatio";
             this.lblKeywordContentRatio.Size = new System.Drawing.Size(146, 13);
             this.lblKeywordContentRatio.TabIndex = 78;
@@ -263,7 +277,7 @@
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(26, 360);
+            this.label6.Location = new System.Drawing.Point(20, 392);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(134, 27);
             this.label6.TabIndex = 77;
@@ -272,7 +286,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(26, 334);
+            this.label5.Location = new System.Drawing.Point(20, 366);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(132, 13);
             this.label5.TabIndex = 76;
@@ -281,7 +295,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(26, 308);
+            this.label4.Location = new System.Drawing.Point(20, 340);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(126, 13);
             this.label4.TabIndex = 75;
@@ -291,7 +305,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(24, 243);
+            this.label2.Location = new System.Drawing.Point(18, 275);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(121, 13);
             this.label2.TabIndex = 73;
@@ -300,7 +314,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(24, 282);
+            this.label1.Location = new System.Drawing.Point(18, 314);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(115, 13);
             this.label1.TabIndex = 72;
@@ -309,7 +323,7 @@
             // numKeywordContentRatio
             // 
             this.numKeywordContentRatio.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numKeywordContentRatio.Location = new System.Drawing.Point(186, 393);
+            this.numKeywordContentRatio.Location = new System.Drawing.Point(180, 425);
             this.numKeywordContentRatio.Name = "numKeywordContentRatio";
             this.numKeywordContentRatio.Size = new System.Drawing.Size(55, 20);
             this.numKeywordContentRatio.TabIndex = 71;
@@ -322,7 +336,7 @@
             // numFirst100Content
             // 
             this.numFirst100Content.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numFirst100Content.Location = new System.Drawing.Point(186, 360);
+            this.numFirst100Content.Location = new System.Drawing.Point(180, 392);
             this.numFirst100Content.Name = "numFirst100Content";
             this.numFirst100Content.Size = new System.Drawing.Size(55, 20);
             this.numFirst100Content.TabIndex = 70;
@@ -335,7 +349,7 @@
             // numContentContainsKeyword
             // 
             this.numContentContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numContentContainsKeyword.Location = new System.Drawing.Point(186, 334);
+            this.numContentContainsKeyword.Location = new System.Drawing.Point(180, 366);
             this.numContentContainsKeyword.Name = "numContentContainsKeyword";
             this.numContentContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numContentContainsKeyword.TabIndex = 69;
@@ -348,7 +362,7 @@
             // numTitleStartsKeyword
             // 
             this.numTitleStartsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numTitleStartsKeyword.Location = new System.Drawing.Point(186, 306);
+            this.numTitleStartsKeyword.Location = new System.Drawing.Point(180, 338);
             this.numTitleStartsKeyword.Name = "numTitleStartsKeyword";
             this.numTitleStartsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numTitleStartsKeyword.TabIndex = 68;
@@ -361,7 +375,7 @@
             // numTitleContainsKeyword
             // 
             this.numTitleContainsKeyword.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.numTitleContainsKeyword.Location = new System.Drawing.Point(186, 282);
+            this.numTitleContainsKeyword.Location = new System.Drawing.Point(180, 314);
             this.numTitleContainsKeyword.Name = "numTitleContainsKeyword";
             this.numTitleContainsKeyword.Size = new System.Drawing.Size(55, 20);
             this.numTitleContainsKeyword.TabIndex = 67;
@@ -548,7 +562,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(24, 256);
+            this.label3.Location = new System.Drawing.Point(18, 288);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(235, 13);
             this.label3.TabIndex = 74;
@@ -557,7 +571,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(470, 487);
+            this.btnCancel.Location = new System.Drawing.Point(471, 523);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 55;
@@ -568,7 +582,7 @@
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(389, 487);
+            this.btnOk.Location = new System.Drawing.Point(390, 523);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 56;
@@ -576,22 +590,29 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // chkSkipSearchingPosted
+            // lblPriceSign
             // 
-            this.chkSkipSearchingPosted.AutoSize = true;
-            this.chkSkipSearchingPosted.Location = new System.Drawing.Point(27, 209);
-            this.chkSkipSearchingPosted.Name = "chkSkipSearchingPosted";
-            this.chkSkipSearchingPosted.Size = new System.Drawing.Size(222, 17);
-            this.chkSkipSearchingPosted.TabIndex = 90;
-            this.chkSkipSearchingPosted.Text = "Skip items already posted while searching";
-            this.chkSkipSearchingPosted.UseVisualStyleBackColor = true;
+            this.lblPriceSign.AutoSize = true;
+            this.lblPriceSign.Location = new System.Drawing.Point(26, 242);
+            this.lblPriceSign.Name = "lblPriceSign";
+            this.lblPriceSign.Size = new System.Drawing.Size(55, 13);
+            this.lblPriceSign.TabIndex = 91;
+            this.lblPriceSign.Text = "Price Sign";
+            // 
+            // txtPriceSign
+            // 
+            this.txtPriceSign.Location = new System.Drawing.Point(108, 242);
+            this.txtPriceSign.Name = "txtPriceSign";
+            this.txtPriceSign.Size = new System.Drawing.Size(46, 20);
+            this.txtPriceSign.TabIndex = 92;
+            this.txtPriceSign.Text = "$";
             // 
             // frmOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(565, 529);
+            this.ClientSize = new System.Drawing.Size(567, 558);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.panel1);
@@ -661,6 +682,8 @@
         private System.Windows.Forms.CheckBox chkTagsAsText;
         private System.Windows.Forms.CheckBox chkUseRemoteDownloading;
         private System.Windows.Forms.CheckBox chkSkipSearchingPosted;
+        private System.Windows.Forms.TextBox txtPriceSign;
+        private System.Windows.Forms.Label lblPriceSign;
 
     }
 }

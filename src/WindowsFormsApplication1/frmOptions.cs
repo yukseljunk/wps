@@ -38,7 +38,7 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("TagsAsText", chkTagsAsText.Checked.ToString()));
             settings.Add(new Tuple<string, string>("UseRemoteDownloading", chkUseRemoteDownloading.Checked.ToString()));
             settings.Add(new Tuple<string, string>("SkipSearchingPosted", chkSkipSearchingPosted.Checked.ToString()));
-
+            settings.Add(new Tuple<string, string>("PriceSign", txtPriceSign.Text));
             ConfigurationHelper.UpdateSettings(settings);
             this.Dispose();
             this.Close();
@@ -90,7 +90,7 @@ namespace WordpressScraper
             numNEKeywordContentRatio.Value = options.NonExactKeywordRatioScore;
             chkUseRemoteDownloading.Checked = options.UseRemoteDownloading;
             chkSkipSearchingPosted.Checked = options.SkipSearchingPosted;
-
+            txtPriceSign.Text = string.IsNullOrEmpty(options.PriceSign) ? "$":options.PriceSign;
             toolTip.SetToolTip(lblKeywordContentRatio, "For every percentage, give this much of score");
         }
 

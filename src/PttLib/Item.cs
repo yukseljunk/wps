@@ -53,6 +53,8 @@ namespace PttLib
 
         public virtual string PostBody(int thumbnailSize, bool includePriceAndSource = true, bool tagsAsText = true)
         {
+            var programOptionsFactory = new ProgramOptionsFactory();
+            var programOptions = programOptionsFactory.Get();
             var converterFunctions = new ConverterFunctions();
             var content = new StringBuilder("");
             if (ItemImages.Count > 0)
@@ -71,7 +73,7 @@ namespace PttLib
 
             if (((int)(Price * 100)) > 0 && includePriceAndSource)
             {
-                content.Append(string.Format("<h4>Price:${0}</h4>", Price));
+                content.Append(string.Format("<h4>Price:{1}{0}</h4>", Price, programOptions.PriceSign));
             }
             content.Append(string.Format("<h2>{0}</h2>", Title));
             content.Append(converterFunctions.ArrangeContent(Content));

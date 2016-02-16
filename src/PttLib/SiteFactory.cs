@@ -9,6 +9,7 @@ namespace PttLib
                                        {
                                            new Etsy(),
                                            new Dawanda(),
+                                           new DeDawanda(),
                                            new Artfire(),
                                            new OverStock(),
                                            new Bonanza()

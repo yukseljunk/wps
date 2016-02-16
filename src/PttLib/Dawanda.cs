@@ -7,6 +7,18 @@ using HtmlAgilityPack;
 
 namespace PttLib
 {
+    public class DeDawanda : Dawanda
+    {
+        public override string UrlKeywordFormat
+        {
+            get { return "http://de.dawanda.com/search?q={0}&sort_by=newest_products"; }
+        }
+
+        public override string Name
+        {
+            get { return "DeDawanda"; }
+        }
+    }
     public class Dawanda : Site
     {
         public override string UrlKeywordFormat
