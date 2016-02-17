@@ -162,7 +162,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="blog\wp-content\plugins\BouncePopup\BouncePopup.php" />
+    <None Include="blog\wp-content\plugins\BouncePopup\BouncePopup.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\ExternalLink\ExternalLink.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\themes\hellish-simplicity-child\attachment.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -171,6 +176,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\themes\hellish-simplicity-child\header-noindex.php">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\themes\hellish-simplicity-child\header.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-image.php">
@@ -190,7 +198,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="YoutubeUtilities\YoutubeUtilities.exe.config" />
+    <None Include="YoutubeUtilities\YoutubeUtilities.exe.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -209,59 +219,153 @@
     <Folder Include="ChildTemplates\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\blank.gif" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_loading%402x.gif" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_loading.gif" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_overlay.png" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_sprite%402x.png" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_sprite.png" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\fancybox_buttons.png" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-buttons.css" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-buttons.js" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-media.js" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-thumbs.css" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-thumbs.js" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\jquery.fancybox.css" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\jquery.fancybox.js" />
-    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\jquery.fancybox.pack.js" />
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\blank.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_loading%402x.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_loading.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_overlay.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_sprite%402x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\fancybox_sprite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\fancybox_buttons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-buttons.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-buttons.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-media.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-thumbs.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\helpers\jquery.fancybox-thumbs.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\jquery.fancybox.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\jquery.fancybox.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\jquery.fancybox.pack.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="blog\wp-content\themes\hellish-simplicity-child\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ffmpeg\ffmpeg.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="YoutubeUtilities\BouncyCastle.Crypto.dll" />
-    <Content Include="YoutubeUtilities\CommandLine.dll" />
-    <Content Include="YoutubeUtilities\CommandLine.xml" />
-    <Content Include="YoutubeUtilities\Google.Apis.Auth.dll" />
-    <Content Include="YoutubeUtilities\Google.Apis.Auth.PlatformServices.dll" />
-    <Content Include="YoutubeUtilities\Google.Apis.Auth.PlatformServices.xml" />
-    <Content Include="YoutubeUtilities\Google.Apis.Auth.xml" />
-    <Content Include="YoutubeUtilities\Google.Apis.Core.dll" />
-    <Content Include="YoutubeUtilities\Google.Apis.Core.xml" />
-    <Content Include="YoutubeUtilities\Google.Apis.dll" />
-    <Content Include="YoutubeUtilities\Google.Apis.PlatformServices.dll" />
-    <Content Include="YoutubeUtilities\Google.Apis.PlatformServices.xml" />
-    <Content Include="YoutubeUtilities\Google.Apis.xml" />
-    <Content Include="YoutubeUtilities\Google.Apis.YouTube.v3.dll" />
-    <Content Include="YoutubeUtilities\Google.Apis.YouTube.v3.xml" />
-    <Content Include="YoutubeUtilities\log4net.dll" />
-    <Content Include="YoutubeUtilities\log4net.xml" />
-    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.dll" />
-    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.Extensions.Desktop.dll" />
-    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.Extensions.Desktop.xml" />
-    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.Extensions.dll" />
-    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.Extensions.xml" />
-    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.xml" />
-    <Content Include="YoutubeUtilities\Newtonsoft.Json.dll" />
-    <Content Include="YoutubeUtilities\Newtonsoft.Json.xml" />
-    <Content Include="YoutubeUtilities\System.Net.Http.Extensions.dll" />
-    <Content Include="YoutubeUtilities\System.Net.Http.Extensions.xml" />
-    <Content Include="YoutubeUtilities\System.Net.Http.Primitives.dll" />
-    <Content Include="YoutubeUtilities\System.Net.Http.Primitives.xml" />
-    <Content Include="YoutubeUtilities\YoutubeUtilities.exe" />
-    <Content Include="YoutubeUtilities\Zlib.Portable.dll" />
-    <Content Include="YoutubeUtilities\Zlib.Portable.xml" />
+    <Content Include="YoutubeUtilities\BouncyCastle.Crypto.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\CommandLine.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\CommandLine.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.Auth.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.Auth.PlatformServices.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.Auth.PlatformServices.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.Auth.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.Core.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.Core.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.PlatformServices.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.PlatformServices.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.YouTube.v3.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Google.Apis.YouTube.v3.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\log4net.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\log4net.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.Extensions.Desktop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.Extensions.Desktop.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.Extensions.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.Extensions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Microsoft.Threading.Tasks.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Newtonsoft.Json.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Newtonsoft.Json.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\System.Net.Http.Extensions.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\System.Net.Http.Extensions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\System.Net.Http.Primitives.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\System.Net.Http.Primitives.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\YoutubeUtilities.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Zlib.Portable.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="YoutubeUtilities\Zlib.Portable.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

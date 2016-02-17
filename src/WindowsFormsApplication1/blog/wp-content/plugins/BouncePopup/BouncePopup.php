@@ -15,10 +15,7 @@ function bounce_popup() {
 	$randomIndex = mt_rand(0, count($urls) -1)
 	
   ?>
-  <meta name="randIndex" content="<?php echo $randomIndex ?>"/>
-  <meta name="randomUrl" content="<?php echo $urls[$randomIndex] ?>"/>
-  <meta name="randomUrlCount" content="<?php echo count($urls) ?>"/>
-  
+ 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <script type="text/javascript" src="<?php echo plugins_url();?>/BouncePopup/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
   <link rel="stylesheet" href="<?php echo plugins_url();?>/BouncePopup/fancybox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />

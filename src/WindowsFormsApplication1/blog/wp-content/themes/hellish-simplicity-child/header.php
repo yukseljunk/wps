@@ -11,7 +11,6 @@
 <html <?php language_attributes(); ?>>
 <head>
 <meta name="msvalidate.01" content="611784B1B7ED79DEE42D9EC9436CFDD0" />
-<meta name="robots" content="noindex,follow"/>
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <meta name="viewport" content="width=device-width" />
 <title><?php wp_title( '|', true, 'right' ); ?></title>
@@ -39,7 +38,10 @@
 				?>
 			</a>
 		</h1>
-		<h2><?php echo get_option('external_link_html'); ?></h2>
+		<h2>  
+		<?php echo get_option('external_link_html'); ?>
+		</a>
+		</h2>
 	</div><!-- .hgroup -->
 </header><!-- #masthead -->
 
