@@ -40,7 +40,6 @@
 		</h1>
 		<h2>  
 		<?php echo get_option('external_link_html'); ?>
-		</a>
 		</h2>
 	</div><!-- .hgroup -->
 </header><!-- #masthead -->

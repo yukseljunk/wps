@@ -48,65 +48,12 @@ namespace WindowsFormsApplication1
             lblSelection.Text = "";
             FillSites();
 
-            ArrangeTemplateMenu();
 
 #if (DEBUG)
 
             txtPostId.Visible = true;
             btnSetTitle.Visible = true;
 #endif
-
-        }
-
-        private void ArrangeTemplateMenu()
-        {
-            var template = new ToolStripMenuItem("Hellish Simplicity", null, FixTemplate);
-            fixWordpressTemplatesToolStripMenuItem.DropDownItems.Add(template);
-        }
-
-        private void FixTemplate(object sender, EventArgs e)
-        {
-            var menuClicked = sender as ToolStripMenuItem;
-            if (menuClicked == null) return;
-            //MessageBox.Show(menuClicked.Text + " clicked");
-
-            var programOptionsFactory = new ProgramOptionsFactory();
-            _options = programOptionsFactory.Get();
-            if (string.IsNullOrEmpty(_options.FtpUrl))
-            {
-                MessageBox.Show("In order to fix templates, please set up FTP account from settings.");
-                return;
-            }
-            var ftp = new Ftp(FtpConfiguration);
-            if (!string.IsNullOrEmpty(ftp.TestConnection()))
-            {
-                MessageBox.Show("Cannot connect to FTP, please check your settings.");
-                return;
-            }
-
-            var ftpDir = "wp-content/themes/hellish-simplicity-child";
-            try
-            {
-                ftp.MakeFtpDir(ftpDir);
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.ToString());
-                return;
-            }
-            var files = Directory.GetFiles("ChildTemplates/hellish-simplicity-child");
-            foreach (var file in files)
-            {
-                try
-                {
-                    ftp.UploadFileFtp(file, ftpDir);
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show(exception.ToString());
-                }
-            }
-            MessageBox.Show("Fixing finished");
 
         }
 
@@ -916,11 +863,7 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void fixWordpressTemplatesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
+      
         private void addUpdateExtraFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var programOptionsFactory = new ProgramOptionsFactory();
@@ -937,12 +880,33 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            var files = Directory.GetFiles("blog");
+            var files = Directory.EnumerateFiles("blog","*.*", SearchOption.AllDirectories);
             foreach (var file in files)
             {
+                var fileInfo=new FileInfo(file);
+                var dir = fileInfo.Directory;
+                if (dir == null)
+                {
+                    continue;
+                }
+                var ftpDir = dir.FullName.Replace(AssemblyDirectory + "\\blog", "").Replace("\\", "/");
+                if (ftpDir.StartsWith("/"))
+                {
+                    ftpDir = ftpDir.Substring(1);
+                }
                 try
                 {
-                    ftp.UploadFileFtp(file, "");
+                    ftp.MakeFtpDir(ftpDir);
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
+                    return;
+                }
+
+                try
+                {
+                    ftp.UploadFileFtp(file, ftpDir);
                 }
                 catch (Exception exception)
                 {
@@ -1132,6 +1096,17 @@ namespace WindowsFormsApplication1
             if (e.KeyCode == Keys.A && e.Control)
             {
                 btnSelectAll_Click(null, null);
+            }
+        }
+
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
             }
         }
 

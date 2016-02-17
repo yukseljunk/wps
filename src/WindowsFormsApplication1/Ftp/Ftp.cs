@@ -343,6 +343,30 @@ namespace WordpressScraper.Ftp
             return res;
         }
 
+        public string RenameFile(string path, string newName)
+        {
+            var result = "";
+            var request = (FtpWebRequest)WebRequest.Create("ftp://" + _ftpConfiguration.Url + "/" + path);
+            request.Credentials = new NetworkCredential(_ftpConfiguration.UserName, _ftpConfiguration.Password);
+
+            request.Method = WebRequestMethods.Ftp.Rename;
+            request.RenameTo = newName;
+
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    using (StreamReader reader = new StreamReader(responseStream))
+                    {
+                        result = reader.ReadToEnd();
+                        reader.Close();
+                        response.Close();
+                    }
+                }
+            }
+            return result;
+        }
+
 
         public List<string> DirectoryListing(string path)
         {
@@ -443,9 +467,38 @@ namespace WordpressScraper.Ftp
 
         }
 
+        private Dictionary<string, List<string>> _fileList= new Dictionary<string, List<string>>();
+
         public void UploadFileFtp(string filePath, string folder)
         {
-            var request = (FtpWebRequest)WebRequest.Create("ftp://" + _ftpConfiguration.Url + "/" + folder + "/" + Path.GetFileName(filePath));
+            var fileExists = false;
+            var filenameToUpload = filePath;
+            var fileInfo = new FileInfo(filePath);
+
+            if (!_fileList.ContainsKey(folder))
+            {
+                _fileList.Add(folder, DirectoryListing(folder));
+            }
+            if (_fileList[folder].Contains(fileInfo.Name))
+            {
+                fileExists = true;
+                //file exists, so upload with a new name    
+                filenameToUpload += ".tmp";
+                if (_fileList[folder].Contains(fileInfo.Name+".tmp"))
+                {
+                    try
+                    {
+                        DeleteFile(folder + "/" + fileInfo.Name + ".tmp");
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+            }
+
+
+            var request = (FtpWebRequest)WebRequest.Create("ftp://" + _ftpConfiguration.Url + "/" + folder + "/" + Path.GetFileName(filenameToUpload));
             try
             {
                 request.Method = WebRequestMethods.Ftp.UploadFile;
@@ -468,11 +521,35 @@ namespace WordpressScraper.Ftp
                     reqStream.Close();
                 }
             }
+            catch (Exception)
+            {
+                return;
+            }
             finally
             {
                 request.Abort();
                 request = null;
                 GC.Collect();
+            }
+
+            if (fileExists)
+            {
+                try
+                {
+                    DeleteFile(folder + "/" + fileInfo.Name);
+                }
+                catch
+                {
+                    // ignored
+                }
+                try
+                {
+                    RenameFile(folder + "/" + fileInfo.Name + ".tmp", fileInfo.Name);
+                }
+                catch
+                {
+                    // ignored
+                }
             }
         }
 

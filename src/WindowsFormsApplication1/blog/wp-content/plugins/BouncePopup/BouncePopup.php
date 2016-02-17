@@ -15,7 +15,7 @@ function bounce_popup() {
 	$randomIndex = mt_rand(0, count($urls) -1)
 	
   ?>
- 
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
   <script type="text/javascript" src="<?php echo plugins_url();?>/BouncePopup/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
   <link rel="stylesheet" href="<?php echo plugins_url();?>/BouncePopup/fancybox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
@@ -78,9 +78,20 @@ function bounce_popup_settings_page() {
     <?php do_settings_sections( 'bounce-popup-settings-group' ); ?>
     <table class="form-table">
         <tr valign="top">
-        <th scope="row">Urls to choose randomly</th>
-        <td><textarea rows="5" cols="100" name="bouncepopup_url"><?php echo esc_attr( get_option('bouncepopup_url') ); ?></textarea></td>
+
+          <th scope="row">Active</th>
+        <td>
+          <input type='checkbox' name='bouncepopup_active' value='1' <?php if ( 1 == $options['bouncepopup_active'] ) echo 'checked="checked"'; ?> />
+        </td>
         </tr>
+      <tr valign="top">
+        <th scope="row">Urls to choose randomly</th>
+        <td>
+          <textarea rows="5" cols="100" name="bouncepopup_url"><?php echo esc_attr( get_option('bouncepopup_url') ); ?></textarea>
+        </td>
+      </tr>
+
+
     </table>
     
     <?php submit_button(); ?>
@@ -93,6 +104,7 @@ add_action( 'admin_init', 'bounce_popup_settings' );
 
 function bounce_popup_settings() {
 	register_setting( 'bounce-popup-settings-group', 'bouncepopup_url' );
+  register_setting( 'bounce-popup-settings-group', 'bouncepopup_active' );
 }
 
 ?>

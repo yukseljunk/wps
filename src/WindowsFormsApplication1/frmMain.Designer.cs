@@ -77,7 +77,6 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.publishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.fixWordpressTemplatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addUpdateExtraFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cleanupBlogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
@@ -399,7 +398,7 @@
             this.numPageTo.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.numPageTo.Location = new System.Drawing.Point(1039, 28);
             this.numPageTo.Maximum = new decimal(new int[] {
-            500,
+            5000,
             0,
             0,
             0});
@@ -424,7 +423,7 @@
             this.numPage.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.numPage.Location = new System.Drawing.Point(938, 27);
             this.numPage.Maximum = new decimal(new int[] {
-            500,
+            5000,
             0,
             0,
             0});
@@ -527,7 +526,6 @@
             this.toolStripMenuItem2,
             this.publishToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.fixWordpressTemplatesToolStripMenuItem,
             this.addUpdateExtraFilesToolStripMenuItem,
             this.cleanupBlogToolStripMenuItem,
             this.toolStripMenuItem4,
@@ -539,57 +537,50 @@
             // createAuthorsToolStripMenuItem
             // 
             this.createAuthorsToolStripMenuItem.Name = "createAuthorsToolStripMenuItem";
-            this.createAuthorsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.createAuthorsToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.createAuthorsToolStripMenuItem.Text = "Edit Authors";
             this.createAuthorsToolStripMenuItem.Click += new System.EventHandler(this.createAuthorsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(202, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(190, 6);
             // 
             // publishToolStripMenuItem
             // 
             this.publishToolStripMenuItem.Name = "publishToolStripMenuItem";
-            this.publishToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.publishToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.publishToolStripMenuItem.Text = "Publish";
             this.publishToolStripMenuItem.Click += new System.EventHandler(this.publishToolStripMenuItem_Click_1);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(202, 6);
-            // 
-            // fixWordpressTemplatesToolStripMenuItem
-            // 
-            this.fixWordpressTemplatesToolStripMenuItem.Name = "fixWordpressTemplatesToolStripMenuItem";
-            this.fixWordpressTemplatesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.fixWordpressTemplatesToolStripMenuItem.Text = "Fix Wordpress Templates";
-            this.fixWordpressTemplatesToolStripMenuItem.Click += new System.EventHandler(this.fixWordpressTemplatesToolStripMenuItem_Click);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(190, 6);
             // 
             // addUpdateExtraFilesToolStripMenuItem
             // 
             this.addUpdateExtraFilesToolStripMenuItem.Name = "addUpdateExtraFilesToolStripMenuItem";
-            this.addUpdateExtraFilesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.addUpdateExtraFilesToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.addUpdateExtraFilesToolStripMenuItem.Text = "Add/Update Extra Files";
             this.addUpdateExtraFilesToolStripMenuItem.Click += new System.EventHandler(this.addUpdateExtraFilesToolStripMenuItem_Click);
             // 
             // cleanupBlogToolStripMenuItem
             // 
             this.cleanupBlogToolStripMenuItem.Name = "cleanupBlogToolStripMenuItem";
-            this.cleanupBlogToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.cleanupBlogToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.cleanupBlogToolStripMenuItem.Text = "Cleanup Blog...";
             this.cleanupBlogToolStripMenuItem.Click += new System.EventHandler(this.cleanupBlogToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(202, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(190, 6);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.optionsToolStripMenuItem.Text = "Options...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
@@ -863,7 +854,6 @@
         private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Button btnUp;
-        private System.Windows.Forms.ToolStripMenuItem fixWordpressTemplatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addUpdateExtraFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createAuthorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;

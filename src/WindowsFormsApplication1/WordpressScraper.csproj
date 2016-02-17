@@ -215,9 +215,7 @@
       <Name>WordPressSharp</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ChildTemplates\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="blog\wp-content\plugins\BouncePopup\fancybox\blank.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
