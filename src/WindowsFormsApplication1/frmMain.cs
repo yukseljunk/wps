@@ -674,17 +674,12 @@ namespace WindowsFormsApplication1
         private void btnRemoveDuplicates_Click(object sender, EventArgs e)
         {
             var itemsToRemove = new List<ListViewItem>();
-            for (var i = 0; i < lvItems.Items.Count; i++)
+            var tags = new HashSet<string>();
+            foreach(ListViewItem item in lvItems.Items)
             {
-                var baseItem = lvItems.Items[i];
-                for (var j = i + 1; j < lvItems.Items.Count; j++)
-                {
-                    var compareItem = lvItems.Items[j];
-                    if (compareItem.SubItems[3].Text == baseItem.SubItems[3].Text && compareItem.SubItems[4].Text == baseItem.SubItems[4].Text)
-                    {
-                        itemsToRemove.Add(compareItem);
-                    }
-                }
+                // HashSet.Add() returns false if it already contains the key.
+                if (!tags.Add(item.SubItems[3].Text + "***"+item.SubItems[4].Text))
+                    itemsToRemove.Add(item);
             }
 
             foreach (var item in itemsToRemove)
