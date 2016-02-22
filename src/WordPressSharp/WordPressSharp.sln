@@ -10,8 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\..\README.md = ..\..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordPressSharpTest", "..\WordPressSharpTest\WordPressSharpTest.csproj", "{976CEAE0-614C-4564-AB10-5000D139F981}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PttLib", "..\PttLib\PttLib.csproj", "{1F0B3A2D-E47B-44A6-81CF-46793E4E182C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordpressScraper", "..\WindowsFormsApplication1\WordpressScraper.csproj", "{76FC262F-100C-47B0-BF23-BBC31A15962A}"
@@ -30,10 +28,6 @@ Global
 		{7A938355-0B6B-48B7-97FB-C0C09015307B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A938355-0B6B-48B7-97FB-C0C09015307B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A938355-0B6B-48B7-97FB-C0C09015307B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{976CEAE0-614C-4564-AB10-5000D139F981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{976CEAE0-614C-4564-AB10-5000D139F981}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{976CEAE0-614C-4564-AB10-5000D139F981}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{976CEAE0-614C-4564-AB10-5000D139F981}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F0B3A2D-E47B-44A6-81CF-46793E4E182C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F0B3A2D-E47B-44A6-81CF-46793E4E182C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F0B3A2D-E47B-44A6-81CF-46793E4E182C}.Release|Any CPU.ActiveCfg = Release|Any CPU
