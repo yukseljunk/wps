@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.wbBrowser = new System.Windows.Forms.WebBrowser();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // wbBrowser
@@ -39,19 +41,24 @@
             this.wbBrowser.Location = new System.Drawing.Point(12, 12);
             this.wbBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbBrowser.Name = "wbBrowser";
-            this.wbBrowser.Size = new System.Drawing.Size(719, 544);
+            this.wbBrowser.Size = new System.Drawing.Size(724, 578);
             this.wbBrowser.TabIndex = 0;
             this.wbBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wbBrowser_DocumentCompleted);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 3000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // frmGoogleToken
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 568);
+            this.ClientSize = new System.Drawing.Size(748, 602);
             this.Controls.Add(this.wbBrowser);
             this.Name = "frmGoogleToken";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "frmGoogleToken";
+            this.Text = "Google Authentication for youtube";
             this.Load += new System.EventHandler(this.frmGoogleToken_Load);
             this.ResumeLayout(false);
 
@@ -60,5 +67,6 @@
         #endregion
 
         private System.Windows.Forms.WebBrowser wbBrowser;
+        private System.Windows.Forms.Timer timer1;
     }
 }

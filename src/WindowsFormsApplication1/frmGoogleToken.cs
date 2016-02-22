@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WordpressScraper
@@ -9,9 +11,10 @@ namespace WordpressScraper
         {
             InitializeComponent();
         }
+
         public string Code { get; set; }
 
-        public string Url{get;set; }
+        public string Url { get; set; }
 
         private void frmGoogleToken_Load(object sender, EventArgs e)
         {
@@ -22,15 +25,35 @@ namespace WordpressScraper
         {
             if (wbBrowser.Document != null)
             {
-                var codeElement=wbBrowser.Document.GetElementById("code");
+
+                var submitButton = wbBrowser.Document.GetElementById("submit_approve_access");
+                if (submitButton != null)
+                {
+                    timer1.Enabled = true;
+                }
+
+                var codeElement = wbBrowser.Document.GetElementById("code");
                 if (codeElement != null)
                 {
-                    this.DialogResult=DialogResult.OK;
+                    this.DialogResult = DialogResult.OK;
                     Code = codeElement.GetAttribute("value");
                     this.Close();
                 }
 
             }
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            var submitButton = wbBrowser.Document.GetElementById("submit_approve_access");
+            if (submitButton != null && submitButton.Enabled)
+            {
+                timer1.Enabled = false;
+             submitButton.InvokeMember("click");
+
+
+            }
+        }
+
     }
 }
