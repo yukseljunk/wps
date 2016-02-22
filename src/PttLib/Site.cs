@@ -68,6 +68,7 @@ namespace PttLib
             return string.Format(UrlKeywordFormat, HttpUtility.UrlEncode(key));
         }
 
+        private int _lastPageCount = 0;
         /// <summary>
         /// gets title and link values for keyword
         /// </summary>
@@ -80,39 +81,82 @@ namespace PttLib
         {
             var result = new List<Tuple<string, string, string>>();
             var url = UrlFromKey(keyword);
-            var html = Get(url, page);
-            var uri = new Uri(url);
-            var mainUrl = uri.Scheme + "://" + uri.Host;
             pageCount = 0;
             totalItemCount = 0;
+            var uri = new Uri(url);
+            var mainUrl = uri.Scheme + "://" + uri.Host;
+
+            var htmlDoc = GetHtmlDocument(page, url);
+
+            if (htmlDoc == null)
+            {
+                return null;
+            }
+            var tryCount = 0;
+            while (tryCount < 3)
+            {
+                if (htmlDoc.DocumentNode != null)
+                {
+                    GetPageCount(out pageCount, htmlDoc, keyword);
+                    GetItemCount(out totalItemCount, htmlDoc, keyword);
+
+                    if (pageCount == 0)
+                    {
+                        Thread.Sleep(TimeSpan.FromSeconds(3));
+                        htmlDoc = GetHtmlDocument(page, url);
+                        if (htmlDoc == null)
+                        {
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        if (Math.Abs(_lastPageCount - pageCount)>10 && _lastPageCount > 0)
+                        {
+                            Logger.LogProcess("Last page count difference!");
+
+                        }
+                        _lastPageCount = pageCount;
+                        break;
+                    }
+
+                }
+                else
+                {
+                    return result;
+                }
+                tryCount++;
+            }
+
+            var itemNodes = htmlDoc.DocumentNode.SelectNodes(ItemsXPath);
+
+            if (itemNodes != null)
+            {
+                foreach (var itemNode in itemNodes)
+                {
+                    var link = itemNode.Attributes["href"].Value;
+                    if (!link.StartsWith("http"))
+                    {
+                        if (!link.StartsWith("/"))
+                        {
+                            link = "/" + link;
+                        }
+                        link = mainUrl + link;
+                    }
+                    result.Add(new Tuple<string, string, string>(GetTitleFromSingleItem(itemNode), link, GetExtraInfo(itemNode)));
+                }
+            }
+
+            return result;
+        }
+
+        private HtmlDocument GetHtmlDocument(int page, string url)
+        {
+            var html = Get(url, page);
             if (html == null) return null;
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.LoadHtml(html);
-
-            if (htmlDoc.DocumentNode != null)
-            {
-                GetPageCount(out pageCount, htmlDoc, keyword);
-                GetItemCount(out totalItemCount, htmlDoc, keyword);
-                var itemNodes = htmlDoc.DocumentNode.SelectNodes(ItemsXPath);
-
-                if (itemNodes != null)
-                {
-                    foreach (var itemNode in itemNodes)
-                    {
-                        var link = itemNode.Attributes["href"].Value;
-                        if (!link.StartsWith("http"))
-                        {
-                            if (!link.StartsWith("/"))
-                            {
-                                link = "/" + link;
-                            }
-                            link = mainUrl + link;
-                        }
-                        result.Add(new Tuple<string, string, string>(GetTitleFromSingleItem(itemNode), link, GetExtraInfo(itemNode)));
-                    }
-                }
-            }
-            return result;
+            return htmlDoc;
         }
 
         protected virtual string GetTitleFromSingleItem(HtmlNode itemNode)
@@ -268,7 +312,7 @@ namespace PttLib
                 foreach (var image in images)
                 {
                     var imageUrl = image.Attributes[ImagesAttribute].Value;
-                    if(string.IsNullOrEmpty(imageUrl))
+                    if (string.IsNullOrEmpty(imageUrl))
                     {
                         imageUrl = image.Attributes[AlternativeImagesAttribute].Value;
                         if (string.IsNullOrEmpty(imageUrl))
