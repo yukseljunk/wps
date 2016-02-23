@@ -74,6 +74,8 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private bool _blogSelected = false;
+
         private void SelectBlog(object sender, EventArgs e)
         {
             ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
@@ -106,11 +108,10 @@ namespace WindowsFormsApplication1
             }
             
             clickedItem.Checked = true;
-            
+            _blogSelected = true;
         }
 
       
-
         private void FillSites()
         {
             chkSites.Items.Clear();
@@ -357,6 +358,12 @@ namespace WindowsFormsApplication1
 
         private void btnGo_Click(object sender, EventArgs e)
         {
+            if (!_blogSelected)
+            {
+                MessageBox.Show("First connect to blog from File>Connect!");
+                return;
+            }
+
             if (lvItems.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Select items to transfer!");
@@ -915,6 +922,12 @@ namespace WindowsFormsApplication1
 
         private void addUpdateExtraFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!_blogSelected)
+            {
+                MessageBox.Show("First connect to blog from File>Connect!");
+                return;
+            }
+
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
             if (string.IsNullOrEmpty(_options.FtpUrl))
@@ -968,6 +981,12 @@ namespace WindowsFormsApplication1
 
         private void createAuthorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!_blogSelected)
+            {
+                MessageBox.Show("First connect to blog from File>Connect!");
+                return;
+            }
+
             var frmAuthors = new frmAuthors();
             frmAuthors.ShowDialog();
         }
@@ -1007,6 +1026,12 @@ namespace WindowsFormsApplication1
 
         private void publishToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
+            if (!_blogSelected)
+            {
+                MessageBox.Show("First connect to blog from File>Connect!");
+                return;
+            }
+
             var frmPublish = new frmPublish();
             frmPublish.ShowDialog();
         }
@@ -1101,6 +1126,12 @@ namespace WindowsFormsApplication1
 
         private void cleanupBlogToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!_blogSelected)
+            {
+                MessageBox.Show("First connect to blog from File>Connect!");
+                return;
+            }
+
             var frmCleanUp = new frmCleanup();
             frmCleanUp.ShowDialog();
 
