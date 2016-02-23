@@ -123,10 +123,15 @@
   <metadata name="saveSettings.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>154, 17</value>
   </metadata>
-  <data name="label15.Text" xml:space="preserve">
-    <value>Go to https://console.developers.google.com, login with google credentials that owns the youtube channel. Create a new project, enable YouTube Data API v3. From API Manager, add credentials&gt; new oauth client Id. Google will show you the client Id and secret, put them in here. Later in publish, to get the authorization token, use the same google credentials for video publishing</value>
-  </data>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>273, 17</value>
   </metadata>
+  <data name="label15.Text" xml:space="preserve">
+    <value>- Go to https://console.developers.google.com 
+- Login with google credentials that owns the youtube channel. 
+- Create a new project, enable YouTube Data API v3. 
+- From API Manager, add credentials&gt; new oauth client Id. 
+- Google will show you the client Id and secret, put them in here. 
+- Later in publish, to get the authorization token, use the same google credentials for video publishing</value>
+  </data>
 </root>

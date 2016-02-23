@@ -131,6 +131,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Dal\UserDal.cs" />
     <Compile Include="RelevanceCalculator.cs" />
+    <Compile Include="BlogsSettings.cs" />
     <Compile Include="SourceItemFactory.cs" />
     <EmbeddedResource Include="frmCleanup.resx">
       <DependentUpon>frmCleanup.cs</DependentUpon>

@@ -47,7 +47,7 @@ namespace WindowsFormsApplication1
             lblDateTime.Text = "";
             lblSelection.Text = "";
             FillSites();
-
+            FillBlogs();
 
 #if (DEBUG)
 
@@ -56,6 +56,60 @@ namespace WindowsFormsApplication1
 #endif
 
         }
+
+        private void FillBlogs()
+        {
+            var blogIndex = 1;
+            foreach (var site in BlogsSettings.Sites)
+            {
+                var blogMenu = new ToolStripMenuItem()
+                {
+                    Text = site,
+                    Name ="blogItem" +blogIndex
+                
+                };
+                blogMenu.Click += new EventHandler(SelectBlog); 
+                connectToolStripMenuItem.DropDownItems.Add(blogMenu);
+                blogIndex++;
+            }
+        }
+
+        private void SelectBlog(object sender, EventArgs e)
+        {
+            ToolStripMenuItem clickedItem = (ToolStripMenuItem)sender;
+            var options = BlogsSettings.ProgramOptionsForBlog(clickedItem.Text);
+
+            var settings = new List<Tuple<string, string>>();
+
+            settings.Add(new Tuple<string, string>("BlogUrl", options.BlogUrl));
+            settings.Add(new Tuple<string, string>("BlogUser", options.BlogUser));
+            settings.Add(new Tuple<string, string>("BlogPassword", options.BlogPassword));
+            settings.Add(new Tuple<string, string>("DatabaseUrl", options.DatabaseUrl));
+            settings.Add(new Tuple<string, string>("DatabaseName", options.DatabaseName));
+            settings.Add(new Tuple<string, string>("DatabaseUser", options.DatabaseUser));
+            settings.Add(new Tuple<string, string>("DatabasePassword", options.DatabasePassword));
+            settings.Add(new Tuple<string, string>("FtpUrl", options.FtpUrl));
+            settings.Add(new Tuple<string, string>("FtpUser", options.FtpUser));
+            settings.Add(new Tuple<string, string>("FtpPassword", options.FtpPassword));
+            settings.Add(new Tuple<string, string>("ProxyAddress", options.ProxyAddress));
+            settings.Add(new Tuple<string, string>("ProxyPort", options.ProxyPort.ToString()));
+            settings.Add(new Tuple<string, string>("UseProxy", options.UseProxy.ToString()));
+
+            settings.Add(new Tuple<string, string>("YoutubeClient", options.YoutubeClient));
+            settings.Add(new Tuple<string, string>("YoutubeClientSecret", options.YoutubeClientSecret));
+
+            ConfigurationHelper.UpdateSettings(settings);
+
+            foreach (ToolStripMenuItem dropDownItem in connectToolStripMenuItem.DropDownItems)
+            {
+                dropDownItem.Checked = false;
+            }
+            
+            clickedItem.Checked = true;
+            
+        }
+
+      
 
         private void FillSites()
         {
@@ -675,10 +729,10 @@ namespace WindowsFormsApplication1
         {
             var itemsToRemove = new List<ListViewItem>();
             var tags = new HashSet<string>();
-            foreach(ListViewItem item in lvItems.Items)
+            foreach (ListViewItem item in lvItems.Items)
             {
                 // HashSet.Add() returns false if it already contains the key.
-                if (!tags.Add(item.SubItems[3].Text + "***"+item.SubItems[4].Text))
+                if (!tags.Add(item.SubItems[3].Text + "***" + item.SubItems[4].Text))
                     itemsToRemove.Add(item);
             }
 
@@ -858,7 +912,7 @@ namespace WindowsFormsApplication1
             }
         }
 
-      
+
         private void addUpdateExtraFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var programOptionsFactory = new ProgramOptionsFactory();
@@ -875,10 +929,10 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            var files = Directory.EnumerateFiles("blog","*.*", SearchOption.AllDirectories);
+            var files = Directory.EnumerateFiles("blog", "*.*", SearchOption.AllDirectories);
             foreach (var file in files)
             {
-                var fileInfo=new FileInfo(file);
+                var fileInfo = new FileInfo(file);
                 var dir = fileInfo.Directory;
                 if (dir == null)
                 {
