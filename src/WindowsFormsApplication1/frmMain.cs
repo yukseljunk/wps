@@ -60,6 +60,7 @@ namespace WindowsFormsApplication1
         private void FillBlogs()
         {
             var blogIndex = 1;
+            connectToolStripMenuItem.DropDownItems.Clear();
             foreach (var site in BlogsSettings.Sites)
             {
                 var blogMenu = new ToolStripMenuItem()
@@ -454,8 +455,7 @@ namespace WindowsFormsApplication1
         private void EnDisItems(bool enabled)
         {
             optionsToolStripMenuItem.Enabled = enabled;
-            settingsToolStripMenuItem.Enabled = enabled;
-            settingsToolStripMenuItem.Enabled = enabled;
+            connectToolStripMenuItem.Enabled = enabled;
             btnStop.Enabled = !enabled;
             btnGo.Enabled = enabled;
             btnStart.Enabled = enabled;
@@ -791,6 +791,8 @@ namespace WindowsFormsApplication1
         {
             var frmSettings = new frmSettings();
             frmSettings.ShowDialog();
+            _blogSelected = false;
+            FillBlogs();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
