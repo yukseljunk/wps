@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using PttLib;
 using PttLib.Helpers;
+using WpsLib.ProgramOptions;
 
 namespace WordpressScraper
 {

@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using PttLib;
 using PttLib.Helpers;
 using PttLib.TourInfo;
+using WpsLib.Item;
+using WpsLib.ProgramOptions;
 
 namespace WordpressScraper
 {

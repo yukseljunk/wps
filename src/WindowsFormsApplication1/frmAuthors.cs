@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using PttLib;
-using WordpressScraper.Dal;
+using WpsLib.Dal;
+using WpsLib.ProgramOptions;
 
 namespace WordpressScraper
 {
@@ -36,7 +37,7 @@ namespace WordpressScraper
                 return;
             }
             var authors = txtAuthors.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            using (var dal = new Dal.Dal(MySqlConnectionString))
+            using (var dal = new Dal(MySqlConnectionString))
             {
                 var userDal = new UserDal(dal);
                 foreach (var author in authors)

@@ -8,6 +8,8 @@ using PttLib;
 using PttLib.Helpers;
 using WordpressScraper.Ftp;
 using WordpressScraper.Helpers;
+using WpsLib.Dal;
+using WpsLib.ProgramOptions;
 
 namespace WordpressScraper
 {
@@ -123,7 +125,7 @@ namespace WordpressScraper
 
         private void btnTestMySqlConnection_Click(object sender, EventArgs e)
         {
-            using (var dal = new Dal.Dal(MySqlConnectionString))
+            using (var dal = new Dal(MySqlConnectionString))
             {
                 var testConnection = dal.TestConnection();
                 if (testConnection != null)

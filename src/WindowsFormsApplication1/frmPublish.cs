@@ -9,10 +9,10 @@ using System.Reflection;
 using System.Windows.Forms;
 using ImageProcessor;
 using Newtonsoft.Json.Linq;
-using PttLib;
 using PttLib.Helpers;
-using WordpressScraper.Dal;
 using WordPressSharp.Models;
+using WpsLib.Dal;
+using WpsLib.ProgramOptions;
 
 namespace WordpressScraper
 {
@@ -69,7 +69,7 @@ namespace WordpressScraper
             EnDis(false);
             txtStatus.Text = "";
 
-            var postDal = new PostDal(new Dal.Dal(MySqlConnectionString));
+            var postDal = new PostDal(new Dal(MySqlConnectionString));
             var posts = _posts;
             if (_posts == null)
             {
@@ -192,7 +192,7 @@ namespace WordpressScraper
         private void CreateVideos(IList<Post> posts)
         {
             _videosCreated = new Dictionary<string, List<Post>>();
-            var postDal = new PostDal(new Dal.Dal(MySqlConnectionString));
+            var postDal = new PostDal(new Dal(MySqlConnectionString));
             Application.DoEvents();
             AddStatus("Creating temp directories...");
             Application.DoEvents();

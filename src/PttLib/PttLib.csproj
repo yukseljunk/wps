@@ -83,8 +83,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Artfire.cs" />
-    <Compile Include="Bonanza.cs" />
     <Compile Include="CaptchaBreaker\CaptchaBreakerFactory.cs" />
     <Compile Include="CaptchaBreaker\Coral\CoralBreaker.cs" />
     <Compile Include="CaptchaBreaker\Coral\Guesser\CaptchaGuess.cs" />
@@ -107,7 +105,6 @@
     <Compile Include="CaptchaBreaker\Info\Segments.cs" />
     <Compile Include="CaptchaBreaker\Null\NullBreaker.cs" />
     <Compile Include="CaptchaBreaker\Tez\TezBreaker.cs" />
-    <Compile Include="Dawanda.cs" />
     <Compile Include="DeathByCaptcha\AccessDeniedException.cs" />
     <Compile Include="DeathByCaptcha\Captcha.cs" />
     <Compile Include="DeathByCaptcha\Client.cs" />
@@ -121,7 +118,6 @@
     <Compile Include="Domain\Hotel.cs" />
     <Compile Include="Domain\IHotel.cs" />
     <Compile Include="Domain\IOperator.cs" />
-    <Compile Include="Etsy.cs" />
     <Compile Include="Helpers\Base64Encoder.cs" />
     <Compile Include="Helpers\CaptchaHelper.cs" />
     <Compile Include="Helpers\ClassField.cs" />
@@ -154,9 +150,6 @@
     <Compile Include="Helpers\XmlConverters\VersaToXmlConverter.cs" />
     <Compile Include="Helpers\XmlParse.cs" />
     <Compile Include="Helpers\XmlSerializer.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="ItemImage.cs" />
-    <Compile Include="MultiItem.cs" />
     <Compile Include="Operators\IOperatorFactory.cs" />
     <Compile Include="Operators\OperatorFactory.cs" />
     <Compile Include="Operators\Operator\Anex.cs" />
@@ -177,9 +170,6 @@
     <Compile Include="Operators\Query\Query.cs" />
     <Compile Include="Operators\Query\QueryBuilder.cs" />
     <Compile Include="Operators\Query\QueryFactory.cs" />
-    <Compile Include="OverStock.cs" />
-    <Compile Include="ProgramOptions.cs" />
-    <Compile Include="ProgramOptionsFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PttRequestResponse\CaptchaRequestResponse\AnexCaptcha.cs" />
     <Compile Include="PttRequestResponse\CaptchaRequestResponse\CoralCaptcha.cs" />
@@ -203,8 +193,6 @@
     <Compile Include="PttRequestResponse\RequestResponseWithoutCaptcha.cs" />
     <Compile Include="PttRequestResponse\RequestResponseWithoutCaptchaOmitExceptionsForHotelList.cs" />
     <Compile Include="PttRequestResponse\RequestResponseWithWebBrowser.cs" />
-    <Compile Include="Site.cs" />
-    <Compile Include="SiteFactory.cs" />
     <Compile Include="TourInfo\ConverterFunctions.cs" />
     <Compile Include="TourInfo\ITourInfo.cs" />
     <Compile Include="TourInfo\ITourInfoConverter.cs" />

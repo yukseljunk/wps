@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using PttLib;
 using PttLib.Helpers;
-using WordpressScraper.Dal;
 using WordpressScraper.Ftp;
+using WpsLib.Dal;
+using WpsLib.ProgramOptions;
 
 namespace WordpressScraper
 {
@@ -102,7 +102,7 @@ namespace WordpressScraper
           {
               EnDis(false);
 
-              using (var dal = new Dal.Dal(MySqlConnectionString))
+              using (var dal = new Dal(MySqlConnectionString))
               {
                   var postDal = new PostDal(dal);
                   postDal.DeleteAll();

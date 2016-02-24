@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using PttLib;
 using WordpressScraper.Helpers;
+using WpsLib.ProgramOptions;
 
 namespace WordpressScraper
 {

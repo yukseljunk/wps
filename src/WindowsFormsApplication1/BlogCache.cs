@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using WordPressSharp.Models;
-using WordpressScraper.Dal;
+using WpsLib.Dal;
 
 namespace WindowsFormsApplication1
 {

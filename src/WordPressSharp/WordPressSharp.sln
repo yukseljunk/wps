@@ -18,6 +18,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ffmpegpictureslide", "..\ff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YoutubeUtilities", "..\YoutubeUtilities\YoutubeUtilities.csproj", "{EBB237B8-6640-48B4-B76E-75647163CB8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpsConsole", "..\WpsConsole\WpsConsole.csproj", "{5FBC6B65-413C-45BC-8E1A-55885C21BCC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpsLib", "..\WpsLib\WpsLib.csproj", "{F77EB247-3FBB-4AED-B56D-8A326311BE12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,14 @@ Global
 		{EBB237B8-6640-48B4-B76E-75647163CB8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBB237B8-6640-48B4-B76E-75647163CB8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBB237B8-6640-48B4-B76E-75647163CB8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FBC6B65-413C-45BC-8E1A-55885C21BCC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FBC6B65-413C-45BC-8E1A-55885C21BCC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FBC6B65-413C-45BC-8E1A-55885C21BCC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FBC6B65-413C-45BC-8E1A-55885C21BCC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F77EB247-3FBB-4AED-B56D-8A326311BE12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77EB247-3FBB-4AED-B56D-8A326311BE12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77EB247-3FBB-4AED-B56D-8A326311BE12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F77EB247-3FBB-4AED-B56D-8A326311BE12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
