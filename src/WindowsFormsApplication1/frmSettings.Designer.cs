@@ -504,7 +504,7 @@
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(458, 113);
             this.label15.TabIndex = 7;
-            this.label15.Text = "sallam";
+            this.label15.Text = resources.GetString("label15.Text");
             // 
             // txtYoutubeClientSecret
             // 
