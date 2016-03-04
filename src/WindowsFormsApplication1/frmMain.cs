@@ -667,8 +667,8 @@ namespace WindowsFormsApplication1
         {
             for (var i = startIndex; i < endIndex; i++)
             {
-                var randomIndex = Helper.GetRandomNumber(startIndex, endIndex);
-                var moveRandomIndex = Helper.GetRandomNumber(startIndex, endIndex);
+                var randomIndex = PttLib.Helpers.Helper.GetRandomNumber(startIndex, endIndex);
+                var moveRandomIndex = PttLib.Helpers.Helper.GetRandomNumber(startIndex, endIndex);
                 var item = lvItems.Items[randomIndex];
                 lvItems.Items.RemoveAt(randomIndex);
                 lvItems.Items.Insert(moveRandomIndex, item);
@@ -699,7 +699,7 @@ namespace WindowsFormsApplication1
             WhiteBackground();
             foreach (ListViewItem item in lvItems.Items)
             {
-                var color = Color.FromArgb(255, Helper.GetRandomNumber(125, 225), Helper.GetRandomNumber(125, 225), Helper.GetRandomNumber(125, 225));
+                var color = Color.FromArgb(255, PttLib.Helpers.Helper.GetRandomNumber(125, 225), PttLib.Helpers.Helper.GetRandomNumber(125, 225), PttLib.Helpers.Helper.GetRandomNumber(125, 225));
 
                 foreach (ListViewItem item2 in lvItems.Items)
                 {
@@ -931,6 +931,11 @@ namespace WindowsFormsApplication1
                 return;
             }
 
+            PrepareTemplates();
+        }
+
+        private void PrepareTemplates()
+        {
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
             if (string.IsNullOrEmpty(_options.FtpUrl))
@@ -944,42 +949,8 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Cannot connect to FTP, please check your settings.");
                 return;
             }
-
-            var files = Directory.EnumerateFiles("blog", "*.*", SearchOption.AllDirectories);
-            foreach (var file in files)
-            {
-                var fileInfo = new FileInfo(file);
-                var dir = fileInfo.Directory;
-                if (dir == null)
-                {
-                    continue;
-                }
-                var ftpDir = dir.FullName.Replace(AssemblyDirectory + "\\blog", "").Replace("\\", "/");
-                if (ftpDir.StartsWith("/"))
-                {
-                    ftpDir = ftpDir.Substring(1);
-                }
-                try
-                {
-                    ftp.MakeFtpDir(ftpDir);
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show(exception.ToString());
-                    return;
-                }
-
-                try
-                {
-                    ftp.UploadFileFtp(file, ftpDir);
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show(exception.ToString());
-                }
-            }
-            MessageBox.Show("Finished");
-
+            var frmPrepareTemplate= new frmPrepareTemplate();
+            frmPrepareTemplate.ShowDialog();
         }
 
         private void createAuthorsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1181,19 +1152,5 @@ namespace WindowsFormsApplication1
                 btnSelectAll_Click(null, null);
             }
         }
-
-        public static string AssemblyDirectory
-        {
-            get
-            {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
-        }
-
-
-
     }
 }

@@ -93,6 +93,12 @@
     <Compile Include="frmOptions.Designer.cs">
       <DependentUpon>frmOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmPrepareTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrepareTemplate.Designer.cs">
+      <DependentUpon>frmPrepareTemplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPublish.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +115,7 @@
     <Compile Include="Ftp\FtpDirectory.cs" />
     <Compile Include="Ftp\FtpFile.cs" />
     <Compile Include="Ftp\RemoteFtp.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
     <Compile Include="Helpers\StopwordTool.cs" />
     <Compile Include="Ftp\IFtp.cs" />
@@ -137,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmOptions.resx">
       <DependentUpon>frmOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrepareTemplate.resx">
+      <DependentUpon>frmPrepareTemplate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmPublish.resx">
       <DependentUpon>frmPublish.cs</DependentUpon>

@@ -250,13 +250,13 @@ namespace WordpressScraper
                     using (WebClient webClient = new WebClient())
                     {
                         webClient.DownloadFile(url,
-                            AssemblyDirectory + "/" + InputFolder + "\\img" + counter + "." + extension);
+                            Helper.AssemblyDirectory + "/" + InputFolder + "\\img" + counter + "." + extension);
                     }
                     counter++;
                 }
                 var videoFileName = OutputFolder + "/outputwaudio" + pageNo + ".mp4";
                 CreateVideo(videoFileName);
-                _videosCreated.Add(AssemblyDirectory + "/" + videoFileName, postsToTake.ToList());
+                _videosCreated.Add(Helper.AssemblyDirectory + "/" + videoFileName, postsToTake.ToList());
             }
             Directory.Delete(InputFolder, true);
             Directory.Delete(TempFolder, true);
@@ -265,7 +265,7 @@ namespace WordpressScraper
         private void CreateVideo(string outputFileName)
         {
             var secondsPerImage = (int)numDurationForEachImage.Value;
-            var listFile = AssemblyDirectory + "/" + ListFile;
+            var listFile = Helper.AssemblyDirectory + "/" + ListFile;
             File.WriteAllText(listFile, string.Empty);
 
             Application.DoEvents();
@@ -275,7 +275,7 @@ namespace WordpressScraper
             // Create a new WebClient instance.
             var myWebClient = new WebClient();
             myWebClient.DownloadFile(MusicUrls[Helper.GetRandomNumber(0, MusicUrls.Count)],
-                AssemblyDirectory + "/" + TempFolder + "/music.mp3");
+                Helper.AssemblyDirectory + "/" + TempFolder + "/music.mp3");
 
             for (int i = 0; i < 6; i++)
             {
@@ -290,7 +290,7 @@ namespace WordpressScraper
             StartFfmpeg(combineMusicParams, 20);
 
             File.WriteAllText(listFile, string.Empty);
-            var files = Directory.GetFiles(AssemblyDirectory + "/" + InputFolder);
+            var files = Directory.GetFiles(Helper.AssemblyDirectory + "/" + InputFolder);
             //first resize images
             var imgFactory = new ImageFactory();
 
@@ -353,7 +353,7 @@ namespace WordpressScraper
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = AssemblyDirectory + "/ffmpeg/ffmpeg.exe",
+                    FileName = Helper.AssemblyDirectory + "/ffmpeg/ffmpeg.exe",
                     Arguments = firstArgs,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -378,7 +378,7 @@ namespace WordpressScraper
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = AssemblyDirectory + "/YoutubeUtilities/YoutubeUtilities.exe",
+                    FileName = Helper.AssemblyDirectory + "/YoutubeUtilities/YoutubeUtilities.exe",
                     Arguments = firstArgs,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -449,17 +449,7 @@ namespace WordpressScraper
 
             }
         }
-        public static string AssemblyDirectory
-        {
-            get
-            {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
-        }
-
+        
         private void chkYoutube_CheckedChanged(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_options.YoutubeClientSecret) || string.IsNullOrEmpty(_options.YoutubeClient))

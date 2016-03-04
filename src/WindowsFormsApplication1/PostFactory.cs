@@ -324,7 +324,7 @@ namespace WindowsFormsApplication1
                     tasks.Add(new Task<int>(() =>
                     {
 
-                        var authorId = _userIds[Helper.GetRandomNumber(0, _userIds.Count)];
+                        var authorId = _userIds[PttLib.Helpers.Helper.GetRandomNumber(0, _userIds.Count)];
 
                         _bw.ReportProgress(itemIndex / itemCount * 100, qi1.First());
 
