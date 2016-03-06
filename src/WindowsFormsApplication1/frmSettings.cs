@@ -71,7 +71,7 @@ namespace WordpressScraper
 
         private void ArrangeTabVisibility()
         {
-            tabMain.Visible = _sitesSettings.Count > 0 && lvSites.SelectedItems.Count>0;
+            tabMain.Visible = _sitesSettings.Count > 0 && lvSites.SelectedItems.Count > 0;
         }
 
         private void FillSites()
@@ -191,7 +191,7 @@ namespace WordpressScraper
                 FtpUser = txtFtpUserName.Text,
                 FtpPassword = txtFtpPassword.Text,
                 ProxyAddress = txtProxyIp.Text,
-                ProxyPort = (int) numProxyPort.Value,
+                ProxyPort = (int)numProxyPort.Value,
                 UseProxy = chkUseProxy.Checked,
                 YoutubeClient = txtYoutubeClientId.Text,
                 YoutubeClientSecret = txtYoutubeClientSecret.Text
@@ -287,7 +287,7 @@ namespace WordpressScraper
                 }
                 else
                 {
-                    var listIndex=listviewOperation.Substring("DUPLICATE".Length);
+                    var listIndex = listviewOperation.Substring("DUPLICATE".Length);
                     if (!string.IsNullOrEmpty(listIndex))
                     {
                         _sitesSettings.Add(newName, _sitesSettings[listIndex]);
@@ -326,10 +326,13 @@ namespace WordpressScraper
 
         private void lvSites_SelectedIndexChanged(object sender, EventArgs e)
         {
-           if (lvSites.SelectedItems.Count == 0) return;
+            if (lvSites.SelectedItems.Count == 0) return;
             ArrangeTabVisibility();
-           FillValues(_sitesSettings[lvSites.SelectedItems[0].Text]);
-
+            var key = lvSites.SelectedItems[0].Text;
+            if (_sitesSettings.ContainsKey(key))
+            {
+                FillValues(_sitesSettings[key]);
+            }
         }
 
         private void btnRename_Click(object sender, EventArgs e)
@@ -389,7 +392,7 @@ namespace WordpressScraper
                     ((ComboBox)subctrl).SelectedIndexChanged +=
                         new EventHandler(InputControls_OnChange);
                 else if (subctrl is NumericUpDown)
-                    ((NumericUpDown)subctrl).ValueChanged+=
+                    ((NumericUpDown)subctrl).ValueChanged +=
                         new EventHandler(InputControls_OnChange);
                 else
                 {

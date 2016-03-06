@@ -18,6 +18,10 @@ namespace WpsLib.ProgramOptions
         public string BlogUrl { get; set; }
         public string BlogHost { get
         {
+            if(string.IsNullOrEmpty(BlogUrl))
+            {
+                return BlogUrl;
+            }
             var uri = new Uri(BlogUrl);
             var result = uri.Host;
             if(result.ToLower().StartsWith("www."))
