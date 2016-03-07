@@ -33,6 +33,7 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.btnPluginData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblDesc
@@ -65,11 +66,23 @@
             this.progressBar1.Size = new System.Drawing.Size(412, 23);
             this.progressBar1.TabIndex = 2;
             // 
+            // btnPluginData
+            // 
+            this.btnPluginData.Location = new System.Drawing.Point(516, 23);
+            this.btnPluginData.Name = "btnPluginData";
+            this.btnPluginData.Size = new System.Drawing.Size(75, 23);
+            this.btnPluginData.TabIndex = 3;
+            this.btnPluginData.Text = "Plugin Data";
+            this.btnPluginData.UseVisualStyleBackColor = true;
+            this.btnPluginData.Visible = false;
+            this.btnPluginData.Click += new System.EventHandler(this.btnPluginData_Click);
+            // 
             // frmPrepareTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(541, 104);
+            this.ClientSize = new System.Drawing.Size(603, 161);
+            this.Controls.Add(this.btnPluginData);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblDesc);
@@ -90,5 +103,6 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button btnPluginData;
     }
 }

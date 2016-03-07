@@ -117,6 +117,7 @@
     <Compile Include="Ftp\RemoteFtp.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Helpers\ConfigurationHelper.cs" />
+    <Compile Include="Helpers\PhpSerializer.cs" />
     <Compile Include="Helpers\StopwordTool.cs" />
     <Compile Include="Ftp\IFtp.cs" />
     <Compile Include="PostFactory.cs" />

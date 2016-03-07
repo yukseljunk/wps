@@ -8,9 +8,9 @@ namespace WpsLib.Dal
 {
     public class TagDal
     {
-        private readonly WpsLib.Dal.Dal _dal;
+        private readonly Dal _dal;
 
-        public TagDal(WpsLib.Dal.Dal dal)
+        public TagDal(Dal dal)
         {
             _dal = dal;
         }

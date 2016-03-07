@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApplication1;
 using WordpressScraper.Ftp;
+using WordpressScraper.Helpers;
+using WpsLib.Dal;
 using WpsLib.ProgramOptions;
 
 namespace WordpressScraper
@@ -26,6 +28,10 @@ namespace WordpressScraper
         private void frmPrepareTemplate_Load(object sender, EventArgs e)
         {
             timer1.Enabled = true;
+#if DEBUG
+            btnPluginData.Visible = true;
+
+#endif
 
         }
 
@@ -36,7 +42,14 @@ namespace WordpressScraper
                 return new FtpConfig() { Url = _options.FtpUrl, UserName = _options.FtpUser, Password = _options.FtpPassword };
             }
         }
-        private IEnumerable<string> _files= new List<string>(); 
+        private string MySqlConnectionString
+        {
+            get
+            {
+                return string.Format("Server={0};Database={1};Uid={2};Pwd={3}; Allow User Variables=True", _options.DatabaseUrl, _options.DatabaseName, _options.DatabaseUser, _options.DatabasePassword);
+            }
+        }
+        private IEnumerable<string> _files = new List<string>();
         private void StartWorker()
         {
             timer1.Enabled = false;
@@ -81,9 +94,9 @@ namespace WordpressScraper
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
             var ftp = new Ftp.Ftp(FtpConfiguration);
-            
+
             var fileUploaded = 0;
-            
+
             foreach (var file in _files)
             {
                 fileUploaded++;
@@ -105,7 +118,7 @@ namespace WordpressScraper
                 }
                 try
                 {
-                    
+
                     ftp.MakeFtpDir(ftpDir);
                     bw.ReportProgress(fileUploaded, "Creating Ftp Directory " + ftpDir);
                 }
@@ -117,7 +130,7 @@ namespace WordpressScraper
 
                 try
                 {
-                    
+
                     ftp.UploadFileFtp(file, ftpDir);
                     bw.ReportProgress(fileUploaded, "Uploading " + file);
                 }
@@ -131,6 +144,40 @@ namespace WordpressScraper
         private void timer1_Tick(object sender, EventArgs e)
         {
             StartWorker();
+        }
+
+        private void btnPluginData_Click(object sender, EventArgs e)
+        {
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+            //active_plugins
+            var pluginData = PhpSerializer.Serialize(new List<string>() { "BouncePopup/BouncePopup.php", "ExternalLink/ExternalLink.php", "add-to-any/add-to-any.php", "display-post-meta/display-post-meta.php" });
+
+            //addtoany_options
+            var addtoanyOptions =
+                PhpSerializer.Serialize(
+                    new Dictionary<string, string>()
+                    {
+                        {"floating_vertical","none"},
+                        {"floating_horizontal","none"},
+                        {"floating_vertical_position","100"},
+                        {"floating_vertical_offset","0"},
+                        {"floating_vertical_responsive","1"},
+                        {"floating_vertical_responsive_max_width","980"},
+                        {"floating_horizontal_position","0"},
+                        {"floating_horizontal_offset","0"},
+                        {"floating_horizontal_responsive","1"},
+                        {"floating_horizontal_responsive_min_width","981"}
+
+                    });
+
+            using (var dal = new Dal(MySqlConnectionString))
+            {
+                var optionsDal = new OptionsDal(dal);
+                optionsDal.SetValue("active_plugins", pluginData);
+                optionsDal.SetValue("addtoany_options", addtoanyOptions);
+            }
+
         }
 
     }
