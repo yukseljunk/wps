@@ -453,7 +453,7 @@ namespace WindowsFormsApplication1
                         post.FeaturedImageId = imageUploads[0].Id;
                     }
                     post.ImageIds = imageUploads.Select(i => i.Id).ToList();
-                    post.CustomFields[4].Value = imageUploads[0].Id;
+                    post.CustomFields[6].Value = imageUploads[0].Id;
                 }
                 List<Term> terms = new List<Term>();
                 if (!_options.TagsAsText)
