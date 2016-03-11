@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApplication1;
 using WordpressScraper.Ftp;
@@ -148,28 +144,26 @@ namespace WordpressScraper
 
         private void btnPluginData_Click(object sender, EventArgs e)
         {
+            var optionFiles = Directory.EnumerateFiles("blog", "*.bof", SearchOption.AllDirectories);
+
+            foreach (var optionFile in optionFiles)
+            {
+                var x = optionFile;
+            }
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
             //active_plugins
-            var pluginData = PhpSerializer.Serialize(new List<string>() { "BouncePopup/BouncePopup.php", "ExternalLink/ExternalLink.php", "add-to-any/add-to-any.php", "display-post-meta/display-post-meta.php" });
+            var pluginData = PhpSerializer.Serialize(new List<string>()
+            {
+                "BouncePopup/BouncePopup.php", 
+                "ExternalLink/ExternalLink.php", 
+                "add-to-any/add-to-any.php", 
+                "display-post-meta/display-post-meta.php"
+            });
 
             //addtoany_options
             var addtoanyOptions =
-                PhpSerializer.Serialize(
-                    new Dictionary<string, string>()
-                    {
-                        {"floating_vertical","none"},
-                        {"floating_horizontal","none"},
-                        {"floating_vertical_position","100"},
-                        {"floating_vertical_offset","0"},
-                        {"floating_vertical_responsive","1"},
-                        {"floating_vertical_responsive_max_width","980"},
-                        {"floating_horizontal_position","0"},
-                        {"floating_horizontal_offset","0"},
-                        {"floating_horizontal_responsive","1"},
-                        {"floating_horizontal_responsive_min_width","981"}
-
-                    });
+                "read from file";
 
             using (var dal = new Dal(MySqlConnectionString))
             {
@@ -181,4 +175,5 @@ namespace WordpressScraper
         }
 
     }
+
 }
