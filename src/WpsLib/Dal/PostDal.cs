@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Microsoft.SqlServer.Server;
 using PttLib.Helpers;
 using PttLib.TourInfo;
 using WordPressSharp.Models;
@@ -10,9 +11,9 @@ namespace WpsLib.Dal
 {
     public class PostDal
     {
-        private readonly WpsLib.Dal.Dal _dal;
+        private readonly Dal _dal;
 
-        public PostDal(WpsLib.Dal.Dal dal)
+        public PostDal(Dal dal)
         {
             _dal = dal;
         }
@@ -213,10 +214,27 @@ namespace WpsLib.Dal
             return int.Parse(id);
         }
 
-        public DataSet GetAllPostMeta()
+        public DataSet GetAllPostMeta(string metaKey = "foreignkey")
         {
-            var sql = "Select post_id,meta_value from wp_postmeta where meta_key='foreignkey'";
+            var sql = string.Format("Select post_id,meta_value from wp_postmeta where meta_key='{0}'", metaKey);
             return _dal.GetData(sql);
+
+        }
+
+        public void SetPostMetaData(int postId, string metaKey, string metaValue)
+        {
+            var existSql = string.Format("Select post_id,meta_value from wp_postmeta where meta_key='{0}' and post_id='{1}'", metaKey, postId);
+            var data = _dal.GetData(existSql);
+            var exists = data.Tables.Count != 0;
+            if (data.Tables[0].Rows.Count == 0) { exists = false; }
+            if (!exists)
+            {
+                var insertSql = string.Format("INSERT INTO wp_postmeta(post_id, meta_key,meta_value) VALUES('{0}','{1}','{2}')", postId, metaKey, metaValue);
+                _dal.ExecuteNonQuery(insertSql);
+
+            }
+            var sql = string.Format("Update wp_postmeta SET meta_value='{0}' where meta_key='{1}' and post_id={2}", metaValue, metaKey, postId);
+            _dal.ExecuteNonQuery(sql);
 
         }
 

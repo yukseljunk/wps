@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -1152,5 +1153,63 @@ namespace WindowsFormsApplication1
                 btnSelectAll_Click(null, null);
             }
         }
+
+        private void fixFeatureImageErrorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!_blogSelected)
+            {
+                MessageBox.Show("First connect to blog from File>Connect!");
+                return;
+            }
+            var thumbnailMetaData= new Dictionary<int, string>();
+            var programOptionsFactory = new ProgramOptionsFactory();
+            _options = programOptionsFactory.Get();
+            using (var dal = new Dal(MySqlConnectionString))
+            {
+                var postDal = new PostDal(dal);
+                var allYoastMeta = postDal.GetAllPostMeta("_yoast_wpseo_focuskw_text_input");
+                if (allYoastMeta.Tables.Count == 0) return;
+                if (allYoastMeta.Tables[0].Rows.Count == 0) return;
+
+                var thumbnailMeta = postDal.GetAllPostMeta("_thumbnail_id");
+                if (thumbnailMeta.Tables.Count > 0)
+                {
+                    if (thumbnailMeta.Tables[0].Rows.Count > 0)
+                    {
+                        foreach (DataRow row in thumbnailMeta.Tables[0].Rows)
+                        {
+                            var postId = Int32.Parse(row["post_id"].ToString());
+                            var meta_value = row["meta_value"].ToString();
+                            if (!thumbnailMetaData.ContainsKey(postId))
+                            {
+                                thumbnailMetaData.Add(postId, meta_value);
+                            }
+                        }
+                    }
+                }
+
+                barStatus.Maximum= allYoastMeta.Tables[0].Rows.Count;
+                barStatus.Visible = true;
+                foreach (DataRow row in allYoastMeta.Tables[0].Rows)
+                {
+                    barStatus.PerformStep();
+
+                    var postId = Int32.Parse(row["post_id"].ToString());
+                    var meta_value = row["meta_value"].ToString();
+                    if (thumbnailMetaData.ContainsKey(postId) && !string.IsNullOrEmpty(thumbnailMetaData[postId]))
+                    {
+                        continue;
+                    }
+                    Application.DoEvents();
+                    SetStatus(string.Format("Fixing {0} ",postId));
+                    postDal.SetPostMetaData(postId, "_thumbnail_id", meta_value);
+                }
+
+                barStatus.Visible = false;
+
+            }
+            MessageBox.Show("Finished");
+        }
+        
     }
 }
