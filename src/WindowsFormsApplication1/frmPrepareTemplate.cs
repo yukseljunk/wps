@@ -144,36 +144,41 @@ namespace WordpressScraper
 
         private void btnPluginData_Click(object sender, EventArgs e)
         {
-            var optionFiles = Directory.EnumerateFiles("blog", "*.bof", SearchOption.AllDirectories);
-
-            foreach (var optionFile in optionFiles)
-            {
-                var x = optionFile;
-            }
+            
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
-            //active_plugins
-            var pluginData = PhpSerializer.Serialize(new List<string>()
-            {
-                "BouncePopup/BouncePopup.php", 
-                "ExternalLink/ExternalLink.php", 
-                "add-to-any/add-to-any.php", 
-                "display-post-meta/display-post-meta.php"
-            });
-
-            //addtoany_options
-            var addtoanyOptions =
-                "read from file";
 
             using (var dal = new Dal(MySqlConnectionString))
             {
                 var optionsDal = new OptionsDal(dal);
-                optionsDal.SetValue("active_plugins", pluginData);
-                optionsDal.SetValue("addtoany_options", addtoanyOptions);
+                optionsDal.SetValue("active_plugins", GetPlugins());
+
+                var optionFiles = Directory.EnumerateFiles("blog", "*.bof", SearchOption.AllDirectories);
+
+                foreach (var optionFile in optionFiles)
+                {
+                    var optionFileInfo = new FileInfo(optionFile);
+                    var fileName = optionFileInfo.Name;
+                    var withoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                    var content = File.ReadAllText(optionFileInfo.FullName);
+                    optionsDal.SetValue(withoutExtension, content);
+                }
             }
 
         }
 
+        private static string GetPlugins()
+        {
+            var plugins = new List<string>();
+            var pluginDirs = Directory.GetDirectories(Helper.AssemblyDirectory + "\\blog\\wp-content\\plugins");
+            foreach (var pluginDir in pluginDirs)
+            {
+                var directory = new DirectoryInfo(pluginDir);
+                plugins.Add(string.Format("{0}/{0}.php", directory.Name));
+            }
+            var pluginData = PhpSerializer.Serialize(plugins);
+            return pluginData;
+        }
     }
 
 }
