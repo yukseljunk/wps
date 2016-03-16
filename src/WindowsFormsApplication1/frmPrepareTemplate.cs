@@ -4,11 +4,12 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using WindowsFormsApplication1;
+using PttLib.Helpers;
 using WordpressScraper.Ftp;
 using WordpressScraper.Helpers;
 using WpsLib.Dal;
 using WpsLib.ProgramOptions;
+using Helper = WindowsFormsApplication1.Helper;
 
 namespace WordpressScraper
 {
@@ -135,6 +136,24 @@ namespace WordpressScraper
                     MessageBox.Show(exception.ToString());
                 }
             }
+            //make a request to unzip files http://blog.guessornot.com/wp-unzip.php?file=wp-content/plugins/add-to-any.zip
+
+            var zipFiles = Directory.EnumerateFiles("blog", "*.zip", SearchOption.AllDirectories);
+            foreach (var zipFile in zipFiles)
+            {
+                var zipFileInfo = new FileInfo(zipFile);
+                var url = string.Format("http://blog.guessornot.com/wp-unzip.php?file=wp-content/plugins/{0}", zipFileInfo.Name);
+                var result = WebHelper.CurlSimple(url);
+                if (result.StartsWith("OK"))
+                {
+                    bw.ReportProgress(fileUploaded, string.Format(" Finished unpacking {0}", zipFileInfo.Name));
+                }
+                else
+                {
+                    MessageBox.Show(string.Format("Error unpacking {0}", zipFileInfo.Name));
+                }
+            }
+            btnPluginData_Click(null, null);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -144,7 +163,7 @@ namespace WordpressScraper
 
         private void btnPluginData_Click(object sender, EventArgs e)
         {
-            
+
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
 
@@ -170,11 +189,12 @@ namespace WordpressScraper
         private static string GetPlugins()
         {
             var plugins = new List<string>();
-            var pluginDirs = Directory.GetDirectories(Helper.AssemblyDirectory + "\\blog\\wp-content\\plugins");
-            foreach (var pluginDir in pluginDirs)
+            var zipFiles = Directory.EnumerateFiles("blog", "*.zip", SearchOption.AllDirectories);
+            foreach (var zipFile in zipFiles)
             {
-                var directory = new DirectoryInfo(pluginDir);
-                plugins.Add(string.Format("{0}/{0}.php", directory.Name));
+                var zipFileInfo = new FileInfo(zipFile);
+                var directory=Path.GetFileNameWithoutExtension(zipFileInfo.FullName);
+                plugins.Add(string.Format("{0}/{0}.php", directory));
             }
             var pluginData = PhpSerializer.Serialize(plugins);
             return pluginData;
