@@ -171,6 +171,12 @@
     <None Include="blog\wp-content\plugins\addtoany_options.bof">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\adman.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\autoptimize.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\BouncePopup.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
