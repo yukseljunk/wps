@@ -41,11 +41,11 @@ namespace WindowsFormsApplication1
         private void frmMain_Load(object sender, EventArgs e)
         {
             txtUrl.Text = DefaultKey;
+            SetFormCaption();
             btnGo.Enabled = false;
             btnStop.Enabled = false;
             btnStopScrape.Enabled = false;
             Directory.CreateDirectory("Logs");
-            this.Text += " v" + Assembly.GetExecutingAssembly().GetName().Version;
             lblDateTime.Text = "";
             lblSelection.Text = "";
             FillSites();
@@ -59,6 +59,15 @@ namespace WindowsFormsApplication1
 
         }
 
+        private void SetFormCaption(string blogName = "")
+        {
+            this.Text = "Wordpress Scraper v" + Assembly.GetExecutingAssembly().GetName().Version;
+            if (!string.IsNullOrEmpty(blogName))
+            {
+                this.Text += " - " + blogName;
+            }
+        }
+
         private void FillBlogs()
         {
             var blogIndex = 1;
@@ -68,10 +77,10 @@ namespace WindowsFormsApplication1
                 var blogMenu = new ToolStripMenuItem()
                 {
                     Text = site,
-                    Name ="blogItem" +blogIndex
-                
+                    Name = "blogItem" + blogIndex
+
                 };
-                blogMenu.Click += new EventHandler(SelectBlog); 
+                blogMenu.Click += new EventHandler(SelectBlog);
                 connectToolStripMenuItem.DropDownItems.Add(blogMenu);
                 blogIndex++;
             }
@@ -109,12 +118,13 @@ namespace WindowsFormsApplication1
             {
                 dropDownItem.Checked = false;
             }
-            
+
             clickedItem.Checked = true;
             _blogSelected = true;
+            SetFormCaption(clickedItem.Text);
         }
 
-      
+
         private void FillSites()
         {
             chkSites.Items.Clear();
@@ -794,12 +804,13 @@ namespace WindowsFormsApplication1
             var frmSettings = new frmSettings();
             frmSettings.ShowDialog();
             _blogSelected = false;
+            SetFormCaption();
             FillBlogs();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(this.Text);
+            MessageBox.Show("Wordpress Scraper v" + Assembly.GetExecutingAssembly().GetName().Version);
         }
 
         private void btnUp_Click(object sender, EventArgs e)
@@ -950,7 +961,7 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Cannot connect to FTP, please check your settings.");
                 return;
             }
-            var frmPrepareTemplate= new frmPrepareTemplate();
+            var frmPrepareTemplate = new frmPrepareTemplate();
             frmPrepareTemplate.ShowDialog();
         }
 
@@ -1161,7 +1172,7 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("First connect to blog from File>Connect!");
                 return;
             }
-            var thumbnailMetaData= new Dictionary<int, string>();
+            var thumbnailMetaData = new Dictionary<int, string>();
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
             using (var dal = new Dal(MySqlConnectionString))
@@ -1188,7 +1199,7 @@ namespace WindowsFormsApplication1
                     }
                 }
 
-                barStatus.Maximum= allYoastMeta.Tables[0].Rows.Count;
+                barStatus.Maximum = allYoastMeta.Tables[0].Rows.Count;
                 barStatus.Visible = true;
                 foreach (DataRow row in allYoastMeta.Tables[0].Rows)
                 {
@@ -1201,7 +1212,7 @@ namespace WindowsFormsApplication1
                         continue;
                     }
                     Application.DoEvents();
-                    SetStatus(string.Format("Fixing {0} ",postId));
+                    SetStatus(string.Format("Fixing {0} ", postId));
                     postDal.SetPostMetaData(postId, "_thumbnail_id", meta_value);
                 }
 
@@ -1210,6 +1221,6 @@ namespace WindowsFormsApplication1
             }
             MessageBox.Show("Finished");
         }
-        
+
     }
 }
