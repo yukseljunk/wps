@@ -136,13 +136,17 @@ namespace WordpressScraper
                     MessageBox.Show(exception.ToString());
                 }
             }
-            //make a request to unzip files http://blog.guessornot.com/wp-unzip.php?file=wp-content/plugins/add-to-any.zip
-
+            //make a request to unzip files
+            var blogUrl = _options.BlogUrl;
+            if (!_options.BlogUrl.EndsWith("/"))
+            {
+                blogUrl += "/";
+            }
             var zipFiles = Directory.EnumerateFiles("blog", "*.zip", SearchOption.AllDirectories);
             foreach (var zipFile in zipFiles)
             {
                 var zipFileInfo = new FileInfo(zipFile);
-                var url = string.Format("http://blog.guessornot.com/wp-unzip.php?file=wp-content/plugins/{0}", zipFileInfo.Name);
+                var url = string.Format("{1}wp-unzip.php?file=wp-content/plugins/{0}", zipFileInfo.Name, blogUrl);
                 var result = WebHelper.CurlSimple(url);
                 if (result.StartsWith("OK"))
                 {
