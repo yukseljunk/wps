@@ -240,6 +240,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="blog\wp-content\plugins\plugins.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="blog\wp-content\themes\hellish-simplicity-child\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

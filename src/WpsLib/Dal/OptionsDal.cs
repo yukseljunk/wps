@@ -17,6 +17,18 @@ namespace WpsLib.Dal
             return _dal.GetData(sql);
         }
 
+        public string GetValue(string key)
+        {
+            var optionDataSet = _dal.GetData(string.Format("Select option_id, option_name, option_value from wp_options Where option_name='{0}'", key));
+            if (optionDataSet.Tables.Count > 0 && optionDataSet.Tables[0].Rows.Count > 0 &&
+                optionDataSet.Tables[0].Rows[0].ItemArray.Length > 0)
+            {
+                return optionDataSet.Tables[0].Rows[0][2].ToString();
+
+            }
+            return null;
+        }
+
         public void SetValue(string key, string value)
         {
             //duplicate check

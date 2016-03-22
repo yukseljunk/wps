@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace WordpressScraper.Helpers
 {
@@ -31,6 +32,18 @@ namespace WordpressScraper.Helpers
             }
             result.AppendFormat("}}");
             return result.ToString();
+        }
+
+        public static IList<string> Deserialize(string input)
+        {
+            var result = new List<string>();
+            var r = new Regex("\"[^\"]*\"");
+            foreach (Match match in r.Matches(input))
+            {
+                result.Add(match.Value.Replace("\"", ""));
+            }
+            return result;
+
         }
 
         public static string Serialize(string str)

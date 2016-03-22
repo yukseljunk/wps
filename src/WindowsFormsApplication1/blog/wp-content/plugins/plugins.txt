@@ -1,0 +1,5 @@
+add-to-any/add-to-any.php
+adman/adman.php
+autoptimize/autoptimize.php
+BouncePopup/BouncePopup.php
+ExternalLink/ExternalLink.php

@@ -24,7 +24,7 @@ namespace WordpressScraper
 
         private void frmPrepareTemplate_Load(object sender, EventArgs e)
         {
-            timer1.Enabled = true;
+            //timer1.Enabled = true;
 #if DEBUG
             btnPluginData.Visible = true;
 
@@ -77,6 +77,7 @@ namespace WordpressScraper
             {
                 lblStatus.Text = "Finished!";
             }
+            btnStart.Enabled = true;
         }
 
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -90,53 +91,66 @@ namespace WordpressScraper
         {
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
-            var ftp = new Ftp.Ftp(FtpConfiguration);
 
-            var fileUploaded = 0;
-
-            foreach (var file in _files)
+            if (chkUploadFiles.Checked)
             {
-                fileUploaded++;
-                if ((bw.CancellationPending))
-                {
-                    e.Cancel = true;
-                    break;
-                }
-                var fileInfo = new FileInfo(file);
-                var dir = fileInfo.Directory;
-                if (dir == null)
-                {
-                    continue;
-                }
-                var ftpDir = dir.FullName.Replace(Helper.AssemblyDirectory + "\\blog", "").Replace("\\", "/");
-                if (ftpDir.StartsWith("/"))
-                {
-                    ftpDir = ftpDir.Substring(1);
-                }
-                try
-                {
+                var ftp = new Ftp.Ftp(FtpConfiguration);
 
-                    ftp.MakeFtpDir(ftpDir);
-                    bw.ReportProgress(fileUploaded, "Creating Ftp Directory " + ftpDir);
-                }
-                catch (Exception exception)
+                var fileUploaded = 0;
+
+                foreach (var file in _files)
                 {
-                    MessageBox.Show(exception.ToString());
-                    return;
+                    fileUploaded++;
+                    if ((bw.CancellationPending))
+                    {
+                        e.Cancel = true;
+                        break;
+                    }
+                    var fileInfo = new FileInfo(file);
+                    var dir = fileInfo.Directory;
+                    if (dir == null)
+                    {
+                        continue;
+                    }
+                    var ftpDir = dir.FullName.Replace(Helper.AssemblyDirectory + "\\blog", "").Replace("\\", "/");
+                    if (ftpDir.StartsWith("/"))
+                    {
+                        ftpDir = ftpDir.Substring(1);
+                    }
+                    try
+                    {
+
+                        ftp.MakeFtpDir(ftpDir);
+                        bw.ReportProgress(fileUploaded, "Creating Ftp Directory " + ftpDir);
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBox.Show(exception.ToString());
+                        return;
+                    }
+
+                    try
+                    {
+
+                        ftp.UploadFileFtp(file, ftpDir);
+                        bw.ReportProgress(fileUploaded, "Uploading " + file);
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBox.Show(exception.ToString());
+                    }
                 }
 
-                try
-                {
-
-                    ftp.UploadFileFtp(file, ftpDir);
-                    bw.ReportProgress(fileUploaded, "Uploading " + file);
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show(exception.ToString());
-                }
+                UnzipPlugins(fileUploaded);
             }
-            
+            if (chkActivateSetupPlugins.Checked)
+            {
+                SetPluginData();
+            }
+        }
+
+        private void UnzipPlugins(int fileUploaded)
+        {
             //make a request to unzip files
             var blogUrl = _options.BlogUrl;
             if (!_options.BlogUrl.EndsWith("/"))
@@ -158,7 +172,6 @@ namespace WordpressScraper
                     MessageBox.Show(string.Format("Error unpacking {0}", zipFileInfo.Name));
                 }
             }
-            btnPluginData_Click(null, null);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -166,7 +179,7 @@ namespace WordpressScraper
             StartWorker();
         }
 
-        private void btnPluginData_Click(object sender, EventArgs e)
+        private void SetPluginData()
         {
 
             var programOptionsFactory = new ProgramOptionsFactory();
@@ -175,10 +188,15 @@ namespace WordpressScraper
             using (var dal = new Dal(MySqlConnectionString))
             {
                 var optionsDal = new OptionsDal(dal);
-                optionsDal.SetValue("active_plugins", GetPlugins());
+                var currentActivePluginsValue = optionsDal.GetValue("active_plugins");
+                var currentActivePlugins = new HashSet<string>(PhpSerializer.Deserialize(currentActivePluginsValue));
+                var pluginsToPut = new HashSet<string>(GetPluginFiles());
+                
+                currentActivePlugins.UnionWith(pluginsToPut);
+                var newActivePluginData = PhpSerializer.Serialize(currentActivePlugins.ToList());
+                optionsDal.SetValue("active_plugins", newActivePluginData);
 
                 var optionFiles = Directory.EnumerateFiles("blog", "*.bof", SearchOption.AllDirectories);
-
                 foreach (var optionFile in optionFiles)
                 {
                     var optionFileInfo = new FileInfo(optionFile);
@@ -190,20 +208,24 @@ namespace WordpressScraper
             }
 
         }
-
-        private static string GetPlugins()
+        private static IList<string> GetPluginFiles()
         {
             var plugins = new List<string>();
-            var zipFiles = Directory.EnumerateFiles("blog", "*.zip", SearchOption.AllDirectories);
-            foreach (var zipFile in zipFiles)
+            var pluginListFile = "blog/wp-content/plugins/plugins.txt";
+            var pluginListFileContent = File.ReadAllLines(pluginListFile);
+            foreach (var pluginPath in pluginListFileContent)
             {
-                var zipFileInfo = new FileInfo(zipFile);
-                var directory=Path.GetFileNameWithoutExtension(zipFileInfo.FullName);
-                plugins.Add(string.Format("{0}/{0}.php", directory));
+                plugins.Add(pluginPath);
             }
-            var pluginData = PhpSerializer.Serialize(plugins);
-            return pluginData;
+            return plugins;
         }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            btnStart.Enabled = false;
+            StartWorker();
+        }
+
     }
 
 }
