@@ -136,6 +136,7 @@ namespace WordpressScraper
                     MessageBox.Show(exception.ToString());
                 }
             }
+            
             //make a request to unzip files
             var blogUrl = _options.BlogUrl;
             if (!_options.BlogUrl.EndsWith("/"))
