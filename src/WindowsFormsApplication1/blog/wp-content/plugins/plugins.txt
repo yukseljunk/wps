@@ -3,3 +3,7 @@ adman/adman.php
 autoptimize/autoptimize.php
 BouncePopup/BouncePopup.php
 ExternalLink/ExternalLink.php
+bj-lazy-load/bj-lazy-load.php
+cms-commander-client/init.php
+contact-form-plugin/contact_form.php
+ewww-image-optimizer/ewww-image-optimizer.php

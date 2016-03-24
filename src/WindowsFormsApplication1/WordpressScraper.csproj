@@ -165,6 +165,21 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="blog\wp-content\ewww\cwebp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\ewww\gifsicle">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\ewww\jpegtran">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\ewww\optipng">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\ewww\pngquant">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\add-to-any.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -177,7 +192,61 @@
     <None Include="blog\wp-content\plugins\autoptimize.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\autoptimize_cache_clean.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\autoptimize_cache_nogzip.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\autoptimize_css.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\autoptimize_css_exclude.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\autoptimize_css_inline.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\autoptimize_html.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\autoptimize_js.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\autoptimize_js_exclude.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\autoptimize_show_adv.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\bj-lazy-load.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\BouncePopup.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\cms-commander-client.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\contact-form-plugin.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\ewww-image-optimizer.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\ewww_image_optimizer_disable_pngout.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\ewww_image_optimizer_jpegtran_copy.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\ewww_image_optimizer_optipng_level.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\ewww_image_optimizer_pngout_level.bof">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\ewww_image_optimizer_version.bof">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\ExternalLink.zip">
