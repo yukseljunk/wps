@@ -231,22 +231,10 @@
     <None Include="blog\wp-content\plugins\contact-form-plugin.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\eww-image-optimizer.bosf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\ewww-image-optimizer.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\ewww_image_optimizer_disable_pngout.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\ewww_image_optimizer_jpegtran_copy.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\ewww_image_optimizer_optipng_level.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\ewww_image_optimizer_pngout_level.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\ewww_image_optimizer_version.bof">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\ExternalLink.zip">

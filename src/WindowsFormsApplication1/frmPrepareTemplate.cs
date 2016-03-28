@@ -205,6 +205,27 @@ namespace WordpressScraper
                     var content = File.ReadAllText(optionFileInfo.FullName);
                     optionsDal.SetValue(withoutExtension, content);
                 }
+
+                optionFiles = Directory.EnumerateFiles("blog", "*.bosf", SearchOption.AllDirectories);
+                foreach (var optionFile in optionFiles)
+                {
+                    var optionFileInfo = new FileInfo(optionFile);
+                    var fileName = optionFileInfo.Name;
+                    var contentLines = File.ReadAllLines(optionFileInfo.FullName);
+                    foreach (var content in contentLines)
+	                {
+                        var splitted = content.Split('\t');
+                        if(splitted.Length>0)
+                        {
+                            optionsDal.SetValue(splitted[0], splitted[1]);
+                        }
+                        else
+                        {
+                            optionsDal.SetValue(content, "");
+                        }
+                    }
+                }
+
             }
 
         }
