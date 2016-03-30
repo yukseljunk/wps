@@ -26,7 +26,7 @@ ewww_image_optimizer_defer_attachments
 ewww_image_optimizer_disable_pngout	on
 ewww_image_optimizer_optipng_level	3
 ewww_image_optimizer_pngout_level	2
-ewww_image_optimizer_jpegtran_copy	TRUE
+ewww_image_optimizer_jpegtran_copy	true
 ewww_image_optimizer_version	261.0
 ewww_image_optimizer_debug	
 ewww_image_optimizer_jpg_lossy	
