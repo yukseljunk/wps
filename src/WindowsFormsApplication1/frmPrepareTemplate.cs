@@ -140,12 +140,27 @@ namespace WordpressScraper
                         MessageBox.Show(exception.ToString());
                     }
                 }
-
-                UnzipPlugins(fileUploaded);
+                try
+                {
+                    UnzipPlugins(fileUploaded);
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
+                    return;
+                }
             }
             if (chkActivateSetupPlugins.Checked)
             {
-                SetPluginData();
+                try
+                {
+                    SetPluginData();
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
+                    return;
+                }
             }
         }
 
@@ -191,7 +206,7 @@ namespace WordpressScraper
                 var currentActivePluginsValue = optionsDal.GetValue("active_plugins");
                 var currentActivePlugins = new HashSet<string>(PhpSerializer.Deserialize(currentActivePluginsValue));
                 var pluginsToPut = new HashSet<string>(GetPluginFiles());
-                
+
                 currentActivePlugins.UnionWith(pluginsToPut);
                 var newActivePluginData = PhpSerializer.Serialize(currentActivePlugins.ToList());
                 optionsDal.SetValue("active_plugins", newActivePluginData);
@@ -213,9 +228,9 @@ namespace WordpressScraper
                     var fileName = optionFileInfo.Name;
                     var contentLines = File.ReadAllLines(optionFileInfo.FullName);
                     foreach (var content in contentLines)
-	                {
+                    {
                         var splitted = content.Split('\t');
-                        if(splitted.Length>0)
+                        if (splitted.Length > 0)
                         {
                             optionsDal.SetValue(splitted[0], splitted[1]);
                         }
