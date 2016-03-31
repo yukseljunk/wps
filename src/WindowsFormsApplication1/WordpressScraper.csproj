@@ -189,34 +189,10 @@
     <None Include="blog\wp-content\plugins\adman.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\autoptimize.bosf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\autoptimize.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\autoptimize_cache_clean.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\autoptimize_cache_nogzip.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\autoptimize_css.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\autoptimize_css_exclude.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\autoptimize_css_inline.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\autoptimize_html.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\autoptimize_js.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\autoptimize_js_exclude.bof">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="blog\wp-content\plugins\autoptimize_show_adv.bof">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\bj-lazy-load.zip">

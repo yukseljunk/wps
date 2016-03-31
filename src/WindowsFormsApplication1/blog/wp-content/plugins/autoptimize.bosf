@@ -1,0 +1,9 @@
+﻿autoptimize_cache_clean	0
+autoptimize_cache_nogzip	on
+autoptimize_css	on
+autoptimize_css_exclude	admin-bar.min.css, dashicons.min.css
+autoptimize_css_inline	on
+autoptimize_html	on
+autoptimize_js	on
+autoptimize_js_exclude	s_sid,smowtion_size,sc_project,WAU_,wau_add,comment-form-quicktags,edToolbar,ch_client,seal.js
+autoptimize_show_adv	1
