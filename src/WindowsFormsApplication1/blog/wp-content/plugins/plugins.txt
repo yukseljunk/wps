@@ -9,3 +9,4 @@ contact-form-plugin/contact_form.php
 ewww-image-optimizer/ewww-image-optimizer.php
 find-duplicates/find-duplicates.php
 intelly-related-posts/index.php
+social-networks-auto-poster-facebook-twitter-g/NextScripts_SNAP.php
