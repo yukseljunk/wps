@@ -1,0 +1,19 @@
+﻿IRP_PluginInstallDate[intelly-related-posts]	1459438704
+IRP_PluginUpdateDate[intelly-related-posts]	1459503263
+IRP_PluginFirstInstall	0
+IRP_TrackingLastSend[intelly-related-posts]	0
+IRP_ShowActivationNotice	0
+IRP_ShowWhatsNew	0
+IRP_MaxExecutionTime	-1
+IRP_Active	1
+IRP_TemplateStyle	a:11:{s:9:"hasShadow";i:0;s:12:"hasPoweredBy";i:0;s:7:"ctaText";s:12:"Related Info";s:8:"template";s:10:"Minimalist";s:10:"boxOpacity";s:3:"100";s:12:"ctaTextColor";s:7:"#E74C3C";s:14:"postTitleColor";s:7:"#000000";s:8:"boxColor";s:7:"#ECF0F1";s:11:"borderColor";s:0:"";s:7:"linkRel";s:8:"dofollow";s:10:"linkTarget";s:6:"_blank";}
+IRP_MarginTop	0em
+IRP_MarginBottom	1em
+IRP_RewriteActive	1
+IRP_RewriteBoxesCount	3
+IRP_RewritePostsDays	0
+IRP_RewriteThreshold	250
+IRP_RewriteAtEnd	1
+IRP_EngineSearch	0
+IRP_RewritePostTypes	a:2:{s:4:"page";i:0;s:4:"post";i:1;}
+IRP_MetaboxPostTypes	a:2:{s:4:"page";i:0;s:4:"post";i:1;}

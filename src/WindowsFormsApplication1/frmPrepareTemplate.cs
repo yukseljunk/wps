@@ -178,6 +178,11 @@ namespace WordpressScraper
                 var zipFileInfo = new FileInfo(zipFile);
                 var url = string.Format("{1}wp-unzip.php?file=wp-content/plugins/{0}", zipFileInfo.Name, blogUrl);
                 var result = WebHelper.CurlSimple(url);
+                if (string.IsNullOrEmpty(result))
+                {
+                    MessageBox.Show(string.Format("Error unpacking {0}", zipFileInfo.Name));
+                    return;
+                }
                 if (result.StartsWith("OK"))
                 {
                     bw.ReportProgress(fileUploaded, string.Format(" Finished unpacking {0}", zipFileInfo.Name));
