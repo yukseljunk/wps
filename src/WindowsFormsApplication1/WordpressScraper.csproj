@@ -228,6 +228,9 @@
     <None Include="blog\wp-content\plugins\intelly-related-posts.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\noindex-attachment-pages.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\NS_SNAutoPoster.bof">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
