@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -25,6 +26,13 @@ namespace WordpressScraper
         private void frmPrepareTemplate_Load(object sender, EventArgs e)
         {
             //timer1.Enabled = true;
+            lstPlugins.Items.Clear();
+            var pluginFiles = GetPluginFiles();
+            foreach (var pluginFile in pluginFiles)
+            {
+                lstPlugins.Items.Add(pluginFile.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries)[0]);
+            }
+
 #if DEBUG
             btnPluginData.Visible = true;
 
@@ -89,6 +97,8 @@ namespace WordpressScraper
 
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
+            var checkedSites = (from object checkedItem in lstPlugins.CheckedItems select checkedItem.ToString()).ToList();
+            var directoriesCreated= new HashSet<string>();
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
 
@@ -119,9 +129,12 @@ namespace WordpressScraper
                     }
                     try
                     {
-
-                        ftp.MakeFtpDir(ftpDir);
-                        bw.ReportProgress(fileUploaded, "Creating Ftp Directory " + ftpDir);
+                        if (!directoriesCreated.Contains(ftpDir))
+                        {
+                            ftp.MakeFtpDir(ftpDir);
+                            bw.ReportProgress(fileUploaded, "Creating Ftp Directory " + ftpDir);
+                            directoriesCreated.Add(ftpDir);
+                        }
                     }
                     catch (Exception exception)
                     {
@@ -131,7 +144,19 @@ namespace WordpressScraper
 
                     try
                     {
+                        if (!checkedSites.Contains("ewww-image-optimizer") && fileInfo.Directory.Name == "ewww")
+                        {
+                            continue;
+                        }
 
+                        if (fileInfo.Directory.Name=="plugins")
+                        {
+                            var fileName = Path.GetFileNameWithoutExtension(file);
+                            if (!checkedSites.Contains(fileName))
+                            {
+                                continue;
+                            }
+                        }
                         ftp.UploadFileFtp(file, ftpDir);
                         bw.ReportProgress(fileUploaded, "Uploading " + file);
                     }
@@ -216,17 +241,7 @@ namespace WordpressScraper
                 var newActivePluginData = PhpSerializer.Serialize(currentActivePlugins.ToList());
                 optionsDal.SetValue("active_plugins", newActivePluginData);
 
-                var optionFiles = Directory.EnumerateFiles("blog", "*.bof", SearchOption.AllDirectories);
-                foreach (var optionFile in optionFiles)
-                {
-                    var optionFileInfo = new FileInfo(optionFile);
-                    var fileName = optionFileInfo.Name;
-                    var withoutExtension = Path.GetFileNameWithoutExtension(fileName);
-                    var content = File.ReadAllText(optionFileInfo.FullName);
-                    optionsDal.SetValue(withoutExtension, content);
-                }
-
-                optionFiles = Directory.EnumerateFiles("blog", "*.bosf", SearchOption.AllDirectories);
+                var optionFiles = Directory.EnumerateFiles("blog", "*.bosf", SearchOption.AllDirectories);
                 foreach (var optionFile in optionFiles)
                 {
                     var optionFileInfo = new FileInfo(optionFile);

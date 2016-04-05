@@ -183,7 +183,7 @@
     <None Include="blog\wp-content\plugins\add-to-any.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="blog\wp-content\plugins\addtoany_options.bof">
+    <None Include="blog\wp-content\plugins\add-to-any.bosf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\adman.zip">
@@ -207,7 +207,7 @@
     <None Include="blog\wp-content\plugins\contact-form-plugin.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="blog\wp-content\plugins\eww-image-optimizer.bosf">
+    <None Include="blog\wp-content\plugins\ewww-image-optimizer.bosf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\ewww-image-optimizer.zip">
@@ -219,7 +219,7 @@
     <None Include="blog\wp-content\plugins\find-duplicates.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="blog\wp-content\plugins\find_duplicates_data.bof">
+    <None Include="blog\wp-content\plugins\find-duplicates.bosf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\intelly-related-posts.bosf">
@@ -231,7 +231,7 @@
     <None Include="blog\wp-content\plugins\noindex-attachment-pages.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="blog\wp-content\plugins\NS_SNAutoPoster.bof">
+    <None Include="blog\wp-content\plugins\social-networks-auto-poster-facebook-twitter-g.bosf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\social-networks-auto-poster-facebook-twitter-g.zip">
