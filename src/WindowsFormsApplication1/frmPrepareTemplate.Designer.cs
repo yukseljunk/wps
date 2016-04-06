@@ -117,7 +117,7 @@
             this.lstPlugins.Location = new System.Drawing.Point(20, 50);
             this.lstPlugins.MultiColumn = true;
             this.lstPlugins.Name = "lstPlugins";
-            this.lstPlugins.Size = new System.Drawing.Size(742, 154);
+            this.lstPlugins.Size = new System.Drawing.Size(768, 154);
             this.lstPlugins.TabIndex = 9;
             // 
             // label1
@@ -153,7 +153,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(769, 361);
+            this.ClientSize = new System.Drawing.Size(800, 361);
             this.Controls.Add(this.btnUncheckAll);
             this.Controls.Add(this.btnCheckAll);
             this.Controls.Add(this.label1);

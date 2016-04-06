@@ -88,6 +88,9 @@ namespace WordpressScraper
             }
             btnStart.Enabled = true;
             lstPlugins.Enabled = true;
+            btnCheckAll.Enabled = true;
+            btnUncheckAll.Enabled = true;
+
         }
 
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -320,6 +323,8 @@ namespace WordpressScraper
         {
             btnStart.Enabled = false;
             lstPlugins.Enabled = false;
+            btnCheckAll.Enabled = false;
+            btnUncheckAll.Enabled = false;
             StartWorker();
         }
 
