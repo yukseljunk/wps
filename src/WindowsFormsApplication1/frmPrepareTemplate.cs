@@ -27,10 +27,11 @@ namespace WordpressScraper
         {
             //timer1.Enabled = true;
             lstPlugins.Items.Clear();
-            var pluginFiles = GetPluginFiles();
+            var pluginFiles = GetPluginNames();
             foreach (var pluginFile in pluginFiles)
             {
-                lstPlugins.Items.Add(pluginFile.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries)[0]);
+                lstPlugins.Items.Add(pluginFile);
+                lstPlugins.SetItemChecked(lstPlugins.Items.Count - 1, true);
             }
 
 #if DEBUG
@@ -86,6 +87,7 @@ namespace WordpressScraper
                 lblStatus.Text = "Finished!";
             }
             btnStart.Enabled = true;
+            lstPlugins.Enabled = true;
         }
 
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -98,95 +100,91 @@ namespace WordpressScraper
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             var checkedSites = (from object checkedItem in lstPlugins.CheckedItems select checkedItem.ToString()).ToList();
-            var directoriesCreated= new HashSet<string>();
+            var directoriesCreated = new HashSet<string>();
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
 
-            if (chkUploadFiles.Checked)
+            var ftp = new Ftp.Ftp(FtpConfiguration);
+
+            var fileUploaded = 0;
+
+            foreach (var file in _files)
             {
-                var ftp = new Ftp.Ftp(FtpConfiguration);
-
-                var fileUploaded = 0;
-
-                foreach (var file in _files)
+                fileUploaded++;
+                if ((bw.CancellationPending))
                 {
-                    fileUploaded++;
-                    if ((bw.CancellationPending))
+                    e.Cancel = true;
+                    break;
+                }
+                var fileInfo = new FileInfo(file);
+                var dir = fileInfo.Directory;
+                if (dir == null)
+                {
+                    continue;
+                }
+                var ftpDir = dir.FullName.Replace(Helper.AssemblyDirectory + "\\blog", "").Replace("\\", "/");
+                if (ftpDir.StartsWith("/"))
+                {
+                    ftpDir = ftpDir.Substring(1);
+                }
+                try
+                {
+                    if (!directoriesCreated.Contains(ftpDir))
                     {
-                        e.Cancel = true;
-                        break;
+                        ftp.MakeFtpDir(ftpDir);
+                        bw.ReportProgress(fileUploaded, "Creating Ftp Directory " + ftpDir);
+                        directoriesCreated.Add(ftpDir);
                     }
-                    var fileInfo = new FileInfo(file);
-                    var dir = fileInfo.Directory;
-                    if (dir == null)
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
+                    return;
+                }
+
+                try
+                {
+                    if (!checkedSites.Contains("ewww-image-optimizer") && fileInfo.Directory.Name == "ewww")
                     {
                         continue;
                     }
-                    var ftpDir = dir.FullName.Replace(Helper.AssemblyDirectory + "\\blog", "").Replace("\\", "/");
-                    if (ftpDir.StartsWith("/"))
-                    {
-                        ftpDir = ftpDir.Substring(1);
-                    }
-                    try
-                    {
-                        if (!directoriesCreated.Contains(ftpDir))
-                        {
-                            ftp.MakeFtpDir(ftpDir);
-                            bw.ReportProgress(fileUploaded, "Creating Ftp Directory " + ftpDir);
-                            directoriesCreated.Add(ftpDir);
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        MessageBox.Show(exception.ToString());
-                        return;
-                    }
 
-                    try
+                    if (fileInfo.Directory.Name == "plugins")
                     {
-                        if (!checkedSites.Contains("ewww-image-optimizer") && fileInfo.Directory.Name == "ewww")
+                        var fileName = Path.GetFileNameWithoutExtension(file);
+                        if (!checkedSites.Contains(fileName))
                         {
                             continue;
                         }
-
-                        if (fileInfo.Directory.Name=="plugins")
-                        {
-                            var fileName = Path.GetFileNameWithoutExtension(file);
-                            if (!checkedSites.Contains(fileName))
-                            {
-                                continue;
-                            }
-                        }
-                        ftp.UploadFileFtp(file, ftpDir);
-                        bw.ReportProgress(fileUploaded, "Uploading " + file);
                     }
-                    catch (Exception exception)
-                    {
-                        MessageBox.Show(exception.ToString());
-                    }
-                }
-                try
-                {
-                    UnzipPlugins(fileUploaded);
+                    ftp.UploadFileFtp(file, ftpDir);
+                    bw.ReportProgress(fileUploaded, "Uploading " + file);
                 }
                 catch (Exception exception)
                 {
                     MessageBox.Show(exception.ToString());
-                    return;
                 }
             }
-            if (chkActivateSetupPlugins.Checked)
+            try
             {
-                try
-                {
-                    SetPluginData();
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show(exception.ToString());
-                    return;
-                }
+                UnzipPlugins(fileUploaded);
             }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString());
+                return;
+            }
+
+            try
+            {
+                SetPluginData();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString());
+                return;
+            }
+
         }
 
         private void UnzipPlugins(int fileUploaded)
@@ -197,10 +195,22 @@ namespace WordpressScraper
             {
                 blogUrl += "/";
             }
+            var checkedSites = (from object checkedItem in lstPlugins.CheckedItems select checkedItem.ToString()).ToList();
+
             var zipFiles = Directory.EnumerateFiles("blog", "*.zip", SearchOption.AllDirectories);
             foreach (var zipFile in zipFiles)
             {
                 var zipFileInfo = new FileInfo(zipFile);
+
+                if (zipFileInfo.Directory.Name == "plugins")
+                {
+                    var fileName = Path.GetFileNameWithoutExtension(zipFile);
+                    if (!checkedSites.Contains(fileName))
+                    {
+                        continue;
+                    }
+                }
+
                 var url = string.Format("{1}wp-unzip.php?file=wp-content/plugins/{0}", zipFileInfo.Name, blogUrl);
                 var result = WebHelper.CurlSimple(url);
                 if (string.IsNullOrEmpty(result))
@@ -226,7 +236,7 @@ namespace WordpressScraper
 
         private void SetPluginData()
         {
-
+            var checkedSites = (from object checkedItem in lstPlugins.CheckedItems select checkedItem.ToString()).ToList();
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
 
@@ -235,7 +245,17 @@ namespace WordpressScraper
                 var optionsDal = new OptionsDal(dal);
                 var currentActivePluginsValue = optionsDal.GetValue("active_plugins");
                 var currentActivePlugins = new HashSet<string>(PhpSerializer.Deserialize(currentActivePluginsValue));
-                var pluginsToPut = new HashSet<string>(GetPluginFiles());
+                var pluginsToPut = new HashSet<string>();
+
+                var pluginPaths = GetPluginFiles();
+                var pluginNames = GetPluginNames();
+                for (int i = 0; i < pluginNames.Count; i++)
+                {
+                    if (checkedSites.Contains(pluginNames[i]))
+                    {
+                        pluginsToPut.Add(pluginPaths[i]);
+                    }
+                }
 
                 currentActivePlugins.UnionWith(pluginsToPut);
                 var newActivePluginData = PhpSerializer.Serialize(currentActivePlugins.ToList());
@@ -245,7 +265,16 @@ namespace WordpressScraper
                 foreach (var optionFile in optionFiles)
                 {
                     var optionFileInfo = new FileInfo(optionFile);
-                    var fileName = optionFileInfo.Name;
+
+                    if (optionFileInfo.Directory.Name == "plugins")
+                    {
+                        var fileName = Path.GetFileNameWithoutExtension(optionFile);
+                        if (!checkedSites.Contains(fileName))
+                        {
+                            continue;
+                        }
+                    }
+
                     var contentLines = File.ReadAllLines(optionFileInfo.FullName);
                     foreach (var content in contentLines)
                     {
@@ -276,12 +305,41 @@ namespace WordpressScraper
             return plugins;
         }
 
+        private static IList<string> GetPluginNames()
+        {
+            var result = new List<string>();
+            var pluginFiles = GetPluginFiles();
+            foreach (var pluginFile in pluginFiles)
+            {
+                result.Add(pluginFile.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries)[0]);
+            }
+            return result;
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             btnStart.Enabled = false;
+            lstPlugins.Enabled = false;
             StartWorker();
         }
 
+        private void btnCheckAll_Click(object sender, EventArgs e)
+        {
+            CheckUncheckAll(true);
+        }
+
+        private void CheckUncheckAll(bool state)
+        {
+            for (int i = 0; i < lstPlugins.Items.Count; i++)
+            {
+                lstPlugins.SetItemChecked(i, state);
+            }
+        }
+
+        private void btnUncheckAll_Click(object sender, EventArgs e)
+        {
+            CheckUncheckAll(false);
+        }
     }
 
 }

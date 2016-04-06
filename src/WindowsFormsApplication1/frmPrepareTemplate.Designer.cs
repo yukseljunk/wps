@@ -34,15 +34,16 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.btnStart = new System.Windows.Forms.Button();
-            this.chkUploadFiles = new System.Windows.Forms.CheckBox();
-            this.chkActivateSetupPlugins = new System.Windows.Forms.CheckBox();
             this.lstPlugins = new System.Windows.Forms.CheckedListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnCheckAll = new System.Windows.Forms.Button();
+            this.btnUncheckAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblDesc
             // 
             this.lblDesc.AutoSize = true;
-            this.lblDesc.Location = new System.Drawing.Point(12, 297);
+            this.lblDesc.Location = new System.Drawing.Point(12, 250);
             this.lblDesc.Name = "lblDesc";
             this.lblDesc.Size = new System.Drawing.Size(37, 13);
             this.lblDesc.TabIndex = 0;
@@ -51,7 +52,7 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(17, 363);
+            this.lblStatus.Location = new System.Drawing.Point(17, 316);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(0, 13);
             this.lblStatus.TabIndex = 1;
@@ -63,7 +64,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 330);
+            this.progressBar1.Location = new System.Drawing.Point(12, 283);
             this.progressBar1.Maximum = 10000;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(347, 23);
@@ -71,37 +72,13 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(15, 262);
+            this.btnStart.Location = new System.Drawing.Point(15, 215);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 4;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // chkUploadFiles
-            // 
-            this.chkUploadFiles.AutoSize = true;
-            this.chkUploadFiles.Checked = true;
-            this.chkUploadFiles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUploadFiles.Location = new System.Drawing.Point(15, 26);
-            this.chkUploadFiles.Name = "chkUploadFiles";
-            this.chkUploadFiles.Size = new System.Drawing.Size(184, 17);
-            this.chkUploadFiles.TabIndex = 6;
-            this.chkUploadFiles.Text = "Upload Template and Plugin Files";
-            this.chkUploadFiles.UseVisualStyleBackColor = true;
-            // 
-            // chkActivateSetupPlugins
-            // 
-            this.chkActivateSetupPlugins.AutoSize = true;
-            this.chkActivateSetupPlugins.Checked = true;
-            this.chkActivateSetupPlugins.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkActivateSetupPlugins.Location = new System.Drawing.Point(15, 61);
-            this.chkActivateSetupPlugins.Name = "chkActivateSetupPlugins";
-            this.chkActivateSetupPlugins.Size = new System.Drawing.Size(154, 17);
-            this.chkActivateSetupPlugins.TabIndex = 8;
-            this.chkActivateSetupPlugins.Text = "Activate and Setup Plugins";
-            this.chkActivateSetupPlugins.UseVisualStyleBackColor = true;
             // 
             // lstPlugins
             // 
@@ -137,20 +114,50 @@
             "7",
             "8",
             "9"});
-            this.lstPlugins.Location = new System.Drawing.Point(15, 93);
+            this.lstPlugins.Location = new System.Drawing.Point(20, 50);
             this.lstPlugins.MultiColumn = true;
             this.lstPlugins.Name = "lstPlugins";
             this.lstPlugins.Size = new System.Drawing.Size(742, 154);
             this.lstPlugins.TabIndex = 9;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(20, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(119, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Plugins to upload/install";
+            // 
+            // btnCheckAll
+            // 
+            this.btnCheckAll.Location = new System.Drawing.Point(492, 20);
+            this.btnCheckAll.Name = "btnCheckAll";
+            this.btnCheckAll.Size = new System.Drawing.Size(116, 23);
+            this.btnCheckAll.TabIndex = 11;
+            this.btnCheckAll.Text = "Check All";
+            this.btnCheckAll.UseVisualStyleBackColor = true;
+            this.btnCheckAll.Click += new System.EventHandler(this.btnCheckAll_Click);
+            // 
+            // btnUncheckAll
+            // 
+            this.btnUncheckAll.Location = new System.Drawing.Point(624, 20);
+            this.btnUncheckAll.Name = "btnUncheckAll";
+            this.btnUncheckAll.Size = new System.Drawing.Size(116, 23);
+            this.btnUncheckAll.TabIndex = 12;
+            this.btnUncheckAll.Text = "Uncheck All";
+            this.btnUncheckAll.UseVisualStyleBackColor = true;
+            this.btnUncheckAll.Click += new System.EventHandler(this.btnUncheckAll_Click);
+            // 
             // frmPrepareTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(769, 399);
+            this.ClientSize = new System.Drawing.Size(769, 361);
+            this.Controls.Add(this.btnUncheckAll);
+            this.Controls.Add(this.btnCheckAll);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.lstPlugins);
-            this.Controls.Add(this.chkActivateSetupPlugins);
-            this.Controls.Add(this.chkUploadFiles);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.lblStatus);
@@ -173,8 +180,9 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.CheckBox chkUploadFiles;
-        private System.Windows.Forms.CheckBox chkActivateSetupPlugins;
         private System.Windows.Forms.CheckedListBox lstPlugins;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnCheckAll;
+        private System.Windows.Forms.Button btnUncheckAll;
     }
 }
