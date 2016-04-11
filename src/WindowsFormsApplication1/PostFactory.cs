@@ -122,7 +122,7 @@ namespace WindowsFormsApplication1
 
             if (options.UseFtp)
             {
-                _ftpDir = "wp-content/uploads/" + DateTime.Now.Year + "/" + DateTime.Now.Month;
+                _ftpDir = "wp-content/uploads/" + DateTime.Now.ToString("yyyy/MM");
                 _ftp.MakeFtpDir(_ftpDir);
             }
             Directory.CreateDirectory(ImagesDir);
