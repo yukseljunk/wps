@@ -255,6 +255,9 @@
     <None Include="blog\wp-content\plugins\social-networks-auto-poster-facebook-twitter-g.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\wp-crontrol.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\themes\hellish-simplicity-child\attachment.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

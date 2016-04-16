@@ -15,3 +15,4 @@ pb-responsive-images/responsive-image-polyfill.php
 pubsubhubbub/pubsubhubbub.php
 redirection/redirection.php
 scripts-to-footerphp/scripts-to-footer.php
+wp-crontrol/wp-crontrol.php
