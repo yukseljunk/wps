@@ -207,6 +207,9 @@
     <None Include="blog\wp-content\plugins\contact-form-plugin.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\redirection.bosf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\ewww-image-optimizer.bosf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -238,6 +241,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\pubsubhubbub.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\redirection.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\social-networks-auto-poster-facebook-twitter-g.bosf">
