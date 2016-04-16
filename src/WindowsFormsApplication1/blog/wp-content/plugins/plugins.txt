@@ -16,3 +16,5 @@ pubsubhubbub/pubsubhubbub.php
 redirection/redirection.php
 scripts-to-footerphp/scripts-to-footer.php
 wp-crontrol/wp-crontrol.php
+wp-missed-schedule-master/wp-missed-schedule.php
+wp-power-stats/wp-power-stats.php
