@@ -147,21 +147,33 @@ namespace WordpressScraper
 
                 try
                 {
+                    var uploadFile = true;
                     if (!checkedSites.Contains("ewww-image-optimizer") && fileInfo.Directory.Name == "ewww")
                     {
                         continue;
                     }
 
-                    if (fileInfo.Directory.Name == "plugins")
+                    if (fileInfo.Directory.Name == "plugins")//for plug-ins, check plugin selections
                     {
                         var fileName = Path.GetFileNameWithoutExtension(file);
                         if (!checkedSites.Contains(fileName))
                         {
-                            continue;
+                            uploadFile = false;
                         }
                     }
+                    else//otherwise, check upload all except plugins
+                    {
+                        if (!chkUploadAllExceptPlugin.Checked)
+                        {
+                            uploadFile = false;
+                        }
+                    }
+
+                    if (!uploadFile) continue;
+
                     ftp.UploadFileFtp(file, ftpDir);
                     bw.ReportProgress(fileUploaded, "Uploading " + file);
+
                 }
                 catch (Exception exception)
                 {
