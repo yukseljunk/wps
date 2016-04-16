@@ -246,6 +246,9 @@
     <None Include="blog\wp-content\plugins\redirection.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\scripts-to-footerphp.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\social-networks-auto-poster-facebook-twitter-g.bosf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
