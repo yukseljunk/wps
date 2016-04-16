@@ -237,6 +237,9 @@
     <None Include="blog\wp-content\plugins\pb-responsive-images.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\pubsubhubbub.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\social-networks-auto-poster-facebook-twitter-g.bosf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

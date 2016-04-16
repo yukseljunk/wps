@@ -14,6 +14,10 @@ using Helper = WindowsFormsApplication1.Helper;
 
 namespace WordpressScraper
 {
+    /// <summary>
+    /// TODO: check rewrite_rules in wp_options
+    /// TODO: check custom tables for plugins
+    /// </summary>
     public partial class frmPrepareTemplate : Form
     {
         private BackgroundWorker bw = new BackgroundWorker();
