@@ -19,3 +19,4 @@ wp-crontrol/wp-crontrol.php
 wp-missed-schedule-master/wp-missed-schedule.php
 wp-power-stats/wp-power-stats.php
 wp-super-cache/wp-cache.php
+wordpress-seo/wp-seo.php

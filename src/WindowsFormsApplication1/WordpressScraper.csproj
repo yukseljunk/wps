@@ -213,6 +213,12 @@
     <None Include="blog\wp-content\plugins\contact-form-plugin.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="blog\wp-content\plugins\wordpress-seo.bosf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="blog\wp-content\plugins\wordpress-seo.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\plugins\wp-power-stats.bosf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

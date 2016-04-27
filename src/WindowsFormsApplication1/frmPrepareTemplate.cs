@@ -203,7 +203,6 @@ namespace WordpressScraper
                 MessageBox.Show(exception.ToString());
                 return;
             }
-
         }
 
         private void UnzipPlugins(int fileUploaded)
