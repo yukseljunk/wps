@@ -165,6 +165,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="blog\.htaccess">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="blog\wp-content\advanced-cache.php">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -264,7 +267,7 @@
     <None Include="blog\wp-content\plugins\social-networks-auto-poster-facebook-twitter-g.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
- <None Include="blog\wp-content\plugins\wp-super-cache.zip">
+    <None Include="blog\wp-content\plugins\wp-super-cache.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="blog\wp-content\plugins\wp-crontrol.zip">
