@@ -82,6 +82,8 @@
             this.addUpdateExtraFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cleanupBlogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.fixFeatureImageErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,8 +104,6 @@
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.openSettingFile = new System.Windows.Forms.OpenFileDialog();
             this.saveSettings = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
-            this.fixFeatureImageErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             No = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             Url = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -596,6 +596,18 @@
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(191, 6);
             // 
+            // fixFeatureImageErrorToolStripMenuItem
+            // 
+            this.fixFeatureImageErrorToolStripMenuItem.Name = "fixFeatureImageErrorToolStripMenuItem";
+            this.fixFeatureImageErrorToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.fixFeatureImageErrorToolStripMenuItem.Text = "Fix Feature Image Error";
+            this.fixFeatureImageErrorToolStripMenuItem.Click += new System.EventHandler(this.fixFeatureImageErrorToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(191, 6);
+            // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
@@ -682,7 +694,7 @@
             this.txtPriceCoeff.Name = "txtPriceCoeff";
             this.txtPriceCoeff.Size = new System.Drawing.Size(56, 20);
             this.txtPriceCoeff.TabIndex = 40;
-            this.txtPriceCoeff.Text = "0.04";
+            this.txtPriceCoeff.Text = "0.85";
             // 
             // btnDown
             // 
@@ -791,18 +803,6 @@
             // openSettingFile
             // 
             this.openSettingFile.FileName = "openFileDialog1";
-            // 
-            // toolStripMenuItem6
-            // 
-            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(191, 6);
-            // 
-            // fixFeatureImageErrorToolStripMenuItem
-            // 
-            this.fixFeatureImageErrorToolStripMenuItem.Name = "fixFeatureImageErrorToolStripMenuItem";
-            this.fixFeatureImageErrorToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.fixFeatureImageErrorToolStripMenuItem.Text = "Fix Feature Image Error";
-            this.fixFeatureImageErrorToolStripMenuItem.Click += new System.EventHandler(this.fixFeatureImageErrorToolStripMenuItem_Click);
             // 
             // frmMain
             // 

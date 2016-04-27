@@ -11,3 +11,4 @@ find-duplicates/find-duplicates.php
 intelly-related-posts/index.php
 social-networks-auto-poster-facebook-twitter-g/NextScripts_SNAP.php
 noindex-attachment-pages/noindex-attachment-pages.php
+wp-super-cache/wp-cache.php
