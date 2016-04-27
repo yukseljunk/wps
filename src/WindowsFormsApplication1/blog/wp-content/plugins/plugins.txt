@@ -11,4 +11,11 @@ find-duplicates/find-duplicates.php
 intelly-related-posts/index.php
 social-networks-auto-poster-facebook-twitter-g/NextScripts_SNAP.php
 noindex-attachment-pages/noindex-attachment-pages.php
+pb-responsive-images/responsive-image-polyfill.php
+pubsubhubbub/pubsubhubbub.php
+redirection/redirection.php
+scripts-to-footerphp/scripts-to-footer.php
+wp-crontrol/wp-crontrol.php
+wp-missed-schedule-master/wp-missed-schedule.php
+wp-power-stats/wp-power-stats.php
 wp-super-cache/wp-cache.php
