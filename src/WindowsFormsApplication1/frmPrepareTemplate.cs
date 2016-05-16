@@ -233,7 +233,7 @@ namespace WordpressScraper
                 var result = WebHelper.CurlSimple(url);
                 if (string.IsNullOrEmpty(result))
                 {
-                    MessageBox.Show(string.Format("Error unpacking {0}", zipFileInfo.Name));
+                    MessageBox.Show(string.Format("Error unpacking {0}, empty string returned", zipFileInfo.Name));
                     return;
                 }
                 if (result.StartsWith("OK"))
@@ -242,7 +242,8 @@ namespace WordpressScraper
                 }
                 else
                 {
-                    MessageBox.Show(string.Format("Error unpacking {0}", zipFileInfo.Name));
+                    MessageBox.Show(string.Format("Error unpacking {0}, error description: {1}", zipFileInfo.Name, result));
+                    Logger.LogExceptions(new InvalidOperationException(result));
                 }
             }
         }
