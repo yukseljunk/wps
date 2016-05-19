@@ -39,6 +39,7 @@ namespace WordpressScraper
             settings.Add(new Tuple<string, string>("TagsAsText", chkTagsAsText.Checked.ToString()));
             settings.Add(new Tuple<string, string>("UseRemoteDownloading", chkUseRemoteDownloading.Checked.ToString()));
             settings.Add(new Tuple<string, string>("SkipSearchingPosted", chkSkipSearchingPosted.Checked.ToString()));
+            settings.Add(new Tuple<string, string>("UseRemoteUnzip", chkRemoteUnzip.Checked.ToString()));
             settings.Add(new Tuple<string, string>("PriceSign", txtPriceSign.Text));
             ConfigurationHelper.UpdateSettings(settings);
             this.Dispose();
@@ -76,6 +77,7 @@ namespace WordpressScraper
             chkResizeImages.Checked = options.ResizeImages;
             numMaxImageDimension.Value = options.ResizeSize;
             chkNoAPI.Checked = options.UseFtp;
+            chkRemoteUnzip.Checked = options.UseRemoteUnzip;
             chkCache.Checked = options.UseCache;
             chkShowMessageBox.Checked = options.ShowMessageBoxes;
             chkScrambleLeadPosts.Checked = options.ScrambleLeadPosts;

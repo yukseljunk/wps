@@ -120,6 +120,7 @@
     <Compile Include="Helpers\PhpSerializer.cs" />
     <Compile Include="Helpers\StopwordTool.cs" />
     <Compile Include="Ftp\IFtp.cs" />
+    <Compile Include="Internals\Unzip.cs" />
     <Compile Include="PostFactory.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>

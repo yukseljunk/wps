@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtPriceSign = new System.Windows.Forms.TextBox();
+            this.lblPriceSign = new System.Windows.Forms.Label();
             this.chkSkipSearchingPosted = new System.Windows.Forms.CheckBox();
             this.chkUseRemoteDownloading = new System.Windows.Forms.CheckBox();
             this.chkTagsAsText = new System.Windows.Forms.CheckBox();
@@ -70,8 +72,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.lblPriceSign = new System.Windows.Forms.Label();
-            this.txtPriceSign = new System.Windows.Forms.TextBox();
+            this.chkRemoteUnzip = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNEKeywordContentRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNEContentContainsKeyword)).BeginInit();
@@ -90,6 +91,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.chkRemoteUnzip);
             this.panel1.Controls.Add(this.txtPriceSign);
             this.panel1.Controls.Add(this.lblPriceSign);
             this.panel1.Controls.Add(this.chkSkipSearchingPosted);
@@ -133,6 +135,23 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(533, 492);
             this.panel1.TabIndex = 54;
+            // 
+            // txtPriceSign
+            // 
+            this.txtPriceSign.Location = new System.Drawing.Point(108, 242);
+            this.txtPriceSign.Name = "txtPriceSign";
+            this.txtPriceSign.Size = new System.Drawing.Size(46, 20);
+            this.txtPriceSign.TabIndex = 92;
+            this.txtPriceSign.Text = "$";
+            // 
+            // lblPriceSign
+            // 
+            this.lblPriceSign.AutoSize = true;
+            this.lblPriceSign.Location = new System.Drawing.Point(26, 242);
+            this.lblPriceSign.Name = "lblPriceSign";
+            this.lblPriceSign.Size = new System.Drawing.Size(55, 13);
+            this.lblPriceSign.TabIndex = 91;
+            this.lblPriceSign.Text = "Price Sign";
             // 
             // chkSkipSearchingPosted
             // 
@@ -590,22 +609,15 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // lblPriceSign
+            // chkRemoteUnzip
             // 
-            this.lblPriceSign.AutoSize = true;
-            this.lblPriceSign.Location = new System.Drawing.Point(26, 242);
-            this.lblPriceSign.Name = "lblPriceSign";
-            this.lblPriceSign.Size = new System.Drawing.Size(55, 13);
-            this.lblPriceSign.TabIndex = 91;
-            this.lblPriceSign.Text = "Price Sign";
-            // 
-            // txtPriceSign
-            // 
-            this.txtPriceSign.Location = new System.Drawing.Point(108, 242);
-            this.txtPriceSign.Name = "txtPriceSign";
-            this.txtPriceSign.Size = new System.Drawing.Size(46, 20);
-            this.txtPriceSign.TabIndex = 92;
-            this.txtPriceSign.Text = "$";
+            this.chkRemoteUnzip.AutoSize = true;
+            this.chkRemoteUnzip.Location = new System.Drawing.Point(290, 238);
+            this.chkRemoteUnzip.Name = "chkRemoteUnzip";
+            this.chkRemoteUnzip.Size = new System.Drawing.Size(128, 17);
+            this.chkRemoteUnzip.TabIndex = 93;
+            this.chkRemoteUnzip.Text = "Remote Unzip by php";
+            this.chkRemoteUnzip.UseVisualStyleBackColor = true;
             // 
             // frmOptions
             // 
@@ -684,6 +696,7 @@
         private System.Windows.Forms.CheckBox chkSkipSearchingPosted;
         private System.Windows.Forms.TextBox txtPriceSign;
         private System.Windows.Forms.Label lblPriceSign;
+        private System.Windows.Forms.CheckBox chkRemoteUnzip;
 
     }
 }

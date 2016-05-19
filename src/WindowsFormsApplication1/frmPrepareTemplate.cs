@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using PttLib.Helpers;
 using WordpressScraper.Ftp;
 using WordpressScraper.Helpers;
+using WordpressScraper.Internals;
 using WpsLib.Dal;
 using WpsLib.ProgramOptions;
 using Helper = WindowsFormsApplication1.Helper;
@@ -110,7 +111,10 @@ namespace WordpressScraper
             var directoriesCreated = new HashSet<string>();
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
-
+            if (!_options.UseRemoteUnzip)
+            {
+                UnzipPluginsLocally(checkedSites);
+            }
             var ftp = new Ftp.Ftp(FtpConfiguration);
 
             var fileUploaded = 0;
@@ -203,6 +207,36 @@ namespace WordpressScraper
                 MessageBox.Show(exception.ToString());
                 return;
             }
+        }
+
+        private void UnzipPluginsLocally(List<string> checkedSites)
+        {
+            var zipFiles = Directory.EnumerateFiles("blog", "*.zip", SearchOption.AllDirectories);
+            foreach (var zipFile in zipFiles)
+            {
+                try
+                {
+                    var zipFileInfo = new FileInfo(zipFile);
+
+                    if (zipFileInfo.Directory.Name == "plugins")
+                    {
+                        var fileName = Path.GetFileNameWithoutExtension(zipFile);
+                        if (!checkedSites.Contains(fileName))
+                        {
+                            continue;
+                        }
+
+                        var unzip = new Unzip(zipFileInfo.FullName);
+                        unzip.ExtractToDirectory(Helper.AssemblyDirectory + "\\blog\\wp-content\\plugins");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                    Logger.LogExceptions(ex);
+                }
+            }
+
         }
 
         private void UnzipPlugins(int fileUploaded)
