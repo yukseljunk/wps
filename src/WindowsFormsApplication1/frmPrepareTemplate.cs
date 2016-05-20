@@ -111,6 +111,7 @@ namespace WordpressScraper
             var directoriesCreated = new HashSet<string>();
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
+            DeleteLocallyExtractedPlugins();
             if (!_options.UseRemoteUnzip)
             {
                 UnzipPluginsLocally(checkedSites);
@@ -156,26 +157,32 @@ namespace WordpressScraper
                 try
                 {
                     var uploadFile = true;
+                    //upload ewww folder only if ewww-image-optimizer selected
                     if (!checkedSites.Contains("ewww-image-optimizer") && fileInfo.Directory.Name == "ewww")
                     {
                         continue;
                     }
+                    var fileName = Path.GetFileNameWithoutExtension(file);
 
-                    if (fileInfo.Directory.Name == "plugins")//for plug-ins, check plugin selections
+                    if (IsPluginFile(fileInfo))
                     {
-                        var fileName = Path.GetFileNameWithoutExtension(file);
-                        if (!checkedSites.Contains(fileName))
+                        if (_options.UseRemoteUnzip) //if remotely unzipping, then upload only zip files for checked plugins
+                        {       
+                            if (!checkedSites.Contains(fileName) || Path.GetExtension(file) != ".zip")
+                            {
+                                uploadFile = false;
+                            }
+                        }
+                        else//if locally unzipping, then upload only extracted files for checked plugins
                         {
-                            uploadFile = false;
+
                         }
                     }
-                    else//otherwise, check upload all except plugins
+                    else
                     {
-                        if (!chkUploadAllExceptPlugin.Checked)
-                        {
-                            uploadFile = false;
-                        }
+                        uploadFile = chkUploadAllExceptPlugin.Checked;
                     }
+
 
                     if (!uploadFile) continue;
 
@@ -188,14 +195,18 @@ namespace WordpressScraper
                     MessageBox.Show(exception.ToString());
                 }
             }
-            try
+
+            if (_options.UseRemoteUnzip)
             {
-                UnzipPlugins(fileUploaded);
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.ToString());
-                return;
+                try
+                {
+                    UnzipPluginsRemotely(fileUploaded);
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
+                    return;
+                }
             }
 
             try
@@ -207,6 +218,22 @@ namespace WordpressScraper
                 MessageBox.Show(exception.ToString());
                 return;
             }
+        }
+
+
+        //checks if a file is under plugins folder or a folder under plugins folder
+        private bool IsPluginFile(FileInfo fileInfo)
+        {
+            var directory = fileInfo.Directory;
+            while (directory != null)
+            {
+                if (directory.Name == "plugins")
+                {
+                    return true;
+                }
+                directory = directory.Parent;
+            }
+            return false;
         }
 
         private void UnzipPluginsLocally(List<string> checkedSites)
@@ -239,7 +266,26 @@ namespace WordpressScraper
 
         }
 
-        private void UnzipPlugins(int fileUploaded)
+        /// <summary> delete all folders and its files under plugins folder for cleanup of previously extracted plugins</summary>
+        private void DeleteLocallyExtractedPlugins()
+        {
+            var directories = Directory.GetDirectories(Helper.AssemblyDirectory + "\\blog\\wp-content\\plugins");
+            foreach (var directory in directories)
+            {
+                var di = new DirectoryInfo(directory);
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                {
+                    dir.Delete(true);
+                }
+                di.Delete(true);
+            }
+        }
+
+        private void UnzipPluginsRemotely(int fileUploaded)
         {
             //make a request to unzip files
             var blogUrl = _options.BlogUrl;
