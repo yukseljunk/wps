@@ -50,9 +50,7 @@ namespace WpsLib.ProgramOptions
                                   YoutubeClientSecret = System.Configuration.ConfigurationManager.AppSettings["YoutubeClientSecret"],
                                   SkipSearchingPosted = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["SkipSearchingPosted"]),
 
-                                  PriceSign = System.Configuration.ConfigurationManager.AppSettings["PriceSign"],
-
-                                  UseRemoteUnzip = bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseRemoteUnzip"])
+                                  PriceSign = System.Configuration.ConfigurationManager.AppSettings["PriceSign"]
 
                               };
             return options;

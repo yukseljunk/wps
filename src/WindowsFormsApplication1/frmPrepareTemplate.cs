@@ -23,6 +23,7 @@ namespace WordpressScraper
     {
         private BackgroundWorker bw = new BackgroundWorker();
         private ProgramOptions _options;
+
         public frmPrepareTemplate()
         {
             InitializeComponent();
@@ -112,7 +113,7 @@ namespace WordpressScraper
             var programOptionsFactory = new ProgramOptionsFactory();
             _options = programOptionsFactory.Get();
             DeleteLocallyExtractedPlugins();
-            if (!_options.UseRemoteUnzip)
+            if (!chkRemoteUnzip.Checked)
             {
                 UnzipPluginsLocally(checkedSites);
             }
@@ -166,8 +167,8 @@ namespace WordpressScraper
 
                     if (IsPluginFile(fileInfo))
                     {
-                        if (_options.UseRemoteUnzip) //if remotely unzipping, then upload only zip files for checked plugins
-                        {       
+                        if (chkRemoteUnzip.Checked) //if remotely unzipping, then upload only zip files for checked plugins
+                        {
                             if (!checkedSites.Contains(fileName) || Path.GetExtension(file) != ".zip")
                             {
                                 uploadFile = false;
@@ -175,7 +176,10 @@ namespace WordpressScraper
                         }
                         else//if locally unzipping, then upload only extracted files for checked plugins
                         {
-
+                            if (fileInfo.Directory.Name == "plugins")
+                            {
+                                uploadFile = false;
+                            }
                         }
                     }
                     else
@@ -196,7 +200,7 @@ namespace WordpressScraper
                 }
             }
 
-            if (_options.UseRemoteUnzip)
+            if (chkRemoteUnzip.Checked)
             {
                 try
                 {

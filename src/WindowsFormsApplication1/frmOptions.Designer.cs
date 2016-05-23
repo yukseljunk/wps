@@ -72,7 +72,6 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.chkRemoteUnzip = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNEKeywordContentRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNEContentContainsKeyword)).BeginInit();
@@ -91,7 +90,6 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.chkRemoteUnzip);
             this.panel1.Controls.Add(this.txtPriceSign);
             this.panel1.Controls.Add(this.lblPriceSign);
             this.panel1.Controls.Add(this.chkSkipSearchingPosted);
@@ -609,16 +607,6 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // chkRemoteUnzip
-            // 
-            this.chkRemoteUnzip.AutoSize = true;
-            this.chkRemoteUnzip.Location = new System.Drawing.Point(290, 238);
-            this.chkRemoteUnzip.Name = "chkRemoteUnzip";
-            this.chkRemoteUnzip.Size = new System.Drawing.Size(128, 17);
-            this.chkRemoteUnzip.TabIndex = 93;
-            this.chkRemoteUnzip.Text = "Remote Unzip by php";
-            this.chkRemoteUnzip.UseVisualStyleBackColor = true;
-            // 
             // frmOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -696,7 +684,6 @@
         private System.Windows.Forms.CheckBox chkSkipSearchingPosted;
         private System.Windows.Forms.TextBox txtPriceSign;
         private System.Windows.Forms.Label lblPriceSign;
-        private System.Windows.Forms.CheckBox chkRemoteUnzip;
 
     }
 }

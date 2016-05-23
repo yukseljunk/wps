@@ -66,7 +66,5 @@ namespace WpsLib.ProgramOptions
 
         public string PriceSign { get; set; }
 
-        public bool UseRemoteUnzip { get; set; }
-
     }
 }

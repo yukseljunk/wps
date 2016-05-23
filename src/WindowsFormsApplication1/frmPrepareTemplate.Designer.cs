@@ -39,12 +39,13 @@
             this.btnCheckAll = new System.Windows.Forms.Button();
             this.btnUncheckAll = new System.Windows.Forms.Button();
             this.chkUploadAllExceptPlugin = new System.Windows.Forms.CheckBox();
+            this.chkRemoteUnzip = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblDesc
             // 
             this.lblDesc.AutoSize = true;
-            this.lblDesc.Location = new System.Drawing.Point(14, 285);
+            this.lblDesc.Location = new System.Drawing.Point(22, 313);
             this.lblDesc.Name = "lblDesc";
             this.lblDesc.Size = new System.Drawing.Size(37, 13);
             this.lblDesc.TabIndex = 0;
@@ -53,7 +54,7 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(19, 351);
+            this.lblStatus.Location = new System.Drawing.Point(27, 379);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(0, 13);
             this.lblStatus.TabIndex = 1;
@@ -65,7 +66,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(14, 318);
+            this.progressBar1.Location = new System.Drawing.Point(22, 346);
             this.progressBar1.Maximum = 10000;
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(347, 23);
@@ -73,7 +74,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(17, 250);
+            this.btnStart.Location = new System.Drawing.Point(22, 277);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 4;
@@ -162,11 +163,22 @@
             this.chkUploadAllExceptPlugin.Text = "Upload files except plugins";
             this.chkUploadAllExceptPlugin.UseVisualStyleBackColor = true;
             // 
+            // chkRemoteUnzip
+            // 
+            this.chkRemoteUnzip.AutoSize = true;
+            this.chkRemoteUnzip.Location = new System.Drawing.Point(25, 245);
+            this.chkRemoteUnzip.Name = "chkRemoteUnzip";
+            this.chkRemoteUnzip.Size = new System.Drawing.Size(192, 17);
+            this.chkRemoteUnzip.TabIndex = 14;
+            this.chkRemoteUnzip.Text = "Unzip files on the server - PHP side";
+            this.chkRemoteUnzip.UseVisualStyleBackColor = true;
+            // 
             // frmPrepareTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 399);
+            this.ClientSize = new System.Drawing.Size(824, 425);
+            this.Controls.Add(this.chkRemoteUnzip);
             this.Controls.Add(this.chkUploadAllExceptPlugin);
             this.Controls.Add(this.btnUncheckAll);
             this.Controls.Add(this.btnCheckAll);
@@ -199,5 +211,6 @@
         private System.Windows.Forms.Button btnCheckAll;
         private System.Windows.Forms.Button btnUncheckAll;
         private System.Windows.Forms.CheckBox chkUploadAllExceptPlugin;
+        private System.Windows.Forms.CheckBox chkRemoteUnzip;
     }
 }
