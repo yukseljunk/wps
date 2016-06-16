@@ -649,7 +649,7 @@ namespace WindowsFormsApplication1
         {
             foreach (var uploadResult in uploadResults)
             {
-                var url = string.Format("{0}/wp-image.php?url={1}&file={2}&folder={3}&thsize={4}", _options.BlogUrl, uploadResult.OriginalUrl, uploadResult.FileName, _ftpDir, _thumbnailSize);
+                var url = string.Format("{0}/wp-image.php?url={1}&file={2}&folder={3}&thsize={4}&maxsize={5}", _options.BlogUrl, uploadResult.OriginalUrl, uploadResult.FileName, _ftpDir, _thumbnailSize, _maxImageDimension);
                 Interlocked.Increment(ref _imageRequestCounter);
                 using (WebClient webClient = new WebClient())
                 {

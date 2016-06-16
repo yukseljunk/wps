@@ -3,9 +3,17 @@ $url=htmlspecialchars($_GET["url"]);
 $file=htmlspecialchars($_GET["file"]);
 $folder=htmlspecialchars($_GET["folder"]);
 $thsize=$_GET["thsize"];
+$maxsize=$_GET["maxsize"];
 if($thsize==""){
  $thsize=200;
 }
+if($maxsize==""){
+  $maxsize=0;
+}
+if($maxsize=="0"){
+  $maxsize=0;
+}
+
 //echo 'Url: ' . $url . '<br/>';
 //echo 'Filename: ' . $file. '<br/>';
 //echo 'Folder: ' . $folder . '<br/>';
@@ -18,9 +26,15 @@ $finalFile=$folder.'/'.$file;
 file_put_contents($finalFile, file_get_contents($url));
 createThumbnail($finalFile,$thsize,$thsize);
 
-function createThumbnail($filepath, $thumbnail_width, $thumbnail_height) {
+if($maxsize>0){
+  createThumbnail($finalFile,$maxsize,$maxsize, $finalFile,false);
+}
+
+function createThumbnail($filepath, $thumbnail_width, $thumbnail_height, $newfilename="",$echoDimensions=true) {
     list($original_width, $original_height, $original_type) = getimagesize($filepath);
-    echo $original_width .'x'. $original_height;
+    if($echoDimensions){
+        echo $original_width .'x'. $original_height;
+    }
     if ($original_width > $original_height) {
         $new_width = $thumbnail_width;
         $new_height = intval($original_height * $new_width / $original_width);
@@ -53,9 +67,12 @@ function createThumbnail($filepath, $thumbnail_width, $thumbnail_height) {
     
     /* Adding image name _thumb for thumbnail image */
     $file_name = dirname($filepath) .'/'. basename($file_name, ".$ext") . '-'.$thumbnail_width.'x'.$thumbnail_height.'.' . $ext;
-    $imgt($new_image, $file_name);
-
-    return file_exists($file_name);
+    if($newfilename==""){
+       $imgt($new_image, $file_name);
+       return file_exists($file_name);
+    }
+    $imgt($new_image, $newfilename);
+    return file_exists($newfilename);
 }
 ?>
 
