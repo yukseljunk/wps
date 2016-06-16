@@ -33,7 +33,16 @@ if($maxsize>0){
 function createThumbnail($filepath, $thumbnail_width, $thumbnail_height, $newfilename="",$echoDimensions=true) {
     list($original_width, $original_height, $original_type) = getimagesize($filepath);
     if($echoDimensions){
+        
+        if($newfilename==""){
         echo $original_width .'x'. $original_height;
+        }
+        else
+        {
+            echo $thumbnail_width .'x'. $thumbnail_height;
+        
+        }
+        
     }
     if ($original_width > $original_height) {
         $new_width = $thumbnail_width;
