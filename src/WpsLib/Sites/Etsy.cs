@@ -16,7 +16,7 @@ namespace PttLib
         {
             get
             {
-                return "//div[@class='buyer-card card']/a";
+                return "//a[@class='buyer-card card ']";
             }
         }
 
