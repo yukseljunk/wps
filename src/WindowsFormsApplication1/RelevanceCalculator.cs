@@ -37,11 +37,12 @@ namespace WordpressScraper
             {
                 score += titleStartsWithKeywordScore;
             }
-            if (Regex.IsMatch(item.Content, keyword, RegexOptions.IgnoreCase))
+
+            if (!string.IsNullOrEmpty(item.Content) && Regex.IsMatch(item.Content, keyword, RegexOptions.IgnoreCase))
             {
                 score += contentContainsKeywordScore;
             }
-            if (item.Content.Length > 100 && Regex.IsMatch(item.Content.Substring(0, 100), keyword, RegexOptions.IgnoreCase))
+            if (!string.IsNullOrEmpty(item.Content) && item.Content.Length > 100 && Regex.IsMatch(item.Content.Substring(0, 100), keyword, RegexOptions.IgnoreCase))
             {
                 score += contentFirst100ContainsKeywordScore;
             }
@@ -55,7 +56,7 @@ namespace WordpressScraper
             if (item.Site == "Bonanza")
             {
                 var imageCount = item.Content.ToLower()
-                    .Split(new string[] {"<img "}, StringSplitOptions.RemoveEmptyEntries);
+                    .Split(new string[] { "<img " }, StringSplitOptions.RemoveEmptyEntries);
                 var cf = new ConverterFunctions();
                 var stripped = cf.StripTags(item.Content, new List<string>() { "font", "p", "span", "div", "h2", "h3", "h4", "tr", "td" });
                 int rate = (int)((stripped.Length / (double)item.Content.Length) * 100);
@@ -72,9 +73,9 @@ namespace WordpressScraper
             var nonExactContentContainsKeywordScore = _programOptions.NonExactContentContainsKeywordScore;
             var nonExactKeywordRatioScore = _programOptions.NonExactKeywordRatioScore;
             var score = 0;
-            var keywords = keyword.Split(new [] {" "}, StringSplitOptions.RemoveEmptyEntries);
-            
-            if(NonExactMatch(item.Title, keywords))
+            var keywords = keyword.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (NonExactMatch(item.Title, keywords))
             {
                 score += nonExactTitleContainsKeywordScore;
             }
@@ -100,6 +101,8 @@ namespace WordpressScraper
 
         private static bool NonExactMatch(string input, string[] keywords)
         {
+            if (string.IsNullOrEmpty(input)) return false;
+
             var titleMatches = true;
             foreach (var kw in keywords)
             {
@@ -114,9 +117,11 @@ namespace WordpressScraper
 
         public int KeywordRatio(Item item, string keyword)
         {
+            if (string.IsNullOrEmpty(item.Content)) return 0;
+
             int occurenceCount = new Regex(Regex.Escape(keyword)).Matches(item.Content).Count;
             var contentWordCount = item.Content.WordCount();
-                return (int)((occurenceCount / (double)contentWordCount) * 100);
+            return (int)((occurenceCount / (double)contentWordCount) * 100);
         }
 
     }
