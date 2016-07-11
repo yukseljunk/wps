@@ -126,7 +126,7 @@ namespace WindowsFormsApplication1
 
         private void GettingSourceItemsFinished(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Error!=null)
+            if (e.Error != null)
             {
                 OnExceptionOccured(e.Error);
             }
@@ -247,7 +247,7 @@ namespace WindowsFormsApplication1
 
                 foreach (var result in subResults)
                 {
-                    var fk = site.Name +"_"+site.GetId(result.Item2);
+                    var fk = site.Name + "_" + site.GetId(result.Item2);
                     if (existingIds != null)
                     {
                         if (existingIds.Contains(fk))
@@ -265,8 +265,8 @@ namespace WindowsFormsApplication1
                                                         var relevance = relevanceCalculater.GetRelevance(item, keyword);
                                                         string[] row1 =
                                                             {
-                                                                item.Id.ToString(), item.Url, item.Title,
-                                                                item.MetaDescription, item.Content,
+                                                                item.Id.ToString(), item.Url, item.Title ?? "",
+                                                                item.MetaDescription ?? "", item.Content ?? "",
                                                                 item.Price.ToString(CultureInfo.GetCultureInfo("en-US"))
                                                                 ,
                                                                 string.Join(",",
@@ -326,6 +326,6 @@ namespace WindowsFormsApplication1
         }
 
 
-       
+
     }
 }
