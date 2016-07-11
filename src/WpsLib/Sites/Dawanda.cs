@@ -133,7 +133,7 @@ namespace PttLib
         {
             get
             {
-                return "//section[@class='description']";
+                return "//section[@class[contains(.,'description')]]";
             }
         }
         public override string IdRegex
