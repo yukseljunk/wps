@@ -112,7 +112,7 @@ namespace PttLib
         {
             get
             {
-                return "//section[@id='product_gallery']//li/img";
+                return "//section[@id='product_gallery']//li/img | //span[@id='big_product_image']/img";
             }
         }
         public override string ImagesAttribute
@@ -122,6 +122,7 @@ namespace PttLib
                 return "data-big";
             }
         }
+
         public override string PriceXPath
         {
             get

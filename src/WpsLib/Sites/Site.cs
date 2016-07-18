@@ -114,7 +114,7 @@ namespace WpsLib.Sites
                     }
                     else
                     {
-                        if (Math.Abs(_lastPageCount - pageCount)>10 && _lastPageCount > 0)
+                        if (Math.Abs(_lastPageCount - pageCount) > 10 && _lastPageCount > 0)
                         {
                             Logger.LogProcess("Last page count difference!");
 
@@ -314,10 +314,11 @@ namespace WpsLib.Sites
             {
                 foreach (var image in images)
                 {
-                    var imageUrl = image.Attributes[ImagesAttribute].Value;
+
+                    var imageUrl = image.Attributes[ImagesAttribute] == null ? "" : image.Attributes[ImagesAttribute].Value;
                     if (string.IsNullOrEmpty(imageUrl))
                     {
-                        imageUrl = image.Attributes[AlternativeImagesAttribute].Value;
+                        imageUrl = image.Attributes[AlternativeImagesAttribute] == null ? "" : image.Attributes[AlternativeImagesAttribute].Value;
                         if (string.IsNullOrEmpty(imageUrl))
                         {
                             continue;
