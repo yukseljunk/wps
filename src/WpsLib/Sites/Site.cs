@@ -191,10 +191,10 @@ namespace WpsLib.Sites
         public virtual void GetPageCount(out int pageCount, HtmlDocument htmlDoc, string keyword)
         {
             pageCount = 0;
-            var pageNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='pagination btn-group clearfix mt-xs-3']/a");
+            var pageNodes = htmlDoc.DocumentNode.SelectNodes("//nav[@class='pagination btn-group-lg clearfix mt-xs-2 mt-lg-3']/a");
             if (pageNodes != null)
             {
-                pageCount = int.Parse(pageNodes[pageNodes.Count - 2].InnerText);
+                pageCount = int.Parse(pageNodes[pageNodes.Count - 2].Attributes["data-page"].Value);
             }
         }
 
